@@ -1,56 +1,87 @@
+html {
+	height: 100%;
+}
 body {
 	padding-top: 20px;
 	padding-bottom: 20px;
+	height: 100%;
 }
-
 .navbar {
 	margin-bottom: 0px;
 	padding: 10px;
 	border: 0;
 	border-radius: 0;
-	background: -webkit-linear-gradient(top, rgba(134,180,246,0.6), rgba(72,134,210,1)); /* For Safari 5.1 to 6.0 */
-	background: -o-linear-gradient(bottom, rgba(134,180,246134,180,246,0.6), rgba(72,134,210,1)); /* For Opera 11.1 to 12.0 */
-	background: -moz-linear-gradient(bottom, rgba(134,180,246,0.6), rgba(72,134,210,1)); /* For Firefox 3.6 to 15 */
-	background: linear-gradient(to bottom, rgba(134,180,246,0.6), rgba(72,134,210,1)); /* Standard syntax (must be last) */
+	background: -webkit-linear-gradient(top, rgba(134, 180, 246, 0.6), rgba(72, 134, 210, 1)); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(bottom, rgba(134, 180, 246134, 180, 246, 0.6), rgba(72, 134, 210, 1)); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(bottom, rgba(134, 180, 246, 0.6), rgba(72, 134, 210, 1)); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(to bottom, rgba(134, 180, 246, 0.6), rgba(72, 134, 210, 1)); /* Standard syntax (must be last) */
 	box-shadow: 0px 3px 6px #888888;
-	color: #fff;
-	height: 10vh;
+	color: #fff;	/*height: 10vh;*/
 }
-
 .navbar a {
 	color: #fff;
 }
-
 .navbar-nav > li > a {
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
-
 .navbar a:hover {
 	background-color: 0;
 }
-
 .nav > li > a:hover, .nav > li > a:focus {
 	text-decoration: none;
 	background-color: transparent;
 }
-
 .navbar-toggle {
-	background-color: rgb(72,134,210);
-	border: 1px solid rgb(72,134,210);
+	background-color: rgb(72, 134, 210);
+	border: 1px solid rgb(72, 134, 210);
 }
-
 .navbar-toggle .icon-bar {
 	background-color: #fff;
 }
-
 .container {
-	background: -webkit-linear-gradient(top, rgba(134,180,246,0.6), rgba(72,134,210,1)); /* For Safari 5.1 to 6.0 */
-	background: -o-linear-gradient(bottom, rgba(134,180,246134,180,246,0.6), rgba(72,134,210,1)); /* For Opera 11.1 to 12.0 */
-	background: -moz-linear-gradient(bottom, rgba(134,180,246,0.6), rgba(72,134,210,1)); /* For Firefox 3.6 to 15 */
-	background: linear-gradient(to bottom, rgba(134,180,246,0.6), rgba(72,134,210,1)); /* Standard syntax (must be last) */
+	background: -webkit-linear-gradient(top, rgba(134, 180, 246, 0.6), rgba(72, 134, 210, 1)); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(bottom, rgba(134, 180, 246134, 180, 246, 0.6), rgba(72, 134, 210, 1)); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(bottom, rgba(134, 180, 246, 0.6), rgba(72, 134, 210, 1)); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(to bottom, rgba(134, 180, 246, 0.6), rgba(72, 134, 210, 1)); /* Standard syntax (must be last) */
 	padding: 0;
 	border-radius: 6px;
-	border: 1px solid rgb(72,134,210);
-	height: 96.5vh;
+	border: 1px solid rgb(72, 134, 210);
+	height: 100%;
+	display: block;
+	overflow: auto;
+}
+@media screen and (min-device-width:320px) and (max-device-width:768px) {
+	.container {
+
+		/*height: auto;*/
+	}
+}
+@media screen and (min-device-width:320px) and (max-device-width:410px) {
+	.container .col-md-2 {
+		width: 50% !important;
+		float: left;
+	}
+}
+@media screen and (min-device-width:411px) and (max-device-width:670px) {
+	.container .col-md-2 {
+		width: 30% !important;
+		float: left;
+	}
+}
+@media screen and (min-device-width:671px) and (max-device-width:991px) {
+	.container {
+
+		/*height: auto;*/
+	}
+	.container .col-md-2 {
+		width: 25% !important;
+		float: left;
+	}
+}
+.tx-center {
+	text-align: center;
+}
+.tx-right {
+	text-align: right;
 }
