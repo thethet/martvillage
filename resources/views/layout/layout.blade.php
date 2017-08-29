@@ -63,8 +63,10 @@
 
 						<div class="col-md-1">
 							<ul class="nav navbar-nav navbar-right">
-								<li>
-									<a  href="{{ url('/') }}"><span class="glyphicon glyphicon-log-out"></span></a>
+								<li class="tx-center">
+									<a  href="{{ url('/') }}">
+										<img src="{{ asset('assets/img/Lockout.png') }}" alt="singout" width="27px">
+									</a>
 									Logout
 								</li>
 							</ul>
@@ -76,11 +78,10 @@
 
 		<!-- Main component for a primary marketing message or call to action -->
 		<div class="main">
-			@yield('main-content')
-
-			@yield('footer-menu')
+			@yield('main')
 		</div>
 
+		@yield('footer')
 
 	</div> <!-- /container -->
 

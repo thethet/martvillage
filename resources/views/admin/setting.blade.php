@@ -1,6 +1,6 @@
 @extends('layout.layout')
 
-@section('main-content')
+@section('main')
 	<div class="main-content">
 		<div class="row">
 			<div class="col-md-2">
@@ -42,16 +42,15 @@
 	</div>
 @stop
 
-@section('footer-menu')
+@section('footer')
 	<div class="footer-menu">
 		<div class="footer-content">
 			<div class="menu-icon">
 				<a href="{{ url('/dashboard') }}">
-					<img src="{{ asset('assets/img/home-icon.png') }}" alt="">
+					<img src="{{ asset('assets/img/home-icon.jpeg') }}" alt="">
 					Home
 				</a>
 			</div>
 		</div>
 	</div>
-
 @stop

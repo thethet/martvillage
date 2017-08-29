@@ -1,6 +1,6 @@
 @extends('layout.layout')
 
-@section('main-content')
+@section('main')
 	<div class="main-content">
 		<div class="row">
 			<div class="col-md-2">
@@ -33,7 +33,7 @@
 			<div class="col-md-2">
 				<a href="{{ url('/') }}">
 					<div class="card">
-						<img class="profile-icon" src="{{ asset('assets/img/collection.jpg') }}" alt="Collection">
+						<img class="profile-icon" src="{{ asset('assets/img/collection.png') }}" alt="Collection">
 						Collection
 					</div>
 				</a>

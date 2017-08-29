@@ -3,19 +3,16 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateTblNricTownship extends Migration {
+class CreateTblNationality extends Migration {
 	/**
 	 * Run the migrations.
 	 *
 	 * @return void
 	 */
 	public function up() {
-		Schema::create('nric_townships', function (Blueprint $table) {
+		Schema::create('nationality', function (Blueprint $table) {
 			$table->increments('id');
-			$table->integer('nric_code_id');
-			$table->string('township');
-			$table->string('short_name');
-			$table->integer('serial_no');
+			$table->string('name');
 			$table->enum('deleted', ['N', 'Y']);
 			$table->integer('created_by');
 			$table->integer('updated_by');
@@ -29,6 +26,6 @@ class CreateTblNricTownship extends Migration {
 	 * @return void
 	 */
 	public function down() {
-		Schema::drop('nric_townships');
+		Schema::drop('nationality');
 	}
 }
