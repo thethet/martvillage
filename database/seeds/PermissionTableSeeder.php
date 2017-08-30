@@ -1,6 +1,7 @@
 <?php
 
 use App\Permission;
+use App\Role;
 use Illuminate\Database\Seeder;
 
 class PermissionTableSeeder extends Seeder {
@@ -243,8 +244,12 @@ class PermissionTableSeeder extends Seeder {
 			],
 		];
 
+		$role = Role::find(1);
+		// $admin->detachAllPermissions();
 		foreach ($permission as $key => $value) {
-			Permission::create($value);
+			$permiss = Permission::create($value);
+			// $role    = Role::where('id', '=', 1)->first();
+			$role->attachPermission($permiss->id);
 		}
 	}
 }

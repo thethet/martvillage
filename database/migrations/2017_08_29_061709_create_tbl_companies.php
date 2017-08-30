@@ -13,18 +13,18 @@ class CreateTblCompanies extends Migration {
 		Schema::create('companies', function (Blueprint $table) {
 			$table->increments('id');
 			$table->string('company_name');
-			$table->string('contact_no');
-			$table->string('fax');
+			$table->string('contact_no')->nullable();
+			$table->string('fax')->nullable();
 			$table->string('email')->unique();
 			$table->string('logo');
-			$table->string('unit_number', 50);
-			$table->string('building_name', 100);
-			$table->string('street');
+			$table->string('unit_number', 50)->nullable();
+			$table->string('building_name', 100)->nullable();
+			$table->string('street')->nullable();
 			$table->integer('country_id');
 			$table->integer('state_id');
 			$table->integer('township_id');
-			$table->text('address');
-			$table->text('location');
+			$table->text('address')->nullable();
+			$table->text('location')->nullable();
 			$table->date('expiry_date');
 			$table->enum('deleted', ['N', 'Y']);
 			$table->integer('created_by');

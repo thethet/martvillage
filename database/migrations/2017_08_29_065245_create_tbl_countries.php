@@ -13,8 +13,8 @@ class CreateTblCountries extends Migration {
 		Schema::create('countries', function (Blueprint $table) {
 			$table->increments('id');
 			$table->string('country_name');
-			$table->string('description');
-			$table->string('code');
+			$table->string('description')->nullable();
+			$table->string('code')->nullable();
 			$table->enum('deleted', ['N', 'Y']);
 			$table->integer('created_by');
 			$table->integer('updated_by');

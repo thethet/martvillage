@@ -14,8 +14,8 @@ class CreateTblTownships extends Migration {
 			$table->increments('id');
 			$table->integer('state_id');
 			$table->string('township_name');
-			$table->string('description');
-			$table->string('code');
+			$table->string('description')->nullable();
+			$table->string('code')->nullable();
 			$table->enum('deleted', ['N', 'Y']);
 			$table->integer('created_by');
 			$table->integer('updated_by');

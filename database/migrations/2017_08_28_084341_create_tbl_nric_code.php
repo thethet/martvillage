@@ -13,7 +13,7 @@ class CreateTblNricCode extends Migration {
 		Schema::create('nric_codes', function (Blueprint $table) {
 			$table->increments('id');
 			$table->integer('nric_code');
-			$table->string('description');
+			$table->string('description')->nullable();
 			$table->enum('deleted', ['N', 'Y']);
 			$table->integer('created_by');
 			$table->integer('updated_by');

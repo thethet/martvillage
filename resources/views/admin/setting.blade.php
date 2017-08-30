@@ -31,7 +31,7 @@
 			</div>
 
 			<div class="col-md-2">
-				<a href="{{ url('/') }}">
+				<a href="{{ url('/roles') }}">
 					<div class="card">
 						<img src="{{ asset('assets/img/permission.png') }}" alt="Permission">
 						Permission
@@ -40,9 +40,7 @@
 			</div>
 		</div>
 	</div>
-@stop
 
-@section('footer')
 	<div class="footer-menu">
 		<div class="footer-content">
 			<div class="menu-icon">

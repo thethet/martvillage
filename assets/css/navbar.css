@@ -69,7 +69,21 @@ body {
 	}
 }
 
-@media screen and (min-device-width: 320px) and (max-device-width: 410px) {
+@media only screen and (min-device-width: 280px) and (max-device-width: 320px) {
+	.container .col-md-2 {
+		width: 70% !important;
+		float: left;
+	}
+}
+
+@media only screen and (min-device-width: 321px) and (max-device-width: 420px) {
+	.container .col-md-2 {
+		width: 50% !important;
+		float: left;
+	}
+}
+
+@media only screen and (min-device-width: 421px) and (max-device-width: 450px) {
 	.container .col-md-2 {
 		width: 50% !important;
 		float: left;
@@ -77,16 +91,41 @@ body {
 }
 
 
-@media screen and (min-device-width: 411px) and (max-device-width: 670px) {
+@media only screen and (min-device-width: 451px) and (max-device-width: 570px) {
+	.container .col-md-2 {
+		width: 33% !important;
+		float: left;
+		padding: 0;
+	}
+}
+
+@media only screen and (min-device-width: 571px) and (max-device-width: 640px) {
+	.container .col-md-2 {
+		width: 30% !important;
+		float: left;
+		padding: 0;
+	}
+}
+
+@media only screen and (min-device-width: 641px) and (max-device-width: 991px) {
+	.container .col-md-2 {
+		width: 25% !important;
+		float: left;
+		padding: 0;
+	}
+}
+
+
+/* @media only screen and (min-device-width: 421px) and (max-device-width: 670px) {
 	.container .col-md-2 {
 		width: 30% !important;
 		float: left;
 	}
-}
+} */
 
-@media screen and (min-device-width: 671px) and (max-device-width: 991px) {
+/* @media screen and (min-device-width: 671px) and (max-device-width: 991px) {
 	.container {
-		/*height: auto;*/
+		height: auto;
 
 	}
 
@@ -94,7 +133,9 @@ body {
 		width: 25% !important;
 		float: left;
 	}
-}
+} */
+
+
 
 .tx-center {
 	text-align: center;
@@ -103,3 +144,21 @@ body {
 .tx-right {
 	text-align: right;
 }
+
+/* @media only screen
+	and (min-device-width : 375px) // or 213.4375em
+	and (max-device-width : 667px) // or 41.6875em
+	and (width : 375px) // or 23.4375em
+	and (height : 559px) // or 34.9375em
+	and (orientation : portrait)
+	and (color : 8)
+	and (device-aspect-ratio : 375/667)
+	and (aspect-ratio : 375/559)
+	and (device-pixel-ratio : 2)
+	and (-webkit-min-device-pixel-ratio : 2)
+{
+	.container .col-md-2 {
+		width: 50% !important;
+		float: left;
+	}
+} */
