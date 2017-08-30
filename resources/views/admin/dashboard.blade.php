@@ -1,8 +1,9 @@
-@extends('layout.layout')
+@extends('layouts.layout')
 
 @section('main')
 	<div class="main-content">
 		<div class="row">
+			@permission('user-list')
 			<div class="col-md-2">
 				<a href="{{ url('/') }}">
 					<div class="card">
@@ -11,7 +12,9 @@
 					</div>
 				</a>
 			</div>
+			@endpermission
 
+			@permission('lotin-list')
 			<div class="col-md-2">
 				<a href="{{ url('/') }}">
 					<div class="card">
@@ -20,7 +23,9 @@
 					</div>
 				</a>
 			</div>
+			@endpermission
 
+			@permission('tracking-list')
 			<div class="col-md-2">
 				<a href="{{ url('/') }}">
 					<div class="card">
@@ -29,7 +34,9 @@
 					</div>
 				</a>
 			</div>
+			@endpermission
 
+			@permission('collection-list')
 			<div class="col-md-2">
 				<a href="{{ url('/') }}">
 					<div class="card">
@@ -38,7 +45,9 @@
 					</div>
 				</a>
 			</div>
+			@endpermission
 
+			@permission('lotbalance-list')
 			<div class="col-md-2">
 				<a href="{{ url('/') }}">
 					<div class="card">
@@ -47,7 +56,9 @@
 					</div>
 				</a>
 			</div>
+			@endpermission
 
+			@permission('setting-list')
 			<div class="col-md-2">
 				<a href="{{ url('setting') }}">
 					<div class="card">
@@ -56,9 +67,11 @@
 					</div>
 				</a>
 			</div>
+			@endpermission
 		</div>
 
 		<div class="row">
+			@permission('message-list')
 			<div class="col-md-2">
 				<a href="{{ url('/') }}">
 					<div class="card">
@@ -67,7 +80,9 @@
 					</div>
 				</a>
 			</div>
+			@endpermission
 
+			@permission('report-list')
 			<div class="col-md-2">
 				<a href="{{ url('/') }}">
 					<div class="card">
@@ -76,7 +91,9 @@
 					</div>
 				</a>
 			</div>
+			@endpermission
 
+			@permission('member-list')
 			<div class="col-md-2">
 				<a href="{{ url('/') }}">
 					<div class="card">
@@ -85,7 +102,9 @@
 					</div>
 				</a>
 			</div>
+			@endpermission
 
+			@permission('outgoing-list')
 			<div class="col-md-2">
 				<a href="{{ url('/') }}">
 					<div class="card">
@@ -94,7 +113,9 @@
 					</div>
 				</a>
 			</div>
+			@endpermission
 
+			@permission('incoming-list')
 			<div class="col-md-2">
 				<a href="{{ url('/') }}">
 					<div class="card">
@@ -103,6 +124,7 @@
 					</div>
 				</a>
 			</div>
+			@endpermission
 		</div>
 	</div>
 @stop

@@ -55,13 +55,10 @@
 								{{ date('d F') }} <br>
 								{{ date("h:i A") }}
 							</div>
-							<div class="col-md-2 navbar-right">
+							<div class="col-md-3 navbar-right">
 								Hi.... <br>
-								{{ Auth::user()->username }}
+								{{ Auth::user()->name }}
 
-								@if(Auth::user()->roles('adminstrator'))
-								@endif
-								{{-- {{ Auth::user()->roles()->get() }} --}}
 							</div>
 						</div>
 

@@ -1,11 +1,12 @@
 @extends('layouts.layout')
+
 @section('main')
-{!! Form::open(array('route' => 'roles.store','method'=>'POST', 'id' => 'role-form')) !!}
+{!! Form::model($role, ['method' => 'PATCH','route' => ['roles.update', $role->id], 'id' => 'role-form']) !!}
 	<div class="main-content">
 		<div class="row">
 			<div class="col-lg-12 margin-tb">
 				<div class="pull-left">
-					<h3>Create New Role</h3>
+					<h3>Edit Role</h3>
 				</div>
 				<div class="pull-right">
 				</div>
@@ -30,17 +31,8 @@
 		<div class="row">
 			<div class="col-xs-5">
 				<div class="form-group">
-					<strong>Name: <span class="required">*</span></strong>
-					{!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
-				</div>
-			</div>
-		</div><!-- .row -->
-
-		<div class="row">
-			<div class="col-xs-5">
-				<div class="form-group">
 					<strong>Display Name:</strong>
-					{!! Form::text('display_name', null, array('placeholder' => 'Display Name','class' => 'form-control')) !!}
+					{!! Form::text('display_name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
 				</div>
 			</div>
 		</div><!-- .row -->
@@ -60,7 +52,7 @@
 					<strong>Permission:</strong>
 					<br/>
 					@foreach($permission as $value)
-						<label>{{ Form::checkbox('permission[]', $value->id, false, array('class' => 'name')) }}
+						<label>{{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, array('class' => 'name')) }}
 						{{ $value->display_name }}</label>
 						<br/>
 					@endforeach
@@ -87,4 +79,5 @@
 		</div>
 	</div><!-- .footer-menu -->
 {!! Form::close() !!}
-@stop
+
+@endsection

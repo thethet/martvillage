@@ -1,16 +1,13 @@
 /*
  * Main content
  */
-
 .main {
 	padding: 20px;
 }
-
 a:hover {
 	text-decoration: none;
 }
-
-@media (min-width: 768px) {
+@media (min-width:768px) {
 	.main {
 		padding-right: 40px;
 		padding-left: 40px;
@@ -19,13 +16,11 @@ a:hover {
 .main .page-header {
 	margin-top: 0;
 }
-
 .main-content {
-	min-height: 535px;
-	/*height: 70.7vh;*/
+	min-height: 535px;	/*height: 70.7vh;*/
 }
-
 .footer-menu {
+
 	/*position: absolute;*/
 	width: 100%;
 	bottom: 3%;
@@ -35,50 +30,42 @@ a:hover {
 	color: #333;
 	left: 13%;
 }
-
 .footer-content {
 	position: relative;
 	height: 50px;
 }
-
 .footer-menu a {
 	color: #333;
 }
-
 .footer-menu a:hover {
 	text-decoration: none;
 }
-
 .menu-icon {
 	height: 30px;
 	width: 30px;
 	float: left;
 	margin-right: 50px;
 }
-
 .menu-icon img {
 	height: 100%;
 	width: 100%;
 }
-
 .card {
-	width: 80%;
-	/*height: 100%;*/
+	width: 80%;	/*height: 100%;*/
 	height: 113px;
 	padding: 20px;
-	border: 1px solid rgb(72,134,210);
+	border: 1px solid rgb(72, 134, 210);
 	border-radius: 12px;
-	background: -webkit-linear-gradient(top, rgba(134,180,246,0.6), rgba(72,134,210,1)); /* For Safari 5.1 to 6.0 */
-	background: -o-linear-gradient(bottom, rgba(134,180,246134,180,246,0.6), rgba(72,134,210,1)); /* For Opera 11.1 to 12.0 */
-	background: -moz-linear-gradient(bottom, rgba(134,180,246,0.6), rgba(72,134,210,1)); /* For Firefox 3.6 to 15 */
-	background: linear-gradient(to bottom, rgba(134,180,246,0.6), rgba(72,134,210,1)); /* Standard syntax (must be last) */
+	background: -webkit-linear-gradient(top, rgba(134, 180, 246, 0.6), rgba(72, 134, 210, 1)); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(bottom, rgba(134, 180, 246134, 180, 246, 0.6), rgba(72, 134, 210, 1)); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(bottom, rgba(134, 180, 246, 0.6), rgba(72, 134, 210, 1)); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(to bottom, rgba(134, 180, 246, 0.6), rgba(72, 134, 210, 1)); /* Standard syntax (must be last) */
 	box-shadow: 0px 3px 6px #888888;
 	color: #fff;
 	text-align: center;
 	font-size: 15px;
 	margin-bottom: 20px;
 }
-
 .card:hover {
 	box-shadow: 0px 3px 6px #f8f8f8;
 	-webkit-transition: box-shadow 0.3s ease-in-out 0s;
@@ -87,64 +74,54 @@ a:hover {
 	-ms-transition: box-shadow 0.3s ease-in-out 0s;
 	transition: box-shadow 0.3s ease-in-out 0s;
 }
-
 .card img {
-	width: 81%;
-	/*height: 81%;*/
+	width: 81%;	/*height: 81%;*/
 	height: auto;
 }
-
 img.profile-icon {
 	width: 66%;
 }
-
 img.tracking-icon {
 	width: 100%;
 }
-
 img.setting-icon {
 	width: 76%;
 }
-
 img.message-icon, img.member-icon {
 	width: 70%;
 }
-
 img.report-icon {
 	width: 75%;
 }
-
 img.outgoing-icon, img.incoming-icon {
 	width: 67%;
 }
-
 .loginbox {
-	border: 1px solid rgb(72,134,210);
+	border: 1px solid rgb(72, 134, 210);
 	border-radius: 6px;
-	background: -webkit-linear-gradient(top, rgba(134,180,246,0.6), rgba(72,134,210,1)); /* For Safari 5.1 to 6.0 */
-	background: -o-linear-gradient(bottom, rgba(134,180,246134,180,246,0.6), rgba(72,134,210,1)); /* For Opera 11.1 to 12.0 */
-	background: -moz-linear-gradient(bottom, rgba(134,180,246,0.6), rgba(72,134,210,1)); /* For Firefox 3.6 to 15 */
-	background: linear-gradient(to bottom, rgba(134,180,246,0.6), rgba(72,134,210,1)); /* Standard syntax (must be last) */
+	background: -webkit-linear-gradient(top, rgba(134, 180, 246, 0.6), rgba(72, 134, 210, 1)); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(bottom, rgba(134, 180, 246134, 180, 246, 0.6), rgba(72, 134, 210, 1)); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(bottom, rgba(134, 180, 246, 0.6), rgba(72, 134, 210, 1)); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(to bottom, rgba(134, 180, 246, 0.6), rgba(72, 134, 210, 1)); /* Standard syntax (must be last) */
 	box-shadow: 0px 3px 6px #888888;
 }
-
 .headingbox {
-	background: -webkit-linear-gradient(top, rgba(134,180,246,0.6), rgba(72,134,210,1)); /* For Safari 5.1 to 6.0 */
-	background: -o-linear-gradient(bottom, rgba(134,180,246134,180,246,0.6), rgba(72,134,210,1)); /* For Opera 11.1 to 12.0 */
-	background: -moz-linear-gradient(bottom, rgba(134,180,246,0.6), rgba(72,134,210,1)); /* For Firefox 3.6 to 15 */
-	background: linear-gradient(to bottom, rgba(134,180,246,0.6), rgba(72,134,210,1)); /* Standard syntax (must be last) */
+	background: -webkit-linear-gradient(top, rgba(134, 180, 246, 0.6), rgba(72, 134, 210, 1)); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(bottom, rgba(134, 180, 246134, 180, 246, 0.6), rgba(72, 134, 210, 1)); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(bottom, rgba(134, 180, 246, 0.6), rgba(72, 134, 210, 1)); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(to bottom, rgba(134, 180, 246, 0.6), rgba(72, 134, 210, 1)); /* Standard syntax (must be last) */
 	box-shadow: 0px 3px 6px #888888;
 	color: #fff;
 }
-
 .headingbox > .panel-title, .headingbox a {
 	color: #fff;
 }
-
 .primary-boxshadow {
 	box-shadow: 0px 3px 6px #337ab7;
 }
-
 .txt-white {
 	color: #fff !important;
+}
+.required {
+	color: #f00;
 }

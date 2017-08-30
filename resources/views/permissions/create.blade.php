@@ -1,11 +1,11 @@
 @extends('layouts.layout')
 @section('main')
-{!! Form::open(array('route' => 'roles.store','method'=>'POST', 'id' => 'role-form')) !!}
+{!! Form::open(array('route' => 'permissions.store','method'=>'POST', 'id' => 'permission-form')) !!}
 	<div class="main-content">
 		<div class="row">
 			<div class="col-lg-12 margin-tb">
 				<div class="pull-left">
-					<h3>Create New Role</h3>
+					<h3>Create New Permission</h3>
 				</div>
 				<div class="pull-right">
 				</div>
@@ -31,7 +31,7 @@
 			<div class="col-xs-5">
 				<div class="form-group">
 					<strong>Name: <span class="required">*</span></strong>
-					{!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
+					{!! Form::text('name', null, array('placeholder' => 'Please Enter Name','class' => 'form-control')) !!}
 				</div>
 			</div>
 		</div><!-- .row -->
@@ -40,7 +40,7 @@
 			<div class="col-xs-5">
 				<div class="form-group">
 					<strong>Display Name:</strong>
-					{!! Form::text('display_name', null, array('placeholder' => 'Display Name','class' => 'form-control')) !!}
+					{!! Form::text('display_name', null, array('placeholder' => 'Please Enter Display Name','class' => 'form-control')) !!}
 				</div>
 			</div>
 		</div><!-- .row -->
@@ -49,37 +49,23 @@
 			<div class="col-xs-5">
 				<div class="form-group">
 					<strong>Description:</strong>
-					{!! Form::textarea('description', null, array('placeholder' => 'Description','class' => 'form-control','style'=>'height:100px')) !!}
+					{!! Form::textarea('description', null, array('placeholder' => 'Please Enter Description','class' => 'form-control','style'=>'height:100px')) !!}
 				</div>
 			</div>
 		</div><!-- .row -->
-
-		<div class="row">
-			<div class="col-xs-5">
-				<div class="form-group">
-					<strong>Permission:</strong>
-					<br/>
-					@foreach($permission as $value)
-						<label>{{ Form::checkbox('permission[]', $value->id, false, array('class' => 'name')) }}
-						{{ $value->display_name }}</label>
-						<br/>
-					@endforeach
-				</div>
-			</div>
-		</div>
 	</div><!-- .main-content -->
 
 	<div class="footer-menu">
 		<div class="footer-content">
 			<div class="menu-icon">
-				<a href="#" id="add" onclick="document.getElementById('role-form').submit();">
+				<a href="#" id="add" onclick="document.getElementById('permission-form').submit();">
 					<img src="{{ asset('assets/img/save-and-close.png') }}" alt="Save">
 					Save&Exit
 				</a>
 			</div><!-- .menu-icon -->
 
 			<div class="menu-icon">
-				<a href="{{ route('roles.index') }}" >
+				<a href="{{ route('permissions.index') }}" >
 					<img src="{{ asset('assets/img/go-back.png') }}" alt="Save">
 					Back
 				</a>

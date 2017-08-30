@@ -12,10 +12,10 @@ class CompanyTableSeeder extends Seeder {
 	public function run() {
 		$company = [
 			[
-				'company_name'  => 'TTA',
+				'company_name'  => 'MSCT',
 				'contact_no'    => '',
 				'fax'           => '',
-				'email'         => 'thetthetaye2709@gmail.com',
+				'email'         => 'msctpteltd@gmail.com',
 				'logo'          => '',
 				'unit_number'   => '',
 				'building_name' => '',

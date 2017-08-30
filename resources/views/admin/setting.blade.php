@@ -1,8 +1,9 @@
-@extends('layout.layout')
+@extends('layouts.layout')
 
 @section('main')
 	<div class="main-content">
 		<div class="row">
+			@permission('company-list')
 			<div class="col-md-2">
 				<a href="{{ url('/') }}">
 					<div class="card">
@@ -11,7 +12,9 @@
 					</div>
 				</a>
 			</div>
+			@endpermission
 
+			@permission('price-list')
 			<div class="col-md-2">
 				<a href="{{ url('/') }}">
 					<div class="card">
@@ -20,7 +23,9 @@
 					</div>
 				</a>
 			</div>
+			@endpermission
 
+			@permission('location-list')
 			<div class="col-md-2">
 				<a href="{{ url('/') }}">
 					<div class="card">
@@ -29,15 +34,29 @@
 					</div>
 				</a>
 			</div>
+			@endpermission
 
+			@permission('role-list')
 			<div class="col-md-2">
 				<a href="{{ url('/roles') }}">
+					<div class="card">
+						<img src="{{ asset('assets/img/roleicon.png') }}" alt="Permission">
+						Role
+					</div>
+				</a>
+			</div>
+			@endpermission
+
+			@permission('permission-list')
+			<div class="col-md-2">
+				<a href="{{ url('permissions') }}">
 					<div class="card">
 						<img src="{{ asset('assets/img/permission.png') }}" alt="Permission">
 						Permission
 					</div>
 				</a>
 			</div>
+			@endpermission
 		</div>
 	</div>
 

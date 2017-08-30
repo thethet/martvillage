@@ -52,19 +52,23 @@
 								&nbsp;
 							</div>
 							<div class="col-md-2 navbar-right">
-								28 August <br>
-								10:51 PM
+								{{ date('d F') }} <br>
+								{{ date("h:i A") }}
 							</div>
 							<div class="col-md-2 navbar-right">
 								Hi.... <br>
-								Thet Thet Aye
+								{{ Auth::user()->name }}
+
+								@if(Auth::user()->roles('adminstrator'))
+								@endif
+								{{-- {{ Auth::user()->roles()->get() }} --}}
 							</div>
 						</div>
 
 						<div class="col-md-1">
 							<ul class="nav navbar-nav navbar-right">
 								<li class="tx-center">
-									<a  href="{{ url('/') }}">
+									<a  href="{{ url('/logout') }}">
 										<img src="{{ asset('assets/img/Lockout.png') }}" alt="singout" width="27px">
 									</a>
 									Logout
@@ -81,7 +85,7 @@
 			@yield('main')
 		</div>
 
-		@yield('footer')
+		{{-- @yield('footer') --}}
 
 	</div> <!-- /container -->
 

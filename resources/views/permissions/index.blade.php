@@ -5,7 +5,7 @@
 		<div class="row">
 			<div class="col-lg-12 margin-tb">
 				<div class="pull-left">
-					<h3>Role Management</h3>
+					<h3>Permission Management</h3>
 				</div>
 				<div class="pull-right">
 				</div>
@@ -25,18 +25,18 @@
 				<th>Description</th>
 				<th width="280px">Action</th>
 			</tr>
-			@foreach ($roles as $key => $role)
+			@foreach ($permissions as $key => $permission)
 			<tr>
 				<td>{{ ++$i }}</td>
-				<td>{{ $role->display_name }}</td>
-				<td>{{ $role->description }}</td>
+				<td>{{ $permission->display_name }}</td>
+				<td>{{ $permission->description }}</td>
 				<td>
-					<a class="btn btn-info btn-sm" href="{{ route('roles.show',$role->id) }}">Show</a>
-					@permission('role-edit')
-					<a class="btn btn-primary btn-sm" href="{{ route('roles.edit',$role->id) }}">Edit</a>
+					<a class="btn btn-info btn-sm" href="{{ route('permissions.show',$permission->id) }}">Show</a>
+					@permission('permission-edit')
+					<a class="btn btn-primary btn-sm" href="{{ route('permissions.edit',$permission->id) }}">Edit</a>
 					@endpermission
-					@permission('role-delete')
-					{!! Form::open(['method' => 'DELETE','route' => ['roles.destroy', $role->id],'style'=>'display:inline']) !!}
+					@permission('permission-delete')
+					{!! Form::open(['method' => 'DELETE','route' => ['permissions.destroy', $permission->id],'style'=>'display:inline']) !!}
 					{!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
 					{!! Form::close() !!}
 					@endpermission
@@ -44,7 +44,7 @@
 			</tr>
 			@endforeach
 		</table>
-		{!! $roles->render() !!}
+		{!! $permissions->render() !!}
 	</div><!-- .main-content -->
 
 	<div class="footer-menu">
@@ -56,12 +56,12 @@
 				</a>
 			</div><!-- .menu-icon -->
 
-			@permission('role-create')
+			@permission('permission-create')
 				<div class="menu-icon">
-					<a href="{{ route('roles.create') }}">
-						<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
-						New
-					</a>
+						<a href="{{ route('permissions.create') }}">
+							<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
+							New
+						</a>
 				</div><!-- .menu-icon -->
 			@endpermission
 		</div>
