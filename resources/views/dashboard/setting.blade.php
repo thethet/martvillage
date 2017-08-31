@@ -5,7 +5,7 @@
 		<div class="row">
 			@permission('company-list')
 			<div class="col-md-2">
-				<a href="{{ url('/') }}">
+				<a href="{{ url('/companies') }}">
 					<div class="card">
 						<img class="profile-icon" src="{{ asset('assets/img/company.png') }}" alt="Company">
 						Company
@@ -16,7 +16,7 @@
 
 			@permission('price-list')
 			<div class="col-md-2">
-				<a href="{{ url('/') }}">
+				<a href="{{ url('/prices') }}">
 					<div class="card">
 						<img class="profile-icon" src="{{ asset('assets/img/price-tag.png') }}" alt="Price">
 						Price
@@ -27,7 +27,7 @@
 
 			@permission('location-list')
 			<div class="col-md-2">
-				<a href="{{ url('/') }}">
+				<a href="{{ url('/locations') }}">
 					<div class="card">
 						<img class="tracking-icon" src="{{ asset('assets/img/tracking-icon.png') }}" alt="Location">
 						Location
@@ -40,7 +40,7 @@
 			<div class="col-md-2">
 				<a href="{{ url('/roles') }}">
 					<div class="card">
-						<img src="{{ asset('assets/img/roleicon.png') }}" alt="Permission">
+						<img src="{{ asset('assets/img/roleicon.png') }}" alt="Role">
 						Role
 					</div>
 				</a>

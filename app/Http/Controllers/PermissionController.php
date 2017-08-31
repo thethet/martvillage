@@ -30,7 +30,7 @@ class PermissionController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store() {
+	public function store(Request $request) {
 		$this->validate($request, [
 			'name'         => 'required|unique:permissions,name',
 			'display_name' => 'required',
@@ -77,8 +77,19 @@ class PermissionController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id) {
-		//
+	public function update($id, Request $request) {
+		$this->validate($request, [
+			'display_name' => 'required',
+			'description'  => 'required',
+		]);
+
+		$permission               = Permission::find($id);
+		$permission->display_name = $request->input('display_name');
+		$permission->description  = $request->input('description');
+		$permission->save();
+
+		return redirect()->route('permissions.index')
+			->with('success', 'Permission updated successfully');
 	}
 
 	/**
@@ -88,6 +99,9 @@ class PermissionController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id) {
-		//
+		// $permission = Permission::find($id);
+		// $permission->delete();
+		// return redirect()->route('permissions.index')
+		// 	->with('success', 'Permission deleted successfully');
 	}
 }

@@ -91,7 +91,7 @@ class RoleController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id) {
+	public function update($id, Request $request) {
 		$this->validate($request, [
 			'display_name' => 'required',
 			'description'  => 'required',
@@ -121,7 +121,8 @@ class RoleController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id) {
-		// DB::table("roles")->where('id', $id)->update(['deleted' => 'Y']);
+		// $role = Role::find($id);
+		// $role->delete();
 		// return redirect()->route('roles.index')
 		// 	->with('success', 'Role deleted successfully');
 	}

@@ -13,7 +13,7 @@
 			</div>
 		</div><!-- .row -->
 
-		@if (count($errors) > 0)
+		{{-- @if (count($errors) > 0)
 			<div class="alert alert-danger">
 				<strong>Whoops!</strong> There were some problems with your input.<br><br>
 				<ul>
@@ -22,7 +22,7 @@
 					@endforeach
 				</ul>
 			</div>
-		@endif
+		@endif --}}
 
 		<div class="small-10 columns">
 			<p><b><span class="required">*</span> Fields are required</b></p>
@@ -31,8 +31,13 @@
 		<div class="row">
 			<div class="col-xs-5">
 				<div class="form-group">
-					<strong>Display Name:</strong>
+					<strong>Display Name: <span class="required">*</span></strong>
 					{!! Form::text('display_name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
+					@if ($errors->has('display_name'))
+						<span class="required">
+							<strong>{{ $errors->first('display_name') }}</strong>
+						</span>
+					@endif
 				</div>
 			</div>
 		</div><!-- .row -->
@@ -40,8 +45,13 @@
 		<div class="row">
 			<div class="col-xs-5">
 				<div class="form-group">
-					<strong>Description:</strong>
+					<strong>Description: <span class="required">*</span></strong>
 					{!! Form::textarea('description', null, array('placeholder' => 'Description','class' => 'form-control','style'=>'height:100px')) !!}
+					@if ($errors->has('description'))
+						<span class="required">
+							<strong>{{ $errors->first('description') }}</strong>
+						</span>
+					@endif
 				</div>
 			</div>
 		</div><!-- .row -->
@@ -49,7 +59,13 @@
 		<div class="row">
 			<div class="col-xs-5">
 				<div class="form-group">
-					<strong>Permission:</strong>
+					<strong>Permission: <span class="required">*</span></strong>
+					@if ($errors->has('permission'))
+						<br>
+						<span class="required">
+							<strong>{{ $errors->first('permission') }}</strong>
+						</span>
+					@endif
 					<br/>
 					@foreach($permission as $value)
 						<label>{{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, array('class' => 'name')) }}

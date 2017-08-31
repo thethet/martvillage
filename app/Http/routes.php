@@ -10,24 +10,40 @@
 | and give it the controller to call when that URI is requested.
 |
  */
+Route::group(['middleware' => 'web'], function () {
+	/*
+	|--------------------------------------------------------------------------
+	| Authentication Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Authentication
+	|
+	 */
+	Route::auth();
+	Route::get('/', 'HomeController@index');
 
-Route::auth();
-Route::get('/', 'HomeController@index');
+	Route::get('404', function () {
+		return view('errors.404');
+	});
+
+	Route::get('401', function () {
+		return view('errors.401');
+	});
+
+	Route::get('test', function () {
+		dd(Config::get('mail'));
+	});
+
+});
 
 Route::group(['middleware' => ['auth']], function () {
 
-	// Route::get('/home', 'HomeController@index');
+	Route::get('/home', 'HomeController@index');
 
-	Route::get('/dashboard', function () {
-		return view('admin.dashboard');
-	});
+	Route::get('/dashboard', 'HomeController@index');
 
-	Route::get('/home', function () {
-		return view('admin.dashboard');
-	});
-
-	Route::get('setting', function () {
-		return view('admin.setting');
+	Route::get('settings', function () {
+		return view('dashboard.setting');
 	});
 
 	// Route::resource('users', 'UserController');
@@ -63,4 +79,20 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('permissions/{id}/edit', ['as' => 'permissions.edit', 'uses' => 'PermissionController@edit', 'middleware' => ['permission:permission-edit']]);
 	Route::patch('permissions/{id}', ['as' => 'permissions.update', 'uses' => 'PermissionController@update', 'middleware' => ['permission:permission-edit']]);
 	Route::delete('permissions/{id}', ['as' => 'permissions.destroy', 'uses' => 'PermissionController@destroy', 'middleware' => ['permission:permission-delete']]);
+
+	/*
+	|--------------------------------------------------------------------------
+	| Permissions Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Permission Model CRUD
+	|
+	 */
+	Route::get('companies', ['as' => 'companies.index', 'uses' => 'CompanyController@index', 'middleware' => ['permission:company-list|company-create|company-edit|company-delete']]);
+	Route::get('companies/create', ['as' => 'companies.create', 'uses' => 'CompanyController@create', 'middleware' => ['permission:company-create']]);
+	Route::post('companies/create', ['as' => 'companies.store', 'uses' => 'CompanyController@store', 'middleware' => ['permission:company-create']]);
+	Route::get('companies/{id}', ['as' => 'companies.show', 'uses' => 'CompanyController@show']);
+	Route::get('companies/{id}/edit', ['as' => 'companies.edit', 'uses' => 'CompanyController@edit', 'middleware' => ['permission:company-edit']]);
+	Route::patch('companies/{id}', ['as' => 'companies.update', 'uses' => 'CompanyController@update', 'middleware' => ['permission:company-edit']]);
+	Route::delete('companies/{id}', ['as' => 'companies.destroy', 'uses' => 'CompanyController@destroy', 'middleware' => ['permission:company-delete']]);
 });

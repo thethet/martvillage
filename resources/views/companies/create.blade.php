@@ -1,0 +1,191 @@
+@extends('layouts.layout')
+
+@section('main')
+{!! Form::open(array('route' => 'companies.store','method'=>'POST', 'id' => 'company-form', 'class' => 'form-horizontal')) !!}
+	<div class="main-content">
+		<div class="row">
+			<div class="col-lg-12 margin-tb">
+				<div class="pull-left">
+					<h3>Create New Company</h3>
+				</div>
+				<div class="pull-right">
+				</div>
+			</div>
+		</div><!-- .row -->
+
+		{{-- @if (count($errors) > 0)
+			<div class="alert alert-danger">
+				<strong>Whoops!</strong> There were some problems with your input.<br><br>
+				<ul>
+					@foreach ($errors->all() as $error)
+						<li>{{ $error }}</li>
+					@endforeach
+				</ul>
+			</div>
+		@endif --}}
+
+		<div class="small-10 columns">
+			<p><b><span class="required">*</span> Fields are required</b></p>
+		</div>
+
+		<div class="row">
+			<div class="col col-md-8">
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="company"><strong>Company Name: <span class="required">*</span></strong></label>
+					<div class="col-sm-6">
+						{!! Form::text('company_name', null, array('placeholder' => 'Please Enter Company Name','class' => 'form-control')) !!}
+						@if ($errors->has('company_name'))
+							<span class="required">
+								<strong>{{ $errors->first('company_name') }}</strong>
+							</span>
+						@endif
+					</div>
+				</div><!-- .form-group -->
+
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="contact-no"><strong>Contact No.: <span class="required">*</span></strong></label>
+					<div class="col-sm-6">
+						{!! Form::text('contact_no', null, array('placeholder' => 'Please Enter Contact Number','class' => 'form-control')) !!}
+						@if ($errors->has('contact_no'))
+							<span class="required">
+								<strong>{{ $errors->first('contact_no') }}</strong>
+							</span>
+						@endif
+					</div>
+				</div><!-- .form-group -->
+
+				{{-- <div class="form-group">
+					<label class="control-label col-sm-3" for="fax"><strong>Fax: <span class="required">*</span></strong></label>
+					<div class="col-sm-6">
+						{!! Form::text('fax', null, array('placeholder' => 'Please Enter Fax Number','class' => 'form-control')) !!}
+						@if ($errors->has('fax'))
+							<span class="required">
+								<strong>{{ $errors->first('fax') }}</strong>
+							</span>
+						@endif
+					</div>
+				</div><!-- .form-group --> --}}
+
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="email"><strong>Email: <span class="required">*</span></strong></label>
+					<div class="col-sm-6">
+						{!! Form::text('email', null, array('placeholder' => 'Please Enter Email','class' => 'form-control')) !!}
+						@if ($errors->has('email'))
+							<span class="required">
+								<strong>{{ $errors->first('email') }}</strong>
+							</span>
+						@endif
+					</div>
+				</div><!-- .form-group -->
+
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="email"><strong>Expiry Date: <span class="required">*</span></strong></label>
+					<div class="col-sm-6">
+						{!! Form::text('expiry_date', null, array('placeholder' => 'Please Enter Expiry Date','class' => 'form-control', 'id' => 'expiry_date')) !!}
+						@if ($errors->has('expiry_date'))
+							<span class="required">
+								<strong>{{ $errors->first('expiry_date') }}</strong>
+							</span>
+						@endif
+					</div>
+				</div><!-- .form-group -->
+			</div>
+
+			<div class="col-sm-3">
+				{{-- <div class="photobox">
+					<img src="{{ asset('assets/img/msct_logo.jpg') }}" alt="Company Logo">
+				</div> --}}
+
+				<div class="photobox">
+					Company Logo
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="address"><strong>Address</strong></label>
+		</div><!-- .form-group -->
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="unit number"><strong>Unit Number:</strong></label>
+			<div class="col-sm-4">
+				{!! Form::text('unit_number', null, array('placeholder' => 'Please Enter Unit Number','class' => 'form-control')) !!}
+			</div>
+		</div><!-- .form-group -->
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="building"><strong>Building Name:</strong></label>
+			<div class="col-sm-4">
+				{!! Form::text('building_name', null, array('placeholder' => 'Please Enter Building Name','class' => 'form-control')) !!}
+			</div>
+		</div><!-- .form-group -->
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="street"><strong>Street:</strong></label>
+			<div class="col-sm-4">
+				{!! Form::text('street', null, array('placeholder' => 'Please Enter Street','class' => 'form-control')) !!}
+			</div>
+		</div><!-- .form-group -->
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="country"><strong>Country:</strong></label>
+			<div class="col-sm-4">
+				{!! Form::select('country_id', ['' => 'Select Country'] + $countries->toArray(), null, ['id'=>'country_id', 'class' => 'form-control']) !!}
+			</div>
+		</div><!-- .form-group -->
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="state"><strong>State:</strong></label>
+			<div class="col-sm-4">
+				{!! Form::select('state_id', ['' => 'Select State'] + $states->toArray(), null, ['id'=>'state_id', 'class' => 'form-control']) !!}
+			</div>
+		</div><!-- .form-group -->
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="township"><strong>Township:</strong></label>
+			<div class="col-sm-4">
+				{!! Form::select('township_id', ['' => 'Select Township'] + $townships->toArray(), null, ['id'=>'township_id', 'class' => 'form-control']) !!}
+			</div>
+		</div><!-- .form-group -->
+
+	</div><!-- .main-content -->
+
+	<div class="footer-menu">
+		<div class="footer-content">
+			<div class="menu-icon">
+				<a href="#" id="add" onclick="document.getElementById('company-form').submit();">
+					<img src="{{ asset('assets/img/save-and-close.png') }}" alt="Save">
+					Save&Exit
+				</a>
+			</div><!-- .menu-icon -->
+
+			<div class="menu-icon">
+				<a href="{{ route('companies.index') }}" >
+					<img src="{{ asset('assets/img/go-back.png') }}" alt="Save">
+					Back
+				</a>
+			</div><!-- .menu-icon -->
+		</div>
+	</div><!-- .footer-menu -->
+{!! Form::close() !!}
+@stop
+
+@section('my-script')
+	<!-- Extra JavaScript/CSS added manually in "Settings" tab -->
+<!-- Include jQuery -->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+	<script>
+		$(document).ready(function(){
+			var date_input=$('input[name="expiry_date"]'); //our date input has the name "date"
+			var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+			date_input.datepicker({
+				format: 'yyyy-mm-dd',
+				container: container,
+				todayHighlight: true,
+				autoclose: true,
+			})
+		})
+	</script>
+@stop

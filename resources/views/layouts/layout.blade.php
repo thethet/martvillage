@@ -43,7 +43,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">Cargo Management System</a>
+					<a class="navbar-brand" href="{{ url('/') }}">Cargo Management System</a>
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
 					<div class="row">
@@ -57,8 +57,9 @@
 							</div>
 							<div class="col-md-3 navbar-right">
 								Hi.... <br>
-								{{ Auth::user()->name }}
-
+								@if(Auth::user())
+									{{ Auth::user()->name }}
+								@endif
 							</div>
 						</div>
 
