@@ -69,7 +69,7 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="email"><strong>Email: <span class="required">*</span></strong></label>
 					<div class="col-sm-6">
-						{!! Form::text('email', null, array('placeholder' => 'Please Enter Email', 'class' => 'form-control', 'readonly' => true)) !!}
+						{!! Form::text('email', null, array('placeholder' => 'Please Enter Email', 'class' => 'form-control')) !!}
 						@if ($errors->has('email'))
 							<span class="required">
 								<strong>{{ $errors->first('email') }}</strong>
@@ -91,12 +91,12 @@
 				</div><!-- .form-group -->
 
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="email"><strong>Company Logo: <span class="required">*</span></strong></label>
+					<label class="control-label col-sm-3" for="email"><strong>Company Logo:</strong></label>
 					<div class="col-sm-6">
-						{!! Form::file('logo') !!}
-						@if ($errors->has('logo'))
+						{!! Form::file('image') !!}
+						@if ($errors->has('image'))
 							<span class="required">
-								<strong>{{ $errors->first('logo') }}</strong>
+								<strong>{{ $errors->first('image') }}</strong>
 							</span>
 						@endif
 					</div>
@@ -104,13 +104,15 @@
 			</div>
 
 			<div class="col-sm-3">
-				{{-- <div class="photobox">
-					<img src="{{ asset('assets/img/msct_logo.jpg') }}" alt="Company Logo">
-				</div> --}}
-
+				@if($company->logo)
+				<div class="photobox">
+					<img src="{{ asset('uploads/logos/'.$company->logo) }}" alt="Company Logo">
+				</div>
+				@else
 				<div class="photobox">
 					Company Logo
 				</div>
+				@endif
 			</div>
 		</div>
 

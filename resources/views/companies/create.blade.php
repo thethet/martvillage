@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('main')
-{!! Form::open(array('route' => 'companies.store','method'=>'POST', 'id' => 'company-form', 'class' => 'form-horizontal')) !!}
+{!! Form::open(array('route' => 'companies.store','method'=>'POST', 'id' => 'company-form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data')) !!}
 	<div class="main-content">
 		<div class="row">
 			<div class="col-lg-12 margin-tb">
@@ -85,6 +85,18 @@
 						@if ($errors->has('expiry_date'))
 							<span class="required">
 								<strong>{{ $errors->first('expiry_date') }}</strong>
+							</span>
+						@endif
+					</div>
+				</div><!-- .form-group -->
+
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="email"><strong>Company Logo:</strong></label>
+					<div class="col-sm-6">
+						{!! Form::file('image') !!}
+						@if ($errors->has('image'))
+							<span class="required">
+								<strong>{{ $errors->first('image') }}</strong>
 							</span>
 						@endif
 					</div>

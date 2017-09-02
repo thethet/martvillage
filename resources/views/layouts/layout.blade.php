@@ -16,7 +16,7 @@
 	<link href="{{ asset('assets/css/bootstrap.css') }}" rel="stylesheet">
 
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-	<link href="{{ asset('css/ie10-viewport-bug-workaround.css') }}" rel="stylesheet">
+	<link href="{{ asset('assets/css/ie10-viewport-bug-workaround.css') }}" rel="stylesheet">
 
 	<!-- Custom styles for this template -->
 	<link href="{{ asset('assets/css/navbar.css') }}" rel="stylesheet">
@@ -24,7 +24,7 @@
 	<link href="{{ asset('assets/css/dashboard.css') }}" rel="stylesheet">
 
 	<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-	<script src="js/ie-emulation-modes-warning.js') }}"></script>
+	<script src="{{ asset('assets/js/ie-emulation-modes-warning.js') }}"></script>
 	@yield('my-style')
 
 </head>
@@ -94,7 +94,7 @@
 		<script>window.jQuery || document.write('<script src="{{ asset('assets/js/vendor/jquery.min.js') }}"><\/script>')</script>
 		<script src="{{ asset('assets/js/bootstrap.js') }}"></script>
 		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-		<script src="{{ asset('assets/js/ie10-viewport-bug-workaround.js') }}"></script>
+		{{-- <script src="{{ asset('assets/js/ie10-viewport-bug-workaround.js') }}"></script> --}}
 		@yield('my-script')
 	</body>
 	</html>

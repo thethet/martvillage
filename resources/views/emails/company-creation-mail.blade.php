@@ -8,7 +8,7 @@
 	<table width='90%' align='center' >
 		<tr >
 			<td style='padding-bottom:10px'>
-				Dear {{ $company->company_name }},
+				Dear {{ strtoupper($company->company_name) }},
 			</td>
 		</tr>
 		<tr >
@@ -20,7 +20,7 @@
 		</tr>
 		<tr >
 			<td >
-				<b>Email :</b> {{$company->email }}
+				<b>Email :</b> {{ $company->email }}
 
 			</td>
 		</tr>

@@ -24,9 +24,11 @@ class User extends Authenticatable {
 	protected $fillable = [
 		'company_id',
 		'name',
+		'dob',
 		'nric_no',
 		'nric_code_id',
 		'nric_township_id',
+		'gender',
 		'marital_status',
 		'contact_no',
 		'position',

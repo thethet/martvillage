@@ -34,6 +34,17 @@ Route::group(['middleware' => 'web'], function () {
 		dd(Config::get('mail'));
 	});
 
+	/*
+	|--------------------------------------------------------------------------
+	| AJAX
+	|--------------------------------------------------------------------------
+	|
+	 */
+	Route::get('nrictownships/nric-township', ['as' => 'nrictownships.search.nriccode', 'uses' => 'NricTownshipController@searchByNricCode']);
+
+	Route::get('states/search-state-country', ['as' => 'states.search.statecountry', 'uses' => 'StateController@searchByCountry']);
+
+	Route::get('townships/search-township-state', ['as' => 'townships.search.townshipstate', 'uses' => 'TownshipController@searchByState']);
 });
 
 Route::group(['middleware' => ['auth']], function () {
@@ -95,4 +106,37 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('companies/{id}/edit', ['as' => 'companies.edit', 'uses' => 'CompanyController@edit', 'middleware' => ['permission:company-edit']]);
 	Route::patch('companies/{id}', ['as' => 'companies.update', 'uses' => 'CompanyController@update', 'middleware' => ['permission:company-edit']]);
 	Route::delete('companies/{id}', ['as' => 'companies.destroy', 'uses' => 'CompanyController@destroy', 'middleware' => ['permission:company-delete']]);
+
+	/*
+	|--------------------------------------------------------------------------
+	| User Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for User Model CRUD
+	|
+	 */
+	Route::get('users', ['as' => 'users.index', 'uses' => 'UserController@index', 'middleware' => ['permission:user-list|user-create|user-edit|user-delete']]);
+	Route::get('users/create', ['as' => 'users.create', 'uses' => 'UserController@create', 'middleware' => ['permission:user-create']]);
+	Route::post('users/create', ['as' => 'users.store', 'uses' => 'UserController@store', 'middleware' => ['permission:user-create']]);
+	Route::get('users/{id}', ['as' => 'users.show', 'uses' => 'UserController@show']);
+	Route::get('users/{id}/edit', ['as' => 'users.edit', 'uses' => 'UserController@edit', 'middleware' => ['permission:user-edit']]);
+	Route::patch('users/{id}', ['as' => 'users.update', 'uses' => 'UserController@update', 'middleware' => ['permission:user-edit']]);
+	Route::delete('users/{id}', ['as' => 'users.destroy', 'uses' => 'UserController@destroy', 'middleware' => ['permission:user-delete']]);
+
+	/*
+	|--------------------------------------------------------------------------
+	| Nric Township Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Nric Township Model CRUD
+	|
+	 */
+	Route::get('nrictownships', ['as' => 'nrictownships.index', 'uses' => 'NricTownshipController@index', 'middleware' => ['permission:nrictownship-list|nrictownship-create|nrictownship-edit|nrictownship-delete']]);
+	Route::get('nrictownships/create', ['as' => 'nrictownships.create', 'uses' => 'NricTownshipController@create', 'middleware' => ['permission:nrictownship-create']]);
+	Route::post('nrictownships/create', ['as' => 'nrictownships.store', 'uses' => 'NricTownshipController@store', 'middleware' => ['permission:nrictownship-create']]);
+	Route::get('nrictownships/{id}', ['as' => 'nrictownships.show', 'uses' => 'NricTownshipController@show']);
+	Route::get('nrictownships/{id}/edit', ['as' => 'nrictownships.edit', 'uses' => 'NricTownshipController@edit', 'middleware' => ['permission:nrictownship-edit']]);
+	Route::patch('nrictownships/{id}', ['as' => 'nrictownships.update', 'uses' => 'NricTownshipController@update', 'middleware' => ['permission:nrictownship-edit']]);
+	Route::delete('nrictownships/{id}', ['as' => 'nrictownships.destroy', 'uses' => 'NricTownshipController@destroy', 'middleware' => ['permission:nrictownship-delete']]);
+
 });

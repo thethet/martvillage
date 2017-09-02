@@ -14,9 +14,11 @@ class CreateUsersTable extends Migration {
 			$table->increments('id');
 			$table->integer('company_id');
 			$table->string('name');
+			$table->date('dob');
 			$table->string('nric_no', 50)->nullable();
 			$table->integer('nric_code_id');
 			$table->integer('nric_township_id');
+			$table->enum('gender', ['Female', 'Male']);
 			$table->enum('marital_status', ['Single', 'Married', 'Separated', 'Divorced', 'Widowed', 'Single Parent']);
 			$table->string('contact_no')->nullable();
 			$table->string('position')->nullable();

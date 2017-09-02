@@ -139,24 +139,24 @@ class PermissionTableSeeder extends Seeder {
 			],
 
 			[
-				'name'         => 'nationality-list',
-				'display_name' => 'Display Nationality Listing',
-				'description'  => 'See only Listing Of Nationality',
+				'name'         => 'location-list',
+				'display_name' => 'Display Location Listing',
+				'description'  => 'See only Listing Of Location',
 			],
 			[
-				'name'         => 'nationality-create',
-				'display_name' => 'Create Nationality',
-				'description'  => 'Create New Nationality',
+				'name'         => 'location-create',
+				'display_name' => 'Create Location',
+				'description'  => 'Create New Location',
 			],
 			[
-				'name'         => 'nationality-edit',
-				'display_name' => 'Edit Nationality',
-				'description'  => 'Edit Nationality',
+				'name'         => 'location-edit',
+				'display_name' => 'Edit Location',
+				'description'  => 'Edit Location',
 			],
 			[
-				'name'         => 'nationality-delete',
-				'display_name' => 'Delete Nationality',
-				'description'  => 'Delete Nationality',
+				'name'         => 'location-delete',
+				'display_name' => 'Delete Location',
+				'description'  => 'Delete Location',
 			],
 
 			[

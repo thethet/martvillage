@@ -18,7 +18,7 @@
 		</div>
 		@endif
 
-		<table class="table table-bordered">
+		<table class="table table-bordered table-responsive">
 			<tr>
 				<th>No</th>
 				<th>Company Name</th>
