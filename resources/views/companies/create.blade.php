@@ -197,7 +197,53 @@
 				container: container,
 				todayHighlight: true,
 				autoclose: true,
-			})
+			});
+
+			$("#country_id").select2();
+
+			$("#state_id").select2({
+				ajax: {
+					url: "{{ url('states/search-state-country') }}",
+					dataType: 'json',
+					delay: 250,
+					data: function (params) {
+						var countryId = $('#country_id').val();
+						return {
+							search: params.term,
+							countryId: countryId
+						};
+					},
+					processResults: function (data, params) {
+						console.log(data)
+						return {
+							results: data.items
+						};
+					},
+					cache: true
+				},
+			});
+
+			$("#township_id").select2({
+				ajax: {
+					url: "{{ url('townships/search-township-state') }}",
+					dataType: 'json',
+					delay: 250,
+					data: function (params) {
+						var stateId = $('#state_id').val();
+						return {
+							search: params.term,
+							stateId: stateId
+						};
+					},
+					processResults: function (data, params) {
+						console.log(data)
+						return {
+							results: data.items
+						};
+					},
+					cache: true
+				},
+			});
 		})
 	</script>
 @stop

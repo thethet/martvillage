@@ -34,6 +34,14 @@ Route::group(['middleware' => 'web'], function () {
 		dd(Config::get('mail'));
 	});
 
+	Route::get('send_test_email', function () {
+		$company = App\Companies::find(1);
+		Mail::send('emails.company-creation-mail', ['company' => $company], function ($message) use ($company) {
+			$message->from('martvillageprj@gmail.com');
+			$message->to('thetthetaye2709@gmail.com', '')->subject('Your company has been created');
+		});
+	});
+
 	/*
 	|--------------------------------------------------------------------------
 	| AJAX

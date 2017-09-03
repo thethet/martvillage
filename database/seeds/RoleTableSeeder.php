@@ -13,7 +13,7 @@ class RoleTableSeeder extends Seeder {
 	public function run() {
 		$roles = [
 			[
-				'name'         => 'adminstrator',
+				'name'         => 'administrator',
 				'display_name' => 'Project Administrator',
 				'description'  => 'Administrator allow to manage whole project',
 			],

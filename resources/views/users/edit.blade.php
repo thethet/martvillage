@@ -222,21 +222,22 @@
 					</div>
 				</div><!-- .form-group -->
 
-				@if(Auth::user()->hasRole('administrator'))
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="company"><strong>Company Name: <span class="required">*</span></strong></label>
 					<div class="col-sm-6">
-						{!! Form::select('company_id', ['' => 'Select Company'] + $companies->toArray(), null, ['class' => 'form-control']) !!}
-						@if ($errors->has('company_id'))
-							<span class="required">
-								<strong>{{ $errors->first('company_id') }}</strong>
-							</span>
+						@if(Auth::user()->hasRole('administrator'))
+							{!! Form::select('company_id', ['' => 'Select Company'] + $companies->toArray(), null, ['class' => 'form-control']) !!}
+							@if ($errors->has('company_id'))
+								<span class="required">
+									<strong>{{ $errors->first('company_id') }}</strong>
+								</span>
+							@endif
+						@else
+							{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'readonly' => true]) !!}
+							{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
 						@endif
 					</div>
 				</div><!-- .form-group -->
-				@else
-					{!! Form::hidden('company_id', Auth::user()->company_id, null, ['class' => 'form-control']) !!}
-				@endif
 			</div>
 
 			<div class="col-sm-5">

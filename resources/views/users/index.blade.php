@@ -60,7 +60,7 @@
 				</a>
 			</div><!-- .menu-icon -->
 
-			@permission('permission-create')
+			@permission('user-create')
 				<div class="menu-icon">
 						<a href="{{ route('users.create') }}">
 							<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">

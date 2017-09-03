@@ -65,7 +65,7 @@ class CompanyController extends Controller {
 
 		$company = Companies::create($data);
 
-		return redirect()->route('companys.index')
+		return redirect()->route('companies.index')
 			->with('success', 'Company created successfully');
 	}
 
@@ -129,8 +129,16 @@ class CompanyController extends Controller {
 		}
 
 		/*$sent = Mail::send('emails.company-creation-mail', ['company' => $company], function ($message) use ($company) {
+		$message->from('martvillageprj@gmail.com');
 		$message->to('thetthetaye2709@gmail.com', '')->subject('Your company has been created');
-		});*/
+		});
+
+		if ($sent) {
+		echo "successfully sent";
+		} else {
+		echo "cannot send";
+		}
+		die;*/
 
 		return redirect()->route('companies.index')
 			->with('success', 'Company updated successfully');

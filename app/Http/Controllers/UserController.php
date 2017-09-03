@@ -36,7 +36,11 @@ class UserController extends Controller {
 	 * @return Response
 	 */
 	public function create() {
-		$roles         = Role::lists('display_name', 'id');
+		if (Auth::user()->hasRole('administrator')) {
+			$roles = Role::lists('display_name', 'id');
+		} else {
+			$roles = Role::where('id', '!=', 1)->lists('display_name', 'id');
+		}
 		$companies     = Companies::where('deleted', 'N')->lists('company_name', 'id');
 		$countries     = Countries::lists('country_name', 'id');
 		$states        = States::lists('state_name', 'id');
@@ -105,9 +109,13 @@ class UserController extends Controller {
 	 * @return Response
 	 */
 	public function edit($id) {
-		$user          = User::find($id);
-		$userRole      = $user->roles[0]->id;
-		$roles         = Role::lists('display_name', 'id');
+		$user     = User::find($id);
+		$userRole = $user->roles[0]->id;
+		if (Auth::user()->hasRole('administrator')) {
+			$roles = Role::lists('display_name', 'id');
+		} else {
+			$roles = Role::where('id', '!=', 1)->lists('display_name', 'id');
+		}
 		$companies     = Companies::where('deleted', 'N')->lists('company_name', 'id');
 		$countries     = Countries::lists('country_name', 'id');
 		$states        = States::lists('state_name', 'id');

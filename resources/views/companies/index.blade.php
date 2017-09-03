@@ -62,7 +62,7 @@
 				</a>
 			</div><!-- .menu-icon -->
 
-			@permission('permission-create')
+			@permission('company-create')
 				<div class="menu-icon">
 						<a href="{{ route('companies.create') }}">
 							<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
