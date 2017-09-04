@@ -80,8 +80,9 @@ class UserController extends Controller {
 		$address .= ($request->unit_number) ? ($request->unit_number . ', ') : '';
 		$address .= ($request->building_name) ? ($request->building_name . ', ') : '';
 		$address .= ($request->street) ? ($request->street) : '';
-		$data['address']  = $address;
-		$data['password'] = bcrypt($request->password);
+		$data['address']    = $address;
+		$data['password']   = bcrypt($request->password);
+		$data['created_by'] = Auth::user()->id;
 
 		$user = User::create($data);
 		$user->attachRole($request->role);
@@ -155,7 +156,8 @@ class UserController extends Controller {
 		$address .= ($request->unit_number) ? ($request->unit_number . ', ') : '';
 		$address .= ($request->building_name) ? ($request->building_name . ', ') : '';
 		$address .= ($request->street) ? ($request->street) : '';
-		$data['address'] = $address;
+		$data['address']    = $address;
+		$data['updated_by'] = Auth::user()->id;
 
 		if (!empty($request->password)) {
 			$data['password'] = bcrypt($request->password);

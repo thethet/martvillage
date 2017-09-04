@@ -8,6 +8,7 @@ use App\States;
 use App\Townships;
 use Auth;
 use Illuminate\Http\Request;
+use Session;
 
 class CompanyController extends Controller {
 	/**
@@ -61,7 +62,8 @@ class CompanyController extends Controller {
 		$address .= ($request->unit_number) ? ($request->unit_number . ', ') : '';
 		$address .= ($request->building_name) ? ($request->building_name . ', ') : '';
 		$address .= ($request->street) ? ($request->street) : '';
-		$data['address'] = $address;
+		$data['address']    = $address;
+		$data['created_by'] = Auth::user()->id;
 
 		$company = Companies::create($data);
 
@@ -79,6 +81,19 @@ class CompanyController extends Controller {
 		$company = Companies::find($id);
 
 		return view('companies.show', ['company' => $company]);
+	}
+
+	/**
+	 * Redirect Route Using Ajax.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function editAjax($companyId, Request $request) {
+		$id       = $request->id;
+		$response = array('status' => 'success', 'url' => 'companies/' . $id . '/edit');
+		return response()->json($response);
+
 	}
 
 	/**
@@ -113,7 +128,8 @@ class CompanyController extends Controller {
 		$address .= ($request->unit_number) ? ($request->unit_number . ', ') : '';
 		$address .= ($request->building_name) ? ($request->building_name . ', ') : '';
 		$address .= ($request->street) ? ($request->street) : '';
-		$data['address'] = $address;
+		$data['address']    = $address;
+		$data['updated_by'] = Auth::user()->id;
 
 		$imageName = $this->fileUpload($request);
 		if ($imageName) {
@@ -152,8 +168,11 @@ class CompanyController extends Controller {
 	 */
 	public function destroy($id) {
 		Companies::find($id)->update(['deleted' => 'Y']);
-		return redirect()->route('companies.index')
-			->with('success', 'Company deleted successfully');
+		Session::flash('success', 'Company deleted successfully');
+		$response = array('status' => 'success', 'url' => 'companies');
+		return response()->json($response);
+
+		// return redirect()->route('companies.index')->with('success', 'Company deleted successfully');
 	}
 
 	/**
@@ -162,7 +181,7 @@ class CompanyController extends Controller {
 	 * @param ConsultantRequest $request
 	 * @return static
 	 */
-	private function fileUpload($request) {
+	public function fileUpload($request) {
 		if ($request->hasFile('image') && $request->file('image')->getError() == 0) {
 			$extension = $request->file('image')->getClientOriginalExtension();
 			$imageName = rand(11111, 99999) . '.' . $extension;
@@ -175,13 +194,13 @@ class CompanyController extends Controller {
 		}
 	}
 
-	/**
-	 * File Destroy
-	 *
-	 * @param ConsultantRequest $request
-	 * @return static
-	 */
-	private function destroyFile($file) {
+/**
+ * File Destroy
+ *
+ * @param ConsultantRequest $request
+ * @return static
+ */
+	public function destroyFile($file) {
 		$fileName = 'uploads/logos/' . $file;
 		if (file_exists($fileName)) {
 			@unlink($fileName);

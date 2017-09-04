@@ -112,6 +112,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('companies/create', ['as' => 'companies.store', 'uses' => 'CompanyController@store', 'middleware' => ['permission:company-create']]);
 	Route::get('companies/{id}', ['as' => 'companies.show', 'uses' => 'CompanyController@show']);
 	Route::get('companies/{id}/edit', ['as' => 'companies.edit', 'uses' => 'CompanyController@edit', 'middleware' => ['permission:company-edit']]);
+	Route::get('companies/ajax/{id}/edit', ['as' => 'companies.ajax.edit', 'uses' => 'CompanyController@editAjax', 'middleware' => ['permission:company-edit']]);
 	Route::patch('companies/{id}', ['as' => 'companies.update', 'uses' => 'CompanyController@update', 'middleware' => ['permission:company-edit']]);
 	Route::delete('companies/{id}', ['as' => 'companies.destroy', 'uses' => 'CompanyController@destroy', 'middleware' => ['permission:company-delete']]);
 

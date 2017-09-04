@@ -26,7 +26,7 @@
 				<th>Contact No.</th>
 				<th>Address</th>
 				<th>Expiry Date</th>
-				<th width="280px">Action</th>
+				<th width="20px">Action</th>
 			</tr>
 			@foreach ($companies as $key => $company)
 			<tr>
@@ -37,15 +37,7 @@
 				<td>{{ $company->address }}</td>
 				<td>{{ $company->expiry_date }}</td>
 				<td>
-					<a class="btn btn-info btn-sm" href="{{ route('companies.show',$company->id) }}">Show</a>
-					@permission('company-edit')
-					<a class="btn btn-primary btn-sm" href="{{ route('companies.edit',$company->id) }}">Edit</a>
-					@endpermission
-					@permission('company-delete')
-					{!! Form::open(['method' => 'DELETE','route' => ['companies.destroy', $company->id],'style'=>'display:inline']) !!}
-					{!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-					{!! Form::close() !!}
-					@endpermission
+					{!! Form::checkbox('edit', $company->id, null, ['class' => 'editboxes']) !!}
 				</td>
 			</tr>
 			@endforeach
@@ -64,12 +56,90 @@
 
 			@permission('company-create')
 				<div class="menu-icon">
-						<a href="{{ route('companies.create') }}">
-							<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
-							New
-						</a>
+					<a href="{{ route('companies.create') }}">
+						<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
+						New
+					</a>
 				</div><!-- .menu-icon -->
 			@endpermission
+
+			@permission('company-edit')
+				<div class="menu-icon">
+					<a href="#" id="edit">
+						<img src="{{ asset('assets/img/edit-icon.png') }}" alt="Edit">
+						Edit
+					</a>
+				</div><!-- .menu-icon -->
+			@endpermission
+
+			@permission('company-delete')
+				<div class="menu-icon">
+					<a href="#" id="delete">
+						<img src="{{ asset('assets/img/trash-icon.png') }}" alt="Delete">
+						Delete
+					</a>
+				</div><!-- .menu-icon -->
+			@endpermission
+
+			<div class="menu-icon">
+				<a href="{{ url('settings') }}" >
+					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
+					Back
+				</a>
+			</div><!-- .menu-icon -->
 		</div>
 	</div><!-- .footer-menu -->
+@stop
+
+@section('my-script')
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			$(".editboxes").change(function() {
+				var $el = $(this);
+				if ($el.is(":checked")) {
+					$('.editboxes').attr('disabled', true);
+					$el.attr("disabled", false);
+				}
+				else {
+					$('.editboxes').attr('disabled', false);
+				}
+			});
+
+			$("#edit").on("click",function(){
+				$(".editboxes").each(function() {
+					if ($(this).is(":checked")) {
+						var id = $(this).val();
+						$.ajax({
+							url: "{{ url('companies/ajax/id/edit') }}",
+							type: 'GET',
+							data: { id: id },
+							success: function(data)
+							{
+								window.location.replace(data.url);
+							}
+						});
+					}
+				});
+			});
+
+			$("#delete").on("click",function(){
+				$(".editboxes").each(function() {
+					if ($(this).is(":checked")) {
+						var id = $(this).val();
+
+						$.ajax({
+							url: "{!! url('companies/"+ id +"') !!}",
+							type: 'DELETE',
+							data: {_token: '{!! csrf_token() !!}'},
+							dataType: 'JSON',
+							success: function (data) {
+								window.location.replace(data.url);
+							}
+						});
+					}
+				});
+			});
+		});
+	</script>
 @stop
