@@ -13,6 +13,7 @@ use App\User;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
+use Session;
 
 class UserController extends Controller {
 	/**
@@ -104,6 +105,19 @@ class UserController extends Controller {
 	}
 
 	/**
+	 * Redirect Route Using Ajax.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function editAjax($userId, Request $request) {
+		$id       = $request->id;
+		$response = array('status' => 'success', 'url' => 'users/' . $id . '/edit');
+		return response()->json($response);
+
+	}
+
+	/**
 	 * Show the form for editing the specified resource.
 	 *
 	 * @param  int  $id
@@ -186,7 +200,10 @@ class UserController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id) {
-		//
+		User::find($id)->update(['deleted' => 'Y']);
+		Session::flash('success', 'User deleted successfully');
+		$response = array('status' => 'success', 'url' => 'users');
+		return response()->json($response);
 	}
 
 	/**

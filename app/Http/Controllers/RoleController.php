@@ -6,6 +6,7 @@ use App\Permission;
 use App\Role;
 use DB;
 use Illuminate\Http\Request;
+use Session;
 
 class RoleController extends Controller {
 	/**
@@ -71,6 +72,19 @@ class RoleController extends Controller {
 	}
 
 	/**
+	 * Redirect Route Using Ajax.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function editAjax($userId, Request $request) {
+		$id       = $request->id;
+		$response = array('status' => 'success', 'url' => 'roles/' . $id . '/edit');
+		return response()->json($response);
+
+	}
+
+	/**
 	 * Show the form for editing the specified resource.
 	 *
 	 * @param  int  $id
@@ -125,5 +139,8 @@ class RoleController extends Controller {
 		// $role->delete();
 		// return redirect()->route('roles.index')
 		// 	->with('success', 'Role deleted successfully');
+		Session::flash('success', 'Role deleted successfully');
+		$response = array('status' => 'success', 'url' => 'roles');
+		return response()->json($response);
 	}
 }

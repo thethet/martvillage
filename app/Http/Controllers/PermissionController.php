@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Permission;
 use Illuminate\Http\Request;
+use Session;
 
 class PermissionController extends Controller {
 	/**
@@ -60,6 +61,19 @@ class PermissionController extends Controller {
 	}
 
 	/**
+	 * Redirect Route Using Ajax.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function editAjax($userId, Request $request) {
+		$id       = $request->id;
+		$response = array('status' => 'success', 'url' => 'permissions/' . $id . '/edit');
+		return response()->json($response);
+
+	}
+
+	/**
 	 * Show the form for editing the specified resource.
 	 *
 	 * @param  int  $id
@@ -103,5 +117,8 @@ class PermissionController extends Controller {
 		// $permission->delete();
 		// return redirect()->route('permissions.index')
 		// 	->with('success', 'Permission deleted successfully');
+		Session::flash('success', 'Permission deleted successfully');
+		$response = array('status' => 'success', 'url' => 'permissions');
+		return response()->json($response);
 	}
 }

@@ -23,7 +23,7 @@
 				<th>No</th>
 				<th>Name</th>
 				<th>Description</th>
-				<th width="280px">Action</th>
+				<th width="20px">Action</th>
 			</tr>
 			@foreach ($permissions as $key => $permission)
 			<tr>
@@ -31,15 +31,7 @@
 				<td>{{ $permission->display_name }}</td>
 				<td>{{ $permission->description }}</td>
 				<td>
-					<a class="btn btn-info btn-sm" href="{{ route('permissions.show',$permission->id) }}">Show</a>
-					@permission('permission-edit')
-					<a class="btn btn-primary btn-sm" href="{{ route('permissions.edit',$permission->id) }}">Edit</a>
-					@endpermission
-					@permission('permission-delete')
-					{!! Form::open(['method' => 'DELETE','route' => ['permissions.destroy', $permission->id],'style'=>'display:inline']) !!}
-					{!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-					{!! Form::close() !!}
-					@endpermission
+					{!! Form::checkbox('edit', $permission->id, null, ['class' => 'editboxes']) !!}
 				</td>
 			</tr>
 			@endforeach
@@ -58,12 +50,89 @@
 
 			@permission('permission-create')
 				<div class="menu-icon">
-						<a href="{{ route('permissions.create') }}">
-							<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
-							New
-						</a>
+					<a href="{{ route('permissions.create') }}">
+						<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
+						New
+					</a>
 				</div><!-- .menu-icon -->
 			@endpermission
+
+			@permission('permission-edit')
+				<div class="menu-icon">
+					<a href="#" id="edit">
+						<img src="{{ asset('assets/img/edit-icon.png') }}" alt="Edit">
+						Edit
+					</a>
+				</div><!-- .menu-icon -->
+			@endpermission
+
+			@permission('permission-delete')
+				<div class="menu-icon">
+					<a href="#" id="delete">
+						<img src="{{ asset('assets/img/trash-icon.png') }}" alt="Delete">
+						Delete
+					</a>
+				</div><!-- .menu-icon -->
+			@endpermission
+
+			<div class="menu-icon">
+				<a href="{{ url('settings') }}" >
+					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
+					Back
+				</a>
+			</div><!-- .menu-icon -->
 		</div>
 	</div><!-- .footer-menu -->
+@stop
+
+@section('my-script')
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			$(".editboxes").change(function() {
+				var $el = $(this);
+				if ($el.is(":checked")) {
+					$('.editboxes').attr('disabled', true);
+					$el.attr("disabled", false);
+				}
+				else {
+					$('.editboxes').attr('disabled', false);
+				}
+			});
+
+			$("#edit").on("click",function(){
+				$(".editboxes").each(function() {
+					if ($(this).is(":checked")) {
+						var id = $(this).val();
+						$.ajax({
+							url: "{{ url('permissions/ajax/id/edit') }}",
+							type: 'GET',
+							data: { id: id },
+							success: function(data)
+							{
+								window.location.replace(data.url);
+							}
+						});
+					}
+				});
+			});
+
+			$("#delete").on("click",function(){
+				$(".editboxes").each(function() {
+					if ($(this).is(":checked")) {
+						var id = $(this).val();
+						$.ajax({
+							url: "{!! url('permissions/"+ id +"') !!}",
+							type: 'DELETE',
+							data: {_token: '{!! csrf_token() !!}'},
+							dataType: 'JSON',
+							success: function (data) {
+								window.location.replace(data.url);
+							}
+						});
+					}
+				});
+			});
+		});
+	</script>
 @stop

@@ -127,7 +127,6 @@
 				$(".editboxes").each(function() {
 					if ($(this).is(":checked")) {
 						var id = $(this).val();
-
 						$.ajax({
 							url: "{!! url('companies/"+ id +"') !!}",
 							type: 'DELETE',

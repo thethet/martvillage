@@ -85,7 +85,7 @@
 			@yield('main')
 		</div>
 
-		{{-- @yield('footer') --}}
+
 
 	</div> <!-- /container -->
 

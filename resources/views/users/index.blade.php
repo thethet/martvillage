@@ -25,7 +25,7 @@
 				<th>Contact No.</th>
 				<th>Role</th>
 				<th>Email</th>
-				<th width="280px">Action</th>
+				<th width="20px">Action</th>
 			</tr>
 			@foreach ($users as $key => $user)
 			<tr>
@@ -36,14 +36,6 @@
 				<td>{{ $user->email }}</td>
 				<td>
 					{!! Form::checkbox('edit', $user->id, null, ['class' => 'editboxes']) !!}
-					@permission('user-edit')
-					<a class="btn btn-primary btn-sm" href="{{ route('users.edit',$user->id) }}">Edit</a>
-					@endpermission
-					@permission('user-delete')
-					{!! Form::open(['method' => 'DELETE','route' => ['users.destroy', $user->id],'style'=>'display:inline']) !!}
-					{!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-					{!! Form::close() !!}
-					@endpermission
 				</td>
 			</tr>
 			@endforeach
@@ -86,6 +78,13 @@
 					</a>
 				</div><!-- .menu-icon -->
 			@endpermission
+
+			<div class="menu-icon">
+				<a href="{{ url('settings') }}" >
+					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
+					Back
+				</a>
+			</div><!-- .menu-icon -->
 		</div>
 	</div><!-- .footer-menu -->
 @stop
@@ -110,7 +109,7 @@
 					if ($(this).is(":checked")) {
 						var id = $(this).val();
 						$.ajax({
-							url: "{{ url('companies/ajax/'"+ id +"'/edit') }}",
+							url: "{{ url('users/ajax/id/edit') }}",
 							type: 'GET',
 							data: { id: id },
 							success: function(data)
@@ -123,22 +122,18 @@
 			});
 
 			$("#delete").on("click",function(){
-				alert('hi')
 				$(".editboxes").each(function() {
 					if ($(this).is(":checked")) {
 						var id = $(this).val();
-
 						$.ajax({
-							url: "{!! url('companies/"+ id +"') !!}",
+							url: "{!! url('users/"+ id +"') !!}",
 							type: 'DELETE',
 							data: {_token: '{!! csrf_token() !!}'},
 							dataType: 'JSON',
 							success: function (data) {
-								alert('hey')
 								window.location.replace(data.url);
 							}
 						});
-						// window.location.reload();
 					}
 				});
 			});

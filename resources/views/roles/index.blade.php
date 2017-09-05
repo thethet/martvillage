@@ -23,7 +23,7 @@
 				<th>No</th>
 				<th>Name</th>
 				<th>Description</th>
-				<th width="280px">Action</th>
+				<th width="20px">Action</th>
 			</tr>
 			@foreach ($roles as $key => $role)
 			<tr>
@@ -31,15 +31,7 @@
 				<td>{{ $role->display_name }}</td>
 				<td>{{ $role->description }}</td>
 				<td>
-					<a class="btn btn-info btn-sm" href="{{ route('roles.show',$role->id) }}">Show</a>
-					@permission('role-edit')
-					<a class="btn btn-primary btn-sm" href="{{ route('roles.edit',$role->id) }}">Edit</a>
-					@endpermission
-					@permission('role-delete')
-					{!! Form::open(['method' => 'DELETE','route' => ['roles.destroy', $role->id],'style'=>'display:inline']) !!}
-					{!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-					{!! Form::close() !!}
-					@endpermission
+					{!! Form::checkbox('edit', $role->id, null, ['class' => 'editboxes']) !!}
 				</td>
 			</tr>
 			@endforeach
@@ -64,6 +56,83 @@
 					</a>
 				</div><!-- .menu-icon -->
 			@endpermission
+
+			@permission('role-edit')
+				<div class="menu-icon">
+					<a href="#" id="edit">
+						<img src="{{ asset('assets/img/edit-icon.png') }}" alt="Edit">
+						Edit
+					</a>
+				</div><!-- .menu-icon -->
+			@endpermission
+
+			@permission('role-delete')
+				<div class="menu-icon">
+					<a href="#" id="delete">
+						<img src="{{ asset('assets/img/trash-icon.png') }}" alt="Delete">
+						Delete
+					</a>
+				</div><!-- .menu-icon -->
+			@endpermission
+
+			<div class="menu-icon">
+				<a href="{{ url('settings') }}" >
+					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
+					Back
+				</a>
+			</div><!-- .menu-icon -->
 		</div>
 	</div><!-- .footer-menu -->
+@stop
+
+@section('my-script')
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			$(".editboxes").change(function() {
+				var $el = $(this);
+				if ($el.is(":checked")) {
+					$('.editboxes').attr('disabled', true);
+					$el.attr("disabled", false);
+				}
+				else {
+					$('.editboxes').attr('disabled', false);
+				}
+			});
+
+			$("#edit").on("click",function(){
+				$(".editboxes").each(function() {
+					if ($(this).is(":checked")) {
+						var id = $(this).val();
+						$.ajax({
+							url: "{{ url('roles/ajax/id/edit') }}",
+							type: 'GET',
+							data: { id: id },
+							success: function(data)
+							{
+								window.location.replace(data.url);
+							}
+						});
+					}
+				});
+			});
+
+			$("#delete").on("click",function(){
+				$(".editboxes").each(function() {
+					if ($(this).is(":checked")) {
+						var id = $(this).val();
+						$.ajax({
+							url: "{!! url('roles/"+ id +"') !!}",
+							type: 'DELETE',
+							data: {_token: '{!! csrf_token() !!}'},
+							dataType: 'JSON',
+							success: function (data) {
+								window.location.replace(data.url);
+							}
+						});
+					}
+				});
+			});
+		});
+	</script>
 @stop

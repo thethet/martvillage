@@ -127,4 +127,11 @@
 			{{-- @endpermission --}}
 		</div>
 	</div>
+
+	<div class="copy-right">
+		<div>
+			Copyright © 2017 All Rights Reserved. MSCT Co.Ltd
+		</div>
+	</div>
 @stop
+

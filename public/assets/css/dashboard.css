@@ -17,7 +17,7 @@ a:hover {
 	margin-top: 0;
 }
 .main-content {
-	min-height: 535px;	/*height: 70.7vh;*/
+	min-height: 600px;	/*height: 70.7vh;*/
 }
 .footer-menu {
 
@@ -156,4 +156,9 @@ img.outgoing-icon, img.incoming-icon {
 .select2-container--default .select2-selection--single .select2-selection__rendered {
 	color: #444;
 	line-height: 34px !important;
+}
+
+.copy-right {
+	font-family: CenturyGothic;
+	font-size: 7px;
 }

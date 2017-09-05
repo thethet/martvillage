@@ -99,16 +99,30 @@
 	<div class="footer-menu">
 		<div class="footer-content">
 			<div class="menu-icon">
-				<a href="#" id="add" onclick="document.getElementById('role-form').submit();">
-					<img src="{{ asset('assets/img/save-and-close.png') }}" alt="Save">
-					Save&Exit
+				<a href="{{ url('/dashboard') }}">
+					<img src="{{ asset('assets/img/home-icon.jpeg') }}" alt="Go Home">
+					Home
+				</a>
+			</div><!-- .menu-icon -->
+
+			<div class="menu-icon">
+				<a href="#" id="reset" onclick="document.getElementById('role-form').reset();">
+					<img src="{{ asset('assets/img/reset.png') }}" alt="Reset">
+					Reset
 				</a>
 			</div><!-- .menu-icon -->
 
 			<div class="menu-icon">
 				<a href="{{ route('roles.index') }}" >
-					<img src="{{ asset('assets/img/go-back.png') }}" alt="Save">
+					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
 					Back
+				</a>
+			</div><!-- .menu-icon -->
+
+			<div class="menu-icon">
+				<a href="#" id="add" onclick="document.getElementById('role-form').submit();">
+					<img src="{{ asset('assets/img/save-and-close.png') }}" alt="Save">
+					Save&Exit
 				</a>
 			</div><!-- .menu-icon -->
 		</div>
