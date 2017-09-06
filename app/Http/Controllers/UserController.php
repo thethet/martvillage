@@ -23,12 +23,12 @@ class UserController extends Controller {
 	 */
 	public function index(Request $request) {
 		if (Auth::user()->hasRole('administrator')) {
-			$users = User::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(8);
+			$users = User::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
 		} else {
-			$users = User::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('id', 'DESC')->paginate(8);
+			$users = User::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
 		}
 
-		return view('users.index', ['users' => $users])->with('i', ($request->get('page', 1) - 1) * 8);
+		return view('users.index', ['users' => $users])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
 	/**

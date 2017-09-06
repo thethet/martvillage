@@ -18,12 +18,12 @@ class CompanyController extends Controller {
 	 */
 	public function index(Request $request) {
 		if (Auth::user()->hasRole('administrator')) {
-			$companies = Companies::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(8);
+			$companies = Companies::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
 		} else {
-			$companies = Companies::where('id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('id', 'DESC')->paginate(8);
+			$companies = Companies::where('id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
 		}
 
-		return view('companies.index', ['companies' => $companies])->with('i', ($request->get('page', 1) - 1) * 8);
+		return view('companies.index', ['companies' => $companies])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
 	/**

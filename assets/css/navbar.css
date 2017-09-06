@@ -49,6 +49,19 @@ body {
 	background-color: #fff;
 }
 
+.navbar-header {
+	max-width: 240px;
+}
+
+.site-icon {
+	padding: 0;
+}
+
+.site-header {
+	padding: 0;
+	padding-top: 10px;
+}
+
 .container {
 	background: -webkit-linear-gradient(top, rgba(134,180,246,0.6), rgba(72,134,210,1)); /* For Safari 5.1 to 6.0 */
 	background: -o-linear-gradient(bottom, rgba(134,180,246134,180,246,0.6), rgba(72,134,210,1)); /* For Opera 11.1 to 12.0 */
@@ -60,6 +73,17 @@ body {
 	height: 100%;
 	display:block;
 	overflow:auto;
+}
+
+.page-header-img {
+	width: 25%;
+	float: left;
+}
+
+.page-header-title {
+	float: left;
+	padding-top: 10px;
+	font-size: 18px;
 }
 
 @media screen and (min-device-width: 320px) and (max-device-width: 768px) {
@@ -74,6 +98,14 @@ body {
 		width: 70% !important;
 		float: left;
 	}
+
+	.navbar-header {
+		max-width: 100% !important;
+	}
+
+	.site-icon {
+		display: none;
+	}
 }
 
 @media only screen and (min-device-width: 321px) and (max-device-width: 420px) {
@@ -81,12 +113,28 @@ body {
 		width: 50% !important;
 		float: left;
 	}
+
+	.navbar-header {
+		max-width: 100% !important;
+	}
+
+	.site-icon {
+		display: none;
+	}
 }
 
 @media only screen and (min-device-width: 421px) and (max-device-width: 450px) {
 	.container .col-md-2 {
 		width: 50% !important;
 		float: left;
+	}
+
+	.navbar-header {
+		max-width: 100% !important;
+	}
+
+	.site-icon {
+		display: none;
 	}
 }
 
@@ -97,6 +145,14 @@ body {
 		float: left;
 		padding: 0;
 	}
+
+	.navbar-header {
+		max-width: 100% !important;
+	}
+
+	.site-icon {
+		display: none;
+	}
 }
 
 @media only screen and (min-device-width: 571px) and (max-device-width: 640px) {
@@ -105,6 +161,14 @@ body {
 		float: left;
 		padding: 0;
 	}
+
+	.navbar-header {
+		max-width: 100% !important;
+	}
+
+	.site-icon {
+		display: none;
+	}
 }
 
 @media only screen and (min-device-width: 641px) and (max-device-width: 991px) {
@@ -112,6 +176,14 @@ body {
 		width: 25% !important;
 		float: left;
 		padding: 0;
+	}
+
+	.navbar-header {
+		max-width: 100% !important;
+	}
+
+	.site-icon {
+		display: none;
 	}
 }
 

@@ -1,5 +1,8 @@
 @extends('layouts.layout')
 
+@section('site-title')
+	Cargo Management System
+@stop
 @section('main')
 	<div class="main-content">
 		<div class="row">

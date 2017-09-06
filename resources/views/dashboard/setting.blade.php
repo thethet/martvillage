@@ -1,5 +1,12 @@
 @extends('layouts.layout')
 
+@section('site-title')
+	<div class="col-md-4 site-icon">
+		<img class="setting-icon" src="{{ asset('assets/img/Settings-icon.png') }}" alt="Setting">
+	</div>
+	<div class="col-md-4 site-header">Setting</div>
+@stop
+
 @section('main')
 	<div class="main-content">
 		<div class="row">
@@ -40,7 +47,7 @@
 			<div class="col-md-2">
 				<a href="{{ url('/roles') }}">
 					<div class="card">
-						<img src="{{ asset('assets/img/roleicon.png') }}" alt="Role">
+						<img class="setting-icon" src="{{ asset('assets/img/roleicon.png') }}" alt="Role">
 						Role
 					</div>
 				</a>
@@ -51,7 +58,7 @@
 			<div class="col-md-2">
 				<a href="{{ url('permissions') }}">
 					<div class="card">
-						<img src="{{ asset('assets/img/permission.png') }}" alt="Permission">
+						<img class="setting-icon" src="{{ asset('assets/img/permission.png') }}" alt="Permission">
 						Permission
 					</div>
 				</a>

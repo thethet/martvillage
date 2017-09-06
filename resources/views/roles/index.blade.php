@@ -1,8 +1,15 @@
 @extends('layouts.layout')
 
+@section('site-title')
+	<div class="col-md-4 site-icon">
+		<img class="profile-icon" src="{{ asset('assets/img/roleicon.png') }}" alt="Role">
+	</div>
+	<div class="col-md-4 site-header">Role</div>
+@stop
+
 @section('main')
 	<div class="main-content">
-		<div class="row">
+		<!-- <div class="row">
 			<div class="col-lg-12 margin-tb">
 				<div class="pull-left">
 					<h3>Role Management</h3>
@@ -10,7 +17,7 @@
 				<div class="pull-right">
 				</div>
 			</div>
-		</div><!-- .row -->
+		</div>.row -->
 
 		@if ($message = Session::get('success'))
 		<div class="alert alert-success">
@@ -18,24 +25,30 @@
 		</div>
 		@endif
 
-		<table class="table table-bordered">
-			<tr>
-				<th>No</th>
-				<th>Name</th>
-				<th>Description</th>
-				<th width="20px">Action</th>
-			</tr>
-			@foreach ($roles as $key => $role)
-			<tr>
-				<td>{{ ++$i }}</td>
-				<td>{{ $role->display_name }}</td>
-				<td>{{ $role->description }}</td>
-				<td>
-					{!! Form::checkbox('edit', $role->id, null, ['class' => 'editboxes']) !!}
-				</td>
-			</tr>
-			@endforeach
-		</table>
+		<div class="table-cont">
+			<table class="table table-bordered table-responsive">
+				<thead>
+					<tr>
+						<th>No</th>
+						<th>Name</th>
+						<th>Description</th>
+						<th width="20px">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach ($roles as $key => $role)
+					<tr>
+						<td>{{ ++$i }}</td>
+						<td>{{ $role->display_name }}</td>
+						<td>{{ $role->description }}</td>
+						<td>
+							{!! Form::checkbox('edit', $role->id, null, ['class' => 'editboxes']) !!}
+						</td>
+					</tr>
+					@endforeach
+				</tbody>
+			</table>
+		</div>
 		{!! $roles->render() !!}
 	</div><!-- .main-content -->
 

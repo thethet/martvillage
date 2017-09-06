@@ -43,13 +43,13 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="{{ url('/') }}">Cargo Management System</a>
+					<a class="navbar-brand" href="{{ url('/') }}">@yield('site-title')</a>
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
 					<div class="row">
 						<div class="col-md-8">
 							<div class="col-md-6">
-								&nbsp;
+								@yield('page-header')
 							</div>
 							<div class="col-md-2 navbar-right">
 								{{ date('d F') }} <br>

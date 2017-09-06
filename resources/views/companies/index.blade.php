@@ -1,8 +1,15 @@
 @extends('layouts.layout')
 
+@section('site-title')
+	<div class="col-md-4 site-icon">
+		<img class="profile-icon" src="{{ asset('assets/img/company.png') }}" alt="Company">
+	</div>
+	<div class="col-md-4 site-header">Company</div>
+@stop
+
 @section('main')
 	<div class="main-content">
-		<div class="row">
+		<!-- <div class="row">
 			<div class="col-lg-12 margin-tb">
 				<div class="pull-left">
 					<h3>Company Management</h3>
@@ -10,7 +17,7 @@
 				<div class="pull-right">
 				</div>
 			</div>
-		</div><!-- .row -->
+		</div>.row -->
 
 		@if ($message = Session::get('success'))
 		<div class="alert alert-success">
@@ -18,30 +25,36 @@
 		</div>
 		@endif
 
-		<table class="table table-bordered table-responsive">
-			<tr>
-				<th>No</th>
-				<th>Company Name</th>
-				<th>Email</th>
-				<th>Contact No.</th>
-				<th>Address</th>
-				<th>Expiry Date</th>
-				<th width="20px">Action</th>
-			</tr>
-			@foreach ($companies as $key => $company)
-			<tr>
-				<td>{{ ++$i }}</td>
-				<td>{{ strtoupper($company->company_name) }}</td>
-				<td>{{ $company->email }}</td>
-				<td>{{ $company->contact_no }}</td>
-				<td>{{ $company->address }}</td>
-				<td>{{ $company->expiry_date }}</td>
-				<td>
-					{!! Form::checkbox('edit', $company->id, null, ['class' => 'editboxes']) !!}
-				</td>
-			</tr>
-			@endforeach
-		</table>
+		<div class="table-cont">
+			<table class="table table-bordered table-responsive">
+				<thead>
+					<tr>
+						<th>No</th>
+						<th>Company Name</th>
+						<th>Email</th>
+						<th>Contact No.</th>
+						<th>Address</th>
+						<th>Expiry Date</th>
+						<th width="20px">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach ($companies as $key => $company)
+					<tr>
+						<td>{{ ++$i }}</td>
+						<td>{{ strtoupper($company->company_name) }}</td>
+						<td>{{ $company->email }}</td>
+						<td>{{ $company->contact_no }}</td>
+						<td>{{ $company->address }}</td>
+						<td>{{ $company->expiry_date }}</td>
+						<td>
+							{!! Form::checkbox('edit', $company->id, null, ['class' => 'editboxes']) !!}
+						</td>
+					</tr>
+					@endforeach
+				</tbody>
+			</table>
+		</div>
 		{!! $companies->render() !!}
 	</div><!-- .main-content -->
 
