@@ -159,68 +159,68 @@ class PermissionTableSeeder extends Seeder {
 				'description'  => 'Delete Location',
 			],
 
-			[
-				'name'         => 'country-list',
-				'display_name' => 'Display Country Listing',
-				'description'  => 'See only Listing Of Country',
+			/*[
+			'name'         => 'country-list',
+			'display_name' => 'Display Country Listing',
+			'description'  => 'See only Listing Of Country',
 			],
 			[
-				'name'         => 'country-create',
-				'display_name' => 'Create Country',
-				'description'  => 'Create New Country',
+			'name'         => 'country-create',
+			'display_name' => 'Create Country',
+			'description'  => 'Create New Country',
 			],
 			[
-				'name'         => 'country-edit',
-				'display_name' => 'Edit Country',
-				'description'  => 'Edit Country',
+			'name'         => 'country-edit',
+			'display_name' => 'Edit Country',
+			'description'  => 'Edit Country',
 			],
 			[
-				'name'         => 'country-delete',
-				'display_name' => 'Delete Country',
-				'description'  => 'Delete Country',
-			],
-
-			[
-				'name'         => 'state-list',
-				'display_name' => 'Display State Listing',
-				'description'  => 'See only Listing Of State',
-			],
-			[
-				'name'         => 'state-create',
-				'display_name' => 'Create State',
-				'description'  => 'Create New State',
-			],
-			[
-				'name'         => 'state-edit',
-				'display_name' => 'Edit State',
-				'description'  => 'Edit State',
-			],
-			[
-				'name'         => 'state-delete',
-				'display_name' => 'Delete State',
-				'description'  => 'Delete State',
+			'name'         => 'country-delete',
+			'display_name' => 'Delete Country',
+			'description'  => 'Delete Country',
 			],
 
 			[
-				'name'         => 'township-list',
-				'display_name' => 'Display Township Listing',
-				'description'  => 'See only Listing Of Township',
+			'name'         => 'state-list',
+			'display_name' => 'Display State Listing',
+			'description'  => 'See only Listing Of State',
 			],
 			[
-				'name'         => 'township-create',
-				'display_name' => 'Create Township',
-				'description'  => 'Create New Township',
+			'name'         => 'state-create',
+			'display_name' => 'Create State',
+			'description'  => 'Create New State',
 			],
 			[
-				'name'         => 'township-edit',
-				'display_name' => 'Edit Township',
-				'description'  => 'Edit Township',
+			'name'         => 'state-edit',
+			'display_name' => 'Edit State',
+			'description'  => 'Edit State',
 			],
 			[
-				'name'         => 'township-delete',
-				'display_name' => 'Delete Township',
-				'description'  => 'Delete Township',
+			'name'         => 'state-delete',
+			'display_name' => 'Delete State',
+			'description'  => 'Delete State',
 			],
+
+			[
+			'name'         => 'township-list',
+			'display_name' => 'Display Township Listing',
+			'description'  => 'See only Listing Of Township',
+			],
+			[
+			'name'         => 'township-create',
+			'display_name' => 'Create Township',
+			'description'  => 'Create New Township',
+			],
+			[
+			'name'         => 'township-edit',
+			'display_name' => 'Edit Township',
+			'description'  => 'Edit Township',
+			],
+			[
+			'name'         => 'township-delete',
+			'display_name' => 'Delete Township',
+			'description'  => 'Delete Township',
+			],*/
 
 			[
 				'name'         => 'price-list',

@@ -4,13 +4,13 @@
 	<div class="col-md-4 site-icon">
 		<img class="profile-icon" src="{{ asset('assets/img/roleicon.png') }}" alt="Role">
 	</div>
-	<div class="col-md-4 site-header">Role</div>
+	<div class="col-md-8 site-header">Edit Role</div>
 @stop
 
 @section('main')
 {!! Form::model($role, ['method' => 'PATCH','route' => ['roles.update', $role->id], 'id' => 'role-form', 'class' => 'form-horizontal']) !!}
 	<div class="main-content">
-		<div class="row">
+		{{-- <div class="row">
 			<div class="col-lg-12 margin-tb">
 				<div class="pull-left">
 					<h3 class="page-title">Edit Role</h3>
@@ -18,7 +18,7 @@
 				<div class="pull-right">
 				</div>
 			</div>
-		</div><!-- .row -->
+		</div> --}}<!-- .row -->
 
 		{{-- @if (count($errors) > 0)
 			<div class="alert alert-danger">

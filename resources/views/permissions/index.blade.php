@@ -2,9 +2,9 @@
 
 @section('site-title')
 	<div class="col-md-4 site-icon">
-		<img class="profile-icon" src="{{ asset('assets/img/permission.png') }}" alt="Role">
+		<img class="profile-icon" src="{{ asset('assets/img/permission.png') }}" alt="Permission">
 	</div>
-	<div class="col-md-4 site-header">Role</div>
+	<div class="col-md-8 site-header">Permission List</div>
 @stop
 
 @section('main')

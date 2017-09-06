@@ -1,9 +1,16 @@
 @extends('layouts.layout')
 
+@section('site-title')
+	<div class="col-md-4 site-icon">
+		<img class="profile-icon" src="{{ asset('assets/img/profile.png') }}" alt="Profile">
+	</div>
+	<div class="col-md-8 site-header">User Profile</div>
+@stop
+
 @section('main')
 {!! Form::model($user, ['method' => 'PATCH','route' => ['users.update', $user->id], 'id' => 'user-form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
 	<div class="main-content">
-		<div class="row">
+		{{-- <div class="row">
 			<div class="col-lg-12 margin-tb">
 				<div class="pull-left">
 					<h3>Edit User</h3>
@@ -11,7 +18,7 @@
 				<div class="pull-right">
 				</div>
 			</div>
-		</div><!-- .row -->
+		</div> --}}<!-- .row -->
 
 		{{-- @if (count($errors) > 0)
 			<div class="alert alert-danger">
@@ -226,7 +233,7 @@
 					<label class="control-label col-sm-3" for="company"><strong>Company Name: <span class="required">*</span></strong></label>
 					<div class="col-sm-6">
 						@if(Auth::user()->hasRole('administrator'))
-							{!! Form::select('company_id', ['' => 'Select Company'] + $companies->toArray(), null, ['class' => 'form-control']) !!}
+							{!! Form::select('company_id', ['' => 'Select Company'] + $companies->toArray(), null, ['class' => 'form-control', 'id' => 'company_id']) !!}
 							@if ($errors->has('company_id'))
 								<span class="required">
 									<strong>{{ $errors->first('company_id') }}</strong>
@@ -412,6 +419,7 @@
 					cache: true
 				},
 			});
+			$("#company_id").select2();
 		});
 	</script>
 @stop

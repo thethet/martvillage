@@ -4,7 +4,7 @@
 	<div class="col-md-4 site-icon">
 		<img class="profile-icon" src="{{ asset('assets/img/company.png') }}" alt="Company">
 	</div>
-	<div class="col-md-4 site-header">Company</div>
+	<div class="col-md-8 site-header">Company List</div>
 @stop
 
 @section('main')

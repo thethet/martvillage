@@ -17,9 +17,11 @@ class Countries extends Model {
 	 * @var array
 	 */
 	protected $fillable = [
+		'company_id',
 		'country_name',
 		'description',
 		'code',
+		'total_cities',
 		'deleted',
 		'created_by',
 		'updated_by',

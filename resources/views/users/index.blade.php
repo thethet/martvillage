@@ -1,8 +1,15 @@
 @extends('layouts.layout')
 
+@section('site-title')
+	<div class="col-md-4 site-icon">
+		<img class="profile-icon" src="{{ asset('assets/img/profile.png') }}" alt="Profile">
+	</div>
+	<div class="col-md-8 site-header">User List</div>
+@stop
+
 @section('main')
 	<div class="main-content">
-		<div class="row">
+		{{-- <div class="row">
 			<div class="col-lg-12 margin-tb">
 				<div class="pull-left">
 					<h3>User Management</h3>
@@ -10,7 +17,7 @@
 				<div class="pull-right">
 				</div>
 			</div>
-		</div><!-- .row -->
+		</div> --}}<!-- .row -->
 
 		@if ($message = Session::get('success'))
 		<div class="alert alert-success">
@@ -80,7 +87,7 @@
 			@endpermission
 
 			<div class="menu-icon">
-				<a href="{{ url('settings') }}" >
+				<a href="{{ url('dashboard') }}" >
 					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
 					Back
 				</a>

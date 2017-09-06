@@ -4,7 +4,7 @@
 	<div class="col-md-4 site-icon">
 		<img class="profile-icon" src="{{ asset('assets/img/roleicon.png') }}" alt="Role">
 	</div>
-	<div class="col-md-4 site-header">Role</div>
+	<div class="col-md-8 site-header">Role List</div>
 @stop
 
 @section('main')

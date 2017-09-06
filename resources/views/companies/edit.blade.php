@@ -4,13 +4,13 @@
 	<div class="col-md-4 site-icon">
 		<img class="profile-icon" src="{{ asset('assets/img/company.png') }}" alt="Company">
 	</div>
-	<div class="col-md-4 site-header">Company</div>
+	<div class="col-md-8 site-header">Company Profile</div>
 @stop
 
 @section('main')
 {!! Form::model($company, ['method' => 'PATCH','route' => ['companies.update', $company->id], 'id' => 'company-form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
 	<div class="main-content">
-		<div class="row">
+		{{-- <div class="row">
 			<div class="col-lg-12 margin-tb">
 				<div class="pull-left">
 					<h3 class="page-title">Edit Company</h3>
@@ -18,7 +18,7 @@
 				<div class="pull-right">
 				</div>
 			</div>
-		</div><!-- .row -->
+		</div> --}}<!-- .row -->
 
 		{{-- @if (count($errors) > 0)
 			<div class="alert alert-danger">

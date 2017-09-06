@@ -1,8 +1,16 @@
 @extends('layouts.layout')
+
+@section('site-title')
+	<div class="col-md-4 site-icon">
+		<img class="profile-icon" src="{{ asset('assets/img/permission.png') }}" alt="Permission">
+	</div>
+	<div class="col-md-8 site-header">New Permission</div>
+@stop
+
 @section('main')
 {!! Form::open(array('route' => 'permissions.store','method'=>'POST', 'id' => 'permission-form', 'class' => 'form-horizontal')) !!}
 	<div class="main-content">
-		<div class="row">
+		{{-- <div class="row">
 			<div class="col-lg-12 margin-tb">
 				<div class="pull-left">
 					<h3>Create New Permission</h3>
@@ -10,7 +18,7 @@
 				<div class="pull-right">
 				</div>
 			</div>
-		</div><!-- .row -->
+		</div> --}}<!-- .row -->
 
 		{{-- @if (count($errors) > 0)
 			<div class="alert alert-danger">
