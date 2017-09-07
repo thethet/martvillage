@@ -89,29 +89,29 @@
 			<div class="col-md-2">
 				<a href="{{ url('/reports') }}">
 					<div class="card">
-						<img class="report-icon" src="{{ asset('assets/img/report-icon.png') }}" alt="">
+						<img class="report-icon" src="{{ asset('assets/img/report-icon.png') }}" alt="Report">
 						<p>Report</p>
 					</div>
 				</a>
 			</div>
 			{{-- @endpermission --}}
 
-			{{-- @permission('member-list') --}}
+			@permission('member-list')
 			<div class="col-md-2">
 				<a href="{{ url('/members') }}">
 					<div class="card">
-						<img class="member-icon" src="{{ asset('assets/img/member.png') }}" alt="">
+						<img class="member-icon" src="{{ asset('assets/img/member.png') }}" alt="Member">
 						<p>Member</p>
 					</div>
 				</a>
 			</div>
-			{{-- @endpermission --}}
+			@endpermission
 
 			{{-- @permission('outgoing-list') --}}
 			<div class="col-md-2">
 				<a href="{{ url('/outgoings') }}">
 					<div class="card">
-						<img class="outgoing-icon" src="{{ asset('assets/img/outgoing.png') }}" alt="">
+						<img class="outgoing-icon" src="{{ asset('assets/img/outgoing.png') }}" alt="Out Going">
 						<p>Out Going</p>
 					</div>
 				</a>
@@ -122,7 +122,7 @@
 			<div class="col-md-2">
 				<a href="{{ url('/incomings') }}">
 					<div class="card">
-						<img class="incoming-icon" src="{{ asset('assets/img/incoming.png') }}" alt="">
+						<img class="incoming-icon" src="{{ asset('assets/img/incoming.png') }}" alt="Incoming">
 						<p>Incoming</p>
 					</div>
 				</a>

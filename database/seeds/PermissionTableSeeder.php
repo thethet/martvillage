@@ -242,6 +242,27 @@ class PermissionTableSeeder extends Seeder {
 				'display_name' => 'Delete Price',
 				'description'  => 'Delete Price',
 			],
+
+			[
+				'name'         => 'member-list',
+				'display_name' => 'Display Member Listing',
+				'description'  => 'See only Listing Of Member',
+			],
+			[
+				'name'         => 'member-create',
+				'display_name' => 'Create Member',
+				'description'  => 'Create New Member',
+			],
+			[
+				'name'         => 'member-edit',
+				'display_name' => 'Edit Member',
+				'description'  => 'Edit Member',
+			],
+			[
+				'name'         => 'member-delete',
+				'display_name' => 'Delete Member',
+				'description'  => 'Delete Member',
+			],
 		];
 
 		$role = Role::find(1);

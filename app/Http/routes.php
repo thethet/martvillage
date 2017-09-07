@@ -137,22 +137,6 @@ Route::group(['middleware' => ['auth']], function () {
 
 	/*
 	|--------------------------------------------------------------------------
-	| Nric Township Controller
-	|--------------------------------------------------------------------------
-	|
-	| This is the route for Nric Township Model CRUD
-	|
-	 */
-	Route::get('nrictownships', ['as' => 'nrictownships.index', 'uses' => 'NricTownshipController@index', 'middleware' => ['permission:nrictownship-list|nrictownship-create|nrictownship-edit|nrictownship-delete']]);
-	Route::get('nrictownships/create', ['as' => 'nrictownships.create', 'uses' => 'NricTownshipController@create', 'middleware' => ['permission:nrictownship-create']]);
-	Route::post('nrictownships/create', ['as' => 'nrictownships.store', 'uses' => 'NricTownshipController@store', 'middleware' => ['permission:nrictownship-create']]);
-	Route::get('nrictownships/{id}', ['as' => 'nrictownships.show', 'uses' => 'NricTownshipController@show']);
-	Route::get('nrictownships/{id}/edit', ['as' => 'nrictownships.edit', 'uses' => 'NricTownshipController@edit', 'middleware' => ['permission:nrictownship-edit']]);
-	Route::patch('nrictownships/{id}', ['as' => 'nrictownships.update', 'uses' => 'NricTownshipController@update', 'middleware' => ['permission:nrictownship-edit']]);
-	Route::delete('nrictownships/{id}', ['as' => 'nrictownships.destroy', 'uses' => 'NricTownshipController@destroy', 'middleware' => ['permission:nrictownship-delete']]);
-
-	/*
-	|--------------------------------------------------------------------------
 	| Location Controller
 	|--------------------------------------------------------------------------
 	|
@@ -163,7 +147,7 @@ Route::group(['middleware' => ['auth']], function () {
 	// Route::get('locations/create', ['as' => 'locations.create', 'uses' => 'LocationController@create', 'middleware' => ['permission:location-create']]);
 	Route::post('locations/country/create', ['as' => 'locations.country.store', 'uses' => 'LocationController@storeCountry', 'middleware' => ['permission:location-create']]);
 	Route::post('locations/city/create', ['as' => 'locations.city.store', 'uses' => 'LocationController@storeCity', 'middleware' => ['permission:location-create']]);
-	Route::get('locations/{id}', ['as' => 'locations.show', 'uses' => 'LocationController@show']);
+	// Route::get('locations/{id}', ['as' => 'locations.show', 'uses' => 'LocationController@show']);
 	Route::get('locations/ajax/{id}/edit', ['as' => 'locations.ajax.edit', 'uses' => 'LocationController@editAjax', 'middleware' => ['permission:location-edit']]);
 	Route::get('locations/{id}/edit', ['as' => 'locations.edit', 'uses' => 'LocationController@edit', 'middleware' => ['permission:location-edit']]);
 	Route::patch('locations/{id}', ['as' => 'locations.update', 'uses' => 'LocationController@update', 'middleware' => ['permission:location-edit']]);
@@ -182,10 +166,27 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('prices/currency/create', ['as' => 'prices.currency.store', 'uses' => 'PricingController@storeCurrency', 'middleware' => ['permission:price-create']]);
 	Route::post('prices/price/create', ['as' => 'prices.price.store', 'uses' => 'PricingController@storePrice', 'middleware' => ['permission:price-create']]);
 
-	Route::get('prices/{id}', ['as' => 'prices.show', 'uses' => 'PricingController@show']);
+	// Route::get('prices/{id}', ['as' => 'prices.show', 'uses' => 'PricingController@show']);
 	Route::get('prices/ajax/{id}/edit', ['as' => 'prices.ajax.edit', 'uses' => 'PricingController@editAjax', 'middleware' => ['permission:price-edit']]);
 	Route::get('prices/{id}/edit', ['as' => 'prices.edit', 'uses' => 'PricingController@edit', 'middleware' => ['permission:price-edit']]);
 	Route::patch('prices/{id}', ['as' => 'prices.update', 'uses' => 'PricingController@update', 'middleware' => ['permission:price-edit']]);
 	Route::delete('prices/{id}', ['as' => 'nrictownships.destroy', 'uses' => 'PricingController@destroy', 'middleware' => ['permission:price-delete']]);
+
+	/*
+	|--------------------------------------------------------------------------
+	| Member Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Member Model CRUD
+	|
+	 */
+	Route::get('members', ['as' => 'members.index', 'uses' => 'MemberController@index', 'middleware' => ['permission:member-list|member-create|member-edit|member-delete']]);
+	Route::get('members/create', ['as' => 'members.create', 'uses' => 'MemberController@create', 'middleware' => ['permission:member-create']]);
+	Route::post('members/create', ['as' => 'members.store', 'uses' => 'MemberController@store', 'middleware' => ['permission:member-create']]);
+	Route::get('members/{id}', ['as' => 'members.show', 'uses' => 'MemberController@show']);
+	Route::get('members/ajax/{id}/edit', ['as' => 'members.ajax.edit', 'uses' => 'MemberController@editAjax', 'middleware' => ['permission:member-edit']]);
+	Route::get('members/{id}/edit', ['as' => 'members.edit', 'uses' => 'MemberController@edit', 'middleware' => ['permission:member-edit']]);
+	Route::patch('members/{id}', ['as' => 'members.update', 'uses' => 'MemberController@update', 'middleware' => ['permission:member-edit']]);
+	Route::delete('members/{id}', ['as' => 'members.destroy', 'uses' => 'MemberController@destroy', 'middleware' => ['permission:member-delete']]);
 
 });
