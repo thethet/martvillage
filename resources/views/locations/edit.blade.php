@@ -81,7 +81,7 @@
 			</div>
 
 			<div class="col-lg-6 city-add">
-				{!! Form::open(array('route' => 'locations.city.store','method'=>'POST', 'id' => 'city-form', 'class' => 'form-horizontal')) !!}
+					{!! Form::model($countryCity, ['method' => 'PATCH','route' => ['locations.update', $countryCity->id], 'id' => 'city-form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
 					<div class="form-group"></div>
 
 					<div class="form-group">
@@ -145,7 +145,7 @@
 							<a href="#" id="add" onclick="document.getElementById('city-form').submit();">
 								<div class="addbtn">
 									<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
-										Add
+										Update
 								</div>
 							</a>
 						</div>
@@ -172,7 +172,7 @@
 								@foreach($countriesLists as $countlist)
 									@if(array_key_exists($countlist->country_name, $cities))
 									<td>
-										{!! Form::checkbox('edit', $cities[$countlist->country_name]['id'], null, ['class' => 'editboxes']) !!}
+										{!! Form::checkbox('edit', $cities[$countlist->country_name]['id'], null, ['class' => 'editboxes', 'disabled' => true]) !!}
 									</td>
 									<td>{{ $cities[$countlist->country_name]['state_name'] }}</td>
 									@else
@@ -197,7 +197,7 @@
 				</a>
 			</div><!-- .menu-icon -->
 
-			@permission('location-create')
+			{{-- @permission('location-create')
 				<div class="menu-icon">
 					<a href="{{ route('permissions.create') }}">
 						<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
@@ -222,10 +222,10 @@
 						Delete
 					</a>
 				</div><!-- .menu-icon -->
-			@endpermission
+			@endpermission --}}
 
 			<div class="menu-icon">
-				<a href="{{ url('settings') }}" >
+				<a href="{{ url('locations') }}" >
 					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
 					Back
 				</a>

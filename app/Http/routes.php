@@ -164,6 +164,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('locations/country/create', ['as' => 'locations.country.store', 'uses' => 'LocationController@storeCountry', 'middleware' => ['permission:location-create']]);
 	Route::post('locations/city/create', ['as' => 'locations.city.store', 'uses' => 'LocationController@storeCity', 'middleware' => ['permission:location-create']]);
 	Route::get('locations/{id}', ['as' => 'locations.show', 'uses' => 'LocationController@show']);
+	Route::get('locations/ajax/{id}/edit', ['as' => 'locations.ajax.edit', 'uses' => 'LocationController@editAjax', 'middleware' => ['permission:location-edit']]);
 	Route::get('locations/{id}/edit', ['as' => 'locations.edit', 'uses' => 'LocationController@edit', 'middleware' => ['permission:location-edit']]);
 	Route::patch('locations/{id}', ['as' => 'locations.update', 'uses' => 'LocationController@update', 'middleware' => ['permission:location-edit']]);
 	Route::delete('locations/{id}', ['as' => 'nrictownships.destroy', 'uses' => 'LocationController@destroy', 'middleware' => ['permission:location-delete']]);

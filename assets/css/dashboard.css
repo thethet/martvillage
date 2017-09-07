@@ -175,7 +175,7 @@ img.outgoing-icon, img.incoming-icon {
 	overflow: auto;	/*border: 1px red solid;*/
 }
 .country-tbl {
-	max-height: 180px;
+	max-height: 200px;
 	margin-bottom: 10px;
 }
 th {
@@ -205,6 +205,9 @@ h3.page-title {
 }
 .country-city {
 	margin-top: 5px;
+}
+.country-list .pagination {
+	margin: 0;
 }
 .addbtn {
 	padding: 5px;
