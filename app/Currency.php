@@ -21,9 +21,13 @@ class Currency extends Model {
 	protected $fillable = [
 		'company_id',
 		'type',
-		'from_state',
+		'from_location',
 		'deleted',
 		'created_by',
 		'updated_by',
 	];
+
+	public function location() {
+		return $this->belongsTo('App\Countries', 'from_location');
+	}
 }

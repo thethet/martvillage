@@ -179,7 +179,9 @@
 									<td>
 										{!! Form::checkbox('edit', $cities[$countlist->country_name]['id'], null, ['class' => 'editboxes']) !!}
 									</td>
-									<td>{{ $cities[$countlist->country_name]['state_name'] }}</td>
+									<td>
+										{{ $cities[$countlist->country_name]['state_name'] }}
+									</td>
 									@else
 										<td></td>
 										<td></td>

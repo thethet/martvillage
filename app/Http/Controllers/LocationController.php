@@ -50,7 +50,6 @@ class LocationController extends Controller {
 			}
 		}
 
-		// dd($citiesLists);
 		return view('locations.index', ['countries' => $countries, 'countryList' => $countryList, 'countriesLists' => $countriesLists, 'citiesLists' => $citiesLists])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 

@@ -54,7 +54,7 @@
 							<strong>Currency: <span class="required">*</span></strong>
 						</label>
 						<div class="col-sm-6">
-							{!! Form::text('type', null, array('placeholder' => 'Currency','class' => 'form-control')) !!}
+							{!! Form::text('type', null, array('placeholder' => 'Currency','class' => 'form-control', 'disabled' => true)) !!}
 						</div>
 					</div><!-- .form-group -->
 
@@ -63,10 +63,10 @@
 							<strong>From: <span class="required">*</span></strong>
 						</label>
 						<div class="col-sm-6">
-							{!! Form::select('from_location', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'from_location', 'class' => 'form-control']) !!}
+							{!! Form::select('from_location', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'from_location', 'class' => 'form-control', 'disabled' => true]) !!}
 						</div>
 						<div class="col-sm-3">
-							<a href="#" id="add" onclick="document.getElementById('currency-form').submit();">
+							<a href="#" id="add">
 								<div class="addbtn">
 									<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
 										Add
@@ -85,7 +85,7 @@
 			</div>
 
 			<div class="col-lg-6 city-add">
-				{!! Form::open(array('route' => 'prices.price.store','method'=>'POST', 'id' => 'price-form', 'class' => 'form-horizontal')) !!}
+				{!! Form::model($prices, ['method' => 'PATCH','route' => ['prices.update', $prices->id], 'id' => 'price-form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
 					{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
 
 					<div class="form-group" style="margin-bottom: 8px; margin-top: 10px;">
@@ -162,7 +162,7 @@
 							<a href="#" id="add" onclick="document.getElementById('price-form').submit();">
 								<div class="addbtn">
 									<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
-										Add
+										Update
 								</div>
 							</a>
 						</div>
@@ -172,16 +172,13 @@
 
 		</div>
 
-		@if(count($pricingLists) > 0)
 		<div class="row country-city">
 			<div class="table-cont">
 				<table class="table table-bordered table-responsive">
-
 					<thead>
 						<tr>
 							<th colspan="{{ count($currencyTitle) + 3 }}" class="center">Pricing</th>
 						</tr>
-
 						<tr>
 							<th width="8px">&nbsp;&nbsp;&nbsp;</th>
 							<th width="8px">&nbsp;&nbsp;&nbsp;</th>
@@ -194,7 +191,6 @@
 								</th>
 							@endforeach
 						</tr>
-
 					</thead>
 					<tbody>
 						<?php $j = 1; ?>
@@ -203,7 +199,7 @@
 							<tr>
 								<td width="8px">{{ $j++ }}</td>
 								<td width="8px">
-									{!! Form::checkbox('edit', $pricing->id, null, ['class' => 'editboxes']) !!}
+									{!! Form::checkbox('edit', $pricing->id, null, ['class' => 'editboxes', 'disabled' => true]) !!}
 								</td>
 								<td>{{ $pricing->title_name }}</td>
 								@foreach($currencyTitle as $title)
@@ -217,13 +213,10 @@
 						@endforeach
 
 					</tbody>
-
 				</table>
 			</div>
 		</div>
-		@endif
 	</div><!-- .main-content -->
-
 
 	<div class="footer-menu">
 		<div class="footer-content">
@@ -243,23 +236,23 @@
 				</div><!-- .menu-icon -->
 			@endpermission --}}
 
-			@permission('price-edit')
+			{{-- @permission('price-edit')
 				<div class="menu-icon">
 					<a href="#" id="edit">
 						<img src="{{ asset('assets/img/edit-icon.png') }}" alt="Edit">
 						Edit
 					</a>
 				</div><!-- .menu-icon -->
-			@endpermission
+			@endpermission --}}
 
-			@permission('price-delete')
+			{{-- @permission('price-delete')
 				<div class="menu-icon">
 					<a href="#" id="delete">
 						<img src="{{ asset('assets/img/trash-icon.png') }}" alt="Delete">
 						Delete
 					</a>
 				</div><!-- .menu-icon -->
-			@endpermission
+			@endpermission --}}
 
 			<div class="menu-icon">
 				<a href="{{ url('settings') }}" >
@@ -317,7 +310,7 @@
 					if ($(this).is(":checked")) {
 						var id = $(this).val();
 						$.ajax({
-							url: "{!! url('prices/"+ id +"') !!}",
+							url: "{!! url('locations/"+ id +"') !!}",
 							type: 'DELETE',
 							data: {_token: '{!! csrf_token() !!}'},
 							dataType: 'JSON',
