@@ -43,11 +43,11 @@ class UserController extends Controller {
 			$roles = Role::where('id', '!=', 1)->lists('display_name', 'id');
 		}
 		$companies     = Companies::where('deleted', 'N')->lists('company_name', 'id');
-		$countries     = Countries::lists('country_name', 'id');
-		$states        = States::lists('state_name', 'id');
-		$townships     = Townships::lists('township_name', 'id');
-		$nricCodes     = NricCodes::orderBy('id', 'asc')->lists('nric_code', 'id');
-		$nricTownships = NricTownships::orderBy('serial_no', 'asc')->lists('short_name', 'id');
+		$countries     = Countries::where('deleted', 'N')->lists('country_name', 'id');
+		$states        = States::where('deleted', 'N')->lists('state_name', 'id');
+		$townships     = Townships::where('deleted', 'N')->lists('township_name', 'id');
+		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('id', 'asc')->lists('nric_code', 'id');
+		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('serial_no', 'asc')->lists('short_name', 'id');
 		return view('users.create', ['roles' => $roles, 'companies' => $companies, 'countries' => $countries, 'states' => $states, 'townships' => $townships, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships]);
 	}
 

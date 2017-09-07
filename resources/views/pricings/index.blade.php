@@ -2,9 +2,9 @@
 
 @section('site-title')
 	<div class="col-md-4 site-icon">
-		<img class="profile-icon" src="{{ asset('assets/img/tracking-icon.png') }}" alt="Location">
+		<img class="profile-icon" src="{{ asset('assets/img/price-tag.png') }}" alt="Pricing">
 	</div>
-	<div class="col-md-8 site-header">Location List</div>
+	<div class="col-md-8 site-header">Pricing List</div>
 @stop
 
 @section('main')
@@ -31,39 +31,42 @@
 					<table class="table table-bordered table-responsive">
 						<thead>
 							<tr>
-								<th colspan="3" class="center">Country List</th>
-							</tr>
-
-							<tr>
-								<th>No</th>
-								<th>Country Name</th>
-								<th>Number of City</th>
+								<th colspan="3" class="center">Categories</th>
 							</tr>
 						</thead>
 						<tbody>
-							@foreach ($countries as $key => $country)
+							@foreach ($categories as $key => $category)
 								<tr>
-									<td>{{ ++$i }}</td>
-									<td>{{ $country->country_name }}</td>
-									<td>{{ $country->total_cities }}</td>
+									<td width="8px">{{ ++$i }}</td>
+									<td>{{ $category->name }}</td>
+									<td>{{ $category->unit }}</td>
 								</tr>
 							@endforeach
 						</tbody>
 					</table>
 				</div>
-				{{-- {!! $countries->render() !!} --}}
+				{{-- {!! $categories->render() !!} --}}
 
-				{!! Form::open(array('route' => 'locations.country.store','method'=>'POST', 'id' => 'country-form', 'class' => 'form-horizontal')) !!}
+				{!! Form::open(array('route' => 'prices.currency.store','method'=>'POST', 'id' => 'currency-form', 'class' => 'form-horizontal')) !!}
 					{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
-					<div class="form-group" style="margin-bottom: 0;">
-						<label class="control-label col-sm-3" for="name">
-							<strong>Country:</strong>
+					<div class="form-group">
+						<label class="control-label col-sm-3" for="currency">
+							<strong>Currency: <span class="required">*</span></strong>
 						</label>
 						<div class="col-sm-6">
-							{!! Form::text('country_name', null, array('placeholder' => 'Country Name','class' => 'form-control')) !!}
+							{!! Form::text('type', null, array('placeholder' => 'Currency','class' => 'form-control')) !!}
+						</div>
+					</div><!-- .form-group -->
+
+					<div class="form-group" style="margin-bottom: 0;">
+						<label class="control-label col-sm-3" for="from">
+							<strong>From: <span class="required">*</span></strong>
+						</label>
+						<div class="col-sm-6">
+							{!! Form::select('from_location', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'from_location', 'class' => 'form-control']) !!}
 						</div>
 						<div class="col-sm-3">
-							<a href="#" id="add" onclick="document.getElementById('country-form').submit();">
+							<a href="#" id="add" onclick="document.getElementById('currency-form').submit();">
 								<div class="addbtn">
 									<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
 										Add
@@ -71,6 +74,7 @@
 							</a>
 						</div>
 					</div><!-- .form-group -->
+
 					@if ($errors->has('country_name'))
 						<span class="required">
 							<strong>{{ $errors->first('country_name') }}</strong>
@@ -81,68 +85,81 @@
 			</div>
 
 			<div class="col-lg-6 city-add">
-				{!! Form::open(array('route' => 'locations.city.store','method'=>'POST', 'id' => 'city-form', 'class' => 'form-horizontal')) !!}
-					<div class="form-group"></div>
+				{!! Form::open(array('route' => 'prices.price.store','method'=>'POST', 'id' => 'price-form', 'class' => 'form-horizontal')) !!}
+					{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
 
-					<div class="form-group">
+					<div class="form-group" style="margin-bottom: 8px; margin-top: 10px;">
 						<label class="control-label col-sm-3" for="name">
-							<strong>City Name:</strong>
+							<strong>Title Name:</strong>
 						</label>
 						<div class="col-sm-6">
-							{!! Form::text('state_name', null, array('placeholder' => 'City Name','class' => 'form-control')) !!}
-							@if ($errors->has('state_name'))
+							{!! Form::text('title_name', null, array('placeholder' => 'Title Name','class' => 'form-control')) !!}
+							@if ($errors->has('title_name'))
 								<span class="required">
-									<strong>{{ $errors->first('state_name') }}</strong>
+									<strong>{{ $errors->first('title_name') }}</strong>
 								</span>
 							@endif
 						</div>
 					</div><!-- .form-group -->
 
-					<div class="form-group">
-						<label class="control-label col-sm-3" for="name">
-							<strong>Country:</strong>
+					<div class="form-group" style="margin-bottom: 8px;">
+						<label class="control-label col-sm-3" for="category">
+							<strong>Category:</strong>
 						</label>
 						<div class="col-sm-6">
-							{!! Form::select('country_id', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'country_id', 'class' => 'form-control']) !!}
-							@if ($errors->has('country_id'))
+							{!! Form::select('category_id', ['' => 'Select Category'] + $categoryList->toArray(), null, ['id'=>'category_id', 'class' => 'form-control']) !!}
+							@if ($errors->has('category_id'))
 								<span class="required">
-									<strong>{{ $errors->first('country_id') }}</strong>
+									<strong>{{ $errors->first('category_id') }}</strong>
 								</span>
 							@endif
 						</div>
 					</div><!-- .form-group -->
-					<div class="form-group">
-						<label class="control-label col-sm-3" for="name">
+
+					<div class="form-group" style="margin-bottom: 8px;">
+						<label class="control-label col-sm-3" for="fromlocation">
+							<strong>From Location:</strong>
 						</label>
-						<div class="col-sm-6">
+						<div class="col-sm-4">
+							{!! Form::select('from_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'from_country', 'class' => 'form-control']) !!}
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-3" for="name">
-						</label>
-						<div class="col-sm-6">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-3" for="name">
-						</label>
-						<div class="col-sm-6">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-3" for="name">
-						</label>
-						<div class="col-sm-6">
+
+						<div class="col-sm-4">
+							{!! Form::select('from_state', ['' => 'Select State'] + $stateList->toArray(), null, ['id'=>'from_state', 'class' => 'form-control']) !!}
 						</div>
 					</div>
 
-					<div class="form-group">
+					<div class="form-group" style="margin-bottom: 8px;">
+						<label class="control-label col-sm-3" for="tolocation">
+							<strong>Top Location:</strong>
+						</label>
+						<div class="col-sm-4">
+							{!! Form::select('to_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'to_country', 'class' => 'form-control']) !!}
+						</div>
+
+						<div class="col-sm-4">
+							{!! Form::select('to_state', ['' => 'Select State'] + $stateList->toArray(), null, ['id'=>'to_state', 'class' => 'form-control']) !!}
+						</div>
+					</div>
+
+					<div class="form-group" style="margin-bottom: 8px;">
 						<label class="control-label col-sm-3" for="name">
+							<strong>Currency Type:</strong>
 						</label>
 						<div class="col-sm-6">
+							{!! Form::select('currency_id', ['' => 'Select Currency'] + $currencyList->toArray(), null, ['id'=>'currency_id', 'class' => 'form-control']) !!}
+						</div>
+					</div>
+
+					<div class="form-group" style="margin-bottom: 8px;">
+						<label class="control-label col-sm-3" for="name">
+							<strong>Price:</strong>
+						</label>
+						<div class="col-sm-6">
+							{!! Form::text('unit_price', null, array('placeholder' => 'Price','class' => 'form-control')) !!}
 						</div>
 						<div class="col-sm-3">
-							<a href="#" id="add" onclick="document.getElementById('city-form').submit();">
+							<a href="#" id="add" onclick="document.getElementById('price-form').submit();">
 								<div class="addbtn">
 									<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
 										Add
@@ -156,23 +173,22 @@
 		</div>
 
 		<div class="row country-city">
-			<div class="table-cont country-city-tbl">
+			<div class="table-cont">
 				<table class="table table-bordered table-responsive">
 					<thead>
 						<tr>
-							<th colspan="{{ (count($countriesLists) * 2) }}" class="center">
-								Country and City
-							</th>
+							<th colspan="2" class="center">Pricing</th>
 						</tr>
-						<tr>
+						{{-- <tr>
 							@foreach($countriesLists as $clist)
 								<th width="8px">&nbsp;&nbsp;&nbsp;</th>
+								<th></th>
 								<th>{{ $clist->country_name }}</th>
 							@endforeach
-						</tr>
+						</tr> --}}
 					</thead>
 					<tbody>
-						@foreach($citiesLists as $cities)
+						{{-- @foreach($citiesLists as $cities)
 							<tr>
 								@foreach($countriesLists as $countlist)
 									@if(array_key_exists($countlist->country_name, $cities))
@@ -186,7 +202,7 @@
 									@endif
 								@endforeach
 							</tr>
-						@endforeach
+						@endforeach --}}
 					</tbody>
 				</table>
 			</div>
@@ -202,16 +218,16 @@
 				</a>
 			</div><!-- .menu-icon -->
 
-			{{-- @permission('location-create')
+			{{-- @permission('price-create')
 				<div class="menu-icon">
-					<a href="{{ route('locations.create') }}">
+					<a href="{{ route('prices.create') }}">
 						<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
 						New
 					</a>
 				</div><!-- .menu-icon -->
 			@endpermission --}}
 
-			@permission('location-edit')
+			@permission('price-edit')
 				<div class="menu-icon">
 					<a href="#" id="edit">
 						<img src="{{ asset('assets/img/edit-icon.png') }}" alt="Edit">
@@ -220,7 +236,7 @@
 				</div><!-- .menu-icon -->
 			@endpermission
 
-			@permission('location-delete')
+			@permission('price-delete')
 				<div class="menu-icon">
 					<a href="#" id="delete">
 						<img src="{{ asset('assets/img/trash-icon.png') }}" alt="Delete">
@@ -245,7 +261,9 @@
 	<script src="{{ asset('plugins/select2/dist/js/select2.js') }}"></script>
 	<script>
 		$(document).ready(function(){
-			$("#country_id").select2();
+			$("#from_location").select2();
+			$("#category_id").select2();
+			$("#currency_id").select2();
 
 			$(".editboxes").change(function() {
 				var $el = $(this);
@@ -293,6 +311,52 @@
 						});
 					}
 				});
+			});
+
+			$("#from_country").select2();
+			$("#from_state").select2({
+				ajax: {
+					url: "{{ url('states/search-state-country') }}",
+					dataType: 'json',
+					delay: 250,
+					data: function (params) {
+						var countryId = $('#from_country').val();
+						return {
+							search: params.term,
+							countryId: countryId
+						};
+					},
+					processResults: function (data, params) {
+						console.log(data)
+						return {
+							results: data.items
+						};
+					},
+					cache: true
+				},
+			});
+
+			$("#to_country").select2();
+			$("#to_state").select2({
+				ajax: {
+					url: "{{ url('states/search-state-country') }}",
+					dataType: 'json',
+					delay: 250,
+					data: function (params) {
+						var countryId = $('#to_country').val();
+						return {
+							search: params.term,
+							countryId: countryId
+						};
+					},
+					processResults: function (data, params) {
+						console.log(data)
+						return {
+							results: data.items
+						};
+					},
+					cache: true
+				},
 			});
 		});
 	</script>

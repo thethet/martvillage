@@ -12,7 +12,7 @@ class CreateTblPrices extends Migration {
 	public function up() {
 		Schema::create('prices', function (Blueprint $table) {
 			$table->increments('id');
-			$table->integer('compancy_id');
+			$table->integer('company_id');
 			$table->integer('category_id');
 			$table->integer('currency_id');
 			$table->string('title_name');

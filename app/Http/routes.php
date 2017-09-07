@@ -169,4 +169,23 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::patch('locations/{id}', ['as' => 'locations.update', 'uses' => 'LocationController@update', 'middleware' => ['permission:location-edit']]);
 	Route::delete('locations/{id}', ['as' => 'nrictownships.destroy', 'uses' => 'LocationController@destroy', 'middleware' => ['permission:location-delete']]);
 
+	/*
+	|--------------------------------------------------------------------------
+	| Pricing Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Country, States and Township Models CRUD
+	|
+	 */
+	Route::get('prices', ['as' => 'prices.index', 'uses' => 'PricingController@index', 'middleware' => ['permission:price-list|price-create|price-edit|price-delete']]);
+	// Route::get('prices/create', ['as' => 'prices.create', 'uses' => 'PricingController@create', 'middleware' => ['permission:price-create']]);
+	Route::post('prices/currency/create', ['as' => 'prices.currency.store', 'uses' => 'PricingController@storeCurrency', 'middleware' => ['permission:price-create']]);
+	Route::post('prices/price/create', ['as' => 'prices.price.store', 'uses' => 'PricingController@storePrice', 'middleware' => ['permission:price-create']]);
+
+	Route::get('prices/{id}', ['as' => 'prices.show', 'uses' => 'PricingController@show']);
+	Route::get('prices/ajax/{id}/edit', ['as' => 'prices.ajax.edit', 'uses' => 'PricingController@editAjax', 'middleware' => ['permission:price-edit']]);
+	Route::get('prices/{id}/edit', ['as' => 'prices.edit', 'uses' => 'PricingController@edit', 'middleware' => ['permission:price-edit']]);
+	Route::patch('prices/{id}', ['as' => 'prices.update', 'uses' => 'PricingController@update', 'middleware' => ['permission:price-edit']]);
+	Route::delete('prices/{id}', ['as' => 'nrictownships.destroy', 'uses' => 'PricingController@destroy', 'middleware' => ['permission:price-delete']]);
+
 });

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\States;
+use Illuminate\Http\Request;
+
 class StateController extends Controller {
 	/**
 	 * Display a listing of the resource.
@@ -79,9 +82,9 @@ class StateController extends Controller {
 		$search    = $request->get('search');
 		$countryId = $request->get('countryId');
 		if ($countryId) {
-			$items = NricTownships::select(\DB::raw('id as id, state_name as text'))->where('country_id', $countryId)->where('state_name', 'like', "{$search}%")->get();
+			$items = States::select(\DB::raw('id as id, state_name as text'))->where('country_id', $countryId)->where('state_name', 'like', "{$search}%")->get();
 		} else {
-			$items = NricTownships::select(\DB::raw('id as id, state_name as text'))->where('state_name', 'like', "{$search}%")->get();
+			$items = States::select(\DB::raw('id as id, state_name as text'))->where('state_name', 'like', "{$search}%")->get();
 		}
 
 		$header = array(

@@ -32,7 +32,11 @@ class LocationController extends Controller {
 			->groupBy('s.country_id')
 			->orderBy('count', 'DESC')
 			->first();
-		$size = $count->count;
+		if ($count) {
+			$size = $count->count;
+		} else {
+			$size = 0;
+		}
 
 		$citiesLists = array();
 		foreach ($countriesLists as $cList) {
@@ -75,6 +79,7 @@ class LocationController extends Controller {
 
 		return redirect()->route('locations.index')
 			->with('success', 'Country created successfully');
+
 	}
 
 /**

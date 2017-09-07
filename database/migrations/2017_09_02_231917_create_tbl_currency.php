@@ -12,9 +12,9 @@ class CreateTblCurrency extends Migration {
 	public function up() {
 		Schema::create('currency', function (Blueprint $table) {
 			$table->increments('id');
-			$table->integer('compancy_id');
+			$table->integer('company_id');
 			$table->string('type');
-			$table->integer('from_state');
+			$table->integer('from_location');
 			$table->enum('deleted', ['N', 'Y']);
 			$table->integer('created_by');
 			$table->integer('updated_by');

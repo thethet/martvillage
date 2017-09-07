@@ -12,6 +12,7 @@ class CreateTblTownships extends Migration {
 	public function up() {
 		Schema::create('townships', function (Blueprint $table) {
 			$table->increments('id');
+			$table->integer('company_id');
 			$table->integer('state_id');
 			$table->string('township_name');
 			$table->string('description')->nullable();
