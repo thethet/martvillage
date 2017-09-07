@@ -178,6 +178,12 @@ img.outgoing-icon, img.incoming-icon {
 	max-height: 200px;
 	margin-bottom: 10px;
 }
+
+.country-city-tbl {
+	max-height: 255px;
+	margin-bottom: 10px;
+}
+
 th {
 	background-color: #4f81bd;
 	color: #fff;
