@@ -131,20 +131,26 @@
 			});
 
 			$("#delete").on("click",function(){
-				$(".editboxes").each(function() {
-					if ($(this).is(":checked")) {
-						var id = $(this).val();
-						$.ajax({
-							url: "{!! url('users/"+ id +"') !!}",
-							type: 'DELETE',
-							data: {_token: '{!! csrf_token() !!}'},
-							dataType: 'JSON',
-							success: function (data) {
-								window.location.replace(data.url);
-							}
-						});
-					}
-				});
+				var x = confirm("Are you sure you want to delete?");
+				if(x) {
+					$(".editboxes").each(function() {
+						if ($(this).is(":checked")) {
+							var id = $(this).val();
+							$.ajax({
+								url: "{!! url('users/"+ id +"') !!}",
+								type: 'DELETE',
+								data: {_token: '{!! csrf_token() !!}'},
+								dataType: 'JSON',
+								success: function (data) {
+									window.location.replace(data.url);
+								}
+							});
+						}
+					});
+				} else {
+					window.location.reload();
+					$('.editboxes').attr('checked', false);
+				}
 			});
 		});
 	</script>

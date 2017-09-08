@@ -10,27 +10,6 @@
 @section('main')
 {!! Form::model($company, ['method' => 'PATCH','route' => ['companies.update', $company->id], 'id' => 'company-form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
 	<div class="main-content">
-		{{-- <div class="row">
-			<div class="col-lg-12 margin-tb">
-				<div class="pull-left">
-					<h3 class="page-title">Edit Company</h3>
-				</div>
-				<div class="pull-right">
-				</div>
-			</div>
-		</div> --}}<!-- .row -->
-
-		{{-- @if (count($errors) > 0)
-			<div class="alert alert-danger">
-				<strong>Whoops!</strong> There were some problems with your input.<br><br>
-				<ul>
-					@foreach ($errors->all() as $error)
-						<li>{{ $error }}</li>
-					@endforeach
-				</ul>
-			</div>
-		@endif --}}
-
 		<div class="small-10 columns">
 			<p><b><span class="required">*</span> Fields are required</b></p>
 		</div>
@@ -40,7 +19,12 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="company"><strong>Company Name: <span class="required">*</span></strong></label>
 					<div class="col-sm-6">
-						{!! Form::text('company_name', null, array('placeholder' => 'Please Enter Company Name', 'class' => 'form-control')) !!}
+						@if (Auth::user()->hasRole('administrator'))
+							{!! Form::text('company_name', null, array('placeholder' => 'Please Enter Company Name', 'class' => 'form-control')) !!}
+						@else
+							{!! Form::text('company_name', null, array('placeholder' => 'Please Enter Company Name', 'class' => 'form-control', 'disabled' => true)) !!}
+						@endif
+
 						@if ($errors->has('company_name'))
 							<span class="required">
 								<strong>{{ $errors->first('company_name') }}</strong>
@@ -52,7 +36,12 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="contact-no"><strong>Contact No.: <span class="required">*</span></strong></label>
 					<div class="col-sm-6">
-						{!! Form::text('contact_no', null, array('placeholder' => 'Please Enter Contact Number', 'class' => 'form-control')) !!}
+						@if (Auth::user()->hasRole('administrator'))
+							{!! Form::text('contact_no', null, array('placeholder' => 'Please Enter Contact Number', 'class' => 'form-control')) !!}
+						@else
+							{!! Form::text('contact_no', null, array('placeholder' => 'Please Enter Contact Number', 'class' => 'form-control', 'disabled' => true)) !!}
+						@endif
+
 						@if ($errors->has('contact_no'))
 							<span class="required">
 								<strong>{{ $errors->first('contact_no') }}</strong>
@@ -61,22 +50,15 @@
 					</div>
 				</div><!-- .form-group -->
 
-				{{-- <div class="form-group">
-					<label class="control-label col-sm-3" for="fax"><strong>Fax: <span class="required">*</span></strong></label>
-					<div class="col-sm-6">
-						{!! Form::text('fax', null, array('placeholder' => 'Please Enter Fax Number', 'class' => 'form-control')) !!}
-						@if ($errors->has('fax'))
-							<span class="required">
-								<strong>{{ $errors->first('fax') }}</strong>
-							</span>
-						@endif
-					</div>
-				</div><!-- .form-group --> --}}
-
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="email"><strong>Email: <span class="required">*</span></strong></label>
 					<div class="col-sm-6">
-						{!! Form::text('email', null, array('placeholder' => 'Please Enter Email', 'class' => 'form-control')) !!}
+						@if (Auth::user()->hasRole('administrator'))
+							{!! Form::text('email', null, array('placeholder' => 'Please Enter Email', 'class' => 'form-control')) !!}
+						@else
+							{!! Form::text('email', null, array('placeholder' => 'Please Enter Email', 'class' => 'form-control', 'disabled' => true)) !!}
+						@endif
+
 						@if ($errors->has('email'))
 							<span class="required">
 								<strong>{{ $errors->first('email') }}</strong>
@@ -88,7 +70,12 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="email"><strong>Expiry Date: <span class="required">*</span></strong></label>
 					<div class="col-sm-6">
-						{!! Form::text('expiry_date', null, array('placeholder' => 'Please Enter Expiry Date', 'class' => 'form-control', 'id' => 'expiry_date')) !!}
+						@if (Auth::user()->hasRole('administrator'))
+							{!! Form::text('expiry_date', null, array('placeholder' => 'Please Enter Expiry Date', 'class' => 'form-control', 'id' => 'expiry_date')) !!}
+						@else
+							{!! Form::text('expiry_date', null, array('placeholder' => 'Please Enter Expiry Date', 'class' => 'form-control', 'id' => 'expiry_date', 'disabled' => true)) !!}
+						@endif
+
 						@if ($errors->has('expiry_date'))
 							<span class="required">
 								<strong>{{ $errors->first('expiry_date') }}</strong>

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-class StateController extends Controller {
+class LotInController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 *

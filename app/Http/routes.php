@@ -50,9 +50,9 @@ Route::group(['middleware' => 'web'], function () {
 	 */
 	Route::get('nrictownships/nric-township', ['as' => 'nrictownships.search.nriccode', 'uses' => 'NricTownshipController@searchByNricCode']);
 
-	Route::get('states/search-state-country', ['as' => 'states.search.statecountry', 'uses' => 'StateController@searchByCountry']);
+	Route::get('states/search-state-country', ['as' => 'states.search.statecountry', 'uses' => 'LocationController@searchByCountry']);
 
-	Route::get('townships/search-township-state', ['as' => 'townships.search.townshipstate', 'uses' => 'TownshipController@searchByState']);
+	Route::get('townships/search-township-state', ['as' => 'townships.search.townshipstate', 'uses' => 'LocationController@searchByState']);
 });
 
 Route::group(['middleware' => ['auth']], function () {
@@ -188,5 +188,22 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('members/{id}/edit', ['as' => 'members.edit', 'uses' => 'MemberController@edit', 'middleware' => ['permission:member-edit']]);
 	Route::patch('members/{id}', ['as' => 'members.update', 'uses' => 'MemberController@update', 'middleware' => ['permission:member-edit']]);
 	Route::delete('members/{id}', ['as' => 'members.destroy', 'uses' => 'MemberController@destroy', 'middleware' => ['permission:member-delete']]);
+
+	/*
+	|--------------------------------------------------------------------------
+	| Lot-in Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Lot-in Model CRUD
+	|
+	 */
+	Route::get('lotins', ['as' => 'lotins.index', 'uses' => 'LotInController@index', 'middleware' => ['permission:lotin-list|lotin-create|lotin-edit|lotin-delete']]);
+	Route::get('lotins/create', ['as' => 'lotins.create', 'uses' => 'LotInController@create', 'middleware' => ['permission:lotin-create']]);
+	Route::post('lotins/create', ['as' => 'lotins.store', 'uses' => 'LotInController@store', 'middleware' => ['permission:lotin-create']]);
+	Route::get('lotins/{id}', ['as' => 'lotins.show', 'uses' => 'LotInController@show']);
+	Route::get('lotins/ajax/{id}/edit', ['as' => 'lotins.ajax.edit', 'uses' => 'LotInController@editAjax', 'middleware' => ['permission:lotin-edit']]);
+	Route::get('lotins/{id}/edit', ['as' => 'lotins.edit', 'uses' => 'LotInController@edit', 'middleware' => ['permission:lotin-edit']]);
+	Route::patch('lotins/{id}', ['as' => 'lotins.update', 'uses' => 'LotInController@update', 'middleware' => ['permission:lotin-edit']]);
+	Route::delete('lotins/{id}', ['as' => 'lotins.destroy', 'uses' => 'LotInController@destroy', 'middleware' => ['permission:lotin-delete']]);
 
 });

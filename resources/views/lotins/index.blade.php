@@ -2,22 +2,13 @@
 
 @section('site-title')
 	<div class="col-md-4 site-icon">
-		<img class="profile-icon" src="{{ asset('assets/img/company.png') }}" alt="Company">
+		<img class="profile-icon" src="{{ asset('assets/img/lot-in.png') }}" alt="Lot-in">
 	</div>
-	<div class="col-md-8 site-header">Company List</div>
+	<div class="col-md-8 site-header">Lot-in</div>
 @stop
 
 @section('main')
 	<div class="main-content">
-		<!-- <div class="row">
-			<div class="col-lg-12 margin-tb">
-				<div class="pull-left">
-					<h3>Company Management</h3>
-				</div>
-				<div class="pull-right">
-				</div>
-			</div>
-		</div>.row -->
 
 		@if ($message = Session::get('success'))
 		<div class="alert alert-success">
@@ -25,37 +16,40 @@
 		</div>
 		@endif
 
-		<div class="table-cont">
-			<table class="table table-bordered table-responsive">
-				<thead>
-					<tr>
-						<th>No</th>
-						<th>Company Name</th>
-						<th>Email</th>
-						<th>Contact No.</th>
-						<th>Address</th>
-						<th>Expiry Date</th>
-						<th width="20px">Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach ($companies as $key => $company)
-					<tr>
-						<td>{{ ++$i }}</td>
-						<td>{{ strtoupper($company->company_name) }}</td>
-						<td>{{ $company->email }}</td>
-						<td>{{ $company->contact_no }}</td>
-						<td>{{ $company->address }}</td>
-						<td>{{ $company->expiry_date }}</td>
-						<td>
-							{!! Form::checkbox('edit', $company->id, null, ['class' => 'editboxes']) !!}
-						</td>
-					</tr>
-					@endforeach
-				</tbody>
-			</table>
+		<div class="row"></div>
+
+		<div class="row">
+			<div class="table-cont">
+				<table class="table table-bordered table-responsive">
+					<thead>
+						<tr>
+							<th width="8px">No</th>
+							<th>Item</th>
+							<th>Barcode</th>
+							<th>Type</th>
+							<th>Unit Prixe</th>
+							<th>Quantity</th>
+							<th>Amount</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						@for($i = 0; $i < 5; $i++)
+							<tr>
+								<td>{{ $i+1 }}</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						@endfor
+					</tbody>
+				</table>
+			</div>
 		</div>
-		{!! $companies->render() !!}
 	</div><!-- .main-content -->
 
 	<div class="footer-menu">
@@ -67,16 +61,16 @@
 				</a>
 			</div><!-- .menu-icon -->
 
-			@permission('company-create')
+			@permission('user-create')
 				<div class="menu-icon">
-					<a href="{{ route('companies.create') }}">
+					<a href="{{ route('users.create') }}">
 						<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
 						New
 					</a>
 				</div><!-- .menu-icon -->
 			@endpermission
 
-			@permission('company-edit')
+			@permission('user-edit')
 				<div class="menu-icon">
 					<a href="#" id="edit">
 						<img src="{{ asset('assets/img/edit-icon.png') }}" alt="Edit">
@@ -85,7 +79,7 @@
 				</div><!-- .menu-icon -->
 			@endpermission
 
-			@permission('company-delete')
+			@permission('user-delete')
 				<div class="menu-icon">
 					<a href="#" id="delete">
 						<img src="{{ asset('assets/img/trash-icon.png') }}" alt="Delete">
@@ -95,7 +89,7 @@
 			@endpermission
 
 			<div class="menu-icon">
-				<a href="{{ url('settings') }}" >
+				<a href="{{ url('dashboard') }}" >
 					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
 					Back
 				</a>
@@ -124,7 +118,7 @@
 					if ($(this).is(":checked")) {
 						var id = $(this).val();
 						$.ajax({
-							url: "{{ url('companies/ajax/id/edit') }}",
+							url: "{{ url('users/ajax/id/edit') }}",
 							type: 'GET',
 							data: { id: id },
 							success: function(data)
@@ -137,26 +131,20 @@
 			});
 
 			$("#delete").on("click",function(){
-				var x = confirm("Are you sure you want to delete?");
-				if(x) {
-					$(".editboxes").each(function() {
-						if ($(this).is(":checked")) {
-							var id = $(this).val();
-							$.ajax({
-								url: "{!! url('companies/"+ id +"') !!}",
-								type: 'DELETE',
-								data: {_token: '{!! csrf_token() !!}'},
-								dataType: 'JSON',
-								success: function (data) {
-									window.location.replace(data.url);
-								}
-							});
-						}
-					});
-				} else {
-					window.location.reload();
-					$('.editboxes').attr('checked', false);
-				}
+				$(".editboxes").each(function() {
+					if ($(this).is(":checked")) {
+						var id = $(this).val();
+						$.ajax({
+							url: "{!! url('users/"+ id +"') !!}",
+							type: 'DELETE',
+							data: {_token: '{!! csrf_token() !!}'},
+							dataType: 'JSON',
+							success: function (data) {
+								window.location.replace(data.url);
+							}
+						});
+					}
+				});
 			});
 		});
 	</script>

@@ -10,27 +10,6 @@
 @section('main')
 {!! Form::model($user, ['method' => 'PATCH','route' => ['users.update', $user->id], 'id' => 'user-form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
 	<div class="main-content">
-		{{-- <div class="row">
-			<div class="col-lg-12 margin-tb">
-				<div class="pull-left">
-					<h3>Edit User</h3>
-				</div>
-				<div class="pull-right">
-				</div>
-			</div>
-		</div> --}}<!-- .row -->
-
-		{{-- @if (count($errors) > 0)
-			<div class="alert alert-danger">
-				<strong>Whoops!</strong> There were some problems with your input.<br><br>
-				<ul>
-					@foreach ($errors->all() as $error)
-						<li>{{ $error }}</li>
-					@endforeach
-				</ul>
-			</div>
-		@endif --}}
-
 		<div class="small-10 columns">
 			<p><b><span class="required">*</span> Fields are required</b></p>
 		</div>
@@ -71,7 +50,7 @@
 						</div>
 
 						<div class="col-sm-5" style="padding-left: 0;">
-							{!! Form::text('nric_no', null, array('placeholder' => 'Enter Number','class' => 'form-control')) !!}
+							{!! Form::text('nric_no', null, array('placeholder' => '(N) xxxxxx','class' => 'form-control')) !!}
 							@if ($errors->has('nric_no'))
 								<span class="required">
 									<strong>{{ $errors->first('nric_no') }}</strong>
@@ -108,7 +87,12 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="email"><strong>Email: <span class="required">*</span></strong></label>
 					<div class="col-sm-6">
-						{!! Form::text('email', null, array('placeholder' => 'Please Enter Email','class' => 'form-control', 'readonly' => true)) !!}
+						@if(Auth::user()->hasRole('administrator'))
+							{!! Form::text('email', null, array('placeholder' => 'Please Enter Email', 'class' => 'form-control', 'id' => 'email')) !!}
+						@else
+							{!! Form::text('email', null, array('placeholder' => 'Please Enter Email', 'class' => 'form-control', 'disabled' => true)) !!}
+						@endif
+
 						@if ($errors->has('email'))
 							<span class="required">
 								<strong>{{ $errors->first('email') }}</strong>
@@ -172,7 +156,13 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="role"><strong>Role: <span class="required">*</span></strong></label>
 					<div class="col-sm-6">
-						{!! Form::select('role', ['' => 'Select Role'] + $roles->toArray(), $userRole, ['class' => 'form-control']) !!}
+						@if (Auth::user()->hasRole('administrator') || Auth::user()->hasRole('owner'))
+							{!! Form::select('role', ['' => 'Select Role'] + $roles->toArray(), $userRole, ['class' => 'form-control']) !!}
+						@else
+							{!! Form::select('roles', ['' => 'Select Role'] + $roles->toArray(), $userRole, ['class' => 'form-control', 'disabled' => true]) !!}
+							{!! Form::hidden('role', $userRole) !!}
+						@endif
+
 						@if ($errors->has('role'))
 							<span class="required">
 								<strong>{{ $errors->first('role') }}</strong>
@@ -196,7 +186,7 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="username"><strong>Username: <span class="required">*</span></strong></label>
 					<div class="col-sm-6">
-						{!! Form::text('username', null, array('placeholder' => 'Please Enter Username','class' => 'form-control', 'readonly' => true)) !!}
+						{!! Form::text('username', null, array('placeholder' => 'Please Enter Username', 'id' => 'username', 'class' => 'form-control', 'disabled' => true)) !!}
 						@if ($errors->has('username'))
 							<span class="required">
 								<strong>{{ $errors->first('username') }}</strong>
@@ -348,6 +338,11 @@
 				container: container,
 				todayHighlight: true,
 				autoclose: true,
+			});
+
+			$("#email").keyup(function(event) {
+				var email = $("#email").val();
+				$("#username").val(email);
 			});
 
 			$("#nric_code").select2();

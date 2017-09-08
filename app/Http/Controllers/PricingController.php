@@ -21,15 +21,22 @@ class PricingController extends Controller {
 		$categories = Category::where('deleted', 'N')->get();
 
 		if (Auth::user()->hasRole('administrator')) {
-		} else {
-		}
-		$countryList  = Countries::where('deleted', 'N')->lists('country_name', 'id');
-		$stateList    = States::where('deleted', 'N')->lists('state_name', 'id');
-		$categoryList = Category::where('deleted', 'N')->lists('name', 'id');
-		$currencyList = Currency::where('deleted', 'N')->lists('type', 'id');
+			$countryList  = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+			$stateList    = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+			$categoryList = Category::where('deleted', 'N')->lists('name', 'id');
+			$currencyList = Currency::where('deleted', 'N')->lists('type', 'id');
 
-		$currencyTitle = Currency::where('deleted', 'N')->get();
-		$pricingLists  = Price::where('deleted', 'N')->get();
+			$currencyTitle = Currency::where('deleted', 'N')->get();
+			$pricingLists  = Price::where('deleted', 'N')->get();
+		} else {
+			$countryList  = Countries::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+			$stateList    = States::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+			$categoryList = Category::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('name', 'id');
+			$currencyList = Currency::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('type', 'id');
+
+			$currencyTitle = Currency::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->get();
+			$pricingLists  = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->get();
+		}
 
 		return view('pricings.index', ['categories' => $categories, 'stateList' => $stateList, 'categoryList' => $categoryList, 'countryList' => $countryList, 'currencyList' => $currencyList, 'currencyTitle' => $currencyTitle, 'pricingLists' => $pricingLists])->with('i', ($request->get('page', 1) - 1) * 10);
 	}

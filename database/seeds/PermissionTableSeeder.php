@@ -263,6 +263,27 @@ class PermissionTableSeeder extends Seeder {
 				'display_name' => 'Delete Member',
 				'description'  => 'Delete Member',
 			],
+
+			[
+				'name'         => 'lotin-list',
+				'display_name' => 'Display Lot-in Listing',
+				'description'  => 'See only Listing Of Lot-in',
+			],
+			[
+				'name'         => 'lotin-create',
+				'display_name' => 'Create Lot-in',
+				'description'  => 'Create New Lot-in',
+			],
+			[
+				'name'         => 'lotin-edit',
+				'display_name' => 'Edit Lot-in',
+				'description'  => 'Edit Lot-in',
+			],
+			[
+				'name'         => 'lotin-delete',
+				'display_name' => 'Delete Lot-in',
+				'description'  => 'Delete Lot-in',
+			],
 		];
 
 		$role = Role::find(1);

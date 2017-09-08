@@ -10,27 +10,6 @@
 @section('main')
 {!! Form::open(array('route' => 'users.store','method'=>'POST', 'id' => 'user-form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data')) !!}
 	<div class="main-content">
-		{{-- <div class="row">
-			<div class="col-lg-12 margin-tb">
-				<div class="pull-left">
-					<h3>Create New User</h3>
-				</div>
-				<div class="pull-right">
-				</div>
-			</div>
-		</div> --}}<!-- .row -->
-
-		{{-- @if (count($errors) > 0)
-			<div class="alert alert-danger">
-				<strong>Whoops!</strong> There were some problems with your input.<br><br>
-				<ul>
-					@foreach ($errors->all() as $error)
-						<li>{{ $error }}</li>
-					@endforeach
-				</ul>
-			</div>
-		@endif --}}
-
 		<div class="small-10 columns">
 			<p><b><span class="required">*</span> Fields are required</b></p>
 		</div>
@@ -71,7 +50,7 @@
 						</div>
 
 						<div class="col-sm-5" style="padding-left: 0;">
-							{!! Form::text('nric_no', null, array('placeholder' => 'Enter Number','class' => 'form-control')) !!}
+							{!! Form::text('nric_no', null, array('placeholder' => '(N) xxxxxx','class' => 'form-control')) !!}
 							@if ($errors->has('nric_no'))
 								<span class="required">
 									<strong>{{ $errors->first('nric_no') }}</strong>

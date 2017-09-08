@@ -20,7 +20,8 @@ class CompanyController extends Controller {
 		if (Auth::user()->hasRole('administrator')) {
 			$companies = Companies::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
 		} else {
-			$companies = Companies::where('id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
+			$companies = Companies::where('id', Auth::user()->company_id)->where('deleted', 'N')
+				->orderBy('id', 'DESC')->paginate(10);
 		}
 
 		return view('companies.index', ['companies' => $companies])->with('i', ($request->get('page', 1) - 1) * 10);
@@ -32,9 +33,26 @@ class CompanyController extends Controller {
 	 * @return Response
 	 */
 	public function create() {
-		$countries = Countries::lists('country_name', 'id');
-		$states    = States::get();
-		$townships = Townships::get();
+		if (Auth::user()->hasRole('administrator')) {
+			$countries = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')
+				->lists('country_name', 'id');
+
+			$states = States::where('deleted', 'N')->orderBy('state_name', 'ASC')
+				->lists('state_name', 'id');
+
+			$townships = Townships::where('deleted', 'N')->orderBy('township_name', 'ASC')
+				->lists('township_name', 'id');
+		} else {
+			$countries = Countries::where('company_id', Auth::user()->company_id)
+				->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+
+			$states = States::where('company_id', Auth::user()->company_id)
+				->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+
+			$townships = Townships::where('company_id', Auth::user()->company_id)
+				->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
+		}
+
 		return view('companies.create', ['countries' => $countries, 'states' => $states, 'townships' => $townships]);
 	}
 
@@ -92,6 +110,7 @@ class CompanyController extends Controller {
 	public function editAjax($companyId, Request $request) {
 		$id       = $request->id;
 		$response = array('status' => 'success', 'url' => 'companies/' . $id . '/edit');
+
 		return response()->json($response);
 
 	}
@@ -103,10 +122,28 @@ class CompanyController extends Controller {
 	 * @return Response
 	 */
 	public function edit($id) {
-		$company   = Companies::find($id);
-		$countries = Countries::lists('country_name', 'id');
-		$states    = States::get();
-		$townships = Townships::get();
+		$company = Companies::find($id);
+
+		if (Auth::user()->hasRole('administrator')) {
+			$countries = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')
+				->lists('country_name', 'id');
+
+			$states = States::where('deleted', 'N')->orderBy('state_name', 'ASC')
+				->lists('state_name', 'id');
+
+			$townships = Townships::where('deleted', 'N')->orderBy('township_name', 'ASC')
+				->lists('township_name', 'id');
+		} else {
+			$countries = Countries::where('company_id', Auth::user()->company_id)
+				->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+
+			$states = States::where('company_id', Auth::user()->company_id)
+				->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+
+			$townships = Townships::where('company_id', Auth::user()->company_id)
+				->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
+		}
+
 		return view('companies.edit', ['company' => $company, 'countries' => $countries, 'states' => $states, 'townships' => $townships]);
 	}
 
@@ -123,6 +160,7 @@ class CompanyController extends Controller {
 			'expiry_date'  => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
 			'image'        => 'mimes:jpeg,bmp,png',
 		]);
+
 		$data    = $request->all();
 		$address = '';
 		$address .= ($request->unit_number) ? ($request->unit_number . ', ') : '';
@@ -170,6 +208,7 @@ class CompanyController extends Controller {
 		Companies::find($id)->update(['deleted' => 'Y']);
 		Session::flash('success', 'Company deleted successfully');
 		$response = array('status' => 'success', 'url' => 'companies');
+
 		return response()->json($response);
 
 		// return redirect()->route('companies.index')->with('success', 'Company deleted successfully');

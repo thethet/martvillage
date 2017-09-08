@@ -39,15 +39,26 @@ class UserController extends Controller {
 	public function create() {
 		if (Auth::user()->hasRole('administrator')) {
 			$roles = Role::lists('display_name', 'id');
+
+			$countries = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+			$states    = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+			$townships = Townships::where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 		} else {
-			$roles = Role::where('id', '!=', 1)->lists('display_name', 'id');
+			if (Auth::user()->hasRole('owner')) {
+				$roles = Role::where('id', '!=', 1)->lists('display_name', 'id');
+			} else {
+				$roles = Role::whereNotIn('id', [1, 2])->lists('display_name', 'id');
+			}
+
+			$countries = Countries::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+			$states    = States::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+			$townships = Townships::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 		}
+
 		$companies     = Companies::where('deleted', 'N')->lists('company_name', 'id');
-		$countries     = Countries::where('deleted', 'N')->lists('country_name', 'id');
-		$states        = States::where('deleted', 'N')->lists('state_name', 'id');
-		$townships     = Townships::where('deleted', 'N')->lists('township_name', 'id');
 		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('id', 'asc')->lists('nric_code', 'id');
 		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('serial_no', 'asc')->lists('short_name', 'id');
+
 		return view('users.create', ['roles' => $roles, 'companies' => $companies, 'countries' => $countries, 'states' => $states, 'townships' => $townships, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships]);
 	}
 
@@ -126,17 +137,29 @@ class UserController extends Controller {
 	public function edit($id) {
 		$user     = User::find($id);
 		$userRole = $user->roles[0]->id;
+
 		if (Auth::user()->hasRole('administrator')) {
 			$roles = Role::lists('display_name', 'id');
+
+			$countries = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+			$states    = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+			$townships = Townships::where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 		} else {
-			$roles = Role::where('id', '!=', 1)->lists('display_name', 'id');
+			if (Auth::user()->hasRole('owner')) {
+				$roles = Role::where('id', '!=', 1)->lists('display_name', 'id');
+			} else {
+				$roles = Role::whereNotIn('id', [1, 2])->lists('display_name', 'id');
+			}
+
+			$countries = Countries::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+			$states    = States::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+			$townships = Townships::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 		}
+
 		$companies     = Companies::where('deleted', 'N')->lists('company_name', 'id');
-		$countries     = Countries::lists('country_name', 'id');
-		$states        = States::lists('state_name', 'id');
-		$townships     = Townships::lists('township_name', 'id');
 		$nricCodes     = NricCodes::orderBy('id', 'asc')->lists('nric_code', 'id');
 		$nricTownships = NricTownships::orderBy('serial_no', 'asc')->lists('short_name', 'id');
+
 		return view('users.edit', ['user' => $user, 'userRole' => $userRole, 'roles' => $roles, 'companies' => $companies, 'countries' => $countries, 'states' => $states, 'townships' => $townships, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships]);
 	}
 
@@ -170,7 +193,12 @@ class UserController extends Controller {
 		$address .= ($request->unit_number) ? ($request->unit_number . ', ') : '';
 		$address .= ($request->building_name) ? ($request->building_name . ', ') : '';
 		$address .= ($request->street) ? ($request->street) : '';
-		$data['address']    = $address;
+		$data['address'] = $address;
+
+		if (array_key_exists('email', $data)) {
+			$data['username'] = $data['email'];
+		}
+
 		$data['updated_by'] = Auth::user()->id;
 
 		if (!empty($request->password)) {

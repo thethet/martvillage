@@ -120,31 +120,6 @@
 								</span>
 							@endif
 						</div>
-					</div><!-- .form-group -->
-					<div class="form-group">
-						<label class="control-label col-sm-3" for="name">
-						</label>
-						<div class="col-sm-6">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-3" for="name">
-						</label>
-						<div class="col-sm-6">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-3" for="name">
-						</label>
-						<div class="col-sm-6">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="control-label col-sm-3" for="name">
-						</label>
-						<div class="col-sm-6">
-						</div>
 						<div class="col-sm-3">
 							<a href="#" id="add" onclick="document.getElementById('city-form').submit();">
 								<div class="addbtn">
@@ -155,6 +130,47 @@
 						</div>
 					</div><!-- .form-group -->
 				{!! Form::close() !!}
+
+				<div style="border-top: 1px solid #fff;">
+					{!! Form::open(array('route' => 'locations.city.store','method'=>'POST', 'id' => 'township-form', 'class' => 'form-horizontal')) !!}
+						<div class="form-group"></div>
+						<div class="form-group">
+							<label class="control-label col-sm-3" for="name">
+								<strong>Township:</strong>
+							</label>
+							<div class="col-sm-6">
+								{!! Form::text('state_name', null, array('placeholder' => 'City Name','class' => 'form-control')) !!}
+								@if ($errors->has('state_name'))
+									<span class="required">
+										<strong>{{ $errors->first('state_name') }}</strong>
+									</span>
+								@endif
+							</div>
+						</div><!-- .form-group -->
+
+						<div class="form-group">
+							<label class="control-label col-sm-3" for="name">
+								<strong>City:</strong>
+							</label>
+							<div class="col-sm-6">
+								{!! Form::select('state_id', ['' => 'Select States'] + $stateLists->toArray(), null, ['id'=>'state_id', 'class' => 'form-control']) !!}
+								@if ($errors->has('state_id'))
+									<span class="required">
+										<strong>{{ $errors->first('state_id') }}</strong>
+									</span>
+								@endif
+							</div>
+							<div class="col-sm-3">
+								<a href="#" id="add" onclick="document.getElementById('township-form').submit();">
+									<div class="addbtn">
+										<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
+											Add
+									</div>
+								</a>
+							</div>
+						</div><!-- .form-group -->
+					{!! Form::close() !!}
+				</div>
 			</div>
 
 		</div>
@@ -301,6 +317,28 @@
 						});
 					}
 				});
+			});
+
+			$("#state_id").select2({
+				ajax: {
+					url: "{{ url('states/search-state-country') }}",
+					dataType: 'json',
+					delay: 250,
+					data: function (params) {
+						var countryId = $('#country_id').val();
+						return {
+							search: params.term,
+							countryId: countryId
+						};
+					},
+					processResults: function (data, params) {
+						console.log(data)
+						return {
+							results: data.items
+						};
+					},
+					cache: true
+				},
 			});
 		});
 	</script>
