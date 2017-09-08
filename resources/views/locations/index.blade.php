@@ -48,6 +48,16 @@
 									<td>{{ $country->total_cities }}</td>
 								</tr>
 							@endforeach
+
+							@if(count($countries) <= 0)
+								@for($i = 0; $i < 5; $i++)
+									<tr>
+										<td width="8px">&nbsp;</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+									</tr>
+								@endfor
+							@endif
 						</tbody>
 					</table>
 				</div>
@@ -129,12 +139,6 @@
 						<div class="col-sm-6">
 						</div>
 					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-3" for="name">
-						</label>
-						<div class="col-sm-6">
-						</div>
-					</div>
 
 					<div class="form-group">
 						<label class="control-label col-sm-3" for="name">
@@ -155,44 +159,46 @@
 
 		</div>
 
-		<div class="row country-city">
-			<div class="table-cont country-city-tbl">
-				<table class="table table-bordered table-responsive">
-					<thead>
-						<tr>
-							<th colspan="{{ (count($countriesLists) * 2) }}" class="center">
-								Country and City
-							</th>
-						</tr>
-						<tr>
-							@foreach($countriesLists as $clist)
-								<th width="8px">&nbsp;&nbsp;&nbsp;</th>
-								<th>{{ $clist->country_name }}</th>
-							@endforeach
-						</tr>
-					</thead>
-					<tbody>
-						@foreach($citiesLists as $cities)
+		@if(count($citiesLists) > 0)
+			<div class="row country-city">
+				<div class="table-cont country-city-tbl">
+					<table class="table table-bordered table-responsive">
+						<thead>
 							<tr>
-								@foreach($countriesLists as $countlist)
-									@if(array_key_exists($countlist->country_name, $cities))
-									<td>
-										{!! Form::checkbox('edit', $cities[$countlist->country_name]['id'], null, ['class' => 'editboxes']) !!}
-									</td>
-									<td>
-										{{ $cities[$countlist->country_name]['state_name'] }}
-									</td>
-									@else
-										<td></td>
-										<td></td>
-									@endif
+								<th colspan="{{ (count($countriesLists) * 2) }}" class="center">
+									Country and City
+								</th>
+							</tr>
+							<tr>
+								@foreach($countriesLists as $clist)
+									<th width="8px">&nbsp;&nbsp;&nbsp;</th>
+									<th>{{ $clist->country_name }}</th>
 								@endforeach
 							</tr>
-						@endforeach
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							@foreach($citiesLists as $cities)
+								<tr>
+									@foreach($countriesLists as $countlist)
+										@if(array_key_exists($countlist->country_name, $cities))
+										<td>
+											{!! Form::checkbox('edit', $cities[$countlist->country_name]['id'], null, ['class' => 'editboxes']) !!}
+										</td>
+										<td>
+											{{ $cities[$countlist->country_name]['state_name'] }}
+										</td>
+										@else
+											<td></td>
+											<td></td>
+										@endif
+									@endforeach
+								</tr>
+							@endforeach
+						</tbody>
+					</table>
+				</div>
 			</div>
-		</div>
+		@endif
 	</div><!-- .main-content -->
 
 	<div class="footer-menu">

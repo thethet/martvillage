@@ -25,28 +25,30 @@
 		</div>
 		@endif
 
-		<table class="table table-bordered table-responsive">
-			<tr>
-				<th>No</th>
-				<th>Name</th>
-				<th>Contact No.</th>
-				<th>Role</th>
-				<th>Email</th>
-				<th width="20px">Action</th>
-			</tr>
-			@foreach ($users as $key => $user)
-			<tr>
-				<td>{{ ++$i }}</td>
-				<td>{{ strtoupper($user->name) }}</td>
-				<td>{{ $user->contact_no }}</td>
-				<td>{{ $user->roles[0]->display_name }}</td>
-				<td>{{ $user->email }}</td>
-				<td>
-					{!! Form::checkbox('edit', $user->id, null, ['class' => 'editboxes']) !!}
-				</td>
-			</tr>
-			@endforeach
-		</table>
+		<div class="table-cont">
+			<table class="table table-bordered table-responsive">
+				<tr>
+					<th>No</th>
+					<th>Name</th>
+					<th>Contact No.</th>
+					<th>Role</th>
+					<th>Email</th>
+					<th width="20px">Action</th>
+				</tr>
+				@foreach ($users as $key => $user)
+				<tr>
+					<td>{{ ++$i }}</td>
+					<td>{{ strtoupper($user->name) }}</td>
+					<td>{{ $user->contact_no }}</td>
+					<td>{{ $user->roles[0]->display_name }}</td>
+					<td>{{ $user->email }}</td>
+					<td>
+						{!! Form::checkbox('edit', $user->id, null, ['class' => 'editboxes']) !!}
+					</td>
+				</tr>
+				@endforeach
+			</table>
+		</div>
 		{!! $users->render() !!}
 	</div><!-- .main-content -->
 

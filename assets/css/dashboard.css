@@ -167,7 +167,7 @@ img.outgoing-icon, img.incoming-icon {
 }
 .copy-right {
 	font-family: CenturyGothic;
-	font-size: 7px;
+	font-size: 12px;
 	margin-top: 60px;
 }
 .table-cont {
@@ -202,9 +202,10 @@ h3.page-title {
 	font-size: 24px;
 	margin-top: 0;
 }
-.country-list, .city-add, .country-city {
+.country-list, .city-add, .country-city, .price-add {
 	height: 260px;
 	border: 1px solid #fff;
+	margin-bottom: 5px;
 }
 .country-list {
 	margin-right: 10px;
@@ -227,4 +228,158 @@ h3.page-title {
 }
 .addbtn img {
 	width: 20px;
+}
+
+
+@media only screen and (min-device-width: 280px) and (max-device-width: 320px) {
+	.country-list, .city-add, .country-city {
+		height: 360px;
+	}
+
+	.price-add {
+		height: 590px;
+	}
+
+	.addbtn {
+		width: 30%;
+		margin: 15px auto 0;
+	}
+
+	.locationcol {
+		margin-bottom: 15px;
+	}
+
+	.menu-icon {
+		margin-right: 20px;
+	}
+
+	.menu-icon:last-child {
+		margin-right: 0;
+	}
+}
+
+@media only screen and (min-device-width: 321px) and (max-device-width: 420px) {
+	.country-list, .city-add, .country-city {
+		height: 360px;
+	}
+
+	.price-add {
+		height: 590px;
+	}
+
+	.addbtn {
+		width: 30%;
+		margin: 15px auto 0;
+	}
+
+	.locationcol {
+		margin-bottom: 15px;
+	}
+
+	.menu-icon {
+		margin-right: 20px;
+	}
+
+	.menu-icon:last-child {
+		margin-right: 0;
+	}
+}
+
+@media only screen and (min-device-width: 421px) and (max-device-width: 450px) {
+	.country-list, .city-add, .country-city {
+		height: 360px;
+	}
+
+	.price-add {
+		height: 590px;
+	}
+
+	.addbtn {
+		width: 30%;
+		margin: 15px auto 0;
+	}
+
+	.locationcol {
+		margin-bottom: 15px;
+	}
+
+	.menu-icon {
+		margin-right: 20px;
+	}
+
+	.menu-icon:last-child {
+		margin-right: 0;
+	}
+}
+
+
+@media only screen and (min-device-width: 451px) and (max-device-width: 570px) {
+	.country-list, .city-add, .country-city {
+		height: 360px;
+	}
+
+	.price-add {
+		height: 590px;
+	}
+
+	.addbtn {
+		width: 30%;
+		margin: 15px auto 0;
+	}
+
+	.locationcol {
+		margin-bottom: 15px;
+	}
+
+	.menu-icon {
+		margin-right: 20px;
+	}
+}
+
+@media only screen and (min-device-width: 571px) and (max-device-width: 640px) {
+	.country-list, .city-add, .country-city {
+		height: 360px;
+		margin-bottom: 5px;
+	}
+
+	.price-add {
+		height: 590px;
+	}
+
+	.addbtn {
+		width: 30%;
+		margin: 15px auto 0;
+	}
+
+	.locationcol {
+		margin-bottom: 15px;
+	}
+
+	.menu-icon {
+		margin-right: 20px;
+	}
+}
+
+@media only screen and (min-device-width: 641px) and (max-device-width: 991px) {
+	.country-list, .city-add, .country-city {
+		height: 360px;
+		margin-bottom: 5px;
+	}
+
+	.price-add {
+		height: 590px;
+	}
+
+	.addbtn {
+		width: 30%;
+		margin: 15px auto 0;
+	}
+
+	.locationcol {
+		margin-bottom: 15px;
+	}
+
+	.menu-icon {
+		margin-right: 20px;
+	}
 }

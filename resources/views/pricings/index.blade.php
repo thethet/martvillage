@@ -56,6 +56,7 @@
 						<div class="col-sm-6">
 							{!! Form::text('type', null, array('placeholder' => 'Currency','class' => 'form-control')) !!}
 						</div>
+						<div class="col-sm-3"></div>
 					</div><!-- .form-group -->
 
 					<div class="form-group" style="margin-bottom: 0;">
@@ -84,7 +85,7 @@
 				{!! Form::close() !!}
 			</div>
 
-			<div class="col-lg-6 city-add">
+			<div class="col-lg-6 price-add">
 				{!! Form::open(array('route' => 'prices.price.store','method'=>'POST', 'id' => 'price-form', 'class' => 'form-horizontal')) !!}
 					{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
 
@@ -120,11 +121,11 @@
 						<label class="control-label col-sm-3" for="fromlocation">
 							<strong>From Location:</strong>
 						</label>
-						<div class="col-sm-4">
+						<div class="col-sm-4 locationcol">
 							{!! Form::select('from_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'from_country', 'class' => 'form-control']) !!}
 						</div>
 
-						<div class="col-sm-4">
+						<div class="col-sm-4 locationcol">
 							{!! Form::select('from_state', ['' => 'Select State'] + $stateList->toArray(), null, ['id'=>'from_state', 'class' => 'form-control']) !!}
 						</div>
 					</div>
@@ -133,11 +134,11 @@
 						<label class="control-label col-sm-3" for="tolocation">
 							<strong>Top Location:</strong>
 						</label>
-						<div class="col-sm-4">
+						<div class="col-sm-4 locationcol">
 							{!! Form::select('to_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'to_country', 'class' => 'form-control']) !!}
 						</div>
 
-						<div class="col-sm-4">
+						<div class="col-sm-4 locationcol">
 							{!! Form::select('to_state', ['' => 'Select State'] + $stateList->toArray(), null, ['id'=>'to_state', 'class' => 'form-control']) !!}
 						</div>
 					</div>
