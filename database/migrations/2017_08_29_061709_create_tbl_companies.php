@@ -14,6 +14,7 @@ class CreateTblCompanies extends Migration {
 			$table->increments('id');
 			$table->string('company_name');
 			$table->string('contact_no')->nullable();
+			$table->string('short_code');
 			$table->string('fax')->nullable();
 			$table->string('email')->unique();
 			$table->string('logo');

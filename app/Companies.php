@@ -20,6 +20,7 @@ class Companies extends Model {
 	 */
 	protected $fillable = [
 		'company_name',
+		'short_code',
 		'contact_no',
 		'fax',
 		'email',

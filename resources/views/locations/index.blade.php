@@ -131,7 +131,7 @@
 					</div><!-- .form-group -->
 				{!! Form::close() !!}
 
-				<div style="border-top: 1px solid #fff;">
+				{{-- <div style="border-top: 1px solid #fff;">
 					{!! Form::open(array('route' => 'locations.city.store','method'=>'POST', 'id' => 'township-form', 'class' => 'form-horizontal')) !!}
 						<div class="form-group"></div>
 						<div class="form-group">
@@ -170,7 +170,7 @@
 							</div>
 						</div><!-- .form-group -->
 					{!! Form::close() !!}
-				</div>
+				</div> --}}
 			</div>
 
 		</div>

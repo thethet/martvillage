@@ -53,6 +53,12 @@ Route::group(['middleware' => 'web'], function () {
 	Route::get('states/search-state-country', ['as' => 'states.search.statecountry', 'uses' => 'LocationController@searchByCountry']);
 
 	Route::get('townships/search-township-state', ['as' => 'townships.search.townshipstate', 'uses' => 'LocationController@searchByState']);
+
+	Route::get('receivers/search-address', ['as' => 'receivers.search.address', 'uses' => 'LotInController@searchAddressBySender']);
+
+	Route::get('receivers/search-address-member', ['as' => 'receivers.search.address.member', 'uses' => 'LotInController@searchAddressByMember']);
+
+	Route::get('lotins/search-unitprice', ['as' => 'lotins.search.unitprice', 'uses' => 'LotInController@searchUnitPrices']);
 });
 
 Route::group(['middleware' => ['auth']], function () {

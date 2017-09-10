@@ -50,6 +50,18 @@
 				</div><!-- .form-group -->
 
 				<div class="form-group">
+					<label class="control-label col-sm-3" for="company"><strong>Short Code: <span class="required">*</span></strong></label>
+					<div class="col-sm-6">
+						{!! Form::text('short_code', null, array('placeholder' => 'Enter Short Code','class' => 'form-control')) !!}
+						@if ($errors->has('short_code'))
+							<span class="required">
+								<strong>{{ $errors->first('short_code') }}</strong>
+							</span>
+						@endif
+					</div>
+				</div><!-- .form-group -->
+
+				<div class="form-group">
 					<label class="control-label col-sm-3" for="contact-no"><strong>Contact No.: <span class="required">*</span></strong></label>
 					<div class="col-sm-6">
 						{!! Form::text('contact_no', null, array('placeholder' => 'Please Enter Contact Number','class' => 'form-control')) !!}

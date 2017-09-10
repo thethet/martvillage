@@ -131,7 +131,7 @@
 
 					<div class="form-group" style="margin-bottom: 8px;">
 						<label class="control-label col-sm-3" for="tolocation">
-							<strong>Top Location:</strong>
+							<strong>To Location:</strong>
 						</label>
 						<div class="col-sm-4">
 							{!! Form::select('to_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'to_country', 'class' => 'form-control']) !!}
@@ -187,7 +187,7 @@
 								<th>
 									{{ $title->type }}
 									<br>
-									{{ $title->location->country_name }}
+									From {{ $title->location->country_name }}
 								</th>
 							@endforeach
 						</tr>

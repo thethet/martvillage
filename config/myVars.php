@@ -14,4 +14,12 @@ return [
 		'Widowed'       => 'Widowed',
 		'Single Parent' => 'Single Parent',
 	],
+
+	'LotinStatus'   => [
+		0 => 'Sender Office',
+		1 => 'On Boarding',
+		2 => 'Landed Destination',
+		3 => 'Ready Collect',
+		4 => 'Collected',
+	],
 ];

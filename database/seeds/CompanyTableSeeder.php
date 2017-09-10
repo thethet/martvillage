@@ -13,6 +13,7 @@ class CompanyTableSeeder extends Seeder {
 		$company = [
 			[
 				'company_name'  => 'MSCT',
+				'short_code'    => 'MSCT',
 				'contact_no'    => '',
 				'fax'           => '',
 				'email'         => 'msctpteltd@gmail.com',
