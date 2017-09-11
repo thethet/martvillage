@@ -98,11 +98,11 @@ class LotInController extends Controller {
 		if ($senderId == 0) {
 			$senderData['company_id']       = $company_id;
 			$senderData['name']             = $request->sender_name;
-			$senderData['nric_no']          = $request->nric_no;
-			$senderData['nric_code_id']     = $request->nric_code_id;
-			$senderData['nric_township_id'] = $request->nric_township_id;
-			$senderData['contact_no']       = $request->s_contact_no;
-			$senderData['member_no']        = $request->member_no;
+			$senderData['nric_no']          = ($request->nric_no) ? $request->nric_no : "";
+			$senderData['nric_code_id']     = ($request->nric_code_id) ? $request->nric_code_id : 0;
+			$senderData['nric_township_id'] = ($request->nric_township_id) ? $request->nric_township_id : 0;
+			$senderData['contact_no']       = ($request->s_contact_no) ? $request->s_contact_no : "";
+			$senderData['member_no']        = ($request->member_no) ? $request->member_no : "";
 			$senderData['created_by']       = $user_id;
 			// $senderData['state_id'] = $request->state_id;
 
@@ -110,23 +110,25 @@ class LotInController extends Controller {
 			$senderId = $sender->id;
 		}
 
-		$receiverId  = 0;
-		$receiverIds = Receiver::where('address', $request->to_state_id)->first();
-		if ($receiverIds) {
-			$receiverId = $receiverIds->id;
+		$receiverId = 0;
+		if ($request->to_state_id_new == "") {
+			$receiverIds = Receiver::where('address', $request->to_state_id)->where('sender_id', $senderId)->first();
+			if ($receiverIds) {
+				$receiverId = $receiverIds->id;
+			}
 		}
 
 		if ($receiverId == 0) {
 			$receiverData['company_id']       = $company_id;
 			$receiverData['sender_id']        = $senderId;
 			$receiverData['name']             = $request->receiver_name;
-			$receiverData['nric_no']          = $request->r_nric_no;
-			$receiverData['nric_code_id']     = $request->r_nric_code_id;
-			$receiverData['nric_township_id'] = $request->r_nric_township_id;
-			$receiverData['contact_no']       = $request->r_contact_no;
-			$receiverData['member_no']        = $request->member_no;
+			$receiverData['nric_no']          = ($request->r_nric_no) ? $request->r_nric_no : "";
+			$receiverData['nric_code_id']     = ($request->r_nric_code_id) ? $request->r_nric_code_id : "";
+			$receiverData['nric_township_id'] = ($request->r_nric_township_id) ? $request->r_nric_township_id : "";
+			$receiverData['contact_no']       = ($request->r_contact_no) ? $request->r_contact_no : "";
+			$receiverData['member_no']        = ($request->member_no) ? $request->member_no : "";
 			$receiverData['created_by']       = $user_id;
-			$receiverData['address']          = $request->to_state_id;
+			$receiverData['address']          = ($request->to_state_id) ? $request->to_state_id : "";
 			// $receiverData['state_id'] = $request->to_state_id;
 
 			$reseiver   = Receiver::create($receiverData);
@@ -149,8 +151,8 @@ class LotInController extends Controller {
 		$LotData['lot_no']     = $request->lot_no;
 		$lotData['date']       = $request->date;
 		// $lotData['time']                = $request->time;
-		$LotData['from_country']        = $request->country_id;
-		$LotData['from_state']          = $request->state_id;
+		$LotData['from_country']        = ($request->country_id) ? $request->country_id : "";
+		$LotData['from_state']          = ($request->state_id) ? $request->state_id : "";
 		$lotData['item_name']           = $itemName;
 		$lotData['barcode']             = $barcode;
 		$lotData['price_id']            = $priceId;
@@ -162,9 +164,9 @@ class LotInController extends Controller {
 		$lotData['member_discount']     = 0;
 		$lotData['member_discount_amt'] = 0;
 		$lotData['other_discount']      = 10;
-		$lotData['other_discount_amt']  = 0;
+		$lotData['other_discount_amt']  = $request->discount;
 		$lotData['gov_tax']             = 7;
-		$lotData['gov_tax_amt']         = 0;
+		$lotData['gov_tax_amt']         = $request->gst;
 		$lotData['status']              = 0;
 		$lotData['created_by']          = $user_id;
 
@@ -255,23 +257,52 @@ class LotInController extends Controller {
 
 		if (Auth::user()->hasRole('administrator')) {
 			if ($contactNo) {
-				$items = DB::table('receivers as r')->leftJoin('senders as s', 's.id', '=', 'r.sender_id')->where('s.contact_no', $contactNo)->get();
+				$items = DB::table('receivers as r')
+					->leftJoin('senders as s', 's.id', '=', 'r.sender_id')
+					->leftJoin('nric_townships as snt', 'snt.id', '=', 's.nric_township_id')
+					->leftJoin('nric_townships as rnt', 'rnt.id', '=', 'r.nric_township_id')
+					->where('s.contact_no', $contactNo)
+					->select('r.*', 's.name as s_name', 's.contact_no as s_contact_no', 's.nric_no as s_nric_no', 's.nric_code_id as s_nric_code_id', 's.nric_township_id as s_nric_tp_id', 'snt.short_name as s_township', 'rnt.short_name as r_township')
+					->first();
 			} else {
-				$items = DB::table('receivers as r')->leftJoin('senders as s', 's.id', '=', 'r.sender_id')->where('s.member_no', $memberNo)->get();
+				$items = DB::table('receivers as r')
+					->leftJoin('senders as s', 's.id', '=', 'r.sender_id')
+					->leftJoin('nric_townships as snt', 'snt.id', '=', 's.nric_township_id')
+					->leftJoin('nric_townships as rnt', 'rnt.id', '=', 'r.nric_township_id')
+					->where('s.member_no', $memberNo)
+					->select('r.*', 's.name as s_name', 's.contact_no as s_contact_no', 's.nric_no as s_nric_no', 's.nric_code_id as s_nric_code_id', 's.nric_township_id as s_nric_tp_id', 'snt.short_name as s_township', 'rnt.short_name as r_township')
+					->first();
 			}
 		} else {
 			if ($contactNo) {
-				$items = DB::table('receivers as r')->leftJoin('senders as s', 's.id', '=', 'r.sender_id')->where('s.company_id', Auth::user()->company_id)->where('contact_no', $contactNo)->get();
+				$items = DB::table('receivers as r')
+					->leftJoin('senders as s', 's.id', '=', 'r.sender_id')
+					->leftJoin('nric_townships as snt', 'snt.id', '=', 's.nric_township_id')
+					->leftJoin('nric_townships as rnt', 'rnt.id', '=', 'r.nric_township_id')
+					->where('s.company_id', Auth::user()->company_id)
+					->where('contact_no', $contactNo)
+					->select('r.*', 's.name as s_name', 's.contact_no as s_contact_no', 's.nric_no as s_nric_no', 's.nric_code_id as s_nric_code_id', 's.nric_township_id as s_nric_tp_id', 'snt.short_name as s_township', 'rnt.short_name as r_township')
+					->first();
 			} else {
-				$items = DB::table('receivers as r')->leftJoin('senders as s', 's.id', '=', 'r.sender_id')->where('s.company_id', Auth::user()->company_id)->where('member_no', $memberNo)->get();
+				$items = DB::table('receivers as r')
+					->leftJoin('senders as s', 's.id', '=', 'r.sender_id')
+					->leftJoin('nric_townships as snt', 'snt.id', '=', 's.nric_township_id')
+					->leftJoin('nric_townships as rnt', 'rnt.id', '=', 'r.nric_township_id')
+					->where('s.company_id', Auth::user()->company_id)
+					->where('member_no', $memberNo)
+					->select('r.*', 's.name as s_name', 's.contact_no as s_contact_no', 's.nric_no as s_nric_no', 's.nric_code_id as s_nric_code_id', 's.nric_township_id as s_nric_tp_id', 'snt.short_name as s_township', 'rnt.short_name as r_township')
+					->first();
 			}
 		}
 
-		if (count($items) > 0) {
-			return '1';
-		} else {
-			return '0';
-		}
+		return json_encode($items, JSON_UNESCAPED_UNICODE);
+
+		// if (count($items) > 0) {
+		// 	return '1';
+		// } else {
+		// 	return '0';
+		// }
+
 	}
 
 	/**
@@ -290,5 +321,26 @@ class LotInController extends Controller {
 		);
 
 		return json_encode($price, JSON_UNESCAPED_UNICODE);
+	}
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function searchReceiverByAddress(Request $request) {
+		$address = $request->get('address');
+
+		$receiver = DB::table('receivers as r')
+			->leftJoin('nric_townships as rnt', 'rnt.id', '=', 'r.nric_township_id')
+			->select('r.*', 'rnt.short_name as r_township')
+			->where('address', $address)->first();
+
+		$header = array(
+			'Content-Type' => 'application/json; charset=UTF-8',
+			'charset'      => 'utf-8',
+		);
+
+		return json_encode($receiver, JSON_UNESCAPED_UNICODE);
 	}
 }

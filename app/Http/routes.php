@@ -59,6 +59,8 @@ Route::group(['middleware' => 'web'], function () {
 	Route::get('receivers/search-address-member', ['as' => 'receivers.search.address.member', 'uses' => 'LotInController@searchAddressByMember']);
 
 	Route::get('lotins/search-unitprice', ['as' => 'lotins.search.unitprice', 'uses' => 'LotInController@searchUnitPrices']);
+
+	Route::get('lotins/search-receiver', ['as' => 'lotins.search.receiver', 'uses' => 'LotInController@searchReceiverByAddress']);
 });
 
 Route::group(['middleware' => ['auth']], function () {

@@ -16,12 +16,12 @@ class CreateTblReceivers extends Migration {
 			$table->integer('sender_id');
 			$table->string('name');
 			$table->string('nric_no', 50)->nullable();
-			$table->integer('nric_code_id');
-			$table->integer('nric_township_id');
+			$table->integer('nric_code_id')->nullable();
+			$table->integer('nric_township_id')->nullable();
 			$table->string('contact_no')->unique();
-			$table->string('member_no')->unique();
-			$table->integer('state_id');
-			$table->text('address');
+			$table->string('member_no')->nullable();
+			$table->integer('state_id')->nullable();
+			$table->text('address')->nullable();
 			$table->enum('deleted', ['N', 'Y']);
 			$table->integer('created_by');
 			$table->integer('updated_by');

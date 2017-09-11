@@ -76,7 +76,7 @@
 					</label>
 
 					<div class="col-sm-7" style="padding-right: 0;">
-						{!! Form::text('nric_no', null, array('placeholder' => '(N) xxxxxx','class' => 'form-control', 'readonly' => true)) !!}
+						{!! Form::text('nric_no', null, array('placeholder' => '(N) xxxxxx','class' => 'form-control', 'id' => 'nric_no', 'readonly' => true)) !!}
 						@if ($errors->has('nric_no'))
 							<span class="required">
 								<strong>{{ $errors->first('nric_no') }}</strong>
@@ -92,10 +92,12 @@
 						<strong>To: <span class="required">*</span></strong>
 					</label>
 					<div class="col-sm-7" id="address-input">
-						{!! Form::text('to_state_id', null, array('placeholder' => 'Address','class' => 'form-control', 'readonly' => true)) !!}
+						{!! Form::text('to_state_id_new', null, array('placeholder' => 'Address','class' => 'form-control', 'id' => 'to-add', 'readonly' => true)) !!}
 					</div>
 					<div class="col-sm-7" id="address-list">
 						{!! Form::select('to_state_id', ['' => 'Address'] + $receiveAddress->toArray(), null, ['class' => 'form-control', 'id' => 'address', 'readonly' => true]) !!}
+
+						<a href="#" class="addbtn" id="noadd">address</a>
 					</div>
 				</div><!-- .form-group -->
 
@@ -104,7 +106,7 @@
 						<strong>Contact No: <span class="required">*</span></strong>
 					</label>
 					<div class="col-sm-7">
-						{!! Form::text('r_contact_no', null, array('placeholder' => 'Contact No','class' => 'form-control', 'readonly' => true)) !!}
+						{!! Form::text('r_contact_no', null, array('placeholder' => 'Contact No','class' => 'form-control', 'id' => 'r_contact_no', 'readonly' => true)) !!}
 					</div>
 				</div><!-- .form-group -->
 
@@ -113,7 +115,7 @@
 						<strong>Receiver Name: <span class="required">*</span></strong>
 					</label>
 					<div class="col-sm-7">
-						{!! Form::text('receiver_name', null, array('placeholder' => 'Name','class' => 'form-control', 'readonly' => true)) !!}
+						{!! Form::text('receiver_name', null, array('placeholder' => 'Name','class' => 'form-control', 'id' => 'r_name', 'readonly' => true)) !!}
 					</div>
 					<div class="col-sm-3"></div>
 				</div><!-- .form-group -->
@@ -148,7 +150,7 @@
 
 
 					<div class="col-sm-7" style="padding-right: 0;">
-						{!! Form::text('r_nric_no', null, array('placeholder' => '(N) xxxxxx','class' => 'form-control', 'readonly' => true)) !!}
+						{!! Form::text('r_nric_no', null, array('placeholder' => '(N) xxxxxx','class' => 'form-control', 'id' => 'r_nric_no', 'readonly' => true)) !!}
 						@if ($errors->has('r_nric_no'))
 							<span class="required">
 								<strong>{{ $errors->first('r_nric_no') }}</strong>
@@ -205,7 +207,7 @@
 					<thead>
 						<tr>
 							<th width="8px">No</th>
-							<th>Item</th>
+							<th>Item Name</th>
 							<th>Barcode</th>
 							<th>Type</th>
 							<th width="120px">Unit Price</th>
@@ -221,7 +223,7 @@
 							<tr>
 								<td>{{ $i+1 }}</td>
 								<td>
-									{!! Form::text('item_name[]', null, array('placeholder' => 'Enter Log No','class' => 'form-control item_name', 'id' => 'itemname-'.$j)) !!}
+									{!! Form::text('item_name[]', null, array('placeholder' => 'Enter Item Name','class' => 'form-control item_name', 'id' => 'itemname-'.$j)) !!}
 								</td>
 								<td>
 									{!! Form::text('barcode[]', null, array('placeholder' => 'Enter Barcode','class' => 'form-control barcode', 'id' => 'barcode-'.$j)) !!}
@@ -249,42 +251,45 @@
 					<tbody class="tbl-cal" style="font-weight: bold;">
 						<tr>
 							<td colspan="6" class="right">Sub Total</td>
-							<td class="right" id="subtotal-0"></td>
-							<td class="right" id="subtotal-1">
+							<td class="right" id="subtotal-0">
 								{{ Form::hidden('subtotal', null, ['id' => 'subtotal']) }}
 							</td>
+							<td class="right" id="subtotal-1"></td>
 						</tr>
 
 						<tr>
 							<td colspan="2">Member Discount (-):</td>
 							<td></td>
 							<td colspan="3" class="right">Other Discount</td>
-							<td class="right" id="discount-0">-10%</td>
-							<td class="right" id="discount-1">
+							<td class="right" id="discount-0">
+								-10%
 								{{ Form::hidden('discount', null, ['id' => 'discount']) }}
 							</td>
+							<td class="right" id="discount-1"></td>
 						</tr>
 
 						<tr>
 							<td colspan="6" class="right">Service Charge:</td>
-							<td class="right" id="scharge-0">10%</td>
-							<td class="right" id="scharge-1">
+							<td class="right" id="scharge-0">
+								10%
 								{{ Form::hidden('service', null, ['id' => 'service']) }}
 							</td>
+							<td class="right" id="scharge-1"></td>
 						</tr>
 						<tr>
 							<td colspan="6" class="right">GST</td>
-							<td class="right" id="gst-0">7%</td>
-							<td class="right" id="gst-1">
+							<td class="right" id="gst-0">
+								7%
 								{{ Form::hidden('gst', null, ['id' => 'gst']) }}
 							</td>
+							<td class="right" id="gst-1"></td>
 						</tr>
 						<tr>
 							<td colspan="6" class="right">Total</td>
-							<td class="right" id="total-10"></td>
-							<td class="right" id="total-1">
+							<td class="right" id="total-10">
 								{{ Form::hidden('total', null, ['id' => 'total']) }}
 							</td>
+							<td class="right" id="total-1"></td>
 						</tr>
 					</tbody>
 				</table>
@@ -362,9 +367,40 @@
 				autoclose: true,
 			});
 
+			$("a#noadd").bind('click', function () {
+				$('#address-input').show();
+				$('#address-list').hide();
+
+				$('#r_contact_no').val('');
+				$('#r_contact_no').attr('readonly', false);
+
+				$('#to_state_id').val('');
+				$('#to_state_id').attr('readonly', false);
+				$('#to-add').attr('readonly', false);
+
+				$('#r_name').val('');
+				$('#r_name').attr('readonly', false);
+
+				$('#r_nric_code').val('');
+				$('#r_nric_code').attr('disabled', false);
+				$('#select2-r_nric_code-container').text('Code');
+
+				$('#r_nric_township').val('');
+				$('#r_nric_township').attr('disabled', false);
+				$('#select2-r_nric_township-container').text('Township');
+
+				$('#r_nric_no').val('');
+				$('#r_nric_no').attr('readonly', false);
+			});
+
 			$('#address-list').hide();
 
 			$("#country_id").select2();
+
+			$('#country_id').change(function() {
+				$('#select2-state_id-container').text('Select State');
+				$('#state_id').val('');
+			});
 
 			$("#state_id").select2({
 				ajax: {
@@ -379,7 +415,6 @@
 						};
 					},
 					processResults: function (data, params) {
-						console.log(data)
 						return {
 							results: data.items
 						};
@@ -403,7 +438,6 @@
 						};
 					},
 					processResults: function (data, params) {
-						console.log(data)
 						return {
 							results: data.items
 						};
@@ -427,7 +461,6 @@
 						};
 					},
 					processResults: function (data, params) {
-						console.log(data)
 						return {
 							results: data.items
 						};
@@ -436,31 +469,196 @@
 				},
 			});
 
-			$('#sender-name').focus(function() {
+			$('#s_contact_no').keyup (function() {
 				var contactNo = $('#s_contact_no').val();
 				var memberNo = $('#member_no').val();
 
 				$.ajax({
-					method: "GET",
 					url: "{{ url('receivers/search-address-member') }}",
+					dataType: 'json',
+					delay: 250,
 					data: {
 						contactNo: contactNo,
 						memberNo: memberNo
+					},
+					success: function(data) {
+
+						if(!data) {
+							$('input').attr('readonly', false);
+							$("form select").attr('disabled', false);
+							$('#lot_no').attr('readonly', true);
+							$('#address-input').show();
+							$('#address-list').hide();
+
+							$('#member_no').val('');
+
+							$('#sender-name').val('');
+							$('#sender-name').attr('readonly', true);
+
+							$('#nric_code').val('');
+							$('#select2-nric_code-container').text('Code');
+
+							$('#nric_township').val('');
+							$('#select2-nric_township-container').text('Township');
+
+							$('#nric_no').val('');
+							$('#nric_no').attr('readonly', true);
+						} else {
+							$('#member_no').val(data.member_no);
+							$('#member_no').attr('readonly', true);
+
+							$('#sender-name').val(data.s_name);
+							$('#sender-name').attr('readonly', true);
+
+							$('#nric_code').val(data.s_nric_code_id);
+							$('#select2-nric_code-container').text(data.s_nric_code_id);
+
+							$('#nric_township').val(data.s_nric_tp_id);
+							$('#select2-nric_township-container').text(data.s_township);
+
+							$('#nric_no').val(data.s_nric_no);
+							$('#nric_no').attr('readonly', true);
+
+							// $("form select").attr('disabled', true);
+							// $("input").attr('readonly', true);
+							$('#lot_no').attr('readonly', true);
+
+							$('#address').attr('disabled', false);
+							$('#country_id').attr('disabled', false);
+							$('#state_id').attr('disabled', false);
+							$('#date').attr('readonly', false);
+							$('#s_contact_no').attr('readonly', false);
+
+							$('#address-list').show();
+							$('#address-input').hide();
+						}
 					}
-				}).done(function(msg) {
-					console.log(msg)
-					if (msg == 1) {
-						$('input').attr('readonly', false);
-						$("form select").attr('disabled', false);
-						$('#lot_no').attr('readonly', true);
-						$('#address-list').show();
-						$('#address-input').hide();
-					} else {
-						$('input').attr('readonly', false);
-						$("form select").attr('disabled', false);
-						$('#lot_no').attr('readonly', true);
-						$('#address-input').show();
-						$('#address-list').hide();
+				});
+			});
+
+			$('#member_no').keyup (function() {
+				var contactNo = $('#s_contact_no').val();
+				var memberNo = $('#member_no').val();
+
+				$.ajax({
+					url: "{{ url('receivers/search-address-member') }}",
+					dataType: 'json',
+					delay: 250,
+					data: {
+						contactNo: contactNo,
+						memberNo: memberNo
+					},
+					success: function(data) {
+
+						if(!data) {
+							$('input').attr('readonly', false);
+							$("form select").attr('disabled', false);
+							$('#lot_no').attr('readonly', true);
+							$('#address-input').show();
+							$('#address-list').hide();
+
+							$('#s_contact_no').val('');
+
+							$('#sender-name').val('');
+							$('#sender-name').attr('readonly', true);
+
+							$('#nric_code').val('');
+							$('#select2-nric_code-container').text('Code');
+
+							$('#nric_township').val('');
+							$('#select2-nric_township-container').text('Township');
+
+							$('#nric_no').val('');
+							$('#nric_no').attr('readonly', true);
+						} else {
+							$('#s_contact_no').val(data.s_contact_no);
+							$('#s_contact_no').attr('readonly', true);
+
+							$('#sender-name').val(data.s_name);
+							$('#sender-name').attr('readonly', true);
+
+							$('#nric_code').val(data.s_nric_code_id);
+							$('#select2-nric_code-container').text(data.s_nric_code_id);
+
+							$('#nric_township').val(data.s_nric_tp_id);
+							$('#select2-nric_township-container').text(data.s_township);
+
+							$('#nric_no').val(data.s_nric_no);
+							$('#nric_no').attr('readonly', true);
+
+							// $("form select").attr('disabled', true);
+							// $("input").attr('readonly', true);
+							$('#lot_no').attr('readonly', true);
+
+							$('#address').attr('disabled', false);
+							$('#country_id').attr('disabled', false);
+							$('#state_id').attr('disabled', false);
+							$('#date').attr('readonly', false);
+							$('#s_contact_no').attr('readonly', false);
+
+							$('#address-list').show();
+							$('#address-input').hide();
+						}
+					}
+				});
+			});
+
+
+			$('#address').change(function() {
+
+				var address = $(this).val();
+
+				$.ajax({
+					url: "{{ url('lotins/search-receiver') }}",
+					dataType: 'json',
+					delay: 250,
+					data: {
+						address: address,
+					},
+					success: function(data) {
+						if(!data) {
+							$('input').attr('readonly', false);
+							$("form select").attr('disabled', false);
+							$('#lot_no').attr('readonly', true);
+							$('#address-input').show();
+							$('#address-list').hide();
+
+							$('#r_contact_no').val('');
+							$('#r_contact_no').attr('readonly', false);
+
+							$('#r_name').val('');
+							$('#r_name').attr('readonly', false);
+
+							$('#r_nric_code').val('');
+							$('#select2-r_nric_code-container').text('Code');
+
+							$('#nric_township').val('');
+							$('#select2-r_nric_township-container').text('Township');
+
+							$('#r_nric_no').val('');
+							$('#r_nric_no').attr('readonly', false);
+
+						} else {
+							$('#r_contact_no').val(data.contact_no);
+							$('#r_contact_no').attr('readonly', true);
+
+							$('#r_name').val(data.name);
+							$('#r_name').attr('readonly', true);
+
+							$('#r_nric_code').val(data.nric_code_id);
+							$('#select2-r_nric_code-container').text(data.nric_code_id);
+
+							$('#r_nric_township').val(data.s_nric_tp_id);
+							$('#select2-r_nric_township-container').text(data.r_township);
+
+							$('#r_nric_no').val(data.nric_no);
+							$('#r_nric_no').attr('readonly', true);
+
+							// $("form select").attr('disabled', false);
+							$('#lot_no').attr('readonly', true);
+							$('#address-list').show();
+							$('#address-input').hide();
+						}
 					}
 				});
 			});
@@ -480,7 +678,6 @@
 						};
 					},
 					processResults: function (data, params) {
-						console.log(data)
 						return {
 							results: data.items
 						};
@@ -501,7 +698,6 @@
 						priceId: priceId,
 					},
 					success: function(data) {
-						console.log(data);
 						$('#unitprice-' + classes[1]).val(parseFloat(data.unit_price).toFixed(2));
 						$('#unitprice-' + classes[1]).attr('readonly', true);
 					}
@@ -513,6 +709,7 @@
 				var unit = parseFloat($(this).val()).toFixed(2);
 
 				var unitprice = $('#unitprice-' + classes[1]).val();
+				unitprice = parseFloat(unitprice).toFixed(2);
 
 				var amt = unit * unitprice;
 				amt = parseFloat(amt).toFixed(2);
@@ -522,14 +719,15 @@
 				var subTotal = 0;
 				$('.amount').each(function( index2 ) {
 					subTotal = subTotal + $(this).val();
+					subTotal = parseFloat(subTotal).toFixed(2);
 				});
 				subTotal = parseFloat(subTotal).toFixed(2);
 				$('#subtotal-1').text(subTotal);
 
-				var discount = subTotal * 0.1;
-				var scharge = subTotal * 0.1;
-				var gst = subTotal * 0.07;
-				var total = subTotal - discount - scharge - gst;
+				var discount = parseFloat((subTotal * 0.1)).toFixed(2);
+				var scharge = parseFloat((subTotal * 0.1)).toFixed(2);
+				var gst = parseFloat((subTotal * 0.07)).toFixed(2);
+				var total = parseFloat((subTotal - discount - scharge - gst)).toFixed(2);
 
 				$('#discount').val(discount);
 				$('#discount-1').text(discount);
@@ -545,7 +743,9 @@
 				var classes = this.id.split('-');
 				var quantity = parseFloat($(this).val()).toFixed(2);
 				var unit = $('#unit-' + classes[1]).val();
+				unit = parseFloat(unit).toFixed(2);
 				var unitprice = $('#unitprice-' + classes[1]).val();
+				unitprice = parseFloat(unitprice).toFixed(2);
 
 				var amt = quantity * unit * unitprice;
 				amt = parseFloat(amt).toFixed(2);
@@ -554,14 +754,15 @@
 				var subTotal = 0;
 				$('.amount').each(function( index2 ) {
 					subTotal = subTotal + $(this).val();
+					subTotal = parseFloat(subTotal).toFixed(2);
 				});
 				subTotal = parseFloat(subTotal).toFixed(2);
 				$('#subtotal-1').text(subTotal);
 
-				var discount = subTotal * 0.1;
-				var scharge = subTotal * 0.1;
-				var gst = subTotal * 0.07;
-				var total = subTotal - discount - scharge - gst;
+				var discount = parseFloat((subTotal * 0.1)).toFixed(2);
+				var scharge = parseFloat((subTotal * 0.1)).toFixed(2);
+				var gst = parseFloat((subTotal * 0.07)).toFixed(2);
+				var total = parseFloat((subTotal - discount - scharge - gst)).toFixed(2);
 
 				$('#discount').val(discount);
 				$('#discount-1').text(discount);
