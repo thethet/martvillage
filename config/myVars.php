@@ -22,4 +22,9 @@ return [
 		3 => 'Ready Collect',
 		4 => 'Collected',
 	],
+
+	'Payment'       => [
+		'Paid'   => 'Paid',
+		'Credit' => 'Credit',
+	],
 ];

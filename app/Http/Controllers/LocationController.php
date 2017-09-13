@@ -92,6 +92,7 @@ class LocationController extends Controller {
 	public function storeCity(Request $request) {
 		$this->validate($request, [
 			'state_name' => 'required',
+			'country_id' => 'required',
 		]);
 
 		$data               = $request->all();

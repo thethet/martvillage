@@ -25,6 +25,11 @@
 					</label>
 					<div class="col-sm-7">
 						{!! Form::text('s_contact_no', null, array('placeholder' => 'Contact No','class' => 'form-control', 'id' => 's_contact_no')) !!}
+						@if ($errors->has('s_contact_no'))
+							<span class="required">
+								<strong>{{ $errors->first('s_contact_no') }}</strong>
+							</span>
+						@endif
 					</div>
 				</div><!-- .form-group -->
 
@@ -34,6 +39,11 @@
 					</label>
 					<div class="col-sm-7">
 						{!! Form::text('member_no', null, array('placeholder' => 'Member No','class' => 'form-control', 'id' => 'member_no')) !!}
+						@if ($errors->has('member_no'))
+							<span class="required">
+								<strong>{{ $errors->first('member_no') }}</strong>
+							</span>
+						@endif
 					</div>
 				</div><!-- .form-group -->
 
@@ -43,6 +53,11 @@
 					</label>
 					<div class="col-sm-7">
 						{!! Form::text('sender_name', null, array('placeholder' => 'Name','class' => 'form-control', 'id' => 'sender-name')) !!}
+						@if ($errors->has('sender_name'))
+							<span class="required">
+								<strong>{{ $errors->first('sender_name') }}</strong>
+							</span>
+						@endif
 					</div>
 				</div><!-- .form-group -->
 
@@ -107,6 +122,11 @@
 					</label>
 					<div class="col-sm-7">
 						{!! Form::text('r_contact_no', null, array('placeholder' => 'Contact No','class' => 'form-control', 'id' => 'r_contact_no', 'readonly' => true)) !!}
+						@if ($errors->has('r_contact_no'))
+							<span class="required">
+								<strong>{{ $errors->first('r_contact_no') }}</strong>
+							</span>
+						@endif
 					</div>
 				</div><!-- .form-group -->
 
@@ -116,6 +136,11 @@
 					</label>
 					<div class="col-sm-7">
 						{!! Form::text('receiver_name', null, array('placeholder' => 'Name','class' => 'form-control', 'id' => 'r_name', 'readonly' => true)) !!}
+						@if ($errors->has('receiver_name'))
+							<span class="required">
+								<strong>{{ $errors->first('receiver_name') }}</strong>
+							</span>
+						@endif
 					</div>
 					<div class="col-sm-3"></div>
 				</div><!-- .form-group -->
@@ -177,11 +202,6 @@
 					<label class="control-label col-sm-3" for="logno"><strong>Log No:<span class="required">*</span></strong></label>
 					<div class="col-sm-7">
 						{!! Form::text('lot_no', $logNo, array('placeholder' => 'Enter Lot No','class' => 'form-control', 'id' => 'lot_no', 'readonly' => true)) !!}
-						@if ($errors->has('lot_no'))
-							<span class="required">
-								<strong>{{ $errors->first('lot_no') }}</strong>
-							</span>
-						@endif
 					</div>
 				</div><!-- .form-group -->
 
@@ -189,6 +209,11 @@
 					<label class="control-label col-sm-3" for="from"><strong>From:<span class="required">*</span></strong></label>
 					<div class="col-sm-7">
 						{!! Form::select('country_id', ['' => 'Select Country'] + $countries->toArray(), null, ['id'=>'country_id', 'class' => 'form-control']) !!}
+						@if ($errors->has('country_id'))
+							<span class="required">
+								<strong>{{ $errors->first('country_id') }}</strong>
+							</span>
+						@endif
 					</div>
 				</div><!-- .form-group -->
 
@@ -196,6 +221,23 @@
 					<label class="control-label col-sm-3" for="from"></label>
 					<div class="col-sm-7">
 						{!! Form::select('state_id', ['' => 'Select State'] + $states->toArray(), null, ['id'=>'state_id', 'class' => 'form-control']) !!}
+						@if ($errors->has('state_id'))
+							<span class="required">
+								<strong>{{ $errors->first('state_id') }}</strong>
+							</span>
+						@endif
+					</div>
+				</div><!-- .form-group -->
+
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="from"><strong>Payment:<span class="required">*</span></strong></label>
+					<div class="col-sm-7">
+						{!! Form::select('payment', ['' => 'Select Payment'] + Config::get('myVars.Payment'), null, ['id'=>'payment', 'class' => 'form-control']) !!}
+						@if ($errors->has('payment'))
+							<span class="required">
+								<strong>{{ $errors->first('payment') }}</strong>
+							</span>
+						@endif
 					</div>
 				</div><!-- .form-group -->
 			</div>
@@ -220,32 +262,100 @@
 					<tbody>
 						<?php $j = 0; ?>
 						@for($i = 0; $i < 5; $i++)
-							<tr>
-								<td>{{ $i+1 }}</td>
+							<tr id="row{{ $j }}">
+								<td>{{ $j+1 }}</td>
 								<td>
-									{!! Form::text('item_name[]', null, array('placeholder' => 'Enter Item Name','class' => 'form-control item_name', 'id' => 'itemname-'.$j)) !!}
+									{!! Form::text('lots['.$j.'][item_name]', null, array('placeholder' => 'Enter Item Name','class' => 'form-control item_name', 'id' => 'itemname-'.$j)) !!}
+									@if ($errors->has("lots.$j.item_name"))
+										<span class="required">
+											<strong>{{ $errors->first("lots.$j.item_name") }}</strong>
+										</span>
+									@endif
 								</td>
 								<td>
-									{!! Form::text('barcode[]', null, array('placeholder' => 'Enter Barcode','class' => 'form-control barcode', 'id' => 'barcode-'.$j)) !!}
+									{!! Form::text('lots['.$j.'][barcode]', null, array('placeholder' => 'Enter Barcode','class' => 'form-control barcode', 'id' => 'barcode-'.$j)) !!}
+									@if ($errors->has("lots.$j.barcode"))
+										<span class="required">
+											<strong>{{ $errors->first("lots.$j.barcode") }}</strong>
+										</span>
+									@endif
 								</td>
 								<td>
-									{!! Form::select('price_id[]', ['' => 'Select Type'] + $priceList->toArray(), null, ['class' => 'form-control price_id', 'id' => 'priceid-'.$j]) !!}
+									{!! Form::select('lots['.$j.'][price_id]', ['' => 'Select Type'] + $priceList->toArray(), null, ['class' => 'form-control price_id', 'id' => 'priceid-'.$j]) !!}
+									@if ($errors->has("lots.$j.price_id"))
+										<span class="required">
+											<strong>{{ $errors->first("lots.$j.price_id") }}</strong>
+										</span>
+									@endif
 								</td>
 								<td>
-									{!! Form::text('unit_price[]', null, array('placeholder' => 'Enter Unit Price','class' => 'form-control unit_price', 'readonly' => true, 'id' => 'unitprice-'.$j)) !!}
+									{!! Form::text('lots['.$j.'][unit_price]', null, array('placeholder' => 'Enter Unit Price','class' => 'form-control unit_price', 'readonly' => true, 'id' => 'unitprice-'.$j)) !!}
+									@if ($errors->has("lots.$j.unit_price"))
+										<span class="required">
+											<strong>{{ $errors->first("lots.$j.unit_price") }}</strong>
+										</span>
+									@endif
 								</td>
 								<td>
-									{!! Form::text('unit[]', null, array('placeholder' => 'Enter Unit','class' => 'form-control unit', 'id' => 'unit-'.$j)) !!}
+									{!! Form::text('lots['.$j.'][unit]', null, array('placeholder' => 'Enter Unit','class' => 'form-control unit', 'id' => 'unit-'.$j)) !!}
+									@if ($errors->has("lots.$j.unit"))
+										<span class="required">
+											<strong>{{ $errors->first("lots.$j.unit") }}</strong>
+										</span>
+									@endif
 								</td>
 								<td>
-									{!! Form::text('quantity[]', null, array('placeholder' => 'Enter Quantity','class' => 'form-control quantity', 'id' => 'quantity-'.$j)) !!}
+									{!! Form::text('lots['.$j.'][quantity]', null, array('placeholder' => 'Enter Quantity','class' => 'form-control quantity', 'id' => 'quantity-'.$j)) !!}
+									@if ($errors->has("lots.$j.quantity"))
+										<span class="required">
+											<strong>{{ $errors->first("lots.$j.quantity") }}</strong>
+										</span>
+									@endif
 								</td>
 								<td>
-									{!! Form::text('amount[]', null, array('placeholder' => 'Enter Amount','class' => 'form-control amount', 'id' => 'amount-'.$j, 'readonly' => true)) !!}
+									{!! Form::text('lots['.$j.'][amount]', null, array('placeholder' => 'Enter Amount','class' => 'form-control amount', 'id' => 'amount-'.$j, 'readonly' => true)) !!}
+									@if ($errors->has("lots.$j.amount"))
+										<span class="required">
+											<strong>{{ $errors->first("lots.$j.amount") }}</strong>
+										</span>
+									@endif
 								</td>
 							</tr>
 							<?php $j++; ?>
 						@endfor
+
+						<tr>
+							<td>&nbsp;</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+
+						<tr>
+							<td>&nbsp;</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+
+						<tr>
+							<td>&nbsp;</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
 					</tbody>
 
 					<tbody class="tbl-cal" style="font-weight: bold;">
@@ -253,6 +363,7 @@
 							<td colspan="6" class="right">Sub Total</td>
 							<td class="right" id="subtotal-0">
 								{{ Form::hidden('subtotal', null, ['id' => 'subtotal']) }}
+								{{ Form::hidden('item_count', $j, ['id' => 'itm-count']) }}
 							</td>
 							<td class="right" id="subtotal-1"></td>
 						</tr>
@@ -310,7 +421,7 @@
 
 			@permission('lotin-create')
 				<div class="menu-icon">
-					<a href="{{ route('users.create') }}">
+					<a href="#" id="add-item">
 						<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
 						New
 					</a>
@@ -396,6 +507,8 @@
 			$('#address-list').hide();
 
 			$("#country_id").select2();
+
+			$("#payment").select2();
 
 			$('#country_id').change(function() {
 				$('#select2-state_id-container').text('Select State');
@@ -493,7 +606,7 @@
 							$('#member_no').val('');
 
 							$('#sender-name').val('');
-							$('#sender-name').attr('readonly', true);
+							$('#sender-name').attr('readonly', false);
 
 							$('#nric_code').val('');
 							$('#select2-nric_code-container').text('Code');
@@ -502,7 +615,7 @@
 							$('#select2-nric_township-container').text('Township');
 
 							$('#nric_no').val('');
-							$('#nric_no').attr('readonly', true);
+							$('#nric_no').attr('readonly', false);
 						} else {
 							$('#member_no').val(data.member_no);
 							$('#member_no').attr('readonly', true);
@@ -557,10 +670,10 @@
 							$('#address-input').show();
 							$('#address-list').hide();
 
-							$('#s_contact_no').val('');
+							// $('#s_contact_no').val('');
 
 							$('#sender-name').val('');
-							$('#sender-name').attr('readonly', true);
+							$('#sender-name').attr('readonly', false);
 
 							$('#nric_code').val('');
 							$('#select2-nric_code-container').text('Code');
@@ -569,7 +682,7 @@
 							$('#select2-nric_township-container').text('Township');
 
 							$('#nric_no').val('');
-							$('#nric_no').attr('readonly', true);
+							$('#nric_no').attr('readonly', false);
 						} else {
 							$('#s_contact_no').val(data.s_contact_no);
 							$('#s_contact_no').attr('readonly', true);
@@ -686,7 +799,7 @@
 				},
 			});
 
-			$('.price_id').on('change', function() {
+			$('.table .price_id').on('change', function() {
 				var priceId = $(this).val();
 				var classes = this.id.split('-');
 
@@ -703,6 +816,7 @@
 					}
 				});
 			});
+
 
 			$('.unit').keyup(function() {
 				var classes = this.id.split('-');
@@ -774,10 +888,38 @@
 				$('#total-1').text(total);
 			});
 
+			/*$("a#add-item").bind('click', function () {
+				var cnt = $('#itm-count').val();
+				var lrow = cnt-1;
+
+				alert('hi'+cnt)
+
+				var clone = $("#row"+lrow).clone();
+				clone.find('td').each(function(){
+					var el = $(this).find(':first-child');
+					var id = el.attr('id') || null;
+					var name = el.attr('name') || null;
+					if(id) {
+						var i = id.substr(id.length-1);
+						var idprefix = id.substr(0, (id.length-1));
+						var nameprefix = name.split('[');
+						var nameids = nameprefix[1];
+						var nameid = nameids.split(']');
+						var ids = parseInt(nameid[0]) + 1;
+						var txtname = nameprefix[0] + "[" + ids + "]" + "[" + nameprefix[2];
+						console.log(txtname)
+						el.attr('id', idprefix+(+i+1));
+						el.attr('name', txtname);
+					}
+				});
+				$("#row"+lrow).after(clone);
+				clone.find('td:first-child').text(parseInt(cnt)+1)
+			});*/
 
 
 
-			$(".editboxes").change(function() {
+
+			/*$(".editboxes").change(function() {
 				var $el = $(this);
 				if ($el.is(":checked")) {
 					$('.editboxes').attr('disabled', true);
@@ -820,7 +962,9 @@
 						});
 					}
 				});
-			});
+			});*/
 		});
+
+
 	</script>
 @stop

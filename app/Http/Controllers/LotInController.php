@@ -66,17 +66,61 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
-		// $this->validate($request, [
-		// 	'company_name' => 'required',
-		// 	'short_code'   => 'required|unique:companies,short_code',
-		// 	'contact_no'   => 'required',
-		// 	'email'        => 'required|email|unique:companies,email',
-		// 	'expiry_date'  => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
-		// 	'image'        => 'mimes:jpeg,bmp,png',
-		// ]);
+		$messages = array(
+			's_contact_no.required'       => 'The Sender Contact Number  field is required.',
+			'member_no.required'          => 'The Member Number  field is required.',
+			'sender_name.required'        => 'The Sender Name  field is required.',
+			'nric_code_id.required'       => 'The NRIC Code  field is required.',
+			'nric_township_id.required'   => 'The NRIC Township  field is required.',
+			'nric_no.required'            => 'The NRIC Number  field is required.',
 
-		$size = count($request->item_name);
-		dd($request->all());
+			'r_contact_no.required'       => 'The Receiver Contact Number  field is required.',
+			'receiver_name.required'      => 'The Receiver Name  field is required.',
+			'r_nric_code_id.required'     => 'The NRIC Code  field is required.',
+			'r_nric_township_id.required' => 'The NRIC Township  field is required.',
+			'r_nric_no.required'          => 'The NRIC Number  field is required.',
+
+			'country_id.required'         => 'The From Country  field is required.',
+			'state_id.required'           => 'The From State  field is required.',
+
+			'lots.*.item_name.required'   => 'The Item Name  field is required.',
+			'lots.*.barcode.required'     => 'The Barcode  field is required.',
+			'lots.*.price_id.required'    => 'The Price Category  field is required.',
+			'lots.*.unit.required'        => 'The Unit  field is required.',
+			'lots.*.quantity.required'    => 'The Quantity  field is required.',
+			'lots.*.amount.required'      => 'The Amount  field is required.',
+		);
+
+		$this->validate($request, [
+			// 's_contact_no'       => 'required',
+			// 'member_no'          => 'required',
+			// 'sender_name'        => 'required',
+			// 'nric_code_id'       => 'required',
+			// 'nric_township_id'   => 'required',
+			// 'nric_no'            => 'required',
+
+			// 'r_contact_no'       => 'required',
+			// 'receiver_name'      => 'required',
+			// 'r_nric_code_id'     => 'required',
+			// 'r_nric_township_id' => 'required',
+			// 'r_nric_no'          => 'required',
+
+			// 'date'               => 'required',
+			// 'country_id'         => 'required',
+			// 'state_id'           => 'required',
+			// 'payment'            => 'required',
+
+			// 'lots.*.item_name'   => 'required',
+			// 'lots.*.barcode'     => 'required',
+			// 'lots.*.price_id'    => 'required',
+			// 'lots.*.unit_price'  => 'required',
+			// 'lots.*.unit'        => 'required',
+			// 'lots.*.quantity'    => 'required',
+			// 'lots.*.amount'      => 'required',
+		], $messages);
+
+		$size = count($request->lots);
+		// dd($request->all());
 
 		$user_id    = Auth::user()->id;
 		$company_id = Auth::user()->company_id;
@@ -135,42 +179,49 @@ class LotInController extends Controller {
 			$receiverId = $reseiver->id;
 		}
 
+		$lotData['company_id']  = $company_id;
+		$lotData['user_id']     = $user_id;
 		$lotData['sender_id']   = $senderId;
 		$lotData['receiver_id'] = $receiverId;
-
-		$itemName  = implode(', ', $request->item_name);
-		$barcode   = implode(', ', $request->barcode);
-		$priceId   = implode(', ', $request->price_id);
-		$unitPrice = implode(', ', $request->unit_price);
-		$unit      = implode(', ', $request->unit);
-		$quantity  = implode(', ', $request->quantity);
-		$amount    = implode(', ', $request->amount);
-
-		$lotData['user_id']    = $user_id;
-		$lotData['company_id'] = $company_id;
-		$LotData['lot_no']     = $request->lot_no;
-		$lotData['date']       = $request->date;
+		$LotData['lot_no']      = $request->lot_no;
+		$lotData['date']        = $request->date;
 		// $lotData['time']                = $request->time;
 		$LotData['from_country']        = ($request->country_id) ? $request->country_id : "";
 		$LotData['from_state']          = ($request->state_id) ? $request->state_id : "";
-		$lotData['item_name']           = $itemName;
-		$lotData['barcode']             = $barcode;
-		$lotData['price_id']            = $priceId;
-		$lotData['address']             = $request->to_state_id;
-		$lotData['unit']                = $unit;
-		$lotData['unit_price']          = $unitPrice;
-		$lotData['quantity']            = $quantity;
-		$lotData['amount']              = $amount;
 		$lotData['member_discount']     = 0;
 		$lotData['member_discount_amt'] = 0;
 		$lotData['other_discount']      = 10;
 		$lotData['other_discount_amt']  = $request->discount;
 		$lotData['gov_tax']             = 7;
 		$lotData['gov_tax_amt']         = $request->gst;
-		$lotData['status']              = 0;
+		$lotData['service_charge']      = 10;
+		$lotData['service_charge_amt']  = $request->service;
+		$lotData['total_amt']           = $request->total_amt;
+		$lotData['payment']             = $request->payment;
 		$lotData['created_by']          = $user_id;
+		$lotData['status']              = 0;
 
-		Lotin::create($lotData);
+		$lotin   = Lotin::create($lotData);
+		$lotinId = $lotin->id;
+
+		$lots = $request->lots;
+		for ($i = 0; $i < $size; $i++) {
+			if ($lots[$i]['item_name'] != "") {
+				$itemData['lotin_id']   = $lotinId;
+				$itemData['item_name']  = $lots[$i]['item_name'];
+				$itemData['barcode']    = $lots[$i]['barcode'];
+				$itemData['price_id']   = $lots[$i]['price_id'];
+				$itemData['address']    = $lots[$i]['address'];
+				$itemData['unit']       = $lots[$i]['unit'];
+				$itemData['unit_price'] = $lots[$i]['unit_price'];
+				$itemData['quantity']   = $lots[$i]['quantity'];
+				$itemData['amount']     = $lots[$i]['amount'];
+				$itemData['created_by'] = $user_id;
+
+				Item::create($itemData);
+			}
+
+		}
 		return view('dashboard.dashboard');
 
 	}

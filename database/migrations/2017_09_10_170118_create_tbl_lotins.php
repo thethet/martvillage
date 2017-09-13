@@ -30,7 +30,7 @@ class CreateTblLotins extends Migration {
 			$table->double('service_charge', 5, 2);
 			$table->double('service_charge_amt', 12, 2);
 			$table->double('total_amt', 12, 2);
-			$table->enum('pyament', ['Paid', 'Credit']);
+			$table->enum('payment', ['Paid', 'Credit']);
 			$table->enum('status', [0, 1, 2, 3, 4]);
 			$table->enum('deleted', ['N', 'Y']);
 			$table->integer('created_by');
