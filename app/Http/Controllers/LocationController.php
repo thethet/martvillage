@@ -49,6 +49,7 @@ class LocationController extends Controller {
 			foreach ($states as $state) {
 				$citiesLists[$j][$cList->country_name]['id']         = $state->id;
 				$citiesLists[$j][$cList->country_name]['state_name'] = $state->state_name;
+				$citiesLists[$j][$cList->country_name]['state_code'] = $state->state_code;
 				$j++;
 			}
 		}
@@ -73,6 +74,7 @@ class LocationController extends Controller {
 	public function storeCountry(Request $request) {
 		$this->validate($request, [
 			'country_name' => 'required',
+			'country_code' => 'required',
 		]);
 
 		$data               = $request->all();
@@ -92,6 +94,7 @@ class LocationController extends Controller {
 	public function storeCity(Request $request) {
 		$this->validate($request, [
 			'state_name' => 'required',
+			'state_code' => 'required',
 			'country_id' => 'required',
 		]);
 
@@ -165,6 +168,7 @@ class LocationController extends Controller {
 			foreach ($states as $state) {
 				$citiesLists[$j][$cList->country_name]['id']         = $state->id;
 				$citiesLists[$j][$cList->country_name]['state_name'] = $state->state_name;
+				$citiesLists[$j][$cList->country_name]['state_code'] = $state->state_code;
 				$j++;
 			}
 		}

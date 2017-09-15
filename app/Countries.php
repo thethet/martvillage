@@ -20,7 +20,7 @@ class Countries extends Model {
 		'company_id',
 		'country_name',
 		'description',
-		'code',
+		'country_code',
 		'total_cities',
 		'deleted',
 		'created_by',

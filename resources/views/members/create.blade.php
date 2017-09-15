@@ -139,7 +139,7 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="email">Member No.: <span class="required">*</span></label>
 					<div class="col-sm-6">
-						{!! Form::text('member_no', null, array('placeholder' => 'Please Enter Member Number','class' => 'form-control')) !!}
+						{!! Form::text('member_no', $memberNo, array('placeholder' => 'Please Enter Member Number','class' => 'form-control', 'id' => 'member_no', 'readonly' => true)) !!}
 						@if ($errors->has('member_no'))
 							<span class="required">
 								<strong>{{ $errors->first('member_no') }}</strong>
@@ -324,6 +324,23 @@
 			});
 
 			$("#company_id").select2();
+
+			$('#company_id').change(function() {
+
+				var companyId = $(this).val();
+
+				$.ajax({
+					url: "{{ url('members/generate-member-number') }}",
+					dataType: 'json',
+					delay: 250,
+					data: {
+						companyId: companyId,
+					},
+					success: function(data) {
+						$('#member_no').val(data)
+					}
+				});
+			});
 		});
 	</script>
 @stop

@@ -3,25 +3,17 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateTblPrices extends Migration {
+class CreteTblPriceTitles extends Migration {
 	/**
 	 * Run the migrations.
 	 *
 	 * @return void
 	 */
 	public function up() {
-		Schema::create('prices', function (Blueprint $table) {
+		Schema::create('price_titles', function (Blueprint $table) {
 			$table->increments('id');
 			$table->integer('company_id');
-			$table->integer('category_id');
-			$table->integer('currency_id');
-			$table->integer('title_id');
 			$table->string('title_name');
-			$table->integer('from_country');
-			$table->integer('from_state');
-			$table->integer('to_country');
-			$table->integer('to_state');
-			$table->double('unit_price', 12, 2);
 			$table->enum('deleted', ['N', 'Y']);
 			$table->integer('created_by');
 			$table->integer('updated_by');
@@ -35,6 +27,6 @@ class CreateTblPrices extends Migration {
 	 * @return void
 	 */
 	public function down() {
-		Schema::drop('prices');
+		Schema::drop('price_titles');
 	}
 }

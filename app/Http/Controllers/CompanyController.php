@@ -157,7 +157,7 @@ class CompanyController extends Controller {
 	public function update($id, Request $request) {
 		$this->validate($request, [
 			'company_name' => 'required',
-			'short_code'   => 'required|unique:companies,short_code',
+			// 'short_code'   => 'required|unique:companies,short_code',
 			'contact_no'   => 'required',
 			'expiry_date'  => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
 			'image'        => 'mimes:jpeg,bmp,png',

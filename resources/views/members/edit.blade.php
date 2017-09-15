@@ -75,7 +75,7 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="contact-no"><strong>Contact No.: <span class="required">*</span></strong></label>
 					<div class="col-sm-6">
-						{!! Form::text('contact_no', null, array('placeholder' => 'Please Enter Contact Number','class' => 'form-control', 'readonly' => true)) !!}
+						{!! Form::text('contact_no', null, array('placeholder' => 'Please Enter Contact Number','class' => 'form-control', 'disabled' => true)) !!}
 						@if ($errors->has('contact_no'))
 							<span class="required">
 								<strong>{{ $errors->first('contact_no') }}</strong>
@@ -139,7 +139,7 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="email">Member No.: <span class="required">*</span></label>
 					<div class="col-sm-6">
-						{!! Form::text('member_no', null, array('placeholder' => 'Please Enter Member Number','class' => 'form-control', 'readonly' => true)) !!}
+						{!! Form::text('member_no', null, array('placeholder' => 'Please Enter Member Number','class' => 'form-control', 'disabled' => true)) !!}
 						@if ($errors->has('member_no'))
 							<span class="required">
 								<strong>{{ $errors->first('member_no') }}</strong>

@@ -15,7 +15,7 @@ class CreateTblCountries extends Migration {
 			$table->integer('company_id');
 			$table->string('country_name');
 			$table->string('description')->nullable();
-			$table->string('code')->nullable();
+			$table->string('country_code')->nullable();
 			$table->integer('total_cities');
 			$table->enum('deleted', ['N', 'Y']);
 			$table->integer('created_by');

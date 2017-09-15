@@ -35,13 +35,23 @@ class MemberController extends Controller {
 	 * @return Response
 	 */
 	public function create() {
+		// dd(Auth::user()->timezone);
+
+		$lastId = Member::latest('id')->first();
+		if ($lastId) {
+			$lastId = $lastId->id;
+		}
+		$lastId += 1;
+		$code     = Auth::user()->company->short_code;
+		$memberNo = $code . date('Y') . str_pad($lastId, 6, 0, STR_PAD_LEFT);
+
 		$companies     = Companies::where('deleted', 'N')->lists('company_name', 'id');
 		$countries     = Countries::where('deleted', 'N')->lists('country_name', 'id');
 		$states        = States::where('deleted', 'N')->lists('state_name', 'id');
 		$townships     = Townships::where('deleted', 'N')->lists('township_name', 'id');
 		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('id', 'asc')->lists('nric_code', 'id');
 		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('serial_no', 'asc')->lists('short_name', 'id');
-		return view('members.create', ['companies' => $companies, 'countries' => $countries, 'states' => $states, 'townships' => $townships, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships]);
+		return view('members.create', ['companies' => $companies, 'countries' => $countries, 'states' => $states, 'townships' => $townships, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships, 'memberNo' => $memberNo]);
 	}
 
 	/**
@@ -161,4 +171,30 @@ class MemberController extends Controller {
 		$response = array('status' => 'success', 'url' => 'members');
 		return response()->json($response);
 	}
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function generateMemberNumber(Request $request) {
+		$companyId = $request->get('companyId');
+		$company   = Companies::find($companyId);
+		$code      = $company->short_code;
+
+		$lastId = Member::latest('id')->first();
+		if ($lastId) {
+			$lastId = $lastId->id;
+		}
+		$lastId += 1;
+		$memberNo = $code . date('Y') . str_pad($lastId, 6, 0, STR_PAD_LEFT);
+
+		$header = array(
+			'Content-Type' => 'application/json; charset=UTF-8',
+			'charset'      => 'utf-8',
+		);
+
+		return json_encode($memberNo, JSON_UNESCAPED_UNICODE);
+	}
+
 }

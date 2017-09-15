@@ -34,7 +34,7 @@
 							@foreach ($countries as $key => $country)
 								<tr>
 									<td>{{ ++$i }}</td>
-									<td>{{ $country->country_name }}</td>
+									<td>{{ $country->country_name }} ({{ $country->country_code }})</td>
 									<td>{{ $country->total_cities }}</td>
 								</tr>
 							@endforeach
@@ -45,12 +45,26 @@
 
 				{!! Form::open(array('route' => 'locations.country.store','method'=>'POST', 'id' => 'country-form', 'class' => 'form-horizontal')) !!}
 					{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
-					<div class="form-group" style="margin-bottom: 0;">
+					<div class="form-group">
 						<label class="control-label col-sm-3" for="name">
 							<strong>Country:</strong>
 						</label>
 						<div class="col-sm-6">
 							{!! Form::text('country_name', null, array('placeholder' => 'Country Name','class' => 'form-control')) !!}
+						</div>
+						@if ($errors->has('country_name'))
+							<span class="required">
+								<strong>{{ $errors->first('country_name') }}</strong>
+							</span>
+						@endif
+					</div><!-- .form-group -->
+
+					<div class="form-group" style="margin-bottom: 0;">
+						<label class="control-label col-sm-3" for="name">
+							<strong>Short Code:</strong>
+						</label>
+						<div class="col-sm-6">
+							{!! Form::text('country_code', null, array('placeholder' => 'Short Code','class' => 'form-control')) !!}
 						</div>
 						<div class="col-sm-3">
 							<a href="#" id="add" onclick="document.getElementById('country-form').submit();">
@@ -83,6 +97,20 @@
 							@if ($errors->has('state_name'))
 								<span class="required">
 									<strong>{{ $errors->first('state_name') }}</strong>
+								</span>
+							@endif
+						</div>
+					</div><!-- .form-group -->
+
+					<div class="form-group">
+						<label class="control-label col-sm-3" for="name">
+							<strong>Short Code:</strong>
+						</label>
+						<div class="col-sm-6">
+							{!! Form::text('state_code', null, array('placeholder' => 'City Short Code','class' => 'form-control')) !!}
+							@if ($errors->has('state_code'))
+								<span class="required">
+									<strong>{{ $errors->first('state_code') }}</strong>
 								</span>
 							@endif
 						</div>
@@ -161,7 +189,7 @@
 						<tr>
 							@foreach($countriesLists as $clist)
 								<th width="8px">&nbsp;&nbsp;&nbsp;</th>
-								<th>{{ $clist->country_name }}</th>
+								<th>{{ $clist->country_name }} ({{ $clist->country_code }})</th>
 							@endforeach
 						</tr>
 					</thead>
@@ -173,7 +201,9 @@
 									<td>
 										{!! Form::checkbox('edit', $cities[$countlist->country_name]['id'], null, ['class' => 'editboxes', 'disabled' => true]) !!}
 									</td>
-									<td>{{ $cities[$countlist->country_name]['state_name'] }}</td>
+									<td>
+										{{ $cities[$countlist->country_name]['state_name'] }} ({{ $cities[$countlist->country_name]['state_code'] }})
+									</td>
 									@else
 										<td></td>
 										<td></td>

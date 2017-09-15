@@ -6,6 +6,7 @@ use App\Category;
 use App\Countries;
 use App\Currency;
 use App\Price;
+use App\PriceTitles;
 use App\States;
 use Auth;
 use Illuminate\Http\Request;
@@ -26,19 +27,79 @@ class PricingController extends Controller {
 			$categoryList = Category::where('deleted', 'N')->lists('name', 'id');
 			$currencyList = Currency::where('deleted', 'N')->lists('type', 'id');
 
-			$currencyTitle = Currency::where('deleted', 'N')->get();
-			$pricingLists  = Price::where('deleted', 'N')->get();
+			$currencyTitle  = Currency::where('deleted', 'N')->get();
+			$pricingLists   = Price::where('deleted', 'N')->get();
+			$priceTitleList = PriceTitles::where('deleted', 'N')->get();
 		} else {
 			$countryList  = Countries::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 			$stateList    = States::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 			$categoryList = Category::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('name', 'id');
 			$currencyList = Currency::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('type', 'id');
 
-			$currencyTitle = Currency::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->get();
-			$pricingLists  = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->get();
+			$currencyTitle  = Currency::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->get();
+			$pricingLists   = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->get();
+			$priceTitleList = PriceTitles::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->get();
 		}
 
-		return view('pricings.index', ['categories' => $categories, 'stateList' => $stateList, 'categoryList' => $categoryList, 'countryList' => $countryList, 'currencyList' => $currencyList, 'currencyTitle' => $currencyTitle, 'pricingLists' => $pricingLists])->with('i', ($request->get('page', 1) - 1) * 10);
+		$currencyTitleList = array();
+		$subTitleList      = array();
+		$priceLists        = array();
+		$i                 = 0;
+		$totalCol          = 0;
+		foreach ($currencyTitle as $key => $value) {
+			$currencyTitleList[$i]['type']    = $value->type;
+			$currencyTitleList[$i]['country'] = $value->location->country_code;
+			$i++;
+		}
+
+		foreach ($currencyTitle as $key => $val) {
+			$states = States::where('country_id', $val->from_location)->get();
+
+			$j = 0;
+			foreach ($states as $key => $state) {
+				$subTitleList[$val->location->country_code][$j] = $state->state_code;
+				$j++;
+			}
+			if (!array_key_exists($val->location->country_code, $subTitleList)) {
+				$subTitleList[$val->location->country_code][$j] = '';
+			}
+		}
+
+		foreach ($priceTitleList as $key => $title) {
+
+			$k = 0;
+			foreach ($currencyTitle as $key => $val) {
+				$states = States::where('country_id', $val->from_location)->get();
+
+				foreach ($states as $key => $state) {
+					foreach ($pricingLists as $key => $ptl) {
+
+						if ($ptl->from_state != $state->id && !isset($priceLists[$title->title_name][$val->location->country_code][$state->state_code])) {
+							$priceLists[$title->title_name][$val->location->country_code][$state->state_code]['id']         = 0;
+							$priceLists[$title->title_name][$val->location->country_code][$state->state_code]['unit_price'] = '';
+						}
+
+						if ($ptl->from_state == $state->id && $title->title_name == $ptl->title_name) {
+							// dd($ptl);
+							$priceLists[$title->title_name][$val->location->country_code][$state->state_code]['id']         = $ptl->id;
+							$priceLists[$title->title_name][$val->location->country_code][$state->state_code]['unit_price'] = $ptl->unit_price;
+						}
+
+					}
+				}
+
+				if (!isset($priceLists[$title->title_name][$val->location->country_code])) {
+					$priceLists[$title->title_name][$val->location->country_code] = array();
+				}
+				$currencyTitleList[$k]['total_sub_title'] = count($priceLists[$title->title_name][$val->location->country_code]);
+				$totalCol += $currencyTitleList[$k]['total_sub_title'];
+				$k++;
+			}
+
+		}
+		$totalCol += 2;
+
+		return view('pricings.index', ['categories' => $categories, 'stateList' => $stateList, 'categoryList' => $categoryList, 'countryList' => $countryList, 'currencyList' => $currencyList, 'currencyTitle' => $currencyTitle, 'pricingLists' => $pricingLists, 'currencyTitleList' => $currencyTitleList, 'subTitleList' => $subTitleList, 'priceLists' => $priceLists, 'totalCol' => $totalCol])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
 	/**
@@ -77,7 +138,18 @@ class PricingController extends Controller {
 	public function storePrice(Request $request) {
 		$data               = $request->all();
 		$data['created_by'] = Auth::user()->id;
+
+		$titleData['company_id'] = $request->company_id;
+		$titleData['title_name'] = $request->title_name;
+		$titleData['created_by'] = Auth::user()->id;
+		$title                   = PriceTitles::where('company_id', $request->company_id)->where('title_name', $request->title_name)->first();
+		if (!$title) {
+			$title = PriceTitles::create($titleData);
+		}
+
+		$data['title_id'] = $title->id;
 		Price::create($data);
+
 		return redirect()->route('prices.index')
 			->with('success', 'Pricing created successfully');
 	}
@@ -116,17 +188,84 @@ class PricingController extends Controller {
 		$categories = Category::where('deleted', 'N')->get();
 
 		if (Auth::user()->hasRole('administrator')) {
+			$countryList  = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+			$stateList    = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+			$categoryList = Category::where('deleted', 'N')->lists('name', 'id');
+			$currencyList = Currency::where('deleted', 'N')->lists('type', 'id');
+
+			$currencyTitle  = Currency::where('deleted', 'N')->get();
+			$pricingLists   = Price::where('deleted', 'N')->get();
+			$priceTitleList = PriceTitles::where('deleted', 'N')->get();
 		} else {
+			$countryList  = Countries::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+			$stateList    = States::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+			$categoryList = Category::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('name', 'id');
+			$currencyList = Currency::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('type', 'id');
+
+			$currencyTitle  = Currency::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->get();
+			$pricingLists   = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->get();
+			$priceTitleList = PriceTitles::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->get();
 		}
-		$countryList  = Countries::where('deleted', 'N')->lists('country_name', 'id');
-		$stateList    = States::where('deleted', 'N')->lists('state_name', 'id');
-		$categoryList = Category::where('deleted', 'N')->lists('name', 'id');
-		$currencyList = Currency::where('deleted', 'N')->lists('type', 'id');
 
-		$currencyTitle = Currency::where('deleted', 'N')->get();
-		$pricingLists  = Price::where('deleted', 'N')->get();
+		$currencyTitleList = array();
+		$subTitleList      = array();
+		$priceLists        = array();
+		$i                 = 0;
+		$totalCol          = 0;
+		foreach ($currencyTitle as $key => $value) {
+			$currencyTitleList[$i]['type']    = $value->type;
+			$currencyTitleList[$i]['country'] = $value->location->country_code;
+			$i++;
+		}
 
-		return view('pricings.edit', ['categories' => $categories, 'stateList' => $stateList, 'categoryList' => $categoryList, 'countryList' => $countryList, 'currencyList' => $currencyList, 'currencyTitle' => $currencyTitle, 'pricingLists' => $pricingLists, 'prices' => $prices])->with('i', ($request->get('page', 1) - 1) * 10);
+		foreach ($currencyTitle as $key => $val) {
+			$states = States::where('country_id', $val->from_location)->get();
+
+			$j = 0;
+			foreach ($states as $key => $state) {
+				$subTitleList[$val->location->country_code][$j] = $state->state_code;
+				$j++;
+			}
+			if (!array_key_exists($val->location->country_code, $subTitleList)) {
+				$subTitleList[$val->location->country_code][$j] = '';
+			}
+		}
+
+		foreach ($priceTitleList as $key => $title) {
+
+			$k = 0;
+			foreach ($currencyTitle as $key => $val) {
+				$states = States::where('country_id', $val->from_location)->get();
+
+				foreach ($states as $key => $state) {
+					foreach ($pricingLists as $key => $ptl) {
+
+						if ($ptl->from_state != $state->id && !isset($priceLists[$title->title_name][$val->location->country_code][$state->state_code])) {
+							$priceLists[$title->title_name][$val->location->country_code][$state->state_code]['id']         = 0;
+							$priceLists[$title->title_name][$val->location->country_code][$state->state_code]['unit_price'] = '';
+						}
+
+						if ($ptl->from_state == $state->id && $title->title_name == $ptl->title_name) {
+							// dd($ptl);
+							$priceLists[$title->title_name][$val->location->country_code][$state->state_code]['id']         = $ptl->id;
+							$priceLists[$title->title_name][$val->location->country_code][$state->state_code]['unit_price'] = $ptl->unit_price;
+						}
+
+					}
+				}
+
+				if (!isset($priceLists[$title->title_name][$val->location->country_code])) {
+					$priceLists[$title->title_name][$val->location->country_code] = array();
+				}
+				$currencyTitleList[$k]['total_sub_title'] = count($priceLists[$title->title_name][$val->location->country_code]);
+				$totalCol += $currencyTitleList[$k]['total_sub_title'];
+				$k++;
+			}
+
+		}
+		$totalCol += 2;
+
+		return view('pricings.edit', ['prices' => $prices, 'categories' => $categories, 'stateList' => $stateList, 'categoryList' => $categoryList, 'countryList' => $countryList, 'currencyList' => $currencyList, 'currencyTitle' => $currencyTitle, 'pricingLists' => $pricingLists, 'currencyTitleList' => $currencyTitleList, 'subTitleList' => $subTitleList, 'priceLists' => $priceLists, 'totalCol' => $totalCol])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
 	/**

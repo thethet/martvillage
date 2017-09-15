@@ -253,8 +253,8 @@
 							<th>Barcode</th>
 							<th>Type</th>
 							<th width="120px">Unit Price</th>
-							<th width="80px">Unit </th>
-							<th width="80px">Quantity</th>
+							<th width="100px">Unit </th>
+							<th width="100px">Quantity</th>
 							<th width="120px">Amount</th>
 						</tr>
 					</thead>
@@ -280,24 +280,28 @@
 										</span>
 									@endif
 								</td>
-								<td>
+								<td width="170px">
 									{!! Form::select('lots['.$j.'][price_id]', ['' => 'Select Type'] + $priceList->toArray(), null, ['class' => 'form-control price_id', 'id' => 'priceid-'.$j]) !!}
 									@if ($errors->has("lots.$j.price_id"))
 										<span class="required">
 											<strong>{{ $errors->first("lots.$j.price_id") }}</strong>
 										</span>
 									@endif
+									{!! Form::hidden('lots['.$j.'][unit_price]', null, array('placeholder' => 'Unit Price','class' => 'form-control unit_price', 'readonly' => true, 'id' => 'unitprice-'.$j)) !!}
+									{!! Form::hidden('lots['.$j.'][category_id]', null, array('placeholder' => 'Unit Price','class' => 'form-control category_id', 'readonly' => true, 'id' => 'category_id-'.$j)) !!}
+								</td>
+								<td id="unit-price-{{ $j }}" class="unit-prices">
 								</td>
 								<td>
-									{!! Form::text('lots['.$j.'][unit_price]', null, array('placeholder' => 'Enter Unit Price','class' => 'form-control unit_price', 'readonly' => true, 'id' => 'unitprice-'.$j)) !!}
-									@if ($errors->has("lots.$j.unit_price"))
-										<span class="required">
-											<strong>{{ $errors->first("lots.$j.unit_price") }}</strong>
-										</span>
-									@endif
-								</td>
-								<td>
-									{!! Form::text('lots['.$j.'][unit]', null, array('placeholder' => 'Enter Unit','class' => 'form-control unit', 'id' => 'unit-'.$j)) !!}
+									<div class="form-group" style="margin: 0;">
+										<div class="col-sm-9" style="padding: 0;">
+											{!! Form::text('lots['.$j.'][unit]', null, array('placeholder' => 'Unit','class' => 'form-control unit', 'id' => 'unit-'.$j)) !!}
+											{!! Form::hidden('lots['.$j.'][unit_type]', null, array('placeholder' => 'Unit','class' => 'form-control unit-type', 'id' => 'unit-type-'.$j)) !!}
+										</div>
+										<label class="control-label col-sm-3" style="padding-left: 5px; padding-right: 0;">
+											<span id="unit-types-{{ $j }}" class="unit-types"></span>
+										</label>
+									</div>
 									@if ($errors->has("lots.$j.unit"))
 										<span class="required">
 											<strong>{{ $errors->first("lots.$j.unit") }}</strong>
@@ -305,7 +309,7 @@
 									@endif
 								</td>
 								<td>
-									{!! Form::text('lots['.$j.'][quantity]', null, array('placeholder' => 'Enter Quantity','class' => 'form-control quantity', 'id' => 'quantity-'.$j)) !!}
+									{!! Form::text('lots['.$j.'][quantity]', null, array('placeholder' => 'Quantity','class' => 'form-control quantity', 'id' => 'quantity-'.$j)) !!}
 									@if ($errors->has("lots.$j.quantity"))
 										<span class="required">
 											<strong>{{ $errors->first("lots.$j.quantity") }}</strong>
@@ -313,7 +317,7 @@
 									@endif
 								</td>
 								<td>
-									{!! Form::text('lots['.$j.'][amount]', null, array('placeholder' => 'Enter Amount','class' => 'form-control amount', 'id' => 'amount-'.$j, 'readonly' => true)) !!}
+									{!! Form::text('lots['.$j.'][amount]', null, array('placeholder' => 'Amount','class' => 'form-control amount', 'id' => 'amount-'.$j, 'readonly' => true)) !!}
 									@if ($errors->has("lots.$j.amount"))
 										<span class="required">
 											<strong>{{ $errors->first("lots.$j.amount") }}</strong>
@@ -799,6 +803,72 @@
 				},
 			});
 
+			$("#country_id").change(function() {
+				$( ".price_id" ).each(function( index ) {
+					$( this ).val('');
+					$('.unit').val('');
+					$('.quantity').val('');
+					$('.amount').val('');
+					$('.unit-types').text('');
+					$('.unit-prices').text('');
+					$('#subtotal-1').text('0.00');
+					$('#discount-1').text('0.00');
+					$('#scharge-1').text('0.00');
+					$('#gst-1').text('0.00');
+					$('#total-1').text('0.00');
+
+					$(".table .select2-selection__rendered").each( function(ind) {
+						$(this).text('Select Type')
+					})
+
+				});
+			});
+
+
+			$("#state_id").change(function() {
+				$( ".price_id" ).each(function( index ) {
+					$( this ).val('');
+					$('.unit').val('');
+					$('.quantity').val('');
+					$('.amount').val('');
+					$('.unit-types').text('');
+					$('.unit-prices').text('');
+					$('#subtotal-1').text('0.00');
+					$('#discount-1').text('0.00');
+					$('#scharge-1').text('0.00');
+					$('#gst-1').text('0.00');
+					$('#total-1').text('0.00');
+
+					$(".table .select2-selection__rendered").each( function(ind) {
+						$(this).text('Select Type')
+					})
+
+				});
+			});
+
+			$(".table .price_id").select2({
+				ajax: {
+					url: "{{ url('lotins/search-price-list') }}",
+					dataType: 'json',
+					delay: 250,
+					data: function (params) {
+						var countryId = $('#country_id').val();
+						var stateId = $('#state_id').val();
+						return {
+							search: params.term,
+							countryId: countryId,
+							stateId: stateId
+						};
+					},
+					processResults: function (data, params) {
+						return {
+							results: data.items
+						};
+					},
+					cache: true
+				},
+			});
+
 			$('.table .price_id').on('change', function() {
 				var priceId = $(this).val();
 				var classes = this.id.split('-');
@@ -811,8 +881,21 @@
 						priceId: priceId,
 					},
 					success: function(data) {
+						$('#unit-type-' + classes[1]).val(data.unit);
+						$('#unit-types-' + classes[1]).text(data.unit);
 						$('#unitprice-' + classes[1]).val(parseFloat(data.unit_price).toFixed(2));
+						$('#category_id-' + classes[1]).val(data.category_id);
+						if(data.unit != '%') {
+							$('#unit-price-' + classes[1]).text((parseFloat(data.unit_price).toFixed(2)) + " " + data.type + "(per " + data.unit  + ")");
+						} else {
+							$('#unit-price-' + classes[1]).text((parseFloat(data.unit_price)) + " " + data.unit);
+						}
+
 						$('#unitprice-' + classes[1]).attr('readonly', true);
+						$('#unit-' + classes[1]).val('');
+						$('#quantity-' + classes[1]).val('');
+						$('#amount-' + classes[1]).val('');
+						calculateTotal();
 					}
 				});
 			});
@@ -825,67 +908,43 @@
 				var unitprice = $('#unitprice-' + classes[1]).val();
 				unitprice = parseFloat(unitprice).toFixed(2);
 
-				var amt = unit * unitprice;
+				var unittype = $('#unit-type-' + classes[1]).val();
+
+				if(unittype != '%') {
+					var amt = unit * unitprice;
+				} else {
+					var amt = (unit * unitprice) / 100;
+				}
 				amt = parseFloat(amt).toFixed(2);
 
 				$('#amount-' + classes[1]).val(amt);
 
-				var subTotal = 0;
-				$('.amount').each(function( index2 ) {
-					subTotal = subTotal + $(this).val();
-					subTotal = parseFloat(subTotal).toFixed(2);
-				});
-				subTotal = parseFloat(subTotal).toFixed(2);
-				$('#subtotal-1').text(subTotal);
-
-				var discount = parseFloat((subTotal * 0.1)).toFixed(2);
-				var scharge = parseFloat((subTotal * 0.1)).toFixed(2);
-				var gst = parseFloat((subTotal * 0.07)).toFixed(2);
-				var total = parseFloat((subTotal - discount - scharge - gst)).toFixed(2);
-
-				$('#discount').val(discount);
-				$('#discount-1').text(discount);
-				$('#service').val(scharge);
-				$('#scharge-1').text(scharge);
-				$('#gst').val(gst);
-				$('#gst-1').text(gst);
-				$('#total').val(total);
-				$('#total-1').text(total);
+				calculateTotal();
 			});
 
 			$('.quantity').keyup(function() {
 				var classes = this.id.split('-');
 				var quantity = parseFloat($(this).val()).toFixed(2);
+
 				var unit = $('#unit-' + classes[1]).val();
 				unit = parseFloat(unit).toFixed(2);
+
 				var unitprice = $('#unitprice-' + classes[1]).val();
 				unitprice = parseFloat(unitprice).toFixed(2);
 
-				var amt = quantity * unit * unitprice;
+
+				var unittype = $('#unit-type-' + classes[1]).val();
+
+				if(unittype != '%') {
+					var amt = quantity * unit * unitprice;
+				} else {
+					var amt = quantity * (unit * unitprice) / 100;
+				}
 				amt = parseFloat(amt).toFixed(2);
+
 				$('#amount-' + classes[1]).val(amt);
+				calculateTotal();
 
-				var subTotal = 0;
-				$('.amount').each(function( index2 ) {
-					subTotal = subTotal + $(this).val();
-					subTotal = parseFloat(subTotal).toFixed(2);
-				});
-				subTotal = parseFloat(subTotal).toFixed(2);
-				$('#subtotal-1').text(subTotal);
-
-				var discount = parseFloat((subTotal * 0.1)).toFixed(2);
-				var scharge = parseFloat((subTotal * 0.1)).toFixed(2);
-				var gst = parseFloat((subTotal * 0.07)).toFixed(2);
-				var total = parseFloat((subTotal - discount - scharge - gst)).toFixed(2);
-
-				$('#discount').val(discount);
-				$('#discount-1').text(discount);
-				$('#service').val(scharge);
-				$('#scharge-1').text(scharge);
-				$('#gst').val(gst);
-				$('#gst-1').text(gst);
-				$('#total').val(total);
-				$('#total-1').text(total);
 			});
 
 			/*$("a#add-item").bind('click', function () {
@@ -964,6 +1023,43 @@
 				});
 			});*/
 		});
+
+		function calculateTotal () {
+			var subTotal = 0;
+			var count = parseInt($('#itm-count').val());
+			for(var n = 0; n < count; n++) {
+				var amount = parseFloat($('#amount-'+n).val());
+				if(isNaN(amount)) {
+					amount = 0;
+				}
+				subTotal = parseFloat(subTotal) + parseFloat(amount);
+				console.log($('#amount-'+n).val());
+				console.log('SubTotal: '+subTotal);
+			}
+			console.log('sub Total is '+ subTotal)
+
+			/*$('.amount').each(function( index2 ) {
+				subTotal = subTotal + $(this).val();
+				subTotal = parseFloat(subTotal).toFixed(2);
+			});*/
+
+			subTotal = parseFloat(subTotal).toFixed(2);
+			$('#subtotal-1').text(subTotal);
+
+			var discount = parseFloat((subTotal * 0.1)).toFixed(2);
+			var scharge = parseFloat((subTotal * 0.1)).toFixed(2);
+			var gst = parseFloat((subTotal * 0.07)).toFixed(2);
+			var total = parseFloat((subTotal - discount - scharge - gst)).toFixed(2);
+
+			$('#discount').val(discount);
+			$('#discount-1').text(discount);
+			$('#service').val(scharge);
+			$('#scharge-1').text(scharge);
+			$('#gst').val(gst);
+			$('#gst-1').text(gst);
+			$('#total').val(total);
+			$('#total-1').text(total);
+		}
 
 
 	</script>

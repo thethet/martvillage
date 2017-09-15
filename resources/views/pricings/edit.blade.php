@@ -93,7 +93,7 @@
 							<strong>Title Name:</strong>
 						</label>
 						<div class="col-sm-6">
-							{!! Form::text('title_name', null, array('placeholder' => 'Title Name','class' => 'form-control')) !!}
+							{!! Form::text('title_name', null, array('placeholder' => 'Title Name','class' => 'form-control', 'readonly' => true)) !!}
 							@if ($errors->has('title_name'))
 								<span class="required">
 									<strong>{{ $errors->first('title_name') }}</strong>
@@ -172,42 +172,70 @@
 
 		</div>
 
+		@if(count($pricingLists) > 0)
 		<div class="row country-city">
 			<div class="table-cont">
 				<table class="table table-bordered table-responsive">
+
 					<thead>
 						<tr>
-							<th colspan="{{ count($currencyTitle) + 3 }}" class="center">Pricing</th>
+							<th colspan="{{ $totalCol }}" class="center">Pricing</th>
 						</tr>
+
 						<tr>
 							<th width="8px">&nbsp;&nbsp;&nbsp;</th>
+							<th></th>
+							@foreach($currencyTitleList as $title)
+								<th colspan="{{ $title['total_sub_title'] }}">
+									{{ $title['type'] }}
+									<br>
+									From {{ $title['country'] }}
+								</th>
+							@endforeach
+
+						</tr>
+
+						<tr>
 							<th width="8px">&nbsp;&nbsp;&nbsp;</th>
 							<th></th>
-							@foreach($currencyTitle as $title)
-								<th>
-									{{ $title->type }}
-									<br>
-									From {{ $title->location->country_name }}
-								</th>
+							@foreach($currencyTitleList as $title)
+								@if(array_key_exists($title['country'], $subTitleList))
+									@foreach($subTitleList[$title['country']] as $sub)
+										<th>{{ $sub }}</th>
+									@endforeach
+								@else
+									<th></th>
+								@endif
 							@endforeach
 						</tr>
 					</thead>
 					<tbody>
 						<?php $j = 1; ?>
-
-						@foreach($pricingLists as $pricing)
+						@foreach($priceLists as $key => $prices)
 							<tr>
-								<td width="8px">{{ $j++ }}</td>
-								<td width="8px">
-									{!! Form::checkbox('edit', $pricing->id, null, ['class' => 'editboxes', 'disabled' => true]) !!}
-								</td>
-								<td>{{ $pricing->title_name }}</td>
-								@foreach($currencyTitle as $title)
+								<td>{{ $j++ }}</td>
 								<td>
-									@if($title->id == $pricing->currency_id)
-									{{ $pricing->unit_price }}
-									@endif
+									{{ $key }}
 								</td>
+								@foreach($currencyTitleList as $title)
+									@if(array_key_exists($title['country'], $subTitleList))
+										@foreach($subTitleList[$title['country']] as $sub)
+											<td>
+												{{-- {{dd($prices[$title['country']])}} --}}
+												@if(array_key_exists($title['country'], $prices))
+													@if(array_key_exists($sub, $prices[$title['country']]))
+														@if($prices[$title['country']][$sub]['id'] != 0)
+															{!! Form::checkbox('edit', $prices[$title['country']][$sub]['id'], null, ['class' => 'editboxes', 'disabled' => true]) !!}
+															&nbsp;
+															{{ $prices[$title['country']][$sub]['unit_price'] }}
+														@endif
+													@endif
+												@endif
+											</td>
+										@endforeach
+									@else
+										<td></td>
+									@endif
 								@endforeach
 							</tr>
 						@endforeach
@@ -216,6 +244,7 @@
 				</table>
 			</div>
 		</div>
+		@endif
 	</div><!-- .main-content -->
 
 	<div class="footer-menu">
@@ -255,7 +284,7 @@
 			@endpermission --}}
 
 			<div class="menu-icon">
-				<a href="{{ url('settings') }}" >
+				<a href="{{ url('prices') }}" >
 					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
 					Back
 				</a>

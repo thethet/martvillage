@@ -180,51 +180,75 @@
 
 					<thead>
 						<tr>
-							<th colspan="{{ count($currencyTitle) + 3 }}" class="center">Pricing</th>
+							<th colspan="{{ $totalCol }}" class="center">Pricing</th>
 						</tr>
 
 						<tr>
 							<th width="8px">&nbsp;&nbsp;&nbsp;</th>
-							<th width="8px">&nbsp;&nbsp;&nbsp;</th>
 							<th></th>
-							@foreach($currencyTitle as $title)
-								<th>
-									{{ $title->type }}
+							@foreach($currencyTitleList as $title)
+								<th colspan="{{ $title['total_sub_title'] }}" class="center">
+									{{ $title['type'] }}
 									<br>
-									From {{ $title->location->country_name }}
+									From {{ $title['country'] }}
 								</th>
 							@endforeach
+
 						</tr>
 
+						<tr>
+							<th width="8px">&nbsp;&nbsp;&nbsp;</th>
+							<th></th>
+							@foreach($currencyTitleList as $title)
+								@if(array_key_exists($title['country'], $subTitleList))
+									@foreach($subTitleList[$title['country']] as $sub)
+										<th>{{ $sub }}</th>
+									@endforeach
+								@else
+									<th></th>
+								@endif
+							@endforeach
+						</tr>
 					</thead>
 					<tbody>
 						<?php $j = 1; ?>
-
-						@foreach($pricingLists as $pricing)
+						@foreach($priceLists as $key => $prices)
 							<tr>
-								<td width="8px">{{ $j++ }}</td>
-								<td width="8px">
-									{!! Form::checkbox('edit', $pricing->id, null, ['class' => 'editboxes']) !!}
+								<td>{{ $j++ }}</td>
+								<td width="240px">
+									{{ $key }}
 								</td>
-								<td>{{ $pricing->title_name }}</td>
-								@foreach($currencyTitle as $title)
-								<td>
-									@if($title->id == $pricing->currency_id)
-									{{ number_format($pricing->unit_price, 2) }}
+								@foreach($currencyTitleList as $title)
+									@if(array_key_exists($title['country'], $subTitleList))
+										@foreach($subTitleList[$title['country']] as $sub)
+											<td width="140px">
+												{{-- {{dd($prices[$title['country']])}} --}}
+												@if(array_key_exists($title['country'], $prices))
+													@if(array_key_exists($sub, $prices[$title['country']]))
+														@if($prices[$title['country']][$sub]['id'] != 0)
+															{!! Form::checkbox('edit', $prices[$title['country']][$sub]['id'], null, ['class' => 'editboxes']) !!}
+															{{ number_format($prices[$title['country']][$sub]['unit_price'], 2) }}
+														@endif
+													@endif
+												@endif
+											</td>
+										@endforeach
+									@else
+										<td></td>
 									@endif
-								</td>
 								@endforeach
 							</tr>
 						@endforeach
 
 					</tbody>
-
 				</table>
 			</div>
 		</div>
 		@endif
-	</div><!-- .main-content -->
 
+
+
+	</div><!-- .main-content -->
 
 	<div class="footer-menu">
 		<div class="footer-content">

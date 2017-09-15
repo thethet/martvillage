@@ -36,7 +36,7 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="company"><strong>Short Code: <span class="required">*</span></strong></label>
 					<div class="col-sm-6">
-						{!! Form::text('short_code', null, array('placeholder' => 'Enter Short Code','class' => 'form-control')) !!}
+						{!! Form::text('short_code', null, array('placeholder' => 'Enter Short Code','class' => 'form-control', 'disabled' => true)) !!}
 						@if ($errors->has('short_code'))
 							<span class="required">
 								<strong>{{ $errors->first('short_code') }}</strong>

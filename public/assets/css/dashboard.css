@@ -48,6 +48,12 @@ a:hover {
 .footer-menu a:hover {
 	text-decoration: none;
 }
+
+a:active, a:visited, a:focus  {
+	text-decoration: none;
+	outline: 0 !important;
+
+}
 .menu-icon {
 	height: 30px;
 	width: 30px;
@@ -203,9 +209,12 @@ h3.page-title {
 	margin-top: 0;
 }
 .country-list, .city-add, .country-city, .price-add {
-	height: 260px;
+	height: 320px;
 	border: 1px solid #fff;
 	margin-bottom: 5px;
+}
+.city-add, .price-add {
+	width: 57%;
 }
 .country-list {
 	margin-right: 10px;
@@ -232,16 +241,24 @@ h3.page-title {
 
 
 @media only screen and (min-device-width: 280px) and (max-device-width: 320px) {
-	.country-list, .city-add, .country-city {
-		height: 360px;
+	.country-list, .country-city {
+		height: 400px;
+	}
+
+	.city-add {
+		height: 420px;
 	}
 
 	.price-add {
 		height: 590px;
 	}
 
+	.city-add, .price-add {
+		width: 100%;
+	}
+
 	.addbtn {
-		width: 30%;
+		width: 35%;
 		margin: 15px auto 0;
 	}
 
@@ -259,16 +276,24 @@ h3.page-title {
 }
 
 @media only screen and (min-device-width: 321px) and (max-device-width: 420px) {
-	.country-list, .city-add, .country-city {
-		height: 360px;
+	.country-list, .country-city {
+		height: 400px;
+	}
+
+	.city-add {
+		height: 420px;
 	}
 
 	.price-add {
 		height: 590px;
 	}
 
+	.city-add, .price-add {
+		width: 100%;
+	}
+
 	.addbtn {
-		width: 30%;
+		width: 35%;
 		margin: 15px auto 0;
 	}
 
@@ -286,16 +311,24 @@ h3.page-title {
 }
 
 @media only screen and (min-device-width: 421px) and (max-device-width: 450px) {
-	.country-list, .city-add, .country-city {
-		height: 360px;
+	.country-list, .country-city {
+		height: 400px;
+	}
+
+	.city-add {
+		height: 420px;
 	}
 
 	.price-add {
 		height: 590px;
 	}
 
+	.city-add, .price-add {
+		width: 100%;
+	}
+
 	.addbtn {
-		width: 30%;
+		width: 35%;
 		margin: 15px auto 0;
 	}
 
@@ -314,16 +347,24 @@ h3.page-title {
 
 
 @media only screen and (min-device-width: 451px) and (max-device-width: 570px) {
-	.country-list, .city-add, .country-city {
-		height: 360px;
+	.country-list, .country-city {
+		height: 400px;
+	}
+
+	.city-add {
+		height: 420px;
 	}
 
 	.price-add {
 		height: 590px;
 	}
 
+	.city-add, .price-add {
+		width: 100%;
+	}
+
 	.addbtn {
-		width: 30%;
+		width: 35%;
 		margin: 15px auto 0;
 	}
 
@@ -337,17 +378,24 @@ h3.page-title {
 }
 
 @media only screen and (min-device-width: 571px) and (max-device-width: 640px) {
-	.country-list, .city-add, .country-city {
-		height: 360px;
-		margin-bottom: 5px;
+	.country-list, .country-city {
+		height: 400px;
+	}
+
+	.city-add {
+		height: 420px;
 	}
 
 	.price-add {
 		height: 590px;
 	}
 
+	.city-add, .price-add {
+		width: 100%;
+	}
+
 	.addbtn {
-		width: 30%;
+		width: 35%;
 		margin: 15px auto 0;
 	}
 
@@ -361,17 +409,56 @@ h3.page-title {
 }
 
 @media only screen and (min-device-width: 641px) and (max-device-width: 991px) {
-	.country-list, .city-add, .country-city {
-		height: 360px;
-		margin-bottom: 5px;
+	.country-list, .country-city {
+		height: 400px;
+	}
+
+	.city-add {
+		height: 420px;
 	}
 
 	.price-add {
 		height: 590px;
 	}
 
+	.city-add, .price-add {
+		width: 100%;
+	}
+
 	.addbtn {
-		width: 30%;
+		width: 35%;
+		margin: 15px auto 0;
+	}
+
+	.locationcol {
+		margin-bottom: 15px;
+	}
+
+	.menu-icon {
+		margin-right: 20px;
+	}
+}
+
+
+@media only screen and (min-device-width: 992px) and (max-device-width: 1199px) {
+	.country-list, .country-city {
+		height: 400px;
+	}
+
+	.city-add {
+		height: 420px;
+	}
+
+	.price-add {
+		height: 590px;
+	}
+
+	.city-add, .price-add {
+		width: 100%;
+	}
+
+	.addbtn {
+		width: 35%;
 		margin: 15px auto 0;
 	}
 
