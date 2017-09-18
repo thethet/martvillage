@@ -227,7 +227,7 @@
 														@if($prices[$title['country']][$sub]['id'] != 0)
 															{!! Form::checkbox('edit', $prices[$title['country']][$sub]['id'], null, ['class' => 'editboxes', 'disabled' => true]) !!}
 															&nbsp;
-															{{ $prices[$title['country']][$sub]['unit_price'] }}
+															{{ number_format($prices[$title['country']][$sub]['unit_price'], 2) }}
 														@endif
 													@endif
 												@endif

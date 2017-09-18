@@ -222,7 +222,6 @@
 									@if(array_key_exists($title['country'], $subTitleList))
 										@foreach($subTitleList[$title['country']] as $sub)
 											<td width="140px">
-												{{-- {{dd($prices[$title['country']])}} --}}
 												@if(array_key_exists($title['country'], $prices))
 													@if(array_key_exists($sub, $prices[$title['country']]))
 														@if($prices[$title['country']][$sub]['id'] != 0)

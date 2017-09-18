@@ -218,4 +218,21 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::patch('lotins/{id}', ['as' => 'lotins.update', 'uses' => 'LotInController@update', 'middleware' => ['permission:lotin-edit']]);
 	Route::delete('lotins/{id}', ['as' => 'lotins.destroy', 'uses' => 'LotInController@destroy', 'middleware' => ['permission:lotin-delete']]);
 
+	/*
+	|--------------------------------------------------------------------------
+	| Outgoing Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Outgoing Model CRUD
+	|
+	 */
+	Route::get('outgoings', ['as' => 'outgoings.index', 'uses' => 'OutgoingController@index', 'middleware' => ['permission:outgoing-list|outgoing-create|outgoing-edit|outgoing-delete']]);
+	Route::get('outgoings/create', ['as' => 'outgoings.create', 'uses' => 'OutgoingController@create', 'middleware' => ['permission:outgoing-create']]);
+	Route::post('outgoings/create', ['as' => 'outgoings.store', 'uses' => 'OutgoingController@store', 'middleware' => ['permission:outgoing-create']]);
+	Route::get('outgoings/{id}', ['as' => 'outgoings.show', 'uses' => 'OutgoingController@show']);
+	Route::get('outgoings/ajax/{id}/edit', ['as' => 'outgoings.ajax.edit', 'uses' => 'OutgoingController@editAjax', 'middleware' => ['permission:outgoing-edit']]);
+	Route::get('outgoings/{id}/edit', ['as' => 'outgoings.edit', 'uses' => 'OutgoingController@edit', 'middleware' => ['permission:outgoing-edit']]);
+	Route::patch('outgoings/{id}', ['as' => 'outgoings.update', 'uses' => 'OutgoingController@update', 'middleware' => ['permission:outgoing-edit']]);
+	Route::delete('outgoings/{id}', ['as' => 'outgoings.destroy', 'uses' => 'OutgoingController@destroy', 'middleware' => ['permission:outgoing-delete']]);
+
 });

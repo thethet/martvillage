@@ -17,7 +17,7 @@
 			</div>
 			@endpermission
 
-			{{-- @permission('lotin-list') --}}
+			@permission('lotin-list')
 			<div class="col-md-2">
 				<a href="{{ url('/lotins') }}">
 					<div class="card">
@@ -26,7 +26,7 @@
 					</div>
 				</a>
 			</div>
-			{{-- @endpermission --}}
+			@endpermission
 
 			{{-- @permission('tracking-list') --}}
 			<div class="col-md-2">
@@ -107,7 +107,7 @@
 			</div>
 			@endpermission
 
-			{{-- @permission('outgoing-list') --}}
+			@permission('outgoing-list')
 			<div class="col-md-2">
 				<a href="{{ url('/outgoings') }}">
 					<div class="card">
@@ -116,7 +116,7 @@
 					</div>
 				</a>
 			</div>
-			{{-- @endpermission --}}
+			@endpermission
 
 			{{-- @permission('incoming-list') --}}
 			<div class="col-md-2">

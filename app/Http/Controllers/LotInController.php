@@ -94,14 +94,14 @@ class LotInController extends Controller {
 		);
 
 		$this->validate($request, [
-			// 's_contact_no'       => 'required',
-			// 'member_no'          => 'required',
+			's_contact_no' => 'required|unique:senders,contact_no',
+			'member_no'    => 'required|unique:senders,member_no',
 			// 'sender_name'        => 'required',
 			// 'nric_code_id'       => 'required',
 			// 'nric_township_id'   => 'required',
 			// 'nric_no'            => 'required',
 
-			// 'r_contact_no'       => 'required',
+			'r_contact_no' => 'required|unique:receivers,contact_no',
 			// 'receiver_name'      => 'required',
 			// 'r_nric_code_id'     => 'required',
 			// 'r_nric_township_id' => 'required',
@@ -110,7 +110,7 @@ class LotInController extends Controller {
 			// 'date'               => 'required',
 			// 'country_id'         => 'required',
 			// 'state_id'           => 'required',
-			'payment' => 'required',
+			'payment'      => 'required',
 
 			// 'lots.*.item_name'   => 'required',
 			// 'lots.*.barcode'     => 'required',

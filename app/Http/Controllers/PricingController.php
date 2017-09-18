@@ -47,42 +47,56 @@ class PricingController extends Controller {
 		$i                 = 0;
 		$totalCol          = 0;
 		foreach ($currencyTitle as $key => $value) {
-			$currencyTitleList[$i]['type']    = $value->type;
-			$currencyTitleList[$i]['country'] = $value->location->country_code;
+			$currencyTitleList[$i]['type']              = $value->type;
+			$currencyTitleList[$i]['country']           = $value->location->country_code;
+			$currencyTitleList[$key]['total_sub_title'] = 1;
 			$i++;
 		}
 
-		foreach ($currencyTitle as $key => $val) {
-			$states = States::where('country_id', $val->from_location)->get();
+		foreach ($currencyTitle as $keys => $val) {
+			$states = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->where('from_country', $val->from_location)->get();
 
 			$j = 0;
 			foreach ($states as $key => $state) {
-				$subTitleList[$val->location->country_code][$j] = $state->state_code;
+				$from_state                                     = States::where('id', $state->from_state)->first()->state_code;
+				$to_state                                       = States::where('id', $state->to_state)->first()->state_code;
+				$stateCode                                      = $from_state . ' - ' . $to_state;
+				$subTitleList[$val->location->country_code][$j] = $stateCode;
+
+				$subTitleList[$val->location->country_code] = array_map("unserialize", array_unique(array_map("serialize", $subTitleList[$val->location->country_code])));
 				$j++;
+
+				$pCount                                      = count($subTitleList[$val->location->country_code]);
+				$currencyTitleList[$keys]['total_sub_title'] = ($pCount == 0) ? 1 : $pCount;
+				$totalCol += $currencyTitleList[$keys]['total_sub_title'];
 			}
 			if (!array_key_exists($val->location->country_code, $subTitleList)) {
 				$subTitleList[$val->location->country_code][$j] = '';
 			}
+
 		}
 
 		foreach ($priceTitleList as $key => $title) {
 
 			$k = 0;
 			foreach ($currencyTitle as $key => $val) {
-				$states = States::where('country_id', $val->from_location)->get();
+				$states = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->where('from_country', $val->from_location)->get();
 
 				foreach ($states as $key => $state) {
+					$from_state = States::where('id', $state->from_state)->first()->state_code;
+					$to_state   = States::where('id', $state->to_state)->first()->state_code;
+
 					foreach ($pricingLists as $key => $ptl) {
 
-						if ($ptl->from_state != $state->id && !isset($priceLists[$title->title_name][$val->location->country_code][$state->state_code])) {
-							$priceLists[$title->title_name][$val->location->country_code][$state->state_code]['id']         = 0;
-							$priceLists[$title->title_name][$val->location->country_code][$state->state_code]['unit_price'] = '';
+						if (!isset($priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state])) {
+							$priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state]['id']         = 0;
+							$priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state]['unit_price'] = '';
 						}
 
-						if ($ptl->from_state == $state->id && $title->title_name == $ptl->title_name) {
+						if ($ptl->from_state == $state->from_state && $title->title_name == $ptl->title_name) {
 							// dd($ptl);
-							$priceLists[$title->title_name][$val->location->country_code][$state->state_code]['id']         = $ptl->id;
-							$priceLists[$title->title_name][$val->location->country_code][$state->state_code]['unit_price'] = $ptl->unit_price;
+							$priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state]['id']         = $ptl->id;
+							$priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state]['unit_price'] = $ptl->unit_price;
 						}
 
 					}
@@ -91,8 +105,6 @@ class PricingController extends Controller {
 				if (!isset($priceLists[$title->title_name][$val->location->country_code])) {
 					$priceLists[$title->title_name][$val->location->country_code] = array();
 				}
-				$currencyTitleList[$k]['total_sub_title'] = count($priceLists[$title->title_name][$val->location->country_code]);
-				$totalCol += $currencyTitleList[$k]['total_sub_title'];
 				$k++;
 			}
 
@@ -213,42 +225,56 @@ class PricingController extends Controller {
 		$i                 = 0;
 		$totalCol          = 0;
 		foreach ($currencyTitle as $key => $value) {
-			$currencyTitleList[$i]['type']    = $value->type;
-			$currencyTitleList[$i]['country'] = $value->location->country_code;
+			$currencyTitleList[$i]['type']              = $value->type;
+			$currencyTitleList[$i]['country']           = $value->location->country_code;
+			$currencyTitleList[$key]['total_sub_title'] = 1;
 			$i++;
 		}
 
-		foreach ($currencyTitle as $key => $val) {
-			$states = States::where('country_id', $val->from_location)->get();
+		foreach ($currencyTitle as $keys => $val) {
+			$states = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->where('from_country', $val->from_location)->get();
 
 			$j = 0;
 			foreach ($states as $key => $state) {
-				$subTitleList[$val->location->country_code][$j] = $state->state_code;
+				$from_state                                     = States::where('id', $state->from_state)->first()->state_code;
+				$to_state                                       = States::where('id', $state->to_state)->first()->state_code;
+				$stateCode                                      = $from_state . ' - ' . $to_state;
+				$subTitleList[$val->location->country_code][$j] = $stateCode;
+
+				$subTitleList[$val->location->country_code] = array_map("unserialize", array_unique(array_map("serialize", $subTitleList[$val->location->country_code])));
 				$j++;
+
+				$pCount                                      = count($subTitleList[$val->location->country_code]);
+				$currencyTitleList[$keys]['total_sub_title'] = ($pCount == 0) ? 1 : $pCount;
+				$totalCol += $currencyTitleList[$keys]['total_sub_title'];
 			}
 			if (!array_key_exists($val->location->country_code, $subTitleList)) {
 				$subTitleList[$val->location->country_code][$j] = '';
 			}
+
 		}
 
 		foreach ($priceTitleList as $key => $title) {
 
 			$k = 0;
 			foreach ($currencyTitle as $key => $val) {
-				$states = States::where('country_id', $val->from_location)->get();
+				$states = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->where('from_country', $val->from_location)->get();
 
 				foreach ($states as $key => $state) {
+					$from_state = States::where('id', $state->from_state)->first()->state_code;
+					$to_state   = States::where('id', $state->to_state)->first()->state_code;
+
 					foreach ($pricingLists as $key => $ptl) {
 
-						if ($ptl->from_state != $state->id && !isset($priceLists[$title->title_name][$val->location->country_code][$state->state_code])) {
-							$priceLists[$title->title_name][$val->location->country_code][$state->state_code]['id']         = 0;
-							$priceLists[$title->title_name][$val->location->country_code][$state->state_code]['unit_price'] = '';
+						if (!isset($priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state])) {
+							$priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state]['id']         = 0;
+							$priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state]['unit_price'] = '';
 						}
 
-						if ($ptl->from_state == $state->id && $title->title_name == $ptl->title_name) {
+						if ($ptl->from_state == $state->from_state && $title->title_name == $ptl->title_name) {
 							// dd($ptl);
-							$priceLists[$title->title_name][$val->location->country_code][$state->state_code]['id']         = $ptl->id;
-							$priceLists[$title->title_name][$val->location->country_code][$state->state_code]['unit_price'] = $ptl->unit_price;
+							$priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state]['id']         = $ptl->id;
+							$priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state]['unit_price'] = $ptl->unit_price;
 						}
 
 					}
@@ -257,8 +283,6 @@ class PricingController extends Controller {
 				if (!isset($priceLists[$title->title_name][$val->location->country_code])) {
 					$priceLists[$title->title_name][$val->location->country_code] = array();
 				}
-				$currencyTitleList[$k]['total_sub_title'] = count($priceLists[$title->title_name][$val->location->country_code]);
-				$totalCol += $currencyTitleList[$k]['total_sub_title'];
 				$k++;
 			}
 
