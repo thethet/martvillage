@@ -2,9 +2,9 @@
 
 @section('site-title')
 	<div class="col-md-4 site-icon">
-		<img class="profile-icon" src="{{ asset('assets/img/lot-in.png') }}" alt="Lot-in">
+		<img class="profile-icon" src="{{ asset('assets/img/tracking-icon.png') }}" alt="Tracking">
 	</div>
-	<div class="col-md-8 site-header">Lot-in</div>
+	<div class="col-md-8 site-header">Tracking List</div>
 @stop
 
 @section('main')
