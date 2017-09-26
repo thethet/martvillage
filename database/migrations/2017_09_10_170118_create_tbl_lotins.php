@@ -21,6 +21,8 @@ class CreateTblLotins extends Migration {
 			$table->time('time');
 			$table->integer('from_country');
 			$table->integer('from_state');
+			$table->integer('to_country');
+			$table->integer('to_state');
 			$table->double('member_discount', 5, 2);
 			$table->double('member_discount_amt', 12, 2);
 			$table->double('other_discount', 5, 2);

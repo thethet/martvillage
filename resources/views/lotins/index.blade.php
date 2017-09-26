@@ -107,10 +107,11 @@
 						<strong>To: <span class="required">*</span></strong>
 					</label>
 					<div class="col-sm-7" id="address-input">
-						{!! Form::text('to_state_id_new', null, array('placeholder' => 'Address','class' => 'form-control', 'id' => 'to-add', 'readonly' => true)) !!}
+						{!! Form::text('to_state_id_news', $receiverLastNo, array('placeholder' => 'Address','class' => 'form-control', 'id' => 'to-add', 'readonly' => true)) !!}
+						{!! Form::hidden('to_state_id_new', $receiverLastId, array('placeholder' => 'Address','class' => 'form-control', 'id' => 'to-adds', 'readonly' => true)) !!}
 					</div>
 					<div class="col-sm-7" id="address-list">
-						{!! Form::select('to_state_id', ['' => 'Address'] + $receiveAddress->toArray(), null, ['class' => 'form-control', 'id' => 'address', 'readonly' => true]) !!}
+						{!! Form::select('to_state_ids', ['' => 'Address'] + $receiveAddress->toArray(), null, ['class' => 'form-control', 'id' => 'address', 'readonly' => true]) !!}
 
 						<a href="#" class="addbtn" id="noadd">address</a>
 					</div>
@@ -199,7 +200,7 @@
 				</div><!-- .form-group -->
 
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="logno"><strong>Log No:<span class="required">*</span></strong></label>
+					<label class="control-label col-sm-3" for="lotno"><strong>Lot No:<span class="required">*</span></strong></label>
 					<div class="col-sm-7">
 						{!! Form::text('lot_no', $logNo, array('placeholder' => 'Enter Lot No','class' => 'form-control', 'id' => 'lot_no', 'readonly' => true)) !!}
 					</div>
@@ -207,23 +208,39 @@
 
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="from"><strong>From:<span class="required">*</span></strong></label>
-					<div class="col-sm-7">
-						{!! Form::select('country_id', ['' => 'Select Country'] + $countries->toArray(), null, ['id'=>'country_id', 'class' => 'form-control']) !!}
+					<div class="col-sm-4">
+						{!! Form::select('country_id', ['' => 'Country'] + $countries->toArray(), null, ['id'=>'country_id', 'class' => 'form-control']) !!}
 						@if ($errors->has('country_id'))
 							<span class="required">
 								<strong>{{ $errors->first('country_id') }}</strong>
 							</span>
 						@endif
 					</div>
-				</div><!-- .form-group -->
-
-				<div class="form-group">
-					<label class="control-label col-sm-3" for="from"></label>
-					<div class="col-sm-7">
-						{!! Form::select('state_id', ['' => 'Select State'] + $states->toArray(), null, ['id'=>'state_id', 'class' => 'form-control']) !!}
+					<div class="col-sm-4">
+						{!! Form::select('state_id', ['' => 'State'] + $states->toArray(), null, ['id'=>'state_id', 'class' => 'form-control']) !!}
 						@if ($errors->has('state_id'))
 							<span class="required">
 								<strong>{{ $errors->first('state_id') }}</strong>
+							</span>
+						@endif
+					</div>
+				</div><!-- .form-group -->
+
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="from"><strong>To:<span class="required">*</span></strong></label>
+					<div class="col-sm-4">
+						{!! Form::select('to_country_id', ['' => 'Country'] + $countries->toArray(), null, ['id'=>'to_country_id', 'class' => 'form-control']) !!}
+						@if ($errors->has('to_country_id'))
+							<span class="required">
+								<strong>{{ $errors->first('to_country_id') }}</strong>
+							</span>
+						@endif
+					</div>
+					<div class="col-sm-4">
+						{!! Form::select('to_state_id', ['' => 'State'] + $states->toArray(), null, ['id'=>'to_state_id', 'class' => 'form-control']) !!}
+						@if ($errors->has('to_state_id'))
+							<span class="required">
+								<strong>{{ $errors->first('to_state_id') }}</strong>
 							</span>
 						@endif
 					</div>
@@ -491,7 +508,7 @@
 
 				$('#to_state_id').val('');
 				$('#to_state_id').attr('readonly', false);
-				$('#to-add').attr('readonly', false);
+				// $('#to-add').attr('readonly', false);
 
 				$('#r_name').val('');
 				$('#r_name').attr('readonly', false);
@@ -512,12 +529,9 @@
 
 			$("#country_id").select2();
 
-			$("#payment").select2();
+			$("#to_country_id").select2();
 
-			$('#country_id').change(function() {
-				$('#select2-state_id-container').text('Select State');
-				$('#state_id').val('');
-			});
+			$("#payment").select2();
 
 			$("#state_id").select2({
 				ajax: {
@@ -539,6 +553,28 @@
 					cache: true
 				},
 			});
+
+			$("#to_state_id").select2({
+				ajax: {
+					url: "{{ url('states/search-state-country') }}",
+					dataType: 'json',
+					delay: 250,
+					data: function (params) {
+						var countryId = $('#to_country_id').val();
+						return {
+							search: params.term,
+							countryId: countryId
+						};
+					},
+					processResults: function (data, params) {
+						return {
+							results: data.items
+						};
+					},
+					cache: true
+				},
+			});
+
 
 			$("#nric_code").select2();
 
@@ -620,6 +656,8 @@
 
 							$('#nric_no').val('');
 							$('#nric_no').attr('readonly', false);
+
+							$('#to-add').attr('readonly', true);
 						} else {
 							$('#member_no').val(data.member_no);
 							$('#member_no').attr('readonly', true);
@@ -687,6 +725,8 @@
 
 							$('#nric_no').val('');
 							$('#nric_no').attr('readonly', false);
+
+							$('#to-add').attr('readonly', true);
 						} else {
 							$('#s_contact_no').val(data.s_contact_no);
 							$('#s_contact_no').attr('readonly', true);
@@ -804,6 +844,9 @@
 			});
 
 			$("#country_id").change(function() {
+				$('#select2-state_id-container').text('State');
+				$('#state_id').val('');
+
 				$( ".price_id" ).each(function( index ) {
 					$( this ).val('');
 					$('.unit').val('');
@@ -846,21 +889,75 @@
 				});
 			});
 
+			$('#to_country_id').change(function() {
+				$('#select2-to_state_id-container').text('State');
+				$('#to_state_id').val('');
+
+				$( ".price_id" ).each(function( index ) {
+					$( this ).val('');
+					$('.unit').val('');
+					$('.quantity').val('');
+					$('.amount').val('');
+					$('.unit-types').text('');
+					$('.unit-prices').text('');
+					$('#subtotal-1').text('0.00');
+					$('#discount-1').text('0.00');
+					$('#scharge-1').text('0.00');
+					$('#gst-1').text('0.00');
+					$('#total-1').text('0.00');
+
+					$(".table .select2-selection__rendered").each( function(ind) {
+						$(this).text('Select Type')
+					})
+
+				});
+			});
+
+			$("#to_state_id").change(function() {
+				$( ".price_id" ).each(function( index ) {
+					$( this ).val('');
+					$('.unit').val('');
+					$('.quantity').val('');
+					$('.amount').val('');
+					$('.unit-types').text('');
+					$('.unit-prices').text('');
+					$('#subtotal-1').text('0.00');
+					$('#discount-1').text('0.00');
+					$('#scharge-1').text('0.00');
+					$('#gst-1').text('0.00');
+					$('#total-1').text('0.00');
+
+					$(".table .select2-selection__rendered").each( function(ind) {
+						$(this).text('Select Type')
+					})
+
+				});
+			});
+
 			$(".table .price_id").select2({
 				ajax: {
 					url: "{{ url('lotins/search-price-list') }}",
 					dataType: 'json',
 					delay: 250,
 					data: function (params) {
-						var countryId = $('#country_id').val();
-						var stateId = $('#state_id').val();
+						var fromCountryId = $('#country_id').val();
+						var fromStateId = $('#state_id').val();
+						var toCountryId = $('#to_country_id').val();
+						var toStateId = $('#to_state_id').val();
+						console.log("FCID: "+fromCountryId)
+						console.log("FSID: "+fromStateId)
+						console.log('TCID: '+toCountryId)
+						console.log("TSID: "+toStateId)
 						return {
 							search: params.term,
-							countryId: countryId,
-							stateId: stateId
+							fromCountryId: fromCountryId,
+							fromStateId: fromStateId,
+							toCountryId: toCountryId,
+							toStateId: toStateId
 						};
 					},
 					processResults: function (data, params) {
+						console.log(data.items)
 						return {
 							results: data.items
 						};

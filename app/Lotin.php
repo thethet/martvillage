@@ -28,6 +28,8 @@ class Lotin extends Model {
 		'time',
 		'from_country',
 		'from_state',
+		'to_country',
+		'to_state',
 		'member_discount',
 		'member_discount_amt',
 		'other_discount',

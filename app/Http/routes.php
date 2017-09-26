@@ -220,6 +220,24 @@ Route::group(['middleware' => ['auth']], function () {
 
 	/*
 	|--------------------------------------------------------------------------
+	| Tracking Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Tracking Model CRUD
+	|
+	 */
+	Route::get('trackings', ['as' => 'trackings.index', 'uses' => 'TrackingController@index', 'middleware' => ['permission:outgoing-list|outgoing-create|outgoing-edit|outgoing-delete']]);
+	Route::get('trackings/create', ['as' => 'trackings.create', 'uses' => 'TrackingController@create', 'middleware' => ['permission:outgoing-create']]);
+	Route::post('trackings/create', ['as' => 'trackings.store', 'uses' => 'TrackingController@store', 'middleware' => ['permission:outgoing-create']]);
+	Route::get('trackings/{id}', ['as' => 'trackings.show', 'uses' => 'TrackingController@show']);
+	Route::get('trackings/ajax/{id}/edit', ['as' => 'trackings.ajax.edit', 'uses' => 'TrackingController@editAjax', 'middleware' => ['permission:outgoing-edit']]);
+	Route::get('trackings/{id}/edit', ['as' => 'trackings.edit', 'uses' => 'TrackingController@edit', 'middleware' => ['permission:outgoing-edit']]);
+	Route::patch('trackings/{id}', ['as' => 'trackings.update', 'uses' => 'TrackingController@update', 'middleware' => ['permission:outgoing-edit']]);
+	Route::delete('trackings/{id}', ['as' => 'trackings.destroy', 'uses' => 'TrackingController@destroy', 'middleware' => ['permission:outgoing-delete']]);
+	Route::post('trackings/search', ['as' => 'trackings.search', 'uses' => 'TrackingController@search']);
+
+	/*
+	|--------------------------------------------------------------------------
 	| Outgoing Controller
 	|--------------------------------------------------------------------------
 	|

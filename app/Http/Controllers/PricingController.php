@@ -109,7 +109,7 @@ class PricingController extends Controller {
 			}
 
 		}
-		$totalCol += 2;
+		$totalCol += 2 + count($currencyTitle);
 
 		return view('pricings.index', ['categories' => $categories, 'stateList' => $stateList, 'categoryList' => $categoryList, 'countryList' => $countryList, 'currencyList' => $currencyList, 'currencyTitle' => $currencyTitle, 'pricingLists' => $pricingLists, 'currencyTitleList' => $currencyTitleList, 'subTitleList' => $subTitleList, 'priceLists' => $priceLists, 'totalCol' => $totalCol])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
@@ -287,7 +287,7 @@ class PricingController extends Controller {
 			}
 
 		}
-		$totalCol += 2;
+		$totalCol += 2 + count($currencyTitle);
 
 		return view('pricings.edit', ['prices' => $prices, 'categories' => $categories, 'stateList' => $stateList, 'categoryList' => $categoryList, 'countryList' => $countryList, 'currencyList' => $currencyList, 'currencyTitle' => $currencyTitle, 'pricingLists' => $pricingLists, 'currencyTitleList' => $currencyTitleList, 'subTitleList' => $subTitleList, 'priceLists' => $priceLists, 'totalCol' => $totalCol])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
