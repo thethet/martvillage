@@ -16,7 +16,6 @@
 		</div>
 		@endif
 
-
 		<div class="row">
 			<div class="col-sm-4">
 				<div class="form-group">
@@ -145,79 +144,115 @@
 			</div>
 		</div>
 
-		<div class="row tracking-status">
-			<div class="col-sm-1 block pad0">
-				<?php $status = (int)$lotinData->status; ?>
-				<div @if( $status >= 0) class="circle circletrack-color" @else class="circle" @endif>
-					<p>&nbsp;</p>
-				</div>
-			</div>
-			<div class="col-sm-2 bline pad0">
-				<div @if( $status >= 1) class="line linetrack-color" @else class="line" @endif></div>
-			</div>
-
-			<div class="col-sm-1 block pad0">
-				<div @if( $status >= 1) class="circle circletrack-color" @else class="circle" @endif>
-					<p>&nbsp;</p>
-				</div>
-			</div>
-			<div class="col-sm-2 bline pad0">
-				<div @if( $status >= 2) class="line linetrack-color" @else class="line" @endif></div>
-			</div>
-
-			<div class="col-sm-1 block pad0">
-				<div @if( $status >= 2) class="circle circletrack-color" @else class="circle" @endif>
-					<p>&nbsp;</p>
-				</div>
-			</div>
-			<div class="col-sm-2 bline pad0">
-				<div @if( $status >= 3) class="line linetrack-color" @else class="line" @endif></div>
-			</div>
-
-			<div class="col-sm-1 block pad0">
-				<div @if( $status >= 3) class="circle circletrack-color" @else class="circle" @endif>
-					<p>&nbsp;</p>
-				</div>
-			</div>
-			<div class="col-sm-2 bline pad0">
-				<div @if( $status >= 4) class="line linetrack-color" @else class="line" @endif></div>
-			</div>
-
-			<div class="col-sm-1 block pad0">
-				<div @if( $status >= 4) class="circle circletrack-color" @else class="circle" @endif>
-					<p>&nbsp;</p>
-				</div>
-			</div>
-
-		</div>
+		<br>
+		<br>
 
 		<div class="row">
-			<div class="col-sm-2 trans ml-30 mt54">
-				Sender Office
-				<br>
-				(Start Point)
-			</div>
+			<div class="table-cont">
+				<table class="table table-bordered table-responsive">
+					<thead>
+						<tr>
+							<th width="8px">No</th>
+							<th>Item Name</th>
+							<th>Barcode</th>
+							<th>Type</th>
+							<th width="120px">Unit Price</th>
+							<th width="100px">Unit </th>
+							<th width="100px">Quantity</th>
+							<th width="120px">Amount</th>
+						</tr>
+					</thead>
 
-			<div class="col-sm-2 trans ml60 mt54">
-				On Boarding
-			</div>
+					<tbody>
+						@foreach($items as $item)
+						<tr>
+							<td>&nbsp;</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						@endforeach
 
-			<div class="col-sm-2 trans ml60 mt54">
-				Landed Destination
-			</div>
+						<tr>
+							<td>&nbsp;</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
 
-			<div class="col-sm-2 trans ml60 mt54">
-				Destination Office
-				<br>
-				(Ready Collect)
-			</div>
+						<tr>
+							<td>&nbsp;</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
 
-			<div class="col-sm-1 trans ml108 mt54">
-				Collected
+						<tr>
+							<td>&nbsp;</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+
+					<tbody class="tbl-cal" style="font-weight: bold;">
+						<tr>
+							<td colspan="6" class="right">Sub Total</td>
+							<td class="right" id="subtotal-0">
+							</td>
+							<td class="right" id="subtotal-1"></td>
+						</tr>
+
+						<tr>
+							<td colspan="2">Member Discount (-):</td>
+							<td></td>
+							<td colspan="3" class="right">Other Discount</td>
+							<td class="right" id="discount-0">
+								-10%
+							</td>
+							<td class="right" id="discount-1"></td>
+						</tr>
+
+						<tr>
+							<td colspan="6" class="right">Service Charge:</td>
+							<td class="right" id="scharge-0">
+								10%
+							</td>
+							<td class="right" id="scharge-1"></td>
+						</tr>
+						<tr>
+							<td colspan="6" class="right">GST</td>
+							<td class="right" id="gst-0">
+								7%
+							</td>
+							<td class="right" id="gst-1"></td>
+						</tr>
+						<tr>
+							<td colspan="6" class="right">Total</td>
+							<td class="right" id="total-10">
+							</td>
+							<td class="right" id="total-1"></td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
-
-
 
 	</div><!-- .main-content -->
 
@@ -230,15 +265,9 @@
 				</a>
 			</div><!-- .menu-icon -->
 
-			<div class="menu-icon">
-				<a href="{{ url('trackings/' . $lotinData->id) }}" >
-					<img src="{{ asset('assets/img/Show list.png') }}" alt="Detail">
-					Detail
-				</a>
-			</div><!-- .menu-icon -->
 
 			<div class="menu-icon">
-				<a href="{{ url('trackings') }}" >
+				<a href="{{ url('dashboard') }}" >
 					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
 					Back
 				</a>

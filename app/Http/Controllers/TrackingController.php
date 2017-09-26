@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Countries;
+use App\Item;
 use App\Lotin;
 use App\NricCodes;
 use App\NricTownships;
@@ -48,6 +49,24 @@ class TrackingController extends Controller {
 	 */
 	public function show($id) {
 		//
+		$lotinData = Lotin::find($id);
+
+		$sender   = Sender::find($lotinData->sender_id);
+		$receiver = Receiver::find($lotinData->receiver_id);
+
+		$countries = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$states    = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+
+		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('id', 'asc')->lists('nric_code', 'id');
+		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('serial_no', 'asc')->lists('short_name', 'id');
+
+		$receivers     = Receiver::where('company_id', Auth::user()->company_id)->get();
+		$receiverCount = count($receivers);
+
+		$items = Item::where('lotin_id', $id);
+
+		// dd($lotinData);
+		return view('trackings.show', ['lotinData' => $lotinData, 'sender' => $sender, 'receiver' => $receiver, 'countries' => $countries, 'states' => $states, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships, 'receiverCount' => $receiverCount, 'items' => $items]);
 	}
 
 	/**
