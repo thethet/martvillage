@@ -71,7 +71,7 @@
 			</div><!-- .menu-icon -->
 
 			<div class="menu-icon">
-				<a href="{{ route('users.index') }}" >
+				<a href="{{ url('dashboard') }}" >
 					<img src="{{ asset('assets/img/go-back.png') }}" alt="Save">
 					Back
 				</a>

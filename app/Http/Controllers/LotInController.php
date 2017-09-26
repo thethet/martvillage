@@ -51,7 +51,13 @@ class LotInController extends Controller {
 
 		$receiverLastIds = Receiver::where('company_id', Auth::user()->company_id)->select('id')->first();
 
-		$receiverLastId = $receiverLastIds->id + 1;
+		$receiverLastId = 0;
+
+		if ($receiverLastIds) {
+			$receiverLastId = $receiverLastIds->id + 1;
+		} else {
+			$receiverLastId += 1;
+		}
 
 		$receiver      = Receiver::where('company_id', Auth::user()->company_id)->get();
 		$receiverCount = count($receiver);

@@ -164,16 +164,21 @@
 					</thead>
 
 					<tbody>
+						<?php
+						$i = 1;
+						$subTotal = 0;
+						?>
 						@foreach($items as $item)
+						<?php $subTotal += $item->amount; ?>
 						<tr>
-							<td>&nbsp;</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td>{{ $i++ }}</td>
+							<td>{{ $item->item_name }}</td>
+							<td>{{ $item->barcode }}</td>
+							<td>{{ $item->category_id }}</td>
+							<td>{{ $item->unit_price }}</td>
+							<td>{{ $item->unit }}</td>
+							<td>{{ $item->quantity }}</td>
+							<td class="right">{{ number_format($item->amount, 2) }}</td>
 						</tr>
 						@endforeach
 
@@ -216,7 +221,9 @@
 							<td colspan="6" class="right">Sub Total</td>
 							<td class="right" id="subtotal-0">
 							</td>
-							<td class="right" id="subtotal-1"></td>
+							<td class="right" id="subtotal-1">
+								{{ number_format($subTotal, 2) }}
+							</td>
 						</tr>
 
 						<tr>
@@ -226,7 +233,9 @@
 							<td class="right" id="discount-0">
 								-10%
 							</td>
-							<td class="right" id="discount-1"></td>
+							<td class="right" id="discount-1">
+								{{ number_format($lotinData->other_discount_amt, 2) }}
+							</td>
 						</tr>
 
 						<tr>
@@ -234,20 +243,26 @@
 							<td class="right" id="scharge-0">
 								10%
 							</td>
-							<td class="right" id="scharge-1"></td>
+							<td class="right" id="scharge-1">
+								{{ number_format($lotinData->service_charge_amt, 2) }}
+							</td>
 						</tr>
 						<tr>
 							<td colspan="6" class="right">GST</td>
 							<td class="right" id="gst-0">
 								7%
 							</td>
-							<td class="right" id="gst-1"></td>
+							<td class="right" id="gst-1">
+								{{ number_format($lotinData->gov_tax_amt, 2) }}
+							</td>
 						</tr>
 						<tr>
 							<td colspan="6" class="right">Total</td>
 							<td class="right" id="total-10">
 							</td>
-							<td class="right" id="total-1"></td>
+							<td class="right" id="total-1">
+								{{ number_format($lotinData->total_amt, 2) }}
+							</td>
 						</tr>
 					</tbody>
 				</table>

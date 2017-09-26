@@ -230,17 +230,26 @@
 				</a>
 			</div><!-- .menu-icon -->
 
+			@permission('tracking-show')
 			<div class="menu-icon">
 				<a href="{{ url('trackings/' . $lotinData->id) }}" >
 					<img src="{{ asset('assets/img/Show list.png') }}" alt="Detail">
 					Detail
 				</a>
 			</div><!-- .menu-icon -->
+			@endpermission
+
+			<div class="menu-icon">
+				<a href="{{ url('dashboard') }}" >
+					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
+					Back
+				</a>
+			</div><!-- .menu-icon -->
 
 			<div class="menu-icon">
 				<a href="{{ url('trackings') }}" >
-					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
-					Back
+					<img src="{{ asset('assets/img/Close.png') }}" alt="Close">
+					Close
 				</a>
 			</div><!-- .menu-icon -->
 		</div>

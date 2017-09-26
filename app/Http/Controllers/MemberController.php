@@ -43,7 +43,7 @@ class MemberController extends Controller {
 		}
 		$lastId += 1;
 		$code     = Auth::user()->company->short_code;
-		$memberNo = $code . date('Y') . str_pad($lastId, 6, 0, STR_PAD_LEFT);
+		$memberNo = $code . date('Ym') . str_pad($lastId, 6, 0, STR_PAD_LEFT);
 
 		$companies     = Companies::where('deleted', 'N')->lists('company_name', 'id');
 		$countries     = Countries::where('deleted', 'N')->lists('country_name', 'id');

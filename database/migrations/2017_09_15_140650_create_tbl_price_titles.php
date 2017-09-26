@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreteTblPriceTitles extends Migration {
+class CreateTblPriceTitles extends Migration {
 	/**
 	 * Run the migrations.
 	 *

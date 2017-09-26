@@ -28,7 +28,7 @@
 			</div>
 			@endpermission
 
-			{{-- @permission('tracking-list') --}}
+			@permission('tracking-list')
 			<div class="col-md-2">
 				<a href="{{ url('/trackings') }}">
 					<div class="card">
@@ -37,7 +37,7 @@
 					</div>
 				</a>
 			</div>
-			{{-- @endpermission --}}
+			@endpermission
 
 			{{-- @permission('collection-list') --}}
 			<div class="col-md-2">

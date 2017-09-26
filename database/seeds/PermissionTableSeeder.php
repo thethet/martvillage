@@ -305,6 +305,32 @@ class PermissionTableSeeder extends Seeder {
 				'display_name' => 'Delete Outgoing',
 				'description'  => 'Delete Outgoing',
 			],
+
+			[
+				'name'         => 'tracking-list',
+				'display_name' => 'Display Tracking Listing',
+				'description'  => 'See only Listing Of Tracking',
+			],
+			[
+				'name'         => 'tracking-create',
+				'display_name' => 'Create Tracking',
+				'description'  => 'Create New Tracking',
+			],
+			[
+				'name'         => 'tracking-edit',
+				'display_name' => 'Edit Tracking',
+				'description'  => 'Edit Tracking',
+			],
+			[
+				'name'         => 'tracking-delete',
+				'display_name' => 'Delete Tracking',
+				'description'  => 'Delete Tracking',
+			],
+			[
+				'name'         => 'tracking-show',
+				'display_name' => 'Show Tracking Detail',
+				'description'  => 'Show Tracking Detail',
+			],
 		];
 
 		$role = Role::find(1);

@@ -48,7 +48,6 @@ class TrackingController extends Controller {
 	 * @return Response
 	 */
 	public function show($id) {
-		//
 		$lotinData = Lotin::find($id);
 
 		$sender   = Sender::find($lotinData->sender_id);
@@ -63,9 +62,8 @@ class TrackingController extends Controller {
 		$receivers     = Receiver::where('company_id', Auth::user()->company_id)->get();
 		$receiverCount = count($receivers);
 
-		$items = Item::where('lotin_id', $id);
+		$items = Item::where('lotin_id', $id)->get();
 
-		// dd($lotinData);
 		return view('trackings.show', ['lotinData' => $lotinData, 'sender' => $sender, 'receiver' => $receiver, 'countries' => $countries, 'states' => $states, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships, 'receiverCount' => $receiverCount, 'items' => $items]);
 	}
 
