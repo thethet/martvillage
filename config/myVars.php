@@ -16,10 +16,10 @@ return [
 	],
 
 	'LotinStatus'   => [
-		0 => 'Sender Office',
+		0 => 'Sender Office (Start Point)',
 		1 => 'On Boarding',
 		2 => 'Landed Destination',
-		3 => 'Ready Collect',
+		3 => 'Destination Office (Ready Collect)',
 		4 => 'Collected',
 	],
 

@@ -53,7 +53,6 @@
 					<label class="control-label col-sm-7" for="nric">
 						{{ $nricCodes[$sender->nric_code_id] }} / {{ $nricTownships[$sender->nric_township_id] }} {{ $sender->nric_no }}
 					</label>
-
 				</div><!-- .form-group -->
 			</div>
 
@@ -146,6 +145,18 @@
 
 		<br>
 		<br>
+
+		<div class="row">
+			<div class="col-sm-6"></div>
+
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label class="control-label col-sm-12 right" for="payment">
+						Now At - {{ Config::get('myVars.LotinStatus')[$lotinData->status] }}
+					</label>
+				</div><!-- .form-group -->
+			</div>
+		</div>
 
 		<div class="row">
 			<div class="table-cont">
