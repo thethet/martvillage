@@ -21,7 +21,39 @@ class LotInController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index() {
+	public function index(Request $request) {
+		if (Auth::user()->hasRole('administrator')) {
+			$lotinData = Lotin::where('deleted', 'N')->paginate(10);
+		} else {
+			$lotinData = Lotin::where('company_id', Auth::user()->company_id)
+				->where('deleted', 'N')->paginate(10);
+		}
+
+		$sender        = Sender::lists('name', 'id');
+		$senderContact = Sender::lists('contact_no', 'id');
+		$member        = Sender::lists('member_no', 'id');
+
+		$receiver        = Receiver::lists('name', 'id');
+		$receiverContact = Receiver::lists('contact_no', 'id');
+
+		$countries = Countries::where('deleted', 'N')->orderBy('country_code', 'ASC')->lists('country_code', 'id');
+		$states    = States::where('deleted', 'N')->orderBy('state_code', 'ASC')->lists('state_code', 'id');
+
+		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('id', 'asc')->lists('nric_code', 'id');
+		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('serial_no', 'asc')->lists('short_name', 'id');
+
+		$receivers     = Receiver::where('company_id', Auth::user()->company_id)->get();
+		$receiverCount = count($receivers);
+
+		return view('lotins.index', ['lotinData' => $lotinData, 'sender' => $sender, 'member' => $member, 'senderContact' => $senderContact, 'receiver' => $receiver, 'receiverContact' => $receiverContact, 'countries' => $countries, 'states' => $states, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships, 'receiverCount' => $receiverCount])->with('i', ($request->get('page', 1) - 1) * 10);
+	}
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create() {
 		if (Auth::user()->hasRole('administrator')) {
 			$countries = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')
 				->lists('country_name', 'id');
@@ -64,16 +96,7 @@ class LotInController extends Controller {
 		$receiverCount += 1;
 		$receiverLastNo = $receiverLastId . ' of ' . $receiverCount;
 
-		return view('lotins.index', ['countries' => $countries, 'states' => $states, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships, 'priceList' => $priceList, 'receiveAddress' => $receiveAddress, 'logNo' => $logNo, 'receiverLastNo' => $receiverLastNo, 'receiverLastId' => $receiverLastId]);
-	}
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create() {
-		//
+		return view('lotins.create', ['countries' => $countries, 'states' => $states, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships, 'priceList' => $priceList, 'receiveAddress' => $receiveAddress, 'logNo' => $logNo, 'receiverLastNo' => $receiverLastNo, 'receiverLastId' => $receiverLastId]);
 	}
 
 	/**
