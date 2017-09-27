@@ -108,7 +108,7 @@ class LotInController extends Controller {
 		// dd($request->all());
 		$messages = array(
 			's_contact_no.required'       => 'The Sender Contact Number  field is required.',
-			'member_no.required'          => 'The Member Number  field is required.',
+			'member_no.exists'            => 'Your Member Number is wrong or you are not member.',
 			'sender_name.required'        => 'The Sender Name  field is required.',
 			'nric_code_id.required'       => 'The NRIC Code  field is required.',
 			'nric_township_id.required'   => 'The NRIC Township  field is required.',
@@ -185,8 +185,10 @@ class LotInController extends Controller {
 		if ($senderId == 0) {
 			$this->validate($request, [
 				's_contact_no' => 'required|unique:senders,contact_no',
-				'member_no'    => 'required|unique:senders,member_no',
+				'member_no'    => 'exists:members,member_no',
 			], $messages);
+
+			// die;
 
 			$senderData['company_id']       = $company_id;
 			$senderData['name']             = $request->sender_name;
@@ -273,7 +275,8 @@ class LotInController extends Controller {
 			}
 
 		}
-		return view('dashboard.dashboard');
+		return redirect()->route('lotins.index')
+			->with('success', 'Lotin created successfully');
 
 	}
 
@@ -403,6 +406,36 @@ class LotInController extends Controller {
 					->select('r.*', 's.name as s_name', 's.contact_no as s_contact_no', 's.nric_no as s_nric_no', 's.nric_code_id as s_nric_code_id', 's.nric_township_id as s_nric_tp_id', 'snt.short_name as s_township', 'rnt.short_name as r_township')
 					->first();
 			}
+		}
+
+		return json_encode($items, JSON_UNESCAPED_UNICODE);
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function searchMember(Request $request) {
+		$memberNo = $request->get('memberNo');
+
+		if (Auth::user()->hasRole('administrator')) {
+			$items = DB::table('members as m')
+				->leftJoin('nric_townships as snt', 'snt.id', '=', 'm.nric_township_id')
+				->where('m.member_no', $memberNo)
+				->where('m.deleted', 'N')
+				->select('m.name as s_name', 'm.contact_no as s_contact_no', 'm.nric_no as s_nric_no', 'm.nric_code_id as s_nric_code_id', 'm.nric_township_id as s_nric_tp_id', 'snt.short_name as s_township', 'rnt.short_name as r_township')
+				->first();
+		} else {
+			$items = DB::table('receivers as r')
+				->leftJoin('senders as s', 'm.id', '=', 'r.sender_id')
+				->leftJoin('nric_townships as snt', 'snt.id', '=', 'm.nric_township_id')
+				->leftJoin('nric_townships as rnt', 'rnt.id', '=', 'r.nric_township_id')
+				->where('m.company_id', Auth::user()->company_id)
+				->where('member_no', $memberNo)
+				->where('r.deleted', 'N')
+				->select('r.*', 'm.name as s_name', 'm.contact_no as s_contact_no', 'm.nric_no as s_nric_no', 'm.nric_code_id as s_nric_code_id', 'm.nric_township_id as s_nric_tp_id', 'snt.short_name as s_township', 'rnt.short_name as r_township')
+				->first();
 		}
 
 		return json_encode($items, JSON_UNESCAPED_UNICODE);

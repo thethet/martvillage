@@ -18,7 +18,7 @@ class CreateTblSenders extends Migration {
 			$table->integer('nric_code_id');
 			$table->integer('nric_township_id');
 			$table->string('contact_no')->unique();
-			$table->string('member_no')->unique();
+			$table->string('member_no')->nullable();
 			$table->integer('state_id');
 			$table->enum('deleted', ['N', 'Y']);
 			$table->integer('created_by');

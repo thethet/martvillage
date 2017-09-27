@@ -187,7 +187,7 @@ class MemberController extends Controller {
 			$lastId = $lastId->id;
 		}
 		$lastId += 1;
-		$memberNo = $code . date('Y') . str_pad($lastId, 6, 0, STR_PAD_LEFT);
+		$memberNo = $code . date('Ym') . str_pad($lastId, 6, 0, STR_PAD_LEFT);
 
 		$header = array(
 			'Content-Type' => 'application/json; charset=UTF-8',

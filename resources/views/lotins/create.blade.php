@@ -21,13 +21,13 @@
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label class="control-label col-sm-5" for="currency">
-						<strong>Contact No: <span class="required">*</span></strong>
+						<strong>Member No:</strong>
 					</label>
 					<div class="col-sm-7">
-						{!! Form::text('s_contact_no', null, array('placeholder' => 'Contact No','class' => 'form-control', 'id' => 's_contact_no')) !!}
-						@if ($errors->has('s_contact_no'))
+						{!! Form::text('member_no', null, array('placeholder' => 'Member No','class' => 'form-control', 'id' => 'member_no')) !!}
+						@if ($errors->has('member_no'))
 							<span class="required">
-								<strong>{{ $errors->first('s_contact_no') }}</strong>
+								<strong>{{ $errors->first('member_no') }}</strong>
 							</span>
 						@endif
 					</div>
@@ -35,13 +35,13 @@
 
 				<div class="form-group">
 					<label class="control-label col-sm-5" for="currency">
-						<strong>Member No: <span class="required">*</span></strong>
+						<strong>Contact No: <span class="required">*</span></strong>
 					</label>
 					<div class="col-sm-7">
-						{!! Form::text('member_no', null, array('placeholder' => 'Member No','class' => 'form-control', 'id' => 'member_no')) !!}
-						@if ($errors->has('member_no'))
+						{!! Form::text('s_contact_no', null, array('placeholder' => 'Contact No','class' => 'form-control', 'id' => 's_contact_no')) !!}
+						@if ($errors->has('s_contact_no'))
 							<span class="required">
-								<strong>{{ $errors->first('member_no') }}</strong>
+								<strong>{{ $errors->first('s_contact_no') }}</strong>
 							</span>
 						@endif
 					</div>
@@ -643,7 +643,7 @@
 							$('#address-input').show();
 							$('#address-list').hide();
 
-							$('#member_no').val('');
+							// $('#member_no').val('');
 
 							$('#sender-name').val('');
 							$('#sender-name').attr('readonly', false);
