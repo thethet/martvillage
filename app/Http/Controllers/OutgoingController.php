@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Outgoing;
 use App\States;
 use Auth;
+use Illuminate\Http\Request;
 
 class OutgoingController extends Controller {
 	/**
@@ -12,6 +14,7 @@ class OutgoingController extends Controller {
 	 * @return Response
 	 */
 	public function index() {
+
 		if (Auth::user()->hasRole('administrator')) {
 			$stateList = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 		} else {
@@ -35,8 +38,26 @@ class OutgoingController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store() {
-		//
+	public function store(Request $request) {
+		$this->validate($request, [
+			'passenger_name' => 'required',
+			'contact_no'     => 'required',
+			'dept_date'      => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
+			'from_city'      => 'required',
+			'to_city'        => 'required',
+			'weight'         => 'required',
+			// 'other'          => 'required',
+			'carrier'        => 'required',
+			// 'vessel_no'      => 'required',
+			'time'           => 'required',
+		]);
+		$data               = $request->all();
+		$data['created_by'] = Auth::user()->id;
+
+		$outgoing = Outgoing::create($data);
+
+		return redirect()->route('outgoings.index')
+			->with('success', 'Passenger created successfully');
 	}
 
 	/**

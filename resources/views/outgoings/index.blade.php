@@ -42,10 +42,10 @@
 						<strong>Phone:<span class="required">*</span></strong>
 					</label>
 					<div class="col-sm-4">
-						{!! Form::text('phone', null, array('placeholder' => 'Phone','class' => 'form-control')) !!}
-						@if ($errors->has('phone'))
+						{!! Form::text('contact_no', null, array('placeholder' => 'Phone','class' => 'form-control')) !!}
+						@if ($errors->has('contact_no'))
 							<span class="required">
-								<strong>{{ $errors->first('phone') }}</strong>
+								<strong>{{ $errors->first('contact_no') }}</strong>
 							</span>
 						@endif
 					</div>
@@ -68,10 +68,10 @@
 						<strong>From:<span class="required">*</span></strong>
 					</label>
 					<div class="col-sm-4">
-						{!! Form::select('from_state', ['' => 'Select State'] + $stateList->toArray(), null, ['id'=>'from_state', 'class' => 'form-control']) !!}
-						@if ($errors->has('from_state'))
+						{!! Form::select('from_city', ['' => 'Select State'] + $stateList->toArray(), null, ['id'=>'from_city', 'class' => 'form-control']) !!}
+						@if ($errors->has('from_city'))
 							<span class="required">
-								<strong>{{ $errors->first('from_state') }}</strong>
+								<strong>{{ $errors->first('from_city') }}</strong>
 							</span>
 						@endif
 					</div>
@@ -80,10 +80,10 @@
 						<strong>To:<span class="required">*</span></strong>
 					</label>
 					<div class="col-sm-4">
-						{!! Form::select('to_state', ['' => 'Select State'] + $stateList->toArray(), null, ['id'=>'to_state', 'class' => 'form-control']) !!}
-						@if ($errors->has('to_state'))
+						{!! Form::select('to_city', ['' => 'Select State'] + $stateList->toArray(), null, ['id'=>'to_city', 'class' => 'form-control']) !!}
+						@if ($errors->has('to_city'))
 							<span class="required">
-								<strong>{{ $errors->first('to_state') }}</strong>
+								<strong>{{ $errors->first('to_city') }}</strong>
 							</span>
 						@endif
 					</div>
@@ -155,7 +155,7 @@
 					</div>
 					<label class="control-label col-sm-4" for="button"></label>
 					<div class="col-sm-2">
-						<a href="#" id="add" onclick="document.getElementById('currency-form').submit();">
+						<a href="#" id="add" onclick="document.getElementById('outgoing-form').submit();">
 							<div class="addbtn">
 								<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
 									Add
@@ -289,9 +289,9 @@
 				}
 			});
 
-			$("#from_state").select2();
+			$("#from_city").select2();
 
-			$("#to_state").select2();
+			$("#to_city").select2();
 
 			/*$("#edit").on("click",function(){
 				$(".editboxes").each(function() {
