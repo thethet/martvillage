@@ -93,7 +93,7 @@ class PricingController extends Controller {
 							$priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state]['unit_price'] = '';
 						}
 
-						if ($ptl->from_state == $state->from_state && $title->title_name == $ptl->title_name) {
+						if ($ptl->from_state == $state->from_state && $ptl->to_state == $state->to_state && $title->title_name == $ptl->title_name) {
 							// dd($ptl);
 							$priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state]['id']         = $ptl->id;
 							$priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state]['unit_price'] = $ptl->unit_price;
@@ -271,7 +271,7 @@ class PricingController extends Controller {
 							$priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state]['unit_price'] = '';
 						}
 
-						if ($ptl->from_state == $state->from_state && $title->title_name == $ptl->title_name) {
+						if ($ptl->from_state == $state->from_state && $ptl->to_state == $state->to_state && $title->title_name == $ptl->title_name) {
 							// dd($ptl);
 							$priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state]['id']         = $ptl->id;
 							$priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state]['unit_price'] = $ptl->unit_price;
