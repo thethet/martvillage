@@ -188,7 +188,7 @@
 							<th></th>
 							@foreach($currencyTitleList as $title)
 								<th colspan="{{ $title['total_sub_title'] }}" class="center">
-									{{ $title['type'] }}
+									{{ $title['type'] }} ({{ $title['company_name'] }})
 									<br>
 									From {{ $title['country'] }}
 								</th>

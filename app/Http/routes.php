@@ -251,6 +251,7 @@ Route::group(['middleware' => ['auth']], function () {
 	|
 	 */
 	Route::get('outgoings', ['as' => 'outgoings.index', 'uses' => 'OutgoingController@index', 'middleware' => ['permission:outgoing-list|outgoing-create|outgoing-edit|outgoing-delete']]);
+	Route::get('outgoings/calendar', ['as' => 'outgoings.index', 'uses' => 'OutgoingController@indexCalendar', 'middleware' => ['permission:outgoing-list|outgoing-create|outgoing-edit|outgoing-delete']]);
 	Route::get('outgoings/create', ['as' => 'outgoings.create', 'uses' => 'OutgoingController@create', 'middleware' => ['permission:outgoing-create']]);
 	Route::post('outgoings/create', ['as' => 'outgoings.store', 'uses' => 'OutgoingController@store', 'middleware' => ['permission:outgoing-create']]);
 	Route::get('outgoings/{id}', ['as' => 'outgoings.show', 'uses' => 'OutgoingController@show']);

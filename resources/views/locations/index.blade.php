@@ -107,6 +107,7 @@
 
 			<div class="col-lg-6 city-add">
 				{!! Form::open(array('route' => 'locations.city.store','method'=>'POST', 'id' => 'city-form', 'class' => 'form-horizontal')) !!}
+					{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
 					<div class="form-group"></div>
 
 					<div class="form-group">

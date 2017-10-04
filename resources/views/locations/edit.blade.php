@@ -86,6 +86,7 @@
 
 			<div class="col-lg-6 city-add">
 				{!! Form::model($countryCity, ['method' => 'PATCH','route' => ['locations.update', $countryCity->id], 'id' => 'city-form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
+					{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
 					<div class="form-group"></div>
 
 					<div class="form-group">
@@ -186,6 +187,11 @@
 			<div class="table-cont">
 				<table class="table table-bordered table-responsive">
 					<thead>
+						<tr>
+							<th colspan="{{ (count($countriesLists) * 2) }}" class="center">
+								Country and City
+							</th>
+						</tr>
 						<tr>
 							@foreach($countriesLists as $clist)
 								<th width="8px">&nbsp;&nbsp;&nbsp;</th>

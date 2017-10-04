@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Companies;
 use App\Countries;
 use App\Currency;
 use App\Price;
@@ -47,14 +48,16 @@ class PricingController extends Controller {
 		$i                 = 0;
 		$totalCol          = 0;
 		foreach ($currencyTitle as $key => $value) {
+			$company_name                               = Companies::where('id', $value->company_id)->first()->short_code;
 			$currencyTitleList[$i]['type']              = $value->type;
 			$currencyTitleList[$i]['country']           = $value->location->country_code;
+			$currencyTitleList[$i]['company_name']      = $company_name;
 			$currencyTitleList[$key]['total_sub_title'] = 1;
 			$i++;
 		}
 
 		foreach ($currencyTitle as $keys => $val) {
-			$states = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->where('from_country', $val->from_location)->get();
+			$states = Price::where('company_id', $value->company_id)->where('deleted', 'N')->where('from_country', $val->from_location)->get();
 
 			$j = 0;
 			foreach ($states as $key => $state) {
@@ -80,7 +83,7 @@ class PricingController extends Controller {
 
 			$k = 0;
 			foreach ($currencyTitle as $key => $val) {
-				$states = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->where('from_country', $val->from_location)->get();
+				$states = Price::where('company_id', $val->company_id)->where('deleted', 'N')->where('from_country', $val->from_location)->get();
 
 				foreach ($states as $key => $state) {
 					$from_state = States::where('id', $state->from_state)->first()->state_code;
@@ -225,14 +228,16 @@ class PricingController extends Controller {
 		$i                 = 0;
 		$totalCol          = 0;
 		foreach ($currencyTitle as $key => $value) {
+			$company_name                               = Companies::where('id', $value->company_id)->first()->short_code;
 			$currencyTitleList[$i]['type']              = $value->type;
 			$currencyTitleList[$i]['country']           = $value->location->country_code;
+			$currencyTitleList[$i]['company_name']      = $company_name;
 			$currencyTitleList[$key]['total_sub_title'] = 1;
 			$i++;
 		}
 
 		foreach ($currencyTitle as $keys => $val) {
-			$states = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->where('from_country', $val->from_location)->get();
+			$states = Price::where('company_id', $val->company_id)->where('deleted', 'N')->where('from_country', $val->from_location)->get();
 
 			$j = 0;
 			foreach ($states as $key => $state) {
@@ -258,7 +263,7 @@ class PricingController extends Controller {
 
 			$k = 0;
 			foreach ($currencyTitle as $key => $val) {
-				$states = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->where('from_country', $val->from_location)->get();
+				$states = Price::where('company_id', $val->company_id)->where('deleted', 'N')->where('from_country', $val->from_location)->get();
 
 				foreach ($states as $key => $state) {
 					$from_state = States::where('id', $state->from_state)->first()->state_code;

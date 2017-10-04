@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Companies;
 use App\Countries;
 use App\States;
 use App\Townships;
@@ -44,12 +45,13 @@ class LocationController extends Controller {
 		$citiesLists = array();
 		foreach ($countriesLists as $cList) {
 			$states = States::where('country_id', $cList->id)->where('deleted', 'N')->orderBy('state_name', 'ASC')->get();
-
-			$j = 0;
+			$j      = 0;
 			foreach ($states as $state) {
-				$citiesLists[$j][$cList->country_name]['id']         = $state->id;
-				$citiesLists[$j][$cList->country_name]['state_name'] = $state->state_name;
-				$citiesLists[$j][$cList->country_name]['state_code'] = $state->state_code;
+				$company_name                                          = Companies::where('id', $state->company_id)->first()->short_code;
+				$citiesLists[$j][$cList->country_name]['id']           = $state->id;
+				$citiesLists[$j][$cList->country_name]['state_name']   = $state->state_name;
+				$citiesLists[$j][$cList->country_name]['state_code']   = $state->state_code;
+				$citiesLists[$j][$cList->country_name]['company_name'] = $company_name;
 				$j++;
 			}
 		}

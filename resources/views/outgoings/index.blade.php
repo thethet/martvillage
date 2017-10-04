@@ -18,7 +18,79 @@
 
 		<div class="row">
 			<div class="col-lg-4">
-				<div id='calendar'></div>
+				{{-- <div id='calendar' ></div> --}}
+				<div class="table-cont">
+					<?php
+						$startDay    = date('w', strtotime($currentMonthYear));
+						$daysInMonth = date('t', strtotime($currentMonthYear));
+						$today       = date('d');
+
+						$thisMonth = date('F Y');
+
+						$previousMonth = date('F Y', strtotime('-1 month', strtotime($currentMonthYear)));
+						$nextMonth     = date('F Y', strtotime('+1 month', strtotime($currentMonthYear)));
+
+						$currentStart = $startDay;
+					?>
+					<table class="calendar table table-bordered table-responsive">
+						<thead>
+							<tr>
+								<th colspan="7" class="caption">
+									<a href="#" id="gopreviousMonth">
+										<img class="calendar-icon" src="{{ asset('assets/img/prev.png') }}" alt="previousMonth">
+									</a>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									{{ $currentMonthYear }}
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<a href="#" id="gonextMonth">
+										<img class="calendar-icon" src="{{ asset('assets/img/next.png') }}" alt="nextMonth">
+									</a>
+									{!! Form::hidden('prev_month', $previousMonth, ['class' => 'form-control', 'id' => 'prevMonth']) !!}
+									{!! Form::hidden('next_month', $nextMonth, ['class' => 'form-control', 'id' => 'nextMonth']) !!}
+								</th>
+							</tr>
+							<tr>
+								@foreach($dayHeader as $header)
+									<th>{{ $header }}</th>
+								@endforeach
+							</tr>
+						</thead>
+						<tbody>
+							@if($startDay == 0)
+							<tr>
+							@endif
+
+							@for($j = 1; $j <= $currentStart; $j++)
+							<td></td>
+							@endfor
+
+							@for($listDay = 1; $listDay <= $daysInMonth; $listDay++)
+								@if($startDay == 7)
+								<?php $startDay = 0; ?>
+								</tr>
+								@endif
+
+								<td @if($listDay == $today && $currentMonthYear == $thisMonth) class="today" @elseif($startDay == 0) class="sunday" @elseif($startDay == 6) class="saturday" @endif>
+									{{ $listDay }}
+
+									@if($listDay == 26)
+										<span class="br-corner">
+											4/6
+										</span>
+									@endif
+								</td>
+
+								<?php $startDay++; ?>
+							@endfor
+
+							@for($i = $startDay; $i < 7; $i++)
+							<td></td>
+							@endfor
+
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 
 			<div class="col-lg-8 bdr mb15">
@@ -141,7 +213,7 @@
 					</div>
 				</div><!-- .form-group -->
 
-				<div class="form-group" style="margin-bottom: 8px; margin-top: 10px;">
+				<div class="form-group" style="margin-bottom: 21px; margin-top: 10px;">
 					<label class="control-label col-sm-2" for="time">
 						<strong>Time:<span class="required">*</span></strong>
 					</label>
@@ -259,8 +331,8 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css"/>
 
 	{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> --}}
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js"></script>
+	{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script> --}}
+	{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js"></script> --}}
 	{{-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> --}}
 	{{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.css"/> --}}
 
@@ -280,14 +352,14 @@
 				minuteStep: 5
 			});
 
-			$('#calendar').fullCalendar({
+			/*$('#calendar').fullCalendar({
 				theme: true,
 				header: {
 					left: 'prev,next,today',
 					center: 'title',
 					right: 'month,agendaWeek,agendaDay'
 				}
-			});
+			});*/
 
 			$("#from_city").select2();
 
@@ -329,6 +401,41 @@
 					}
 				});
 			});*/
+
+			$("#gopreviousMonth").on("click",function(){
+				var calendarDate = $('#prevMonth').val();
+				var url = "{{ url('outgoings/calendar') }}";
+				$.ajax({
+					url: url,
+					type: 'GET',
+					data: {
+						calendarDate: calendarDate,
+						// mode: 'edit'
+					},
+					success: function(data)
+					{
+						window.location.replace(data.url);
+					}
+				});
+			});
+
+
+			$("#gonextMonth").on("click",function(){
+				var calendarDate = $('#nextMonth').val();
+				var url = "{{ url('outgoings/calendar') }}";
+				$.ajax({
+					url: url,
+					type: 'GET',
+					data: {
+						calendarDate: calendarDate,
+						// mode: 'edit'
+					},
+					success: function(data)
+					{
+						window.location.replace(data.url);
+					}
+				});
+			});
 		});
 	</script>
 @stop

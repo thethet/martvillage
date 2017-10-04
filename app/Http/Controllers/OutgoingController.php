@@ -6,6 +6,7 @@ use App\Outgoing;
 use App\States;
 use Auth;
 use Illuminate\Http\Request;
+use Session;
 
 class OutgoingController extends Controller {
 	/**
@@ -13,7 +14,8 @@ class OutgoingController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index() {
+	public function index(Request $request) {
+		// dd(Session::get('month'));
 
 		if (Auth::user()->hasRole('administrator')) {
 			$stateList = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
@@ -21,7 +23,35 @@ class OutgoingController extends Controller {
 			$stateList = States::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 		}
 
-		return view('outgoings.index', ['stateList' => $stateList]);
+		$dayHeader = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+		if (Session::has('month')) {
+			$currentMonthYear = Session::get('month');
+
+			$startDay    = date('w', strtotime($currentMonthYear));
+			$daysInMonth = date('t', strtotime($currentMonthYear));
+			$today       = date('d');
+
+			$previousMonth = date('F Y', strtotime('-1 month', strtotime($currentMonthYear)));
+			$nextMonth     = date('F Y', strtotime('+1 month', strtotime($currentMonthYear)));
+		} else {
+			$currentMonthYear = date('F Y');
+		}
+		Session::forget('month');
+
+		return view('outgoings.index', ['stateList' => $stateList, 'dayHeader' => $dayHeader, 'currentMonthYear' => $currentMonthYear]);
+	}
+
+	/**
+	 * Redirect Route Using Ajax.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function indexCalendar(Request $request) {
+		Session::flash('month', $request->calendarDate);
+		$response = array('status' => 'success', 'url' => 'outgoings');
+		return response()->json($response);
+
 	}
 
 	/**
