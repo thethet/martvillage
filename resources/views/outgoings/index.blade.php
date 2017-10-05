@@ -2,9 +2,9 @@
 
 @section('site-title')
 	<div class="col-md-4 site-icon">
-		<img class="profile-icon" src="{{ asset('assets/img/lot-in.png') }}" alt="Lot-in">
+		<img class="profile-icon" src="{{ asset('assets/img/outgoing.png') }}" alt="Outgoing">
 	</div>
-	<div class="col-md-8 site-header">Lot-in</div>
+	<div class="col-md-8 site-header">Outgoing</div>
 @stop
 
 @section('main')
@@ -70,15 +70,22 @@
 								</tr>
 								@endif
 
+
+								@if(array_key_exists($listDay, $outgoingPackingList))
 								<td @if($listDay == $today && $currentMonthYear == $thisMonth) class="today" @elseif($startDay == 0) class="sunday" @elseif($startDay == 6) class="saturday" @endif>
 									{{ $listDay }}
 
-									@if($listDay == 26)
+									@if($outgoingPackingList[$listDay]['package_date'] == $currentMonthYear)
 										<span class="br-corner">
-											4/6
+											{{ $outgoingPackingList[$listDay]['package'] }}/{{ $outgoingPackingList[$listDay]['total'] }}
 										</span>
 									@endif
 								</td>
+								@else
+								<td @if($listDay == $today && $currentMonthYear == $thisMonth) class="today" @elseif($startDay == 0) class="sunday" @elseif($startDay == 6) class="saturday" @endif>
+									{{ $listDay }}
+								</td>
+								@endif
 
 								<?php $startDay++; ?>
 							@endfor
@@ -95,6 +102,7 @@
 
 			<div class="col-lg-8 bdr mb15">
 				{!! Form::open(array('route' => 'outgoings.store','method'=>'POST', 'id' => 'outgoing-form', 'class' => 'form-horizontal')) !!}
+				{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
 				<div class="form-group" style="margin-bottom: 8px; margin-top: 10px;">
 					<label class="control-label col-sm-2" for="name">
 						<strong>Name:<span class="required">*</span></strong>
@@ -140,24 +148,46 @@
 						<strong>From:<span class="required">*</span></strong>
 					</label>
 					<div class="col-sm-4">
-						{!! Form::select('from_city', ['' => 'Select State'] + $stateList->toArray(), null, ['id'=>'from_city', 'class' => 'form-control']) !!}
-						@if ($errors->has('from_city'))
-							<span class="required">
-								<strong>{{ $errors->first('from_city') }}</strong>
-							</span>
-						@endif
+						<div class="col-sm-6" style="padding: 0;">
+							{!! Form::select('from_country', ['' => 'Country'] + $countryList->toArray(), null, ['id'=>'from_country', 'class' => 'form-control']) !!}
+							@if ($errors->has('from_country'))
+								<span class="required">
+									<strong>{{ $errors->first('from_country') }}</strong>
+								</span>
+							@endif
+						</div>
+
+						<div class="col-sm-6" style="padding: 0;">
+							{!! Form::select('from_city', ['' => 'State'] + $stateList->toArray(), null, ['id'=>'from_city', 'class' => 'form-control']) !!}
+							@if ($errors->has('from_city'))
+								<span class="required">
+									<strong>{{ $errors->first('from_city') }}</strong>
+								</span>
+							@endif
+						</div>
 					</div>
 
 					<label class="control-label col-sm-2" for="to state">
 						<strong>To:<span class="required">*</span></strong>
 					</label>
 					<div class="col-sm-4">
-						{!! Form::select('to_city', ['' => 'Select State'] + $stateList->toArray(), null, ['id'=>'to_city', 'class' => 'form-control']) !!}
-						@if ($errors->has('to_city'))
-							<span class="required">
-								<strong>{{ $errors->first('to_city') }}</strong>
-							</span>
-						@endif
+						<div class="col-sm-6" style="padding: 0;">
+							{!! Form::select('to_country', ['' => 'Country'] + $countryList->toArray(), null, ['id'=>'to_country', 'class' => 'form-control']) !!}
+							@if ($errors->has('to_country'))
+								<span class="required">
+									<strong>{{ $errors->first('to_country') }}</strong>
+								</span>
+							@endif
+						</div>
+
+						<div class="col-sm-6" style="padding: 0;">
+							{!! Form::select('to_city', ['' => 'State'] + $stateList->toArray(), null, ['id'=>'to_city', 'class' => 'form-control']) !!}
+							@if ($errors->has('to_city'))
+								<span class="required">
+									<strong>{{ $errors->first('to_city') }}</strong>
+								</span>
+							@endif
+						</div>
 					</div>
 				</div><!-- .form-group -->
 
@@ -264,6 +294,30 @@
 						</tr>
 					</thead>
 
+					<tbody>
+						<?php $no = 1; ?>
+						@foreach($outgoingList as $outgoing)
+							<tr>
+								<td>{{ $no++ }}</td>
+								<td>
+									{!! Form::checkbox('edit', $outgoing->id, null, ['class' => 'editboxes']) !!}
+								</td>
+								<td>{{ $outgoing->passenger_name }}</td>
+								<td>{{ $outgoing->contact_no }}</td>
+								<td>{{ $outgoing->from_city }}</td>
+								<td>{{ $outgoing->to_city }}</td>
+								<td>{{ $outgoing->weight }}</td>
+								<td>{{ $outgoing->carrier_name }}</td>
+								<td>{{ $outgoing->vessel_no }}</td>
+								<td>{{ $outgoing->dept_date }} [ {{ date('H:i A', strtotime($outgoing->time)) }} ]</td>
+								<td>
+									<a href="{{ url('outgoings/'. $outgoing->id .'/packing-list') }}">
+										{{ $outgoing->packing_list }}
+									</a>
+								</td>
+							</tr>
+						@endforeach
+					</tbody>
 				</table>
 			</div>
 		</div>
@@ -279,7 +333,7 @@
 				</a>
 			</div><!-- .menu-icon -->
 
-			@permission('lotin-create')
+			@permission('outgoing-create')
 				<div class="menu-icon">
 					<a href="#" id="add-item">
 						<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
@@ -288,7 +342,7 @@
 				</div><!-- .menu-icon -->
 			@endpermission
 
-			@permission('lotin-edit')
+			@permission('outgoing-edit')
 				<div class="menu-icon">
 					<a href="#" id="edit">
 						<img src="{{ asset('assets/img/edit-icon.png') }}" alt="Edit">
@@ -297,8 +351,17 @@
 				</div><!-- .menu-icon -->
 			@endpermission
 
+			@permission('outgoing-delete')
+				<div class="menu-icon">
+					<a href="#" id="delete">
+						<img src="{{ asset('assets/img/trash-icon.png') }}" alt="Delete">
+						Delete
+					</a>
+				</div><!-- .menu-icon -->
+			@endpermission
+
 			<div class="menu-icon">
-				<a href="#" id="delete">
+				<a href="#" id="reset" onclick="document.getElementById('outgoing-form').reset();">
 					<img src="{{ asset('assets/img/reset.png') }}" alt="Reset">
 					Reset
 				</a>
@@ -311,12 +374,12 @@
 				</a>
 			</div><!-- .menu-icon -->
 
-			<div class="menu-icon">
+			{{-- <div class="menu-icon">
 				<a href="#" id="add" onclick="document.getElementById('lotin-form').submit();">
 					<img src="{{ asset('assets/img/save-and-close.png') }}" alt="Save">
 					Save&Exit
 				</a>
-			</div><!-- .menu-icon -->
+			</div><!-- .menu-icon --> --}}
 		</div>
 	</div><!-- .footer-menu -->
 @stop
@@ -348,6 +411,13 @@
 				autoclose: true,
 			});
 
+			$("#outgoing-form :input").prop("disabled", true);
+
+			$("#add-item").on("click",function(){
+				$("#outgoing-form :input").prop("disabled", false);
+			});
+
+
 			$('#timepicker').timepicker({
 				minuteStep: 5
 			});
@@ -361,16 +431,59 @@
 				}
 			});*/
 
-			$("#from_city").select2();
+			$("#from_country").select2();
 
-			$("#to_city").select2();
+			$("#from_city").select2({
+				ajax: {
+					url: "{{ url('states/search-state-country') }}",
+					dataType: 'json',
+					delay: 250,
+					data: function (params) {
+						var countryId = $('#from_country').val();
+						return {
+							search: params.term,
+							countryId: countryId
+						};
+					},
+					processResults: function (data, params) {
+						return {
+							results: data.items
+						};
+					},
+					cache: true
+				},
+			});
 
-			/*$("#edit").on("click",function(){
+
+			$("#to_country").select2();
+
+			$("#to_city").select2({
+				ajax: {
+					url: "{{ url('states/search-state-country') }}",
+					dataType: 'json',
+					delay: 250,
+					data: function (params) {
+						var countryId = $('#to_country').val();
+						return {
+							search: params.term,
+							countryId: countryId
+						};
+					},
+					processResults: function (data, params) {
+						return {
+							results: data.items
+						};
+					},
+					cache: true
+				},
+			});
+
+			$("#edit").on("click",function(){
 				$(".editboxes").each(function() {
 					if ($(this).is(":checked")) {
 						var id = $(this).val();
 						$.ajax({
-							url: "{{ url('prices/ajax/id/edit') }}",
+							url: "{{ url('outgoings/ajax/id/edit') }}",
 							type: 'GET',
 							data: {
 								id: id,
@@ -385,7 +498,7 @@
 				});
 			});
 
-			$("#delete").on("click",function(){
+			/*$("#delete").on("click",function(){
 				$(".editboxes").each(function() {
 					if ($(this).is(":checked")) {
 						var id = $(this).val();

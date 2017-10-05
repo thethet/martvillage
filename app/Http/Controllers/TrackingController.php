@@ -106,8 +106,13 @@ class TrackingController extends Controller {
 	public function search(Request $request) {
 		$lotinData = Lotin::where('lot_no', $request->lot_no)->first();
 
-		$sender   = Sender::find($lotinData->sender_id);
-		$receiver = Receiver::find($lotinData->receiver_id);
+		if ($lotinData) {
+			$sender   = Sender::find($lotinData->sender_id);
+			$receiver = Receiver::find($lotinData->receiver_id);
+		} else {
+			return redirect()->route('trackings.index')
+				->with('success', 'Your Lot No does not exist');
+		}
 
 		$countries = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 		$states    = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');

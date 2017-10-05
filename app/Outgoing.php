@@ -19,6 +19,7 @@ class Outgoing extends Model {
 	 * @var array
 	 */
 	protected $fillable = [
+		'company_id',
 		'lotin_id',
 		'item_id',
 		'passenger_name',
@@ -26,7 +27,7 @@ class Outgoing extends Model {
 		'contact_no',
 		'shipping_line',
 		'vessel_no',
-		'dep_date',
+		'dept_date',
 		'time',
 		'weight',
 		'other_weight',
@@ -40,6 +41,4 @@ class Outgoing extends Model {
 		'created_by',
 		'updated_by',
 	];
-}
-
 }

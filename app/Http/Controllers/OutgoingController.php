@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Countries;
 use App\Outgoing;
 use App\States;
 use Auth;
+use DB;
 use Illuminate\Http\Request;
 use Session;
 
@@ -18,9 +20,13 @@ class OutgoingController extends Controller {
 		// dd(Session::get('month'));
 
 		if (Auth::user()->hasRole('administrator')) {
-			$stateList = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+			$countryList  = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+			$stateList    = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+			$outgoingList = Outgoing::where('deleted', 'N')->get();
 		} else {
-			$stateList = States::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+			$countryList  = Countries::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+			$stateList    = States::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+			$outgoingList = Outgoing::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->get();
 		}
 
 		$dayHeader = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -38,13 +44,23 @@ class OutgoingController extends Controller {
 		}
 		Session::forget('month');
 
-		return view('outgoings.index', ['stateList' => $stateList, 'dayHeader' => $dayHeader, 'currentMonthYear' => $currentMonthYear]);
+		$packages = Outgoing::select(DB::raw('sum(packing_list) as packing_list'), 'dept_date', DB::raw('count(id) as total'), DB::raw('YEAR(dept_date) year, MONTH(dept_date) month, DAY(dept_date) day'))
+			->groupby('year', 'month', 'day')
+			->get();
+
+		foreach ($packages as $package) {
+			$yearMonth                                          = date('F Y', strtotime($package->dept_date));
+			$outgoingPackingList[$package->day]['total']        = $package->total;
+			$outgoingPackingList[$package->day]['package']      = (int) $package->packing_list;
+			$outgoingPackingList[$package->day]['package_date'] = date('F Y', strtotime($package->dept_date));
+		}
+
+		return view('outgoings.index', ['countryList' => $countryList, 'stateList' => $stateList, 'dayHeader' => $dayHeader, 'currentMonthYear' => $currentMonthYear, 'outgoingList' => $outgoingList, 'outgoingPackingList' => $outgoingPackingList]);
 	}
 
 	/**
 	 * Redirect Route Using Ajax.
 	 *
-	 * @param  int  $id
 	 * @return Response
 	 */
 	public function indexCalendar(Request $request) {
@@ -81,7 +97,9 @@ class OutgoingController extends Controller {
 			// 'vessel_no'      => 'required',
 			'time'           => 'required',
 		]);
+
 		$data               = $request->all();
+		$data['time']       = date('H:i A', strtotime($request->time));
 		$data['created_by'] = Auth::user()->id;
 
 		$outgoing = Outgoing::create($data);
@@ -101,13 +119,26 @@ class OutgoingController extends Controller {
 	}
 
 	/**
+	 * Redirect Route Using Ajax.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function editAjax($userId, Request $request) {
+		$id       = $request->id;
+		$response = array('status' => 'success', 'url' => 'outgoings/' . $id . '/edit');
+		return response()->json($response);
+
+	}
+
+	/**
 	 * Show the form for editing the specified resource.
 	 *
 	 * @param  int  $id
 	 * @return Response
 	 */
 	public function edit($id) {
-		//
+		echo "In Edit";
 	}
 
 	/**
@@ -128,5 +159,16 @@ class OutgoingController extends Controller {
 	 */
 	public function destroy($id) {
 		//
+	}
+
+	/**
+	 * Store the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function packingList($id) {
+		$outgoing = Outgoing::find($id);
+		return view('outgoings.packing-list', ['outgoing' => $outgoing]);
 	}
 }

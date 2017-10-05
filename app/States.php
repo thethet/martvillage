@@ -19,6 +19,7 @@ class States extends Model {
 	 * @var array
 	 */
 	protected $fillable = [
+		'company_id',
 		'country_id',
 		'state_name',
 		'description',
