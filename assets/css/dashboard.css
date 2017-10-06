@@ -31,8 +31,13 @@ input:-ms-input-placeholder { /* Internet Explorer 10+ */
 	border: 1px solid #fff;
 }
 
+
 .mb15 {
 	margin-bottom: 15px;
+}
+
+.ml10 {
+	margin-left: 10px;
 }
 
 .main .page-header {
@@ -441,6 +446,27 @@ th.caption {
 
 .calendar-icon {
 	width: 7%;
+}
+
+.packing-list-group a {
+	color: #333;
+}
+
+.packing-list-group a:hover {
+	color: #fff;
+}
+
+.packing-title > a.collapsed:after {
+	content: '+';
+	position: absolute;
+	left: 15px;
+}
+
+.packing-title > a:after {
+	content: '-';
+	position: absolute;
+	left: 15px;
+
 }
 
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Countries;
+use App\Lotin;
 use App\Outgoing;
 use App\States;
 use Auth;
@@ -169,6 +170,21 @@ class OutgoingController extends Controller {
 	 */
 	public function packingList($id) {
 		$outgoing = Outgoing::find($id);
-		return view('outgoings.packing-list', ['outgoing' => $outgoing]);
+
+		$start = date("Y-m-d", strtotime($outgoing->dept_date . "-30 day"));
+		$end   = date("Y-m-d", strtotime($outgoing->dept_date));
+
+		$lotinList = array();
+		for ($k = 0; $k < 31; $k++) {
+			$startDate = date("Y-m-d", strtotime($start . "+" . $k . " day"));
+			$lotin     = Lotin::where('status', '0')->where('deleted', 'N')->where('date', $startDate)->orderBy('date', 'ASC')->get();
+			if (count($lotin) > 0) {
+				$lotinList[$startDate] = $lotin;
+			}
+		}
+
+		// dd($lotinList);
+		// dd($start);
+		return view('outgoings.packing-list', ['outgoing' => $outgoing, 'lotinList' => $lotinList]);
 	}
 }

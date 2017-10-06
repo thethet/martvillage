@@ -41,4 +41,28 @@ class Outgoing extends Model {
 		'created_by',
 		'updated_by',
 	];
+
+	public function LotIn() {
+		return $this->belongsTo('App\Lotin', 'lotin_id');
+	}
+
+	public function getItems() {
+		return $this->belongsTo('App\Item', 'item_id');
+	}
+
+	public function fromCountry() {
+		return $this->belongsTo('App\Countries', 'from_country');
+	}
+
+	public function fromCity() {
+		return $this->belongsTo('App\States', 'from_city');
+	}
+
+	public function toCountry() {
+		return $this->belongsTo('App\Countries', 'to_country');
+	}
+
+	public function toCity() {
+		return $this->belongsTo('App\States', 'to_city');
+	}
 }
