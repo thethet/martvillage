@@ -59,16 +59,31 @@ class LotInController extends Controller {
 				->lists('country_name', 'id');
 			$states = States::where('deleted', 'N')->orderBy('state_name', 'ASC')
 				->lists('state_name', 'id');
-			$priceList      = Price::where('deleted', 'N')->lists('title_name', 'id');
-			$receiveAddress = Receiver::where('deleted', 'N')->lists('address', 'id');
+			$priceList       = Price::where('deleted', 'N')->lists('title_name', 'id');
+			$receiveAddress  = Receiver::where('deleted', 'N')->lists('address', 'id');
+			$receiverLastIds = Receiver::select('id')->first();
+			$receiver        = Receiver::get();
 		} else {
 			$countries = Countries::where('company_id', Auth::user()->company_id)
 				->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 			$states = States::where('company_id', Auth::user()->company_id)
 				->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
-			$priceList      = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('title_name', 'id');
-			$receiveAddress = Receiver::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('address', 'id');
+			$priceList       = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('title_name', 'id');
+			$receiveAddress  = Receiver::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('address', 'id');
+			$receiverLastIds = Receiver::where('company_id', Auth::user()->company_id)->select('id')->first();
+			$receiver        = Receiver::where('company_id', Auth::user()->company_id)->get();
 		}
+
+		// foreach ($receiveAddress as  $rec) {
+		// 	print_r($rec);
+		// 	$rec = $rec . " of " . count($receiveAddress);
+		// }
+		// // die;
+
+		foreach ($receiveAddress as $key => $value) {
+			$receiveAddress[$key] = $value . " of " . count($receiveAddress);
+		}
+		// dd($receiveAddress);
 
 		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('id', 'asc')->lists('nric_code', 'id');
 		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('serial_no', 'asc')->lists('short_name', 'id');
@@ -81,7 +96,7 @@ class LotInController extends Controller {
 		$code  = Auth::user()->company->short_code;
 		$logNo = date('Ymd') . $code . str_pad($lastId, 4, 0, STR_PAD_LEFT);
 
-		$receiverLastIds = Receiver::where('company_id', Auth::user()->company_id)->select('id')->first();
+		// $receiverLastIds = Receiver::where('company_id', Auth::user()->company_id)->select('id')->first();
 
 		$receiverLastId = 0;
 
@@ -91,7 +106,7 @@ class LotInController extends Controller {
 			$receiverLastId += 1;
 		}
 
-		$receiver      = Receiver::where('company_id', Auth::user()->company_id)->get();
+		// $receiver      = Receiver::where('company_id', Auth::user()->company_id)->get();
 		$receiverCount = count($receiver);
 		$receiverCount += 1;
 		$receiverLastNo = $receiverLastId . ' of ' . $receiverCount;

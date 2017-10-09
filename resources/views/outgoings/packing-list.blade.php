@@ -95,21 +95,26 @@
 											<thead>
 												<tr>
 													<th></th>
-													<th>Lot No.</th>
+													<th>Barcode</th>
 													<th>Unit(kg/ft<sup>3</sup>)</th>
 													<th>Split</th>
 												</tr>
 											</thead>
 											<tbody>
 												@foreach($lotins as $lotin)
+												<?php
+												$items = App\Item::where('lotin_id', $lotin->id)->get();
+												?>
+												@foreach($items as $item)
 												<tr>
 													<td>
-														{!! Form::checkbox('topack', $lotin->id, null, ['class' => 'topack']) !!}
+														{!! Form::checkbox('topack', $item->id, null, ['class' => 'topack']) !!}
 													</td>
-													<td>{{ $lotin->lot_no }}</td>
-													<td>3kg</td>
+													<td>{{ $item->barcode }}</td>
+													<td>{{ $item->unit }}</td>
 													<td>0</td>
 												</tr>
+												@endforeach
 												@endforeach
 											</tbody>
 										</table>

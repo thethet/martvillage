@@ -107,13 +107,18 @@
 						<strong>To: <span class="required">*</span></strong>
 					</label>
 					<div class="col-sm-7" id="address-input">
-						{!! Form::text('to_state_id_news', $receiverLastNo, array('placeholder' => 'Address','class' => 'form-control', 'id' => 'to-add', 'readonly' => true)) !!}
-						{!! Form::hidden('to_state_id_new', $receiverLastId, array('placeholder' => 'Address','class' => 'form-control', 'id' => 'to-adds', 'readonly' => true)) !!}
+						<div class="col-sm-10" style="padding: 0">
+							{!! Form::text('to_state_id_news', $receiverLastNo, array('placeholder' => 'Address','class' => 'form-control', 'id' => 'to-add', 'readonly' => true)) !!}
+							{!! Form::hidden('to_state_id_new', $receiverLastId, array('placeholder' => 'Address','class' => 'form-control', 'id' => 'to-adds', 'readonly' => true)) !!}
+						</div>
+						<div class="col-sm-1" style="padding: 0; margin-top: 7px; margin-left: 5px;">
+							<a href="#" class="addbtn" id="back">Back</a>
+						</div>
 					</div>
 					<div class="col-sm-7" id="address-list">
 						{!! Form::select('to_state_ids', ['' => 'Address'] + $receiveAddress->toArray(), null, ['class' => 'form-control', 'id' => 'address', 'readonly' => true]) !!}
 
-						<a href="#" class="addbtn" id="noadd">address</a>
+						<a href="#" class="addbtn" id="noadd">Add</a>
 					</div>
 				</div><!-- .form-group -->
 
@@ -498,10 +503,14 @@
 				todayHighlight: true,
 				autoclose: true,
 			});
+			date_input.datepicker('setDate', new Date());
+
+			$('a#back').hide();
 
 			$("a#noadd").bind('click', function () {
 				$('#address-input').show();
 				$('#address-list').hide();
+				$('a#back').show();
 
 				$('#r_contact_no').val('');
 				$('#r_contact_no').attr('readonly', false);
@@ -523,6 +532,35 @@
 
 				$('#r_nric_no').val('');
 				$('#r_nric_no').attr('readonly', false);
+			});
+
+
+			$("a#back").bind('click', function () {
+				$('#address-input').hide();
+				$('#address-list').show();
+
+				$('#r_contact_no').val('');
+				$('#r_contact_no').attr('readonly', false);
+
+				$('#to_state_id').val('');
+				$('#to_state_id').attr('readonly', false);
+				// $('#to-add').attr('readonly', false);
+
+				$('#r_name').val('');
+				$('#r_name').attr('readonly', false);
+
+				$('#r_nric_code').val('');
+				$('#r_nric_code').attr('disabled', false);
+				$('#select2-r_nric_code-container').text('Code');
+
+				$('#r_nric_township').val('');
+				$('#r_nric_township').attr('disabled', false);
+				$('#select2-r_nric_township-container').text('Township');
+
+				$('#r_nric_no').val('');
+				$('#r_nric_no').attr('readonly', false);
+
+				$('#select2-address-container').text('Address');
 			});
 
 			$('#address-list').hide();

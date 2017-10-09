@@ -21,23 +21,23 @@
 			</div>
 			@endpermission
 
-			@permission('price-list')
-			<div class="col-md-2">
-				<a href="{{ url('/prices') }}">
-					<div class="card">
-						<img class="profile-icon" src="{{ asset('assets/img/price-tag.png') }}" alt="Price">
-						Price
-					</div>
-				</a>
-			</div>
-			@endpermission
-
 			@permission('location-list')
 			<div class="col-md-2">
 				<a href="{{ url('/locations') }}">
 					<div class="card">
 						<img class="tracking-icon" src="{{ asset('assets/img/tracking-icon.png') }}" alt="Location">
 						Location
+					</div>
+				</a>
+			</div>
+			@endpermission
+
+			@permission('price-list')
+			<div class="col-md-2">
+				<a href="{{ url('/prices') }}">
+					<div class="card">
+						<img class="profile-icon" src="{{ asset('assets/img/price-tag.png') }}" alt="Price">
+						Price
 					</div>
 				</a>
 			</div>

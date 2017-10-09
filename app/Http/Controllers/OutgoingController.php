@@ -183,8 +183,6 @@ class OutgoingController extends Controller {
 			}
 		}
 
-		// dd($lotinList);
-		// dd($start);
 		return view('outgoings.packing-list', ['outgoing' => $outgoing, 'lotinList' => $lotinList]);
 	}
 }
