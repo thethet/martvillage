@@ -17,7 +17,6 @@ class Countries extends Model {
 	 * @var array
 	 */
 	protected $fillable = [
-		'company_id',
 		'country_name',
 		'description',
 		'country_code',
@@ -26,4 +25,8 @@ class Countries extends Model {
 		'created_by',
 		'updated_by',
 	];
+
+	public function companies() {
+		return $this->belongsToMany('App\Companies');
+	}
 }

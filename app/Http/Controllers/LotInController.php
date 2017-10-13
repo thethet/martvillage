@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Companies;
 use App\Countries;
 use App\Item;
 use App\Lotin;
@@ -55,30 +56,31 @@ class LotInController extends Controller {
 	 */
 	public function create() {
 		if (Auth::user()->hasRole('administrator')) {
-			$countries = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')
-				->lists('country_name', 'id');
-			$states = States::where('deleted', 'N')->orderBy('state_name', 'ASC')
-				->lists('state_name', 'id');
 			$priceList       = Price::where('deleted', 'N')->lists('title_name', 'id');
 			$receiveAddress  = Receiver::where('deleted', 'N')->lists('address', 'id');
 			$receiverLastIds = Receiver::select('id')->first();
 			$receiver        = Receiver::get();
 		} else {
-			$countries = Countries::where('company_id', Auth::user()->company_id)
-				->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-			$states = States::where('company_id', Auth::user()->company_id)
-				->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 			$priceList       = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('title_name', 'id');
 			$receiveAddress  = Receiver::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('address', 'id');
 			$receiverLastIds = Receiver::where('company_id', Auth::user()->company_id)->select('id')->first();
 			$receiver        = Receiver::where('company_id', Auth::user()->company_id)->get();
 		}
 
-		// foreach ($receiveAddress as  $rec) {
-		// 	print_r($rec);
-		// 	$rec = $rec . " of " . count($receiveAddress);
-		// }
-		// // die;
+		$company       = Companies::find(Auth::user()->company_id);
+		$countryIds    = $company->countries;
+		$countryIdList = array();
+		foreach ($countryIds as $country) {
+			$countryIdList[] = $country->id;
+		}
+		$stateIds    = $company->states;
+		$stateIdList = array();
+		foreach ($stateIds as $stateId) {
+			$stateIdList[] = $stateId->id;
+		}
+
+		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$states    = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
 		foreach ($receiveAddress as $key => $value) {
 			$receiveAddress[$key] = $value . " of " . count($receiveAddress);

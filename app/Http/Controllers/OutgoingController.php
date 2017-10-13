@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Companies;
 use App\Countries;
 use App\Lotin;
 use App\Outgoing;
@@ -18,17 +19,26 @@ class OutgoingController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		// dd(Session::get('month'));
 
 		if (Auth::user()->hasRole('administrator')) {
-			$countryList  = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-			$stateList    = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 			$outgoingList = Outgoing::where('deleted', 'N')->get();
 		} else {
-			$countryList  = Countries::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-			$stateList    = States::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 			$outgoingList = Outgoing::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->get();
 		}
+		$company       = Companies::find(Auth::user()->company_id);
+		$countryIds    = $company->countries;
+		$countryIdList = array();
+		foreach ($countryIds as $country) {
+			$countryIdList[] = $country->id;
+		}
+		$stateIds    = $company->states;
+		$stateIdList = array();
+		foreach ($stateIds as $stateId) {
+			$stateIdList[] = $stateId->id;
+		}
+
+		$countryList = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList   = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
 		$dayHeader = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 		if (Session::has('month')) {
@@ -49,6 +59,7 @@ class OutgoingController extends Controller {
 			->groupby('year', 'month', 'day')
 			->get();
 
+		$outgoingPackingList = array();
 		foreach ($packages as $package) {
 			$yearMonth                                          = date('F Y', strtotime($package->dept_date));
 			$outgoingPackingList[$package->day]['total']        = $package->total;

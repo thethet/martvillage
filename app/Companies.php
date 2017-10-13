@@ -38,4 +38,20 @@ class Companies extends Model {
 		'created_by',
 		'updated_by',
 	];
+
+	public function countries() {
+		return $this->belongsToMany('App\Countries', 'companies_countries', 'companies_id', 'countries_id');
+	}
+
+	// public function getCountryList() {
+	// 	return $this->countries->lists('countries_id');
+	// }
+
+	public function states() {
+		return $this->belongsToMany('App\States', 'companies_states', 'companies_id', 'states_id');
+	}
+
+	public function townships() {
+		return $this->belongsToMany('App\Townships', 'companies_townships', 'companies_id', 'townships_id');
+	}
 }

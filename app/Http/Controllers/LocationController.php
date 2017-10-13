@@ -18,45 +18,72 @@ class LocationController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
+
 		if (Auth::user()->hasRole('administrator')) {
 			$countries   = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->get();
 			$countryList = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 			$stateLists  = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
 			$countriesLists = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->get();
-		} else {
-			$countries   = Countries::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('country_name', 'ASC')->get();
-			$countryList = Countries::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-			$stateLists  = States::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
-			$countriesLists = Countries::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('country_name', 'ASC')->get();
-		}
-
-		$count = DB::table('states as s')->select(DB::raw('count(s.id) as count'))
-			->groupBy('s.country_id')
-			->orderBy('count', 'DESC')
-			->first();
-		if ($count) {
-			$size = $count->count;
-		} else {
-			$size = 0;
-		}
-
-		$citiesLists = array();
-		foreach ($countriesLists as $cList) {
-			$states = States::where('country_id', $cList->id)->where('deleted', 'N')->orderBy('state_name', 'ASC')->get();
-			$j      = 0;
-			foreach ($states as $state) {
-				$company_name                                          = Companies::where('id', $state->company_id)->first()->short_code;
-				$citiesLists[$j][$cList->country_name]['id']           = $state->id;
-				$citiesLists[$j][$cList->country_name]['state_name']   = $state->state_name;
-				$citiesLists[$j][$cList->country_name]['state_code']   = $state->state_code;
-				$citiesLists[$j][$cList->country_name]['company_name'] = $company_name;
-				$j++;
+			$count = DB::table('states as s')->select(DB::raw('count(s.id) as count'))
+				->groupBy('s.country_id')
+				->orderBy('count', 'DESC')
+				->first();
+			if ($count) {
+				$size = $count->count;
+			} else {
+				$size = 0;
 			}
-		}
 
-		return view('locations.index', ['countries' => $countries, 'countryList' => $countryList, 'countriesLists' => $countriesLists, 'citiesLists' => $citiesLists, 'stateLists' => $stateLists])->with('i', ($request->get('page', 1) - 1) * 10);
+			$citiesLists = array();
+			foreach ($countriesLists as $cList) {
+				$states = States::where('country_id', $cList->id)->where('deleted', 'N')->orderBy('state_name', 'ASC')->get();
+				$j      = 0;
+				foreach ($states as $state) {
+					$citiesLists[$j][$cList->country_name]['id']           = $state->id;
+					$citiesLists[$j][$cList->country_name]['state_name']   = $state->state_name;
+					$citiesLists[$j][$cList->country_name]['state_code']   = $state->state_code;
+					$citiesLists[$j][$cList->country_name]['company_name'] = $state->companies[0]->short_code;
+					$j++;
+				}
+			}
+
+			return view('locations.index', ['countries' => $countries, 'countryList' => $countryList, 'countriesLists' => $countriesLists, 'citiesLists' => $citiesLists, 'stateLists' => $stateLists])->with('i', ($request->get('page', 1) - 1) * 10);
+
+		} else {
+			$countries = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->get();
+
+			$company       = Companies::find(Auth::user()->company_id);
+			$countryIds    = $company->countries;
+			$countryIdList = array();
+			foreach ($countryIds as $countryId) {
+				$countryIdList[] = $countryId->id;
+			}
+
+			$stateIds    = $company->states;
+			$stateIdList = array();
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
+
+			$countriesLists = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->get();
+
+			$citiesLists = array();
+			foreach ($countriesLists as $cList) {
+				$states = States::where('country_id', $cList->id)->where('deleted', 'N')->orderBy('state_name', 'ASC')->get();
+				$j      = 0;
+				foreach ($states as $state) {
+					$citiesLists[$j][$cList->country_name]['id']           = $state->id;
+					$citiesLists[$j][$cList->country_name]['state_name']   = $state->state_name;
+					$citiesLists[$j][$cList->country_name]['state_code']   = $state->state_code;
+					$citiesLists[$j][$cList->country_name]['company_name'] = $state->companies[0]->short_code;
+					$j++;
+				}
+			}
+
+			return view('locations.list', ['countries' => $countries, 'countriesLists' => $countriesLists, 'citiesLists' => $citiesLists])->with('i', ($request->get('page', 1) - 1) * 10);
+		}
 	}
 
 	/**
@@ -81,18 +108,39 @@ class LocationController extends Controller {
 
 		$data               = $request->all();
 		$data['created_by'] = Auth::user()->id;
-		Countries::create($data);
+		$country            = Countries::create($data);
+		$company            = Companies::find(Auth::user()->company_id);
+
+		$company->countries()->attach($country);
 
 		return redirect()->route('locations.index')
 			->with('success', 'Country created successfully');
 
 	}
 
-/**
- * Store a newly created resource in storage.
- *
- * @return Response
- */
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function storeCountryByCompany(Request $request) {
+		$countryIdList = $request->countryIds;
+
+		$company = Companies::find(Auth::user()->company_id);
+		for ($i = 0; $i < count($countryIdList); $i++) {
+			$country = Countries::find($countryIdList[$i]);
+			$company->countries()->attach($country);
+		}
+
+		$response = array('status' => 'success', 'url' => 'locations');
+		return response()->json($response);
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
 	public function storeCity(Request $request) {
 		$this->validate($request, [
 			'state_name' => 'required',
@@ -102,7 +150,10 @@ class LocationController extends Controller {
 
 		$data               = $request->all();
 		$data['created_by'] = Auth::user()->id;
-		States::create($data);
+		$state              = States::create($data);
+		$company            = Companies::find(Auth::user()->company_id);
+
+		$company->states()->attach($state);
 
 		Countries::find($request->country_id)->increment('total_cities');
 
@@ -168,9 +219,10 @@ class LocationController extends Controller {
 
 			$j = 0;
 			foreach ($states as $state) {
-				$citiesLists[$j][$cList->country_name]['id']         = $state->id;
-				$citiesLists[$j][$cList->country_name]['state_name'] = $state->state_name;
-				$citiesLists[$j][$cList->country_name]['state_code'] = $state->state_code;
+				$citiesLists[$j][$cList->country_name]['id']           = $state->id;
+				$citiesLists[$j][$cList->country_name]['state_name']   = $state->state_name;
+				$citiesLists[$j][$cList->country_name]['state_code']   = $state->state_code;
+				$citiesLists[$j][$cList->country_name]['company_name'] = $state->companies[0]->short_code;
 				$j++;
 			}
 		}
@@ -226,19 +278,23 @@ class LocationController extends Controller {
 		$search    = $request->get('search');
 		$countryId = $request->get('countryId');
 
-		if (Auth::user()->hasRole('administrator')) {
-			if ($countryId) {
-				$items = States::select(\DB::raw('id as id, state_name as text'))->where('country_id', $countryId)->where('state_name', 'like', "{$search}%")->orderBy('state_name', 'ASC')->get();
-			} else {
-				$items = States::select(\DB::raw('id as id, state_name as text'))->where('state_name', 'like', "{$search}%")->orderBy('state_name', 'ASC')->get();
-			}
-		} else {
-			if ($countryId) {
-				$items = States::select(\DB::raw('id as id, state_name as text'))->where('company_id', Auth::user()->company_id)->where('country_id', $countryId)->where('state_name', 'like', "{$search}%")->orderBy('state_name', 'ASC')->get();
-			} else {
-				$items = States::select(\DB::raw('id as id, state_name as text'))->where('company_id', Auth::user()->company_id)->where('state_name', 'like', "{$search}%")->orderBy('state_name', 'ASC')->get();
-			}
+		$company       = Companies::find(Auth::user()->company_id);
+		$countryIds    = $company->countries;
+		$countryIdList = array();
+		foreach ($countryIds as $country) {
+			$countryIdList[] = $country->id;
+		}
 
+		$stateIds    = $company->states;
+		$stateIdList = array();
+		foreach ($stateIds as $stateId) {
+			$stateIdList[] = $stateId->id;
+		}
+
+		if ($countryId) {
+			$items = States::select(\DB::raw('id as id, state_name as text'))->whereIn('id', $stateIdList)->where('country_id', $countryId)->where('state_name', 'like', "{$search}%")->orderBy('state_name', 'ASC')->get();
+		} else {
+			$items = States::select(\DB::raw('id as id, state_name as text'))->whereIn('id', $stateIdList)->where('state_name', 'like', "{$search}%")->orderBy('state_name', 'ASC')->get();
 		}
 
 		$header = array(
@@ -257,18 +313,17 @@ class LocationController extends Controller {
 		$search  = $request->get('search');
 		$stateId = $request->get('stateId');
 
-		if (Auth::user()->hasRole('administrator')) {
-			if ($stateId) {
-				$items = Townships::select(\DB::raw('id as id, township_name as text'))->where('state_id', $stateId)->where('township_name', 'like', "{$search}%")->orderBy('township_name', 'ASC')->get();
-			} else {
-				$items = Townships::select(\DB::raw('id as id, township_name as text'))->where('township_name', 'like', "{$search}%")->orderBy('township_name', 'ASC')->get();
-			}
+		$company        = Companies::find(Auth::user()->company_id);
+		$townshipIds    = $company->states;
+		$townshipIdList = array();
+		foreach ($townshipIds as $townshipId) {
+			$townshipIdList[] = $townshipId->id;
+		}
+
+		if ($stateId) {
+			$items = Townships::select(\DB::raw('id as id, township_name as text'))->whereIn('id', $townshipIdList)->where('state_id', $stateId)->where('township_name', 'like', "{$search}%")->orderBy('township_name', 'ASC')->get();
 		} else {
-			if ($stateId) {
-				$items = Townships::select(\DB::raw('id as id, township_name as text'))->where('company_id', Auth::user()->company_id)->where('state_id', $stateId)->where('township_name', 'like', "{$search}%")->orderBy('township_name', 'ASC')->get();
-			} else {
-				$items = Townships::select(\DB::raw('id as id, township_name as text'))->where('company_id', Auth::user()->company_id)->where('township_name', 'like', "{$search}%")->orderBy('township_name', 'ASC')->get();
-			}
+			$items = Townships::select(\DB::raw('id as id, township_name as text'))->whereIn('id', $townshipIdList)->where('township_name', 'like', "{$search}%")->orderBy('township_name', 'ASC')->get();
 		}
 
 		$header = array(

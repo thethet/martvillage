@@ -171,6 +171,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::patch('locations/{id}', ['as' => 'locations.update', 'uses' => 'LocationController@update', 'middleware' => ['permission:location-edit']]);
 	Route::delete('locations/{id}', ['as' => 'nrictownships.destroy', 'uses' => 'LocationController@destroy', 'middleware' => ['permission:location-delete']]);
 
+	Route::get('locations/ajax/id/custom-country', ['as' => 'locations.ajax.custom.store', 'uses' => 'LocationController@storeCountryByCompany', 'middleware' => ['permission:location-create']]);
+
 	/*
 	|--------------------------------------------------------------------------
 	| Pricing Controller

@@ -45,10 +45,28 @@ class MemberController extends Controller {
 		$code     = Auth::user()->company->short_code;
 		$memberNo = $code . date('Ym') . str_pad($lastId, 6, 0, STR_PAD_LEFT);
 
+		$company       = Companies::find(Auth::user()->company_id);
+		$countryIds    = $company->countries;
+		$countryIdList = array();
+		foreach ($countryIds as $country) {
+			$countryIdList[] = $country->id;
+		}
+		$stateIds    = $company->states;
+		$stateIdList = array();
+		foreach ($stateIds as $stateId) {
+			$stateIdList[] = $stateId->id;
+		}
+		$townshipIds    = $company->states;
+		$townshipIdList = array();
+		foreach ($townshipIds as $townshipId) {
+			$townshipIdList[] = $townshipId->id;
+		}
+
+		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$states    = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$townships = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
+
 		$companies     = Companies::where('deleted', 'N')->lists('company_name', 'id');
-		$countries     = Countries::where('deleted', 'N')->lists('country_name', 'id');
-		$states        = States::where('deleted', 'N')->lists('state_name', 'id');
-		$townships     = Townships::where('deleted', 'N')->lists('township_name', 'id');
 		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('id', 'asc')->lists('nric_code', 'id');
 		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('serial_no', 'asc')->lists('short_name', 'id');
 		return view('members.create', ['companies' => $companies, 'countries' => $countries, 'states' => $states, 'townships' => $townships, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships, 'memberNo' => $memberNo]);
@@ -117,10 +135,28 @@ class MemberController extends Controller {
 	public function edit($id, Request $request) {
 		$member = Member::find($id);
 
+		$company       = Companies::find(Auth::user()->company_id);
+		$countryIds    = $company->countries;
+		$countryIdList = array();
+		foreach ($countryIds as $country) {
+			$countryIdList[] = $country->id;
+		}
+		$stateIds    = $company->states;
+		$stateIdList = array();
+		foreach ($stateIds as $stateId) {
+			$stateIdList[] = $stateId->id;
+		}
+		$townshipIds    = $company->states;
+		$townshipIdList = array();
+		foreach ($townshipIds as $townshipId) {
+			$townshipIdList[] = $townshipId->id;
+		}
+
+		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$states    = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$townships = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
+
 		$companies     = Companies::where('deleted', 'N')->lists('company_name', 'id');
-		$countries     = Countries::lists('country_name', 'id');
-		$states        = States::lists('state_name', 'id');
-		$townships     = Townships::lists('township_name', 'id');
 		$nricCodes     = NricCodes::orderBy('id', 'asc')->lists('nric_code', 'id');
 		$nricTownships = NricTownships::orderBy('serial_no', 'asc')->lists('short_name', 'id');
 		return view('members.edit', ['member' => $member, 'companies' => $companies, 'countries' => $countries, 'states' => $states, 'townships' => $townships, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships]);

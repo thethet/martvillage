@@ -19,7 +19,6 @@ class States extends Model {
 	 * @var array
 	 */
 	protected $fillable = [
-		'company_id',
 		'country_id',
 		'state_name',
 		'description',
@@ -28,4 +27,8 @@ class States extends Model {
 		'created_by',
 		'updated_by',
 	];
+
+	public function companies() {
+		return $this->belongsToMany('App\Companies');
+	}
 }

@@ -12,7 +12,6 @@ class CreateTblCountries extends Migration {
 	public function up() {
 		Schema::create('countries', function (Blueprint $table) {
 			$table->increments('id');
-			$table->integer('company_id');
 			$table->string('country_name');
 			$table->string('description')->nullable();
 			$table->string('country_code')->nullable();
@@ -22,6 +21,19 @@ class CreateTblCountries extends Migration {
 			$table->integer('updated_by');
 			$table->timestamps();
 		});
+
+		// Create table for associating countries to companies (Many-to-Many)
+		Schema::create('companies_countries', function (Blueprint $table) {
+			$table->integer('companies_id')->unsigned();
+			$table->integer('countries_id')->unsigned();
+
+			$table->foreign('companies_id')->references('id')->on('companies')
+				->onUpdate('cascade')->onDelete('cascade');
+			$table->foreign('countries_id')->references('id')->on('countries')
+				->onUpdate('cascade')->onDelete('cascade');
+
+			$table->primary(['companies_id', 'countries_id']);
+		});
 	}
 
 	/**
@@ -30,6 +42,7 @@ class CreateTblCountries extends Migration {
 	 * @return void
 	 */
 	public function down() {
+		Schema::drop('companies_countries');
 		Schema::drop('countries');
 	}
 }

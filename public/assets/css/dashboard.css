@@ -31,8 +31,13 @@ input:-ms-input-placeholder { /* Internet Explorer 10+ */
 	border: 1px solid #fff;
 }
 
+
 .mb15 {
 	margin-bottom: 15px;
+}
+
+.ml10 {
+	margin-left: 10px;
 }
 
 .main .page-header {
@@ -374,6 +379,10 @@ h3.page-title {
 	text-align: left;
 }
 
+.m030 {
+	margin: 0 30px;
+}
+
 .ml-30 {
 	margin-left: -30px;
 }
@@ -392,6 +401,76 @@ h3.page-title {
 
 .mt54 {
 	margin-top: 54px;
+}
+
+table.calendar td{
+	/*padding: 5px;*/
+	height: 45px;
+	width: 45px;
+	/*line-height: 32px !important;*/
+	vertical-align: middle;
+	/*position: relative;*/
+	/*border: 1px solid #333;*/
+}
+.calendar th {
+	background-color: #B22222;
+	height: 30px;
+	width: 30px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+th.caption {
+	height: 30px !important;
+}
+.calendar td {
+	background-color: #fff;
+}
+
+.today {
+	background-color: #D3D3D3 !important;
+	/*color: #fff;*/
+}
+
+.sunday {
+	color: #f00;
+}
+
+.saturday {
+	color: #00f;
+}
+
+.br-corner {
+	width: 100%;
+	display: inline-block;
+	text-align: right;
+	font-size: 10px;
+	color: #22B240;
+}
+
+.calendar-icon {
+	width: 7%;
+}
+
+.packing-list-group a {
+	color: #333;
+}
+
+.packing-list-group a:hover {
+	color: #fff;
+}
+
+.packing-title > a.collapsed:after {
+	content: '+';
+	position: absolute;
+	left: 15px;
+}
+
+.packing-title > a:after {
+	content: '-';
+	position: absolute;
+	left: 15px;
+
 }
 
 

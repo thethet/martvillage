@@ -37,22 +37,35 @@ class UserController extends Controller {
 	 * @return Response
 	 */
 	public function create() {
+		$company       = Companies::find(Auth::user()->company_id);
+		$countryIds    = $company->countries;
+		$countryIdList = array();
+		foreach ($countryIds as $country) {
+			$countryIdList[] = $country->id;
+		}
+		$stateIds    = $company->states;
+		$stateIdList = array();
+		foreach ($stateIds as $stateId) {
+			$stateIdList[] = $stateId->id;
+		}
+		$townshipIds    = $company->states;
+		$townshipIdList = array();
+		foreach ($townshipIds as $townshipId) {
+			$townshipIdList[] = $townshipId->id;
+		}
+
+		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$states    = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$townships = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
+
 		if (Auth::user()->hasRole('administrator')) {
 			$roles = Role::lists('display_name', 'id');
-
-			$countries = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-			$states    = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
-			$townships = Townships::where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 		} else {
 			if (Auth::user()->hasRole('owner')) {
 				$roles = Role::where('id', '!=', 1)->lists('display_name', 'id');
 			} else {
 				$roles = Role::whereNotIn('id', [1, 2])->lists('display_name', 'id');
 			}
-
-			$countries = Countries::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-			$states    = States::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
-			$townships = Townships::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 		}
 
 		$companies     = Companies::where('deleted', 'N')->lists('company_name', 'id');
@@ -141,20 +154,34 @@ class UserController extends Controller {
 		if (Auth::user()->hasRole('administrator')) {
 			$roles = Role::lists('display_name', 'id');
 
-			$countries = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-			$states    = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
-			$townships = Townships::where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 		} else {
 			if (Auth::user()->hasRole('owner')) {
 				$roles = Role::where('id', '!=', 1)->lists('display_name', 'id');
 			} else {
 				$roles = Role::whereNotIn('id', [1, 2])->lists('display_name', 'id');
 			}
-
-			$countries = Countries::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-			$states    = States::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
-			$townships = Townships::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 		}
+
+		$company       = Companies::find(Auth::user()->company_id);
+		$countryIds    = $company->countries;
+		$countryIdList = array();
+		foreach ($countryIds as $country) {
+			$countryIdList[] = $country->id;
+		}
+		$stateIds    = $company->states;
+		$stateIdList = array();
+		foreach ($stateIds as $stateId) {
+			$stateIdList[] = $stateId->id;
+		}
+		$townshipIds    = $company->states;
+		$townshipIdList = array();
+		foreach ($townshipIds as $townshipId) {
+			$townshipIdList[] = $townshipId->id;
+		}
+
+		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$states    = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$townships = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 
 		$companies     = Companies::where('deleted', 'N')->lists('company_name', 'id');
 		$nricCodes     = NricCodes::orderBy('id', 'asc')->lists('nric_code', 'id');

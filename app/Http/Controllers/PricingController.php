@@ -22,9 +22,22 @@ class PricingController extends Controller {
 	public function index(Request $request) {
 		$categories = Category::where('deleted', 'N')->get();
 
+		$company       = Companies::find(Auth::user()->company_id);
+		$countryIds    = $company->countries;
+		$countryIdList = array();
+		foreach ($countryIds as $country) {
+			$countryIdList[] = $country->id;
+		}
+		$stateIds    = $company->states;
+		$stateIdList = array();
+		foreach ($stateIds as $stateId) {
+			$stateIdList[] = $stateId->id;
+		}
+
+		$countryList = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList   = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+
 		if (Auth::user()->hasRole('administrator')) {
-			$countryList  = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-			$stateList    = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 			$categoryList = Category::where('deleted', 'N')->lists('name', 'id');
 			$currencyList = Currency::where('deleted', 'N')->lists('type', 'id');
 
@@ -32,8 +45,6 @@ class PricingController extends Controller {
 			$pricingLists   = Price::where('deleted', 'N')->get();
 			$priceTitleList = PriceTitles::where('deleted', 'N')->get();
 		} else {
-			$countryList  = Countries::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-			$stateList    = States::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 			$categoryList = Category::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('name', 'id');
 			$currencyList = Currency::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('type', 'id');
 
