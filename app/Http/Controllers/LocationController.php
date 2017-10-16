@@ -67,7 +67,7 @@ class LocationController extends Controller {
 				$stateIdList[] = $stateId->id;
 			}
 
-			$countriesLists = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->get();
+			$countriesLists = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->get();
 
 			$citiesLists = array();
 			foreach ($countriesLists as $cList) {
@@ -82,7 +82,22 @@ class LocationController extends Controller {
 				}
 			}
 
-			return view('locations.list', ['countries' => $countries, 'countriesLists' => $countriesLists, 'citiesLists' => $citiesLists])->with('i', ($request->get('page', 1) - 1) * 10);
+			$mycountriesLists = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->get();
+
+			$myCitiesLists = array();
+			foreach ($mycountriesLists as $mycList) {
+				$states = States::where('country_id', $mycList->id)->whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->get();
+				$j      = 0;
+				foreach ($states as $state) {
+					$myCitiesLists[$j][$mycList->country_name]['id']           = $state->id;
+					$myCitiesLists[$j][$mycList->country_name]['state_name']   = $state->state_name;
+					$myCitiesLists[$j][$mycList->country_name]['state_code']   = $state->state_code;
+					$myCitiesLists[$j][$mycList->country_name]['company_name'] = $state->companies[0]->short_code;
+					$j++;
+				}
+			}
+
+			return view('locations.list', ['countries' => $countries, 'countriesLists' => $countriesLists, 'citiesLists' => $citiesLists, 'mycountriesLists' => $mycountriesLists, 'myCitiesLists' => $myCitiesLists])->with('i', ($request->get('page', 1) - 1) * 10);
 		}
 	}
 
@@ -159,6 +174,24 @@ class LocationController extends Controller {
 
 		return redirect()->route('locations.index')
 			->with('success', 'City created successfully');
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function storeCityByCompany(Request $request) {
+		$stateIdList = $request->stateIds;
+
+		$company = Companies::find(Auth::user()->company_id);
+		for ($i = 0; $i < count($stateIdList); $i++) {
+			$state = Countries::find($stateIdList[$i]);
+			$company->states()->attach($state);
+		}
+
+		$response = array('status' => 'success', 'url' => 'locations');
+		return response()->json($response);
 	}
 
 	/**
@@ -261,12 +294,18 @@ class LocationController extends Controller {
 	 */
 	public function destroy($id) {
 		$countryId = States::where('id', $id)->pluck('country_id');
-		Countries::find($countryId)->decrement('total_cities');
-		States::find($id)->update(['deleted' => 'Y']);
+		$country   = Countries::find($countryId)->decrement('total_cities');
+		if (Auth::user()->hasRole('administrator')) {
+			$state = States::find($id)->update(['deleted' => 'Y']);
+		}
+
+		$company = Companies::find(Auth::user()->company_id);
+		$company->states()->detach($id);
 
 		Session::flash('success', 'State deleted successfully');
 		$response = array('status' => 'success', 'url' => 'locations');
 		return response()->json($response);
+
 	}
 
 	/**

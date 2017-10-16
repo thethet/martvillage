@@ -45,7 +45,7 @@ class PricingController extends Controller {
 			$pricingLists   = Price::where('deleted', 'N')->get();
 			$priceTitleList = PriceTitles::where('deleted', 'N')->get();
 		} else {
-			$categoryList = Category::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('name', 'id');
+			$categoryList = Category::where('deleted', 'N')->lists('name', 'id');
 			$currencyList = Currency::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('type', 'id');
 
 			$currencyTitle  = Currency::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->get();

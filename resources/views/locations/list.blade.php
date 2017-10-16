@@ -54,6 +54,38 @@
 						</tbody>
 					</table>
 				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="name">
+					</label>
+					<div class="col-sm-4">
+					</div>
+					<div class="col-sm-4">
+						<a href="#" id="store">
+							<div class="addbtn">
+								<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
+									Add
+							</div>
+						</a>
+					</div>
+				</div><!-- .form-group -->
+
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="name">
+					</label>
+					<div class="col-sm-4">
+					</div>
+					<div class="col-sm-4">
+					</div>
+				</div><!-- .form-group -->
+
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="name">
+					</label>
+					<div class="col-sm-4">
+					</div>
+					<div class="col-sm-4">
+					</div>
+				</div><!-- .form-group -->
 			</div>
 
 			@if($countriesLists)
@@ -94,37 +126,70 @@
 						</tbody>
 					</table>
 				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="name">
+					</label>
+					<div class="col-sm-7">
+					</div>
+					<div class="col-sm-2">
+						<a href="#" id="city-store">
+							<div class="addbtn">
+								<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
+									Add
+							</div>
+						</a>
+					</div>
+				</div><!-- .form-group -->
+
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="name">
+					</label>
+					<div class="col-sm-4">
+					</div>
+					<div class="col-sm-4">
+					</div>
+				</div><!-- .form-group -->
+
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="name">
+					</label>
+					<div class="col-sm-4">
+					</div>
+					<div class="col-sm-4">
+					</div>
+				</div><!-- .form-group -->
 			</div>
 			@endif
 		</div>
 
-		{{-- @if(count($citiesLists) > 0)
+		@if(count($myCitiesLists) > 0)
 			<div class="row country-city">
 				<div class="table-cont country-city-tbl">
 					<table class="table table-bordered table-responsive">
 						<thead>
 							<tr>
-								<th colspan="{{ (count($countriesLists) * 2) }}" class="center">
-									Country and City
+								<th colspan="{{ (count($mycountriesLists) * 2) }}" class="center">
+									My Country and City
 								</th>
 							</tr>
 							<tr>
-								@foreach($countriesLists as $clist)
+								@foreach($mycountriesLists as $myclist)
 									<th width="8px">&nbsp;&nbsp;&nbsp;</th>
-									<th>{{ $clist->country_name }} ({{ $clist->country_code }})</th>
+									<th>{{ $myclist->country_name }} ({{ $myclist->country_code }})</th>
 								@endforeach
 							</tr>
 						</thead>
 						<tbody>
-							@foreach($citiesLists as $cities)
+							@foreach($myCitiesLists as $mycities)
 								<tr>
-									@foreach($countriesLists as $countlist)
-										@if(array_key_exists($countlist->country_name, $cities))
+									@foreach($mycountriesLists as $mcountlist)
+										@if(array_key_exists($mcountlist->country_name, $mycities))
 										<td>
-											{!! Form::checkbox('edit', $cities[$countlist->country_name]['id'], null, ['class' => 'editboxes']) !!}
+											{!! Form::checkbox('edit', $mycities[$mcountlist->country_name]['id'], null, ['class' => 'editboxes']) !!}
 										</td>
 										<td>
-											{{ $cities[$countlist->country_name]['state_name'] }} ({{ $cities[$countlist->country_name]['state_code'] }})
+											{{ $mycities[$mcountlist->country_name]['state_name'] }} ({{ $mycities[$mcountlist->country_name]['state_code'] }})
 										</td>
 										@else
 											<td></td>
@@ -137,7 +202,7 @@
 					</table>
 				</div>
 			</div>
-		@endif --}}
+		@endif
 	</div><!-- .main-content -->
 
 	<div class="footer-menu">
@@ -182,13 +247,6 @@
 					Back
 				</a>
 			</div><!-- .menu-icon -->
-
-			<div class="menu-icon">
-				<a href="#" id="store" class="store">
-					<img src="{{ asset('assets/img/save-and-close.png') }}" alt="Save">
-					Save&Exit
-				</a>
-			</div><!-- .menu-icon -->
 		</div>
 	</div><!-- .footer-menu -->
 @stop
@@ -205,12 +263,10 @@
 					$("input:checkbox[class=country-editboxes]").each(function() {
 						$(this).attr('checked', true);
 					});
-					$('.store').attr('id', 'country-store');
 				}else{
 					$("input:checkbox[class=country-editboxes]").each(function() {
 						$(this).attr('checked', false);
 					});
-					$('.store').attr('id', 'store');
 				}
 			});
 
@@ -219,21 +275,33 @@
 				var countryIds = [];
 				$(".country-editboxes:checked").each(function(i) {
 					countryIds[i] = $(this).val();
-					alert( $(this).val())
-					alert("Id= " + countryIds)
 				});
-
-				if(Array.isArray(countryIds)) {
-					alert('array')
-				} else {
-					alert('not array')
-				}
 
 				$.ajax({
 					url: "{{ url('locations/ajax/id/custom-country') }}",
 					type: 'GET',
 					data: {
 						countryIds: countryIds,
+						mode: 'add'
+					},
+					success: function(data)
+					{
+						window.location.replace(data.url);
+					}
+				});
+			});
+
+			$("#city-store").on("click",function(){
+				var stateIds = [];
+				$(".city-editboxes:checked").each(function(i) {
+					stateIds[i] = $(this).val();
+				});
+
+				$.ajax({
+					url: "{{ url('locations/ajax/id/custom-city') }}",
+					type: 'GET',
+					data: {
+						stateIds: stateIds,
 						mode: 'add'
 					},
 					success: function(data)
