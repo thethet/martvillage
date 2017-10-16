@@ -294,9 +294,9 @@ class LocationController extends Controller {
 	 */
 	public function destroy($id) {
 		$countryId = States::where('id', $id)->pluck('country_id');
-		$country   = Countries::find($countryId)->decrement('total_cities');
 		if (Auth::user()->hasRole('administrator')) {
-			$state = States::find($id)->update(['deleted' => 'Y']);
+			$country = Countries::find($countryId)->decrement('total_cities');
+			$state   = States::find($id)->update(['deleted' => 'Y']);
 		}
 
 		$company = Companies::find(Auth::user()->company_id);
