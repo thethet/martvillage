@@ -673,6 +673,7 @@
 						memberNo: memberNo
 					},
 					success: function(data) {
+						console.log(data)
 
 						if(!data) {
 							$('input').attr('readonly', false);
@@ -725,6 +726,9 @@
 							$('#address-list').show();
 							$('#address-input').hide();
 						}
+					},
+					error: function() {
+						console.log('error')
 					}
 				});
 			});

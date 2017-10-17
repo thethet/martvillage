@@ -333,12 +333,14 @@ class PermissionTableSeeder extends Seeder {
 			],
 		];
 
-		$role = Role::find(1);
+		$role1 = Role::find(1);
+		$role2 = Role::find(2);
 		// $admin->detachAllPermissions();
 		foreach ($permission as $key => $value) {
 			$permiss = Permission::create($value);
 			// $role    = Role::where('id', '=', 1)->first();
-			$role->attachPermission($permiss->id);
+			$role1->attachPermission($permiss->id);
+			$role2->attachPermission($permiss->id);
 		}
 	}
 }

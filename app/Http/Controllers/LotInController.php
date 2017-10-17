@@ -269,6 +269,7 @@ class LotInController extends Controller {
 		$lotinDatas['total_amt']           = $request->total;
 		$lotinDatas['payment']             = $request->payment;
 		$lotinDatas['created_by']          = $user_id;
+		$lotinDatas['total_items']         = $size;
 		$lotinDatas['status']              = 0;
 
 		$lotin   = Lotin::create($lotinDatas);
@@ -408,7 +409,7 @@ class LotInController extends Controller {
 					->leftJoin('nric_townships as snt', 'snt.id', '=', 's.nric_township_id')
 					->leftJoin('nric_townships as rnt', 'rnt.id', '=', 'r.nric_township_id')
 					->where('s.company_id', Auth::user()->company_id)
-					->where('contact_no', $contactNo)
+					->where('s.contact_no', $contactNo)
 					->where('r.deleted', 'N')
 					->select('r.*', 's.name as s_name', 's.contact_no as s_contact_no', 's.nric_no as s_nric_no', 's.nric_code_id as s_nric_code_id', 's.nric_township_id as s_nric_tp_id', 'snt.short_name as s_township', 'rnt.short_name as r_township')
 					->first();
@@ -417,8 +418,8 @@ class LotInController extends Controller {
 					->leftJoin('senders as s', 's.id', '=', 'r.sender_id')
 					->leftJoin('nric_townships as snt', 'snt.id', '=', 's.nric_township_id')
 					->leftJoin('nric_townships as rnt', 'rnt.id', '=', 'r.nric_township_id')
-					->where('s.company_id', Auth::user()->company_id)
-					->where('member_no', $memberNo)
+					->where('s.contact_no', Auth::user()->company_id)
+					->where('s.company_id', $memberNo)
 					->where('r.deleted', 'N')
 					->select('r.*', 's.name as s_name', 's.contact_no as s_contact_no', 's.nric_no as s_nric_no', 's.nric_code_id as s_nric_code_id', 's.nric_township_id as s_nric_tp_id', 'snt.short_name as s_township', 'rnt.short_name as r_township')
 					->first();

@@ -37,6 +37,7 @@ class Outgoing extends Model {
 		'to_country',
 		'to_city',
 		'packing_list',
+		'packing_id_list',
 		'deleted',
 		'created_by',
 		'updated_by',

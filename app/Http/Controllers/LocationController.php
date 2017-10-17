@@ -67,7 +67,7 @@ class LocationController extends Controller {
 				$stateIdList[] = $stateId->id;
 			}
 
-			$countriesLists = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->get();
+			$countriesLists = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->get();
 
 			$citiesLists = array();
 			foreach ($countriesLists as $cList) {
@@ -186,7 +186,7 @@ class LocationController extends Controller {
 
 		$company = Companies::find(Auth::user()->company_id);
 		for ($i = 0; $i < count($stateIdList); $i++) {
-			$state = Countries::find($stateIdList[$i]);
+			$state = States::find($stateIdList[$i]);
 			$company->states()->attach($state);
 		}
 

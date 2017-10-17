@@ -246,7 +246,6 @@
 		@endif
 
 
-
 	</div><!-- .main-content -->
 
 	<div class="footer-menu">

@@ -18,13 +18,13 @@ class RoleTableSeeder extends Seeder {
 				'description'  => 'Administrator allow to manage whole project',
 			],
 
-			/*[
-		'name'         => 'owner',
-		'display_name' => 'Company Owner',
-		'description'  => 'Owner allow to manage his/her own resources',
-		],
+			[
+				'name'         => 'owner',
+				'display_name' => 'CEO',
+				'description'  => 'Owner allow to manage his/her own resources',
+			],
 
-		[
+			/*[
 		'name'         => 'manager',
 		'display_name' => 'Manager',
 		'description'  => 'Manager can access only permission that set from Owner',
@@ -39,9 +39,10 @@ class RoleTableSeeder extends Seeder {
 
 		foreach ($roles as $key => $value) {
 			$roleUser = Role::create($value);
-			$user     = User::where('username', '=', 'thetthet')->first();
-			$user->attachRole($roleUser);
 		}
+		$role = Role::find(1);
+		$user = User::where('username', '=', 'thetthet')->first();
+		$user->attachRole($role);
 
 	}
 }

@@ -22,7 +22,7 @@ class CategoryTableSeeder extends Seeder {
 			[
 				'company_id' => 1,
 				'name'       => 'Size',
-				'unit'       => 'Ft3',
+				'unit'       => 'ft3',
 				'deleted'    => 'N',
 				'created_by' => 1,
 				'updated_by' => 1,

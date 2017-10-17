@@ -29,7 +29,8 @@ class CreateTblOutgoings extends Migration {
 			$table->integer('from_city')->default(0);
 			$table->integer('to_country')->default(0);
 			$table->integer('to_city')->default(0);
-			$table->string('packing_list')->default(0);
+			$table->integer('packing_list')->default(0);
+			$table->string('packing_id_list')->nullable();
 			$table->enum('deleted', ['N', 'Y']);
 			$table->integer('created_by');
 			$table->integer('updated_by');

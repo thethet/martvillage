@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Companies;
 use App\Countries;
+use App\Item;
 use App\Lotin;
 use App\Outgoing;
+use App\Packing;
 use App\States;
 use Auth;
 use DB;
@@ -59,11 +61,15 @@ class OutgoingController extends Controller {
 			->groupby('year', 'month', 'day')
 			->get();
 
+		// dd($packages);
+
 		$outgoingPackingList = array();
 		foreach ($packages as $package) {
+			$noPacking = Outgoing::where('dept_date', $package->dept_date)->where('packing_list', 0)->count();
+
 			$yearMonth                                          = date('F Y', strtotime($package->dept_date));
 			$outgoingPackingList[$package->day]['total']        = $package->total;
-			$outgoingPackingList[$package->day]['package']      = (int) $package->packing_list;
+			$outgoingPackingList[$package->day]['package']      = $package->total - $noPacking;
 			$outgoingPackingList[$package->day]['package_date'] = date('F Y', strtotime($package->dept_date));
 		}
 
@@ -196,4 +202,55 @@ class OutgoingController extends Controller {
 
 		return view('outgoings.packing-list', ['outgoing' => $outgoing, 'lotinList' => $lotinList]);
 	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function packingListStore(Request $request) {
+		$data               = $request->all();
+		$data['created_by'] = Auth::user()->id;
+
+		$outgoingId = $request->outgoing_id;
+		Outgoing::find($outgoingId)->increment('packing_list');
+		$outgoing    = Outgoing::find($outgoingId);
+		$packinglist = $outgoing->packing_list + 1;
+
+		$packingData['outgoing_id']  = $request->outgoing_id;
+		$packingData['packing_name'] = 'Packing List' . $packinglist;
+		$packingData['created_by']   = Auth::user()->id;
+		$packing                     = Packing::create($packingData);
+		$packingId                   = $packing->id;
+
+		if ($outgoing->packing_id_list) {
+			$outgoing->packing_id_list .= ', ' . $packingId;
+		} else {
+			$outgoing->packing_id_list = $packingId;
+		}
+
+		$itemIds = $request->itemIds;
+		$size    = count($itemIds);
+
+		$ItemData['outgoing_id'] = $outgoingId;
+		$ItemData['packing_id']  = $packingId;
+		$ItemData['status']      = 1;
+
+		for ($i = 0; $i < $size; $i++) {
+			$item = Item::find($itemIds[$i]);
+			$item->update($ItemData);
+
+			Lotin::find($item->lotin_id)->decrement('total_items');
+		}
+
+		$lotins = Lotin::where('total_items', 0)->get();
+
+		foreach ($lotins as $lotin) {
+			$updLotin = Lotin::find($lotin->id)->update(['status' => 1]);
+		}
+
+		return redirect()->route('outgoings.index')
+			->with('success', 'Packe Adding is successfully');
+	}
+
 }

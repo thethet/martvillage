@@ -40,6 +40,7 @@ class Lotin extends Model {
 		'service_charge_amt',
 		'total_amt',
 		'payment',
+		'total_items',
 		'status',
 		'deleted',
 		'created_by',

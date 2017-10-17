@@ -4,13 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Item extends Model {
+class Packing extends Model {
 	/**
 	 * The database table used by the model.
 	 *
 	 * @var string
 	 */
-	protected $table = 'items';
+	protected $table = 'packings';
 	// public $timestamps = false;
 
 	/**
@@ -19,24 +19,10 @@ class Item extends Model {
 	 * @var array
 	 */
 	protected $fillable = [
-		'lotin_id',
 		'outgoing_id',
-		'packing_id',
-		'item_name',
-		'barcode',
-		'price_id',
-		'category_id',
-		'unit',
-		'unit_price',
-		'quantity',
-		'amount',
-		'status',
+		'packing_name',
 		'deleted',
 		'created_by',
 		'updated_by',
 	];
-
-	public function LotIn() {
-		return $this->belongsTo('App\Lotin', 'lotin_id');
-	}
 }

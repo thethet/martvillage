@@ -50,7 +50,7 @@
 						</div>
 
 						<div class="col-sm-5" style="padding-left: 0;">
-							{!! Form::text('nric_no', null, array('placeholder' => 'Enter Number','class' => 'form-control')) !!}
+							{!! Form::text('nric_no', null, array('placeholder' => '(N) xxxxxx','class' => 'form-control')) !!}
 							@if ($errors->has('nric_no'))
 								<span class="required">
 									<strong>{{ $errors->first('nric_no') }}</strong>

@@ -13,6 +13,8 @@ class CreateTblItems extends Migration {
 		Schema::create('items', function (Blueprint $table) {
 			$table->increments('id');
 			$table->integer('lotin_id');
+			$table->integer('outgoing_id');
+			$table->integer('packing_id');
 			$table->string('item_name');
 			$table->string('barcode');
 			$table->integer('price_id');
@@ -21,6 +23,7 @@ class CreateTblItems extends Migration {
 			$table->double('unit_price', 12, 2);
 			$table->integer('quantity');
 			$table->double('amount', 12, 2);
+			$table->enum('status', [0, 1]);
 			$table->enum('deleted', ['N', 'Y']);
 			$table->integer('created_by');
 			$table->integer('updated_by');
