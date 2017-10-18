@@ -39,7 +39,7 @@
 			</div>
 			@endpermission
 
-			{{-- @permission('collection-list') --}}
+			@permission('collection-list')
 			<div class="col-md-2">
 				<a href="{{ url('/collections') }}">
 					<div class="card">
@@ -48,9 +48,9 @@
 					</div>
 				</a>
 			</div>
-			{{-- @endpermission --}}
+			@endpermission
 
-			{{-- @permission('lotbalance-list') --}}
+			@permission('lotbalance-list')
 			<div class="col-md-2">
 				<a href="{{ url('/lotbalances') }}">
 					<div class="card">
@@ -59,7 +59,7 @@
 					</div>
 				</a>
 			</div>
-			{{-- @endpermission --}}
+			@endpermission
 
 			{{-- @permission('setting-list') --}}
 			<div class="col-md-2">
@@ -71,10 +71,10 @@
 				</a>
 			</div>
 			{{-- @endpermission --}}
-		</div>
+		{{-- </div> --}}
 
-		<div class="row">
-			{{-- @permission('message-list') --}}
+		{{-- <div class="row"> --}}
+			@permission('message-list')
 			<div class="col-md-2">
 				<a href="{{ url('/messages') }}">
 					<div class="card">
@@ -83,9 +83,9 @@
 					</div>
 				</a>
 			</div>
-			{{-- @endpermission --}}
+			@endpermission
 
-			{{-- @permission('report-list') --}}
+			@permission('report-list')
 			<div class="col-md-2">
 				<a href="{{ url('/reports') }}">
 					<div class="card">
@@ -94,7 +94,7 @@
 					</div>
 				</a>
 			</div>
-			{{-- @endpermission --}}
+			@endpermission
 
 			@permission('member-list')
 			<div class="col-md-2">
@@ -118,7 +118,7 @@
 			</div>
 			@endpermission
 
-			{{-- @permission('incoming-list') --}}
+			@permission('incoming-list')
 			<div class="col-md-2">
 				<a href="{{ url('/incomings') }}">
 					<div class="card">
@@ -127,7 +127,7 @@
 					</div>
 				</a>
 			</div>
-			{{-- @endpermission --}}
+			@endpermission
 		</div>
 	</div>
 

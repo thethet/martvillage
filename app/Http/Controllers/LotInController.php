@@ -269,15 +269,16 @@ class LotInController extends Controller {
 		$lotinDatas['total_amt']           = $request->total;
 		$lotinDatas['payment']             = $request->payment;
 		$lotinDatas['created_by']          = $user_id;
-		$lotinDatas['total_items']         = $size;
 		$lotinDatas['status']              = 0;
 
 		$lotin   = Lotin::create($lotinDatas);
 		$lotinId = $lotin->id;
 
 		$lots = $request->lots;
+		$noItems = 0;
 		for ($i = 0; $i < $size; $i++) {
 			if ($lots[$i]['item_name'] != "") {
+				$noItems++;
 				$itemData['lotin_id']    = $lotinId;
 				$itemData['item_name']   = $lots[$i]['item_name'];
 				$itemData['barcode']     = $lots[$i]['barcode'];
@@ -293,6 +294,9 @@ class LotInController extends Controller {
 			}
 
 		}
+
+		$updLotin = Lotin::find($lotinId)->update(['total_items' => $noItems]);
+
 		return redirect()->route('lotins.index')
 			->with('success', 'Lotin created successfully');
 

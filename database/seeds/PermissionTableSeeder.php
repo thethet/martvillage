@@ -331,6 +331,111 @@ class PermissionTableSeeder extends Seeder {
 				'display_name' => 'Show Tracking Detail',
 				'description'  => 'Show Tracking Detail',
 			],
+
+			[
+				'name'         => 'collection-list',
+				'display_name' => 'Display Collection Listing',
+				'description'  => 'See only Listing Of Collection',
+			],
+			[
+				'name'         => 'collection-create',
+				'display_name' => 'Create Collection',
+				'description'  => 'Create New Collection',
+			],
+			[
+				'name'         => 'collection-edit',
+				'display_name' => 'Edit Collection',
+				'description'  => 'Edit Collection',
+			],
+			[
+				'name'         => 'collection-delete',
+				'display_name' => 'Delete Collection',
+				'description'  => 'Delete Collection',
+			],
+
+			[
+				'name'         => 'lotbalance-list',
+				'display_name' => 'Display Lot Balance Listing',
+				'description'  => 'See only Listing Of Lot Balance',
+			],
+			[
+				'name'         => 'lotbalance-create',
+				'display_name' => 'Create Lot Balance',
+				'description'  => 'Create New Lot Balance',
+			],
+			[
+				'name'         => 'lotbalance-edit',
+				'display_name' => 'Edit Lot Balance',
+				'description'  => 'Edit Lot Balance',
+			],
+			[
+				'name'         => 'lotbalance-delete',
+				'display_name' => 'Delete Lot Balance',
+				'description'  => 'Delete Lot Balance',
+			],
+
+			[
+				'name'         => 'message-list',
+				'display_name' => 'Display Message Listing',
+				'description'  => 'See only Listing Of Message',
+			],
+			[
+				'name'         => 'message-create',
+				'display_name' => 'Create Message',
+				'description'  => 'Create New Message',
+			],
+			[
+				'name'         => 'message-edit',
+				'display_name' => 'Edit Message',
+				'description'  => 'Edit Message',
+			],
+			[
+				'name'         => 'message-delete',
+				'display_name' => 'Delete Message',
+				'description'  => 'Delete Message',
+			],
+
+			[
+				'name'         => 'report-list',
+				'display_name' => 'Display Report Listing',
+				'description'  => 'See only Listing Of Report',
+			],
+			[
+				'name'         => 'report-create',
+				'display_name' => 'Create Report',
+				'description'  => 'Create New Report',
+			],
+			[
+				'name'         => 'report-edit',
+				'display_name' => 'Edit Report',
+				'description'  => 'Edit Report',
+			],
+			[
+				'name'         => 'report-delete',
+				'display_name' => 'Delete Report',
+				'description'  => 'Delete Report',
+			],
+
+			[
+				'name'         => 'incoming-list',
+				'display_name' => 'Display Incoming Listing',
+				'description'  => 'See only Listing Of Incoming',
+			],
+			[
+				'name'         => 'incoming-create',
+				'display_name' => 'Create Incoming',
+				'description'  => 'Create New Incoming',
+			],
+			[
+				'name'         => 'incoming-edit',
+				'display_name' => 'Edit Incoming',
+				'description'  => 'Edit Incoming',
+			],
+			[
+				'name'         => 'incoming-delete',
+				'display_name' => 'Delete Incoming',
+				'description'  => 'Delete Incoming',
+			],
 		];
 
 		$role1 = Role::find(1);

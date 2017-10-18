@@ -61,8 +61,6 @@ class OutgoingController extends Controller {
 			->groupby('year', 'month', 'day')
 			->get();
 
-		// dd($packages);
-
 		$outgoingPackingList = array();
 		foreach ($packages as $package) {
 			$noPacking = Outgoing::where('dept_date', $package->dept_date)->where('packing_list', 0)->count();
@@ -194,7 +192,18 @@ class OutgoingController extends Controller {
 		$lotinList = array();
 		for ($k = 0; $k < 31; $k++) {
 			$startDate = date("Y-m-d", strtotime($start . "+" . $k . " day"));
-			$lotin     = Lotin::where('status', '0')->where('deleted', 'N')->where('date', $startDate)->orderBy('date', 'ASC')->get();
+			$lotin     = DB::table('lotins as l')
+						->select('l.*', 's.name as sender_name', 'r.name as receiver_name')
+						->leftJoin('senders as s', 's.id', '=', 'l.sender_id')
+						->leftJoin('receivers as r', 'r.id', '=', 'l.receiver_id')
+						->where('l.status', '0')
+						->where('l.deleted', 'N')
+						->where('l.date', $startDate)
+						// ->where('l.from_country', $outgoing->from_country)
+						// ->where('l.from_state', $outgoing->from_city)
+						// ->where('l.to_country', $outgoing->to_country)
+						// ->where('l.to_state', $outgoing->to_city)
+						->orderBy('l.date', 'ASC')->get();
 			if (count($lotin) > 0) {
 				$lotinList[$startDate] = $lotin;
 			}
