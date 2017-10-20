@@ -68,12 +68,14 @@
 			</div><!-- .menu-icon -->
 
 			@permission('company-create')
-				<div class="menu-icon">
-					<a href="{{ route('companies.create') }}">
-						<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
-						New
-					</a>
-				</div><!-- .menu-icon -->
+				@if(Auth::user()->hasRole('administrator'))
+					<div class="menu-icon">
+						<a href="{{ route('companies.create') }}">
+							<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
+							New
+						</a>
+					</div><!-- .menu-icon -->
+				@endif
 			@endpermission
 
 			@permission('company-edit')
@@ -86,12 +88,14 @@
 			@endpermission
 
 			@permission('company-delete')
-				<div class="menu-icon">
-					<a href="#" id="delete">
-						<img src="{{ asset('assets/img/trash-icon.png') }}" alt="Delete">
-						Delete
-					</a>
-				</div><!-- .menu-icon -->
+				@if(Auth::user()->hasRole('administrator'))
+					<div class="menu-icon">
+						<a href="#" id="delete">
+							<img src="{{ asset('assets/img/trash-icon.png') }}" alt="Delete">
+							Delete
+						</a>
+					</div><!-- .menu-icon -->
+				@endif
 			@endpermission
 
 			<div class="menu-icon">

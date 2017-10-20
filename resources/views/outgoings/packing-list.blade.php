@@ -80,7 +80,8 @@
 												->leftJoin('lotins as l', 'l.id', '=', 'i.lotin_id')
 												->leftJoin('senders as s', 's.id', '=', 'l.sender_id')
 												->leftJoin('receivers as r', 'r.id', '=', 'l.receiver_id')
-												->where('i.outgoing_id', $outgoing->id)->where('i.packing_id', $x)->get();
+												->where('i.outgoing_id', $outgoing->id)
+												->where('i.packing_id', $x)->get();
 
 												$kgs = App\Item::select(DB::raw('sum(unit) as total_unit'))->where('outgoing_id', $outgoing->id)->where('packing_id', $x)->where('category_id', 1)->get();
 												$totalKgs = $kgs[0]->total_unit;
@@ -260,7 +261,7 @@
 														<tbody>
 															@foreach($lotins as $lotin)
 																<?php
-																$items = App\Item::where('lotin_id', $lotin->id)->get();
+																$items = App\Item::where('lotin_id', $lotin->id)->where('status', 0)->get();
 																?>
 																@foreach($items as $item)
 																	<tr>

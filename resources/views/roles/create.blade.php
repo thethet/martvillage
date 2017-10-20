@@ -33,6 +33,7 @@
 
 		<div class="small-10 columns">
 			<p><b><span class="required">*</span> Fields are required</b></p>
+			{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
 		</div>
 
 		<div class="form-group">
@@ -82,6 +83,8 @@
 				<strong>Permission: <span class="required">*</span></strong>
 			</label>
 			<div class="col-sm-3">
+				{!! Form::checkbox('select_all', null, null, ['id' => 'select-all']) !!} &nbsp;
+				<span id="select-unselect">Select All</span>
 				@if ($errors->has('permission'))
 					<span class="required">
 						<strong>{{ $errors->first('permission') }}</strong>
@@ -95,7 +98,7 @@
 
 			@foreach($permission as $value)
 				<div class="col-sm-3">
-					<label>{{ Form::checkbox('permission[]', $value->id, false, array('class' => 'name')) }}
+					<label>{{ Form::checkbox('permission[]', $value->id, false, array('class' => 'permission-name')) }}
 					{{ $value->display_name }}</label>
 					<br/>
 				</div>
@@ -136,4 +139,29 @@
 		</div>
 	</div><!-- .footer-menu -->
 {!! Form::close() !!}
+@stop
+
+@section('my-script')
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/select2/dist/css/select2.css') }}">
+	<script src="{{ asset('plugins/select2/dist/js/select2.js') }}"></script>
+	<script>
+		$(document).ready(function(){
+
+			$("#select-all").change(function(){
+				if($(this).is(':checked')){
+					$("#select-unselect").text('Unselect All');
+					$(".permission-name").each(function() {
+						$(this).prop("checked", true);
+					});
+				}else{
+					$("#select-unselect").text('Select All');
+					$(".permission-name").each(function() {
+						$(this).prop("checked", false);
+					});
+				}
+			});
+		});
+
+	</script>
 @stop

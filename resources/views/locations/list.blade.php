@@ -27,7 +27,7 @@
 
 							<tr>
 								<th width="10px">
-									{{-- {!! Form::checkbox('all_country_edit', null, null, ['id' => 'all-country-editboxes']) !!} --}}
+									{!! Form::checkbox('all_country_edit', null, null, ['id' => 'all-country-editboxes']) !!}
 								</th>
 								<th>Country Name</th>
 							</tr>
@@ -88,7 +88,7 @@
 				</div><!-- .form-group -->
 			</div>
 
-			@if($countriesLists)
+			@if(count($countriesLists) > 0)
 			<div class="col-lg-8 pad0 bdr">
 				<div class="table-cont country-tbl">
 					<table class="table table-bordered table-responsive">
@@ -100,7 +100,9 @@
 							</tr>
 							<tr>
 								@foreach($countriesLists as $clist)
-									<th width="8px">&nbsp;&nbsp;&nbsp;</th>
+									<th width="8px">
+										{!! Form::checkbox('all_city_edit', $clist->id, null, ['id' => 'all-city-editboxes', 'onClick' => 'handleClick(this)']) !!}
+									</th>
 									<th>{{ $clist->country_name }} ({{ $clist->country_code }})</th>
 								@endforeach
 							</tr>
@@ -111,7 +113,7 @@
 									@foreach($countriesLists as $countlist)
 										@if(array_key_exists($countlist->country_name, $cities))
 										<td>
-											{!! Form::checkbox('city_edit', $cities[$countlist->country_name]['id'], null, ['class' => 'city-editboxes']) !!}
+											{!! Form::checkbox('city_edit', $cities[$countlist->country_name]['id'], null, ['class' => 'city-editboxes city-boxes'.$countlist->id]) !!}
 										</td>
 										<td>
 											{{ $cities[$countlist->country_name]['state_name'] }} ({{ $cities[$countlist->country_name]['state_code'] }})
@@ -175,7 +177,9 @@
 							</tr>
 							<tr>
 								@foreach($mycountriesLists as $myclist)
-									<th width="8px">&nbsp;&nbsp;&nbsp;</th>
+									<th width="8px">
+										{!! Form::checkbox('myallcountry', $myclist->id, null, ['id' => 'my-all-city', 'onClick' => 'handleMyCity(this)']) !!}
+									</th>
 									<th>{{ $myclist->country_name }} ({{ $myclist->country_code }})</th>
 								@endforeach
 							</tr>
@@ -186,7 +190,7 @@
 									@foreach($mycountriesLists as $mcountlist)
 										@if(array_key_exists($mcountlist->country_name, $mycities))
 										<td>
-											{!! Form::checkbox('edit', $mycities[$mcountlist->country_name]['id'], null, ['class' => 'editboxes']) !!}
+											{!! Form::checkbox('edit', $mycities[$mcountlist->country_name]['id'], null, ['class' => 'editboxes mycities'.$mcountlist->id]) !!}
 										</td>
 										<td>
 											{{ $mycities[$mcountlist->country_name]['state_name'] }} ({{ $mycities[$mcountlist->country_name]['state_code'] }})
@@ -261,11 +265,11 @@
 			$("#all-country-editboxes").change(function(){
 				if($(this).is(':checked')){
 					$("input:checkbox[class=country-editboxes]").each(function() {
-						$(this).attr('checked', true);
+						$(this).prop("checked", true);
 					});
 				}else{
 					$("input:checkbox[class=country-editboxes]").each(function() {
-						$(this).attr('checked', false);
+						$(this).prop("checked", false);
 					});
 				}
 			});
@@ -360,5 +364,35 @@
 			});
 
 		});
+
+		function handleClick(a) {
+			var j = a.value;
+			if(a.checked){
+				$(".city-boxes" + j).each(function() {
+					// $(this).attr('checked', true);
+					$(this).prop("checked", true);
+				});
+			}else{
+				$(".city-boxes" + j).each(function() {
+					// $(this).attr('checked', false);
+					$(this).prop("checked", false);
+				});
+			}
+		}
+
+		function handleMyCity(a) {
+			var j = a.value;
+			if(a.checked){
+				$(".mycities" + j).each(function() {
+					// $(this).attr('checked', true);
+					$(this).prop("checked", true);
+				});
+			}else{
+				$(".mycities" + j).each(function() {
+					// $(this).attr('checked', false);
+					$(this).prop("checked", false);
+				});
+			}
+		}
 	</script>
 @stop

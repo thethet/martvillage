@@ -199,10 +199,10 @@ class OutgoingController extends Controller {
 						->where('l.status', '0')
 						->where('l.deleted', 'N')
 						->where('l.date', $startDate)
-						// ->where('l.from_country', $outgoing->from_country)
-						// ->where('l.from_state', $outgoing->from_city)
-						// ->where('l.to_country', $outgoing->to_country)
-						// ->where('l.to_state', $outgoing->to_city)
+						->where('l.from_country', $outgoing->from_country)
+						->where('l.from_state', $outgoing->from_city)
+						->where('l.to_country', $outgoing->to_country)
+						->where('l.to_state', $outgoing->to_city)
 						->orderBy('l.date', 'ASC')->get();
 			if (count($lotin) > 0) {
 				$lotinList[$startDate] = $lotin;

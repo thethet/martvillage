@@ -266,4 +266,23 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('outgoings/{id}/packing-list', ['as' => 'outgoings.packing.lsit', 'uses' => 'OutgoingController@packingList', 'middleware' => ['permission:outgoing-list|outgoing-create|outgoing-edit|outgoing-delete']]);
 	Route::post('outgoings/packinglist/create', ['as' => 'outgoings.packinglist.store', 'uses' => 'OutgoingController@packingListStore', 'middleware' => ['permission:outgoing-create']]);
 
+
+	/*
+	|--------------------------------------------------------------------------
+	| Incoming Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Incoming Model CRUD
+	|
+	 */
+	Route::get('incomings', ['as' => 'incomings.index', 'uses' => 'IncomingController@index', 'middleware' => ['permission:incoming-list|incoming-create|incoming-edit|incoming-delete']]);
+	Route::get('incomings/create', ['as' => 'incomings.create', 'uses' => 'IncomingController@create', 'middleware' => ['permission:incoming-create']]);
+	Route::post('incomings/create', ['as' => 'incomings.store', 'uses' => 'IncomingController@store', 'middleware' => ['permission:incoming-create']]);
+	Route::get('incomings/{id}', ['as' => 'incomings.show', 'uses' => 'IncomingController@show']);
+	Route::get('incomings/ajax/{id}/edit', ['as' => 'incomings.ajax.edit', 'uses' => 'IncomingController@editAjax', 'middleware' => ['permission:incoming-edit']]);
+	Route::get('incomings/{id}/edit', ['as' => 'incomings.edit', 'uses' => 'IncomingController@edit', 'middleware' => ['permission:incoming-edit']]);
+	Route::patch('incomings/{id}', ['as' => 'incomings.update', 'uses' => 'IncomingController@update', 'middleware' => ['permission:incoming-edit']]);
+	Route::delete('incomings/{id}', ['as' => 'incomings.destroy', 'uses' => 'IncomingController@destroy', 'middleware' => ['permission:incoming-delete']]);
+
+
 });

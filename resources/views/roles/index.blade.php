@@ -42,7 +42,12 @@
 						<td>{{ $role->display_name }}</td>
 						<td>{{ $role->description }}</td>
 						<td>
-							{!! Form::checkbox('edit', $role->id, null, ['class' => 'editboxes']) !!}
+							{{-- @if($role->users_count == 0) --}}
+								@if(Auth::user()->hasRole('administrator') || $role->company_id == Auth::user()->company_id)
+									{!! Form::checkbox('edit', $role->id, null, ['class' => 'editboxes']) !!}
+									{!! Form::hidden('users_count[]', $role->users_count, ['id' => 'users-count'.$role->id]) !!}
+								@endif
+							{{-- @endif --}}
 						</td>
 					</tr>
 					@endforeach
@@ -134,15 +139,21 @@
 				$(".editboxes").each(function() {
 					if ($(this).is(":checked")) {
 						var id = $(this).val();
-						$.ajax({
-							url: "{!! url('roles/"+ id +"') !!}",
-							type: 'DELETE',
-							data: {_token: '{!! csrf_token() !!}'},
-							dataType: 'JSON',
-							success: function (data) {
-								window.location.replace(data.url);
-							}
-						});
+						var user = $('#users-count'+id).val();
+						if(user == 0) {
+							$.ajax({
+								url: "{!! url('roles/"+ id +"') !!}",
+								type: 'DELETE',
+								data: {_token: '{!! csrf_token() !!}'},
+								dataType: 'JSON',
+								success: function (data) {
+									window.location.replace(data.url);
+								}
+							});
+						} else {
+							alert("Do not allow to delete. Someone is using this role!");
+							// window.location.reload(false);
+						}
 					}
 				});
 			});

@@ -33,25 +33,27 @@ class CompanyController extends Controller {
 	 * @return Response
 	 */
 	public function create() {
-		if (Auth::user()->hasRole('administrator')) {
-			$countries = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')
-				->lists('country_name', 'id');
-
-			$states = States::where('deleted', 'N')->orderBy('state_name', 'ASC')
-				->lists('state_name', 'id');
-
-			$townships = Townships::where('deleted', 'N')->orderBy('township_name', 'ASC')
-				->lists('township_name', 'id');
-		} else {
-			$countries = Countries::where('company_id', Auth::user()->company_id)
-				->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-
-			$states = States::where('company_id', Auth::user()->company_id)
-				->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
-
-			$townships = Townships::where('company_id', Auth::user()->company_id)
-				->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
+		$company       = Companies::find(Auth::user()->company_id);
+		$countryIds    = $company->countries;
+		$countryIdList = array();
+		foreach ($countryIds as $country) {
+			$countryIdList[] = $country->id;
 		}
+		$stateIds    = $company->states;
+		$stateIdList = array();
+		foreach ($stateIds as $stateId) {
+			$stateIdList[] = $stateId->id;
+		}
+		$townshipIds    = $company->states;
+		$townshipIdList = array();
+		foreach ($townshipIds as $townshipId) {
+			$townshipIdList[] = $townshipId->id;
+		}
+
+		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$states    = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$townships = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
+
 
 		return view('companies.create', ['countries' => $countries, 'states' => $states, 'townships' => $townships]);
 	}
@@ -125,25 +127,26 @@ class CompanyController extends Controller {
 	public function edit($id) {
 		$company = Companies::find($id);
 
-		if (Auth::user()->hasRole('administrator')) {
-			$countries = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')
-				->lists('country_name', 'id');
-
-			$states = States::where('deleted', 'N')->orderBy('state_name', 'ASC')
-				->lists('state_name', 'id');
-
-			$townships = Townships::where('deleted', 'N')->orderBy('township_name', 'ASC')
-				->lists('township_name', 'id');
-		} else {
-			$countries = Countries::where('company_id', Auth::user()->company_id)
-				->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-
-			$states = States::where('company_id', Auth::user()->company_id)
-				->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
-
-			$townships = Townships::where('company_id', Auth::user()->company_id)
-				->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
+		$myCompany       = Companies::find(Auth::user()->company_id);
+		$countryIds    = $myCompany->countries;
+		$countryIdList = array();
+		foreach ($countryIds as $country) {
+			$countryIdList[] = $country->id;
 		}
+		$stateIds    = $myCompany->states;
+		$stateIdList = array();
+		foreach ($stateIds as $stateId) {
+			$stateIdList[] = $stateId->id;
+		}
+		$townshipIds    = $myCompany->states;
+		$townshipIdList = array();
+		foreach ($townshipIds as $townshipId) {
+			$townshipIdList[] = $townshipId->id;
+		}
+
+		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$states    = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$townships = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 
 		return view('companies.edit', ['company' => $company, 'countries' => $countries, 'states' => $states, 'townships' => $townships]);
 	}
