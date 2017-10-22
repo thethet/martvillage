@@ -146,6 +146,7 @@
 		</div>
 
 		<div class="row tracking-status">
+			<div class="col-sm-1"></div>
 			<div class="col-sm-1 block pad0">
 				<?php $status = (int)$lotinData->status; ?>
 				<div @if( $status >= 0) class="circle circletrack-color" @else class="circle" @endif>
@@ -179,7 +180,7 @@
 					<p>&nbsp;</p>
 				</div>
 			</div>
-			<div class="col-sm-2 bline pad0">
+			{{-- <div class="col-sm-2 bline pad0">
 				<div @if( $status >= 4) class="line linetrack-color" @else class="line" @endif></div>
 			</div>
 
@@ -187,11 +188,12 @@
 				<div @if( $status >= 4) class="circle circletrack-color" @else class="circle" @endif>
 					<p>&nbsp;</p>
 				</div>
-			</div>
+			</div> --}}
 
 		</div>
 
 		<div class="row">
+			<div class="col-sm-1"></div>
 			<div class="col-sm-2 trans ml-30 mt54">
 				Sender Office
 				<br>
@@ -202,9 +204,9 @@
 				On Boarding
 			</div>
 
-			<div class="col-sm-2 trans ml60 mt54">
+			{{-- <div class="col-sm-2 trans ml60 mt54">
 				Landed Destination
-			</div>
+			</div> --}}
 
 			<div class="col-sm-2 trans ml60 mt54">
 				Destination Office

@@ -561,6 +561,7 @@
 				$('#r_nric_no').attr('readonly', false);
 
 				$('#select2-address-container').text('Address');
+				$('#address').val('');
 			});
 
 			$('#address-list').hide();
@@ -804,7 +805,6 @@
 
 
 			$('#address').change(function() {
-
 				var address = $(this).val();
 
 				$.ajax({

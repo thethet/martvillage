@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Outgoing;
+use App\Item;
+use App\Lotin;
 
 use App\Http\Requests;
 
@@ -69,7 +71,18 @@ class IncomingController extends Controller
 	 */
 	public function edit($id)
 	{
-		//
+		Item::find($id)->update(['status' => 2]);
+
+		$item = Item::find($id);
+
+		$allLotCount = Item::where('lotin_id', $item->lotin_id)->count();
+
+		$arriveLotCount = Item::where('lotin_id', $item->lotin_id)->where('status', 2)->count();
+
+		if($allLotCount == $arriveLotCount) {
+			Lotin::find($item->lotin_id)->update(['status' => 2]);
+		}
+		return redirect()->back()->with('success', 'Item is successfully arrive');
 	}
 
 	/**

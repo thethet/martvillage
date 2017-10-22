@@ -44,7 +44,7 @@ class LocationController extends Controller {
 					$citiesLists[$j][$cList->country_name]['id']           = $state->id;
 					$citiesLists[$j][$cList->country_name]['state_name']   = $state->state_name;
 					$citiesLists[$j][$cList->country_name]['state_code']   = $state->state_code;
-					$citiesLists[$j][$cList->country_name]['company_name'] = $state->companies[0]->short_code;
+					// $citiesLists[$j][$cList->country_name]['company_name'] = $state->companies[0]->short_code;
 					$j++;
 				}
 			}
@@ -77,7 +77,7 @@ class LocationController extends Controller {
 					$citiesLists[$j][$cList->country_name]['id']           = $state->id;
 					$citiesLists[$j][$cList->country_name]['state_name']   = $state->state_name;
 					$citiesLists[$j][$cList->country_name]['state_code']   = $state->state_code;
-					$citiesLists[$j][$cList->country_name]['company_name'] = $state->companies[0]->short_code;
+					// $citiesLists[$j][$cList->country_name]['company_name'] = $state->companies[0]->short_code;
 					$j++;
 				}
 			}

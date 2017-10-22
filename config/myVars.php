@@ -18,9 +18,14 @@ return [
 	'LotinStatus'   => [
 		0 => 'Sender Office (Start Point)',
 		1 => 'On Boarding',
+		2 => 'Destination Office (Ready Collect)',
+		3 => 'Collected',
+
+		/*0 => 'Sender Office (Start Point)',
+		1 => 'On Boarding',
 		2 => 'Landed Destination',
 		3 => 'Destination Office (Ready Collect)',
-		4 => 'Collected',
+		4 => 'Collected',*/
 	],
 
 	'Payment'       => [

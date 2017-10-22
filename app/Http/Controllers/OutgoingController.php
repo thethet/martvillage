@@ -198,6 +198,7 @@ class OutgoingController extends Controller {
 						->leftJoin('receivers as r', 'r.id', '=', 'l.receiver_id')
 						->where('l.status', '0')
 						->where('l.deleted', 'N')
+						->where('l.company_id', $outgoing->company_id)
 						->where('l.date', $startDate)
 						->where('l.from_country', $outgoing->from_country)
 						->where('l.from_state', $outgoing->from_city)
@@ -249,10 +250,11 @@ class OutgoingController extends Controller {
 			$item = Item::find($itemIds[$i]);
 			$item->update($ItemData);
 
-			Lotin::find($item->lotin_id)->decrement('total_items');
+			Lotin::find($item->lotin_id)->where('company_id', Auth::user()->company_id)
+			->where('status', 0)->decrement('total_items');
 		}
 
-		$lotins = Lotin::where('total_items', 0)->get();
+		$lotins = Lotin::where('total_items', 0)->where('company_id', Auth::user()->company_id)->get();
 
 		foreach ($lotins as $lotin) {
 			$updLotin = Lotin::find($lotin->id)->update(['status' => 1]);

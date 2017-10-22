@@ -46,4 +46,20 @@ class Lotin extends Model {
 		'created_by',
 		'updated_by',
 	];
+
+	public function fromCountry() {
+		return $this->belongsTo('App\Countries', 'from_country');
+	}
+
+	public function fromCity() {
+		return $this->belongsTo('App\States', 'from_state');
+	}
+
+	public function toCountry() {
+		return $this->belongsTo('App\Countries', 'to_country');
+	}
+
+	public function toCity() {
+		return $this->belongsTo('App\States', 'to_state');
+	}
 }

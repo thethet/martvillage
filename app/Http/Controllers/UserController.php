@@ -93,6 +93,8 @@ class UserController extends Controller {
 			'marital_status' => 'required',
 			'role'           => 'required',
 			'company_id'     => 'required',
+			'country_id'     => 'required',
+			'state_id'       => 'required',
 		]);
 
 		$imageName = $this->fileUpload($request);
@@ -209,6 +211,8 @@ class UserController extends Controller {
 			'marital_status' => 'required',
 			'role'           => 'required',
 			'company_id'     => 'required',
+			'country_id'     => 'required',
+			'state_id'       => 'required',
 		]);
 		$data      = $request->all();
 		$imageName = $this->fileUpload($request);

@@ -285,4 +285,21 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::delete('incomings/{id}', ['as' => 'incomings.destroy', 'uses' => 'IncomingController@destroy', 'middleware' => ['permission:incoming-delete']]);
 
 
+	/*
+	|--------------------------------------------------------------------------
+	| LotBalance Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for LotBalance Model CRUD
+	|
+	 */
+	Route::get('lotbalances', ['as' => 'lotbalances.index', 'uses' => 'LotBalanceController@index', 'middleware' => ['permission:lotbalance-list|lotbalance-create|lotbalance-edit|lotbalance-delete']]);
+	Route::get('lotbalances/create', ['as' => 'lotbalances.create', 'uses' => 'LotBalanceController@create', 'middleware' => ['permission:lotbalance-create']]);
+	Route::post('lotbalances/create', ['as' => 'lotbalances.store', 'uses' => 'LotBalanceController@store', 'middleware' => ['permission:lotbalance-create']]);
+	Route::get('lotbalances/{id}', ['as' => 'lotbalances.show', 'uses' => 'LotBalanceController@show']);
+	Route::get('lotbalances/ajax/{id}/edit', ['as' => 'lotbalances.ajax.edit', 'uses' => 'LotBalanceController@editAjax', 'middleware' => ['permission:lotbalance-edit']]);
+	Route::get('lotbalances/{id}/edit', ['as' => 'lotbalances.edit', 'uses' => 'LotBalanceController@edit', 'middleware' => ['permission:lotbalance-edit']]);
+	Route::patch('lotbalances/{id}', ['as' => 'lotbalances.update', 'uses' => 'LotBalanceController@update', 'middleware' => ['permission:lotbalance-edit']]);
+	Route::delete('lotbalances/{id}', ['as' => 'lotbalances.destroy', 'uses' => 'LotBalanceController@destroy', 'middleware' => ['permission:lotbalance-delete']]);
+
 });

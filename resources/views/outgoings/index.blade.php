@@ -304,8 +304,8 @@
 								</td>
 								<td>{{ $outgoing->passenger_name }}</td>
 								<td>{{ $outgoing->contact_no }}</td>
-								<td>{{ $outgoing->from_city }}</td>
-								<td>{{ $outgoing->to_city }}</td>
+								<td>{{ $outgoing->fromCity->state_name }}</td>
+								<td>{{ $outgoing->toCity->state_name }}</td>
 								<td>{{ $outgoing->weight }}</td>
 								<td>{{ $outgoing->carrier_name }}</td>
 								<td>{{ $outgoing->vessel_no }}</td>

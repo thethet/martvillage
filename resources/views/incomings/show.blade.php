@@ -129,6 +129,7 @@
 																<th>Barcode</th>
 																<th>Unit(kg/ft<sup>3</sup>)</th>
 																<th>Split</th>
+																<th width="5%"></th>
 															</tr>
 														</thead>
 														<tbody>
@@ -140,6 +141,15 @@
 																	<td>{{ $pacItem->barcode }}</td>
 																	<td>{{ $pacItem->unit }}</td>
 																	<td>0</td>
+																	<td>
+																		@if($pacItem->status == 1)
+																		<a href="{{ url('incomings/'.$pacItem->id.'/edit') }}">
+																			<div class="addbtn">
+																				Arrive
+																			</div>
+																		</a>
+																		@endif
+																	</td>
 																</tr>
 															@endforeach
 														</tbody>

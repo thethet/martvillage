@@ -23,7 +23,7 @@ class CreateTblItems extends Migration {
 			$table->double('unit_price', 12, 2);
 			$table->integer('quantity');
 			$table->double('amount', 12, 2);
-			$table->enum('status', [0, 1]);
+			$table->enum('status', [0, 1, 2, 3]);
 			$table->enum('deleted', ['N', 'Y']);
 			$table->integer('created_by');
 			$table->integer('updated_by');

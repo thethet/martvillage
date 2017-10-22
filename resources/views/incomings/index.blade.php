@@ -16,12 +16,27 @@
 		</div>
 		@endif
 
-		{{-- <div class="row">
+		<div class="row">
+			{!! Form::open(array('route' => 'companies.store','method'=>'POST', 'id' => 'company-form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data')) !!}
 			<div class="form-group">
+				<label class="control-label col-sm-2" for="date">
+					<strong>Dept Date:<span class="required">*</span></strong>
+				</label>
+				<div class="col-sm-2">
+					{!! Form::text('dept_date', null, array('placeholder' => 'Depature Date','class' => 'form-control')) !!}
+					@if ($errors->has('dept_date'))
+						<span class="required">
+							<strong>{{ $errors->first('dept_date') }}</strong>
+						</span>
+					@endif
+				</div>
+
+				<label class="control-label col-sm-1" for="date"></label>
+
 				<label class="control-label col-sm-2" for="time">
 					<strong>Time:<span class="required">*</span></strong>
 				</label>
-				<div class="col-sm-4">
+				<div class="col-sm-2">
 					{!! Form::text('time', null, array('placeholder' => 'Depature Time','class' => 'form-control', 'id' => 'timepicker')) !!}
 					@if ($errors->has('time'))
 						<span class="required">
@@ -29,8 +44,8 @@
 						</span>
 					@endif
 				</div>
-				<label class="control-label col-sm-4" for="button"></label>
-				<div class="col-sm-2">
+				<label class="control-label col-sm-2" for="button"></label>
+				<div class="col-sm-1">
 					<a href="#" id="add" onclick="document.getElementById('outgoing-form').submit();">
 						<div class="addbtn">
 							<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
@@ -39,7 +54,10 @@
 					</a>
 				</div>
 			</div><!-- .form-group -->
-		</div> --}}
+
+			<div class="form-group"></div>
+			{!! Form::close() !!}
+		</div>
 
 		<div class="row">
 			<div class="table-cont">
@@ -50,7 +68,7 @@
 						</tr>
 						<tr>
 							<th width="8px">No</th>
-							<th width="8px">&nbsp</th>
+							{{-- <th width="8px">&nbsp</th> --}}
 							<th>Name</th>
 							<th>Phone</th>
 							<th>From City</th>
@@ -60,7 +78,6 @@
 							<th>Vessel No.</th>
 							<th>Time</th>
 							<th>Package List</th>
-							<th>Status</th>
 						</tr>
 					</thead>
 
@@ -69,9 +86,9 @@
 						@foreach($outgoingList as $outgoing)
 							<tr>
 								<td>{{ $no++ }}</td>
-								<td>
+								{{-- <td>
 									{!! Form::checkbox('edit', $outgoing->id, null, ['class' => 'editboxes']) !!}
-								</td>
+								</td> --}}
 								<td>{{ $outgoing->passenger_name }}</td>
 								<td>{{ $outgoing->contact_no }}</td>
 								<td>{{ $outgoing->from_city }}</td>
@@ -164,6 +181,10 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css"/>
 
 	<script>
-		$(document).ready(function(){});
+		$(document).ready(function(){
+			$('#timepicker').timepicker({
+				minuteStep: 5
+			});
+		});
 	</script>
 @stop
