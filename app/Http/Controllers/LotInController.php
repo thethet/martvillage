@@ -85,14 +85,13 @@ class LotInController extends Controller {
 		foreach ($receiveAddress as $key => $value) {
 			$receiveAddress[$key] = $value . " of " . count($receiveAddress);
 		}
-		// dd($receiveAddress);
 
 		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('id', 'asc')->lists('nric_code', 'id');
 		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('serial_no', 'asc')->lists('short_name', 'id');
 
-		$lastId = Lotin::latest('id')->first();
+		$lastId = Lotin::where('company_id', Auth::user()->company_id)->count();
 		if ($lastId) {
-			$lastId = $lastId->id;
+			$lastId = $lastId;
 		}
 		$lastId += 1;
 		$code  = Auth::user()->company->short_code;
@@ -122,7 +121,6 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
-		// dd($request->all());
 		$messages = array(
 			's_contact_no.required'       => 'The Sender Contact Number  field is required.',
 			'member_no.exists'            => 'Your Member Number is wrong or you are not member.',
@@ -180,7 +178,6 @@ class LotInController extends Controller {
 		], $messages);
 
 		$size = count($request->lots);
-		// dd($request->all());
 
 		$user_id    = Auth::user()->id;
 		$company_id = Auth::user()->company_id;
@@ -204,8 +201,6 @@ class LotInController extends Controller {
 				's_contact_no' => 'required|unique:senders,contact_no',
 				'member_no'    => 'exists:members,member_no',
 			], $messages);
-
-			// die;
 
 			$senderData['company_id']       = $company_id;
 			$senderData['name']             = $request->sender_name;
@@ -274,7 +269,7 @@ class LotInController extends Controller {
 		$lotin   = Lotin::create($lotinDatas);
 		$lotinId = $lotin->id;
 
-		$lots = $request->lots;
+		$lots    = $request->lots;
 		$noItems = 0;
 		for ($i = 0; $i < $size; $i++) {
 			if ($lots[$i]['item_name'] != "") {

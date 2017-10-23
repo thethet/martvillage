@@ -123,7 +123,6 @@ class TrackingController extends Controller {
 		$receivers     = Receiver::where('company_id', Auth::user()->company_id)->get();
 		$receiverCount = count($receivers);
 
-		// dd($lotinData);
 		return view('trackings.search', ['lotinData' => $lotinData, 'sender' => $sender, 'receiver' => $receiver, 'countries' => $countries, 'states' => $states, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships, 'receiverCount' => $receiverCount]);
 	}
 }

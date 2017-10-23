@@ -35,11 +35,10 @@ class MemberController extends Controller {
 	 * @return Response
 	 */
 	public function create() {
-		// dd(Auth::user()->timezone);
 
-		$lastId = Member::latest('id')->first();
+		$lastId = Member::where('company_id', Auth::user()->company_id)->count();
 		if ($lastId) {
-			$lastId = $lastId->id;
+			$lastId = $lastId;
 		}
 		$lastId += 1;
 		$code     = Auth::user()->company->short_code;

@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Companies;
+use App\Countries;
+use App\States;
+use Auth;
+use DB;
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use DB;
-use Auth;
-
-class LotBalanceController extends Controller
-{
-    /**
+class LotBalanceController extends Controller {
+	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function index()
-	{
+	public function index() {
 		$today = date('Y-m-d');
 		$start = date("Y-m-d", strtotime($today . "-30 day"));
 		$end   = date("Y-m-d", strtotime($today));
@@ -24,45 +23,109 @@ class LotBalanceController extends Controller
 		$lotinList = array();
 		for ($k = 0; $k < 31; $k++) {
 			$startDate = date("Y-m-d", strtotime($start . "+" . $k . " day"));
+			$query     = DB::table('lotins as l')
+				->select('l.*', 's.name as sender_name', 'r.name as receiver_name', 'fst.state_name as fstate_name', 'tst.state_name as tstate_name')
+				->leftJoin('senders as s', 's.id', '=', 'l.sender_id')
+				->leftJoin('receivers as r', 'r.id', '=', 'l.receiver_id')
+				->leftJoin('states as fst', 'fst.id', '=', 'l.from_state')
+				->leftJoin('states as tst', 'tst.id', '=', 'l.to_state')
+				->where('l.status', '0')
+				->where('l.deleted', 'N')
+				->where('l.date', $startDate);
+
 			if (Auth::user()->hasRole('administrator')) {
-				$lotin     = DB::table('lotins as l')
-							->select('l.*', 's.name as sender_name', 'r.name as receiver_name', 'fst.state_name as fstate_name', 'tst.state_name as tstate_name')
-							->leftJoin('senders as s', 's.id', '=', 'l.sender_id')
-							->leftJoin('receivers as r', 'r.id', '=', 'l.receiver_id')
-							->leftJoin('states as fst', 'fst.id', '=', 'l.from_state')
-							->leftJoin('states as tst', 'tst.id', '=', 'l.to_state')
-							->where('l.status', '0')
-							->where('l.deleted', 'N')
-							->where('l.date', $startDate)
-							// ->where('l.company_id', Auth::user()->company_id)
-							// ->where('l.from_country', $outgoing->from_country)
-							// ->where('l.from_state', $outgoing->from_city)
-							// ->where('l.to_country', $outgoing->to_country)
-							// ->where('l.to_state', $outgoing->to_city)
-							->orderBy('l.date', 'ASC')->get();
+				$lotin = $query->orderBy('l.date', 'ASC')->get();
+			} elseif (Auth::user()->hasRole('owner')) {
+				$lotin = $query->where('l.company_id', Auth::user()->company_id)
+					->orderBy('l.date', 'ASC')->get();
 			} else {
-				$lotin     = DB::table('lotins as l')
-							->select('l.*', 's.name as sender_name', 'r.name as receiver_name', 'fst.state_name as fstate_name', 'tst.state_name as tstate_name')
-							->leftJoin('senders as s', 's.id', '=', 'l.sender_id')
-							->leftJoin('receivers as r', 'r.id', '=', 'l.receiver_id')
-							->leftJoin('states as fst', 'fst.id', '=', 'l.from_state')
-							->leftJoin('states as tst', 'tst.id', '=', 'l.to_state')
-							->where('l.status', '0')
-							->where('l.deleted', 'N')
-							->where('l.date', $startDate)
-							->where('l.company_id', Auth::user()->company_id)
-							// ->where('l.from_country', $outgoing->from_country)
-							// ->where('l.from_state', $outgoing->from_city)
-							// ->where('l.to_country', $outgoing->to_country)
-							// ->where('l.to_state', $outgoing->to_city)
-							->orderBy('l.date', 'ASC')->get();
+				$lotin = $query->where('l.from_state', Auth::user()->state_id)
+					->orderBy('l.date', 'ASC')->get();
 			}
 			if (count($lotin) > 0) {
 				$lotinList[$startDate] = $lotin;
 			}
 		}
 
-		return view('lotbalances.index', ['lotinList' => $lotinList]);
+		$company       = Companies::find(Auth::user()->company_id);
+		$countryIds    = $company->countries;
+		$countryIdList = array();
+		foreach ($countryIds as $country) {
+			$countryIdList[] = $country->id;
+		}
+		$stateIds    = $company->states;
+		$stateIdList = array();
+		foreach ($stateIds as $stateId) {
+			$stateIdList[] = $stateId->id;
+		}
+
+		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$states    = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+
+		return view('lotbalances.index', ['lotinList' => $lotinList, 'countries' => $countries, 'states' => $states]);
+	}
+
+	/**
+	 * Display a listing of the specific resource.
+	 *
+	 * @return Response
+	 */
+	public function search(Request $request) {
+		$today = date('Y-m-d');
+		$start = date("Y-m-d", strtotime($today . "-30 day"));
+		$end   = date("Y-m-d", strtotime($today));
+
+		$lotinList = array();
+		for ($k = 0; $k < 31; $k++) {
+			$startDate = date("Y-m-d", strtotime($start . "+" . $k . " day"));
+			$query     = DB::table('lotins as l')
+				->select('l.*', 's.name as sender_name', 'r.name as receiver_name', 'fst.state_name as fstate_name', 'tst.state_name as tstate_name')
+				->leftJoin('senders as s', 's.id', '=', 'l.sender_id')
+				->leftJoin('receivers as r', 'r.id', '=', 'l.receiver_id')
+				->leftJoin('states as fst', 'fst.id', '=', 'l.from_state')
+				->leftJoin('states as tst', 'tst.id', '=', 'l.to_state')
+				->where('l.status', '0')
+				->where('l.deleted', 'N')
+				->where('l.date', $startDate);
+
+			if ($request->from_state) {
+				$query = $query->where('l.from_state', $request->from_state);
+			}
+			if ($request->to_state) {
+				$query = $query->where('l.to_state', $request->to_state);
+			}
+
+			if (Auth::user()->hasRole('administrator')) {
+				$lotin = $query->orderBy('l.date', 'ASC')->get();
+			} elseif (Auth::user()->hasRole('owner')) {
+				$lotin = $query->where('l.company_id', Auth::user()->company_id)
+					->orderBy('l.date', 'ASC')->get();
+			} else {
+				$lotin = $query->where('l.from_state', Auth::user()->state_id)
+					->orderBy('l.date', 'ASC')->get();
+			}
+			if (count($lotin) > 0) {
+				$lotinList[$startDate] = $lotin;
+			}
+		}
+
+		$company       = Companies::find(Auth::user()->company_id);
+		$countryIds    = $company->countries;
+		$countryIdList = array();
+		foreach ($countryIds as $country) {
+			$countryIdList[] = $country->id;
+		}
+		$stateIds    = $company->states;
+		$stateIdList = array();
+		foreach ($stateIds as $stateId) {
+			$stateIdList[] = $stateId->id;
+		}
+
+		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$states    = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+
+		return view('lotbalances.index', ['lotinList' => $lotinList, 'countries' => $countries, 'states' => $states]);
+
 	}
 
 	/**
@@ -70,8 +133,7 @@ class LotBalanceController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function create()
-	{
+	public function create() {
 		//
 	}
 
@@ -80,8 +142,7 @@ class LotBalanceController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function store()
-	{
+	public function store() {
 		//
 	}
 
@@ -91,8 +152,7 @@ class LotBalanceController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
-	{
+	public function show($id) {
 		$outgoing = Outgoing::find($id);
 
 		return view('incomings.show', ['outgoing' => $outgoing]);
@@ -104,8 +164,7 @@ class LotBalanceController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
-	{
+	public function edit($id) {
 		//
 	}
 
@@ -115,8 +174,7 @@ class LotBalanceController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
-	{
+	public function update($id) {
 		//
 	}
 
@@ -126,8 +184,7 @@ class LotBalanceController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
-	{
+	public function destroy($id) {
 		//
 	}
 }

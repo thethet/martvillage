@@ -17,6 +17,50 @@
 		@endif
 
 		<div class="row">
+			{!! Form::open(array('route' => 'lotbalances.search','method'=>'POST', 'id' => 'search-form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data')) !!}
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="date">
+					<strong>From City:</strong>
+				</label>
+				<div class="col-sm-2">
+					{!! Form::select('from_state', ['' => 'State'] + $states->toArray(), null, ['id'=>'from_state', 'class' => 'form-control']) !!}
+					@if ($errors->has('from_state'))
+						<span class="required">
+							<strong>{{ $errors->first('from_state') }}</strong>
+						</span>
+					@endif
+				</div>
+
+				<label class="control-label col-sm-1" for="date"></label>
+
+				<label class="control-label col-sm-2" for="time">
+					<strong>To City:</strong>
+				</label>
+				<div class="col-sm-2">
+					{!! Form::select('to_state', ['' => 'State'] + $states->toArray(), null, ['id'=>'to_state', 'class' => 'form-control']) !!}
+					@if ($errors->has('to_state'))
+						<span class="required">
+							<strong>{{ $errors->first('to_state') }}</strong>
+						</span>
+					@endif
+				</div>
+				<label class="control-label col-sm-1" for="button"></label>
+				<div class="col-sm-2">
+					<a href="#" id="add" onclick="document.getElementById('search-form').submit();">
+						<div class="addbtn">
+							<img src="{{ asset('assets/img/Search.png') }}" alt="Search">
+								Search
+						</div>
+					</a>
+				</div>
+			</div><!-- .form-group -->
+
+			<div class="form-group"></div>
+			{!! Form::close() !!}
+		</div>
+
+
+		<div class="row">
 			@if($lotinList)
 				<div class="col-lg-12">
 					<div class="col-sm-12 bdr">
@@ -103,8 +147,6 @@
 				</div>
 			@endif
 		</div>
-
-
 	</div><!-- .main-content -->
 
 	<div class="footer-menu">
@@ -138,6 +180,8 @@
 
 	<script>
 		$(document).ready(function(){
+			$("#from_state").select2();
+			$("#to_state").select2();
 		});
 	</script>
 @stop

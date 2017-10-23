@@ -193,18 +193,18 @@ class OutgoingController extends Controller {
 		for ($k = 0; $k < 31; $k++) {
 			$startDate = date("Y-m-d", strtotime($start . "+" . $k . " day"));
 			$lotin     = DB::table('lotins as l')
-						->select('l.*', 's.name as sender_name', 'r.name as receiver_name')
-						->leftJoin('senders as s', 's.id', '=', 'l.sender_id')
-						->leftJoin('receivers as r', 'r.id', '=', 'l.receiver_id')
-						->where('l.status', '0')
-						->where('l.deleted', 'N')
-						->where('l.company_id', $outgoing->company_id)
-						->where('l.date', $startDate)
-						->where('l.from_country', $outgoing->from_country)
-						->where('l.from_state', $outgoing->from_city)
-						->where('l.to_country', $outgoing->to_country)
-						->where('l.to_state', $outgoing->to_city)
-						->orderBy('l.date', 'ASC')->get();
+				->select('l.*', 's.name as sender_name', 'r.name as receiver_name')
+				->leftJoin('senders as s', 's.id', '=', 'l.sender_id')
+				->leftJoin('receivers as r', 'r.id', '=', 'l.receiver_id')
+				->where('l.status', '0')
+				->where('l.deleted', 'N')
+				->where('l.company_id', $outgoing->company_id)
+				->where('l.date', $startDate)
+				->where('l.from_country', $outgoing->from_country)
+				->where('l.from_state', $outgoing->from_city)
+				->where('l.to_country', $outgoing->to_country)
+				->where('l.to_state', $outgoing->to_city)
+				->orderBy('l.date', 'ASC')->get();
 			if (count($lotin) > 0) {
 				$lotinList[$startDate] = $lotin;
 			}
@@ -251,7 +251,7 @@ class OutgoingController extends Controller {
 			$item->update($ItemData);
 
 			Lotin::find($item->lotin_id)->where('company_id', Auth::user()->company_id)
-			->where('status', 0)->decrement('total_items');
+				->where('status', 0)->decrement('total_items');
 		}
 
 		$lotins = Lotin::where('total_items', 0)->where('company_id', Auth::user()->company_id)->get();

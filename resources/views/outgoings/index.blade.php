@@ -342,23 +342,23 @@
 				</div><!-- .menu-icon -->
 			@endpermission
 
-			@permission('outgoing-edit')
+			{{-- @permission('outgoing-edit')
 				<div class="menu-icon">
 					<a href="#" id="edit">
 						<img src="{{ asset('assets/img/edit-icon.png') }}" alt="Edit">
 						Edit
 					</a>
 				</div><!-- .menu-icon -->
-			@endpermission
+			@endpermission --}}
 
-			@permission('outgoing-delete')
+			{{-- @permission('outgoing-delete')
 				<div class="menu-icon">
 					<a href="#" id="delete">
 						<img src="{{ asset('assets/img/trash-icon.png') }}" alt="Delete">
 						Delete
 					</a>
 				</div><!-- .menu-icon -->
-			@endpermission
+			@endpermission --}}
 
 			<div class="menu-icon">
 				<a href="#" id="reset" onclick="document.getElementById('outgoing-form').reset();">
