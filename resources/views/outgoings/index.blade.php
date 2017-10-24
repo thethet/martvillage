@@ -149,7 +149,12 @@
 					</label>
 					<div class="col-sm-4">
 						<div class="col-sm-6" style="padding: 0;">
-							{!! Form::select('from_country', ['' => 'Country'] + $countryList->toArray(), null, ['id'=>'from_country', 'class' => 'form-control']) !!}
+							@if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('owner'))
+								{!! Form::select('from_country', ['' => 'Country'] + $countryList->toArray(), null, ['id'=>'from_country', 'class' => 'form-control']) !!}
+							@else
+								{!! Form::text('from_country_name', $countryList[Auth::user()->country_id], array('class' => 'form-control', 'disabled' => true, 'id' => 'from_country_name')) !!}
+								{!! Form::hidden('from_country', Auth::user()->country_id, array('class' => 'form-control')) !!}
+							@endif
 							@if ($errors->has('from_country'))
 								<span class="required">
 									<strong>{{ $errors->first('from_country') }}</strong>
@@ -158,7 +163,12 @@
 						</div>
 
 						<div class="col-sm-6" style="padding: 0;">
-							{!! Form::select('from_city', ['' => 'State'] + $stateList->toArray(), null, ['id'=>'from_city', 'class' => 'form-control']) !!}
+							@if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('owner'))
+								{!! Form::select('from_city', ['' => 'State'] + $stateList->toArray(), null, ['id'=>'from_city', 'class' => 'form-control']) !!}
+							@else
+								{!! Form::text('from_city_name', $stateList[Auth::user()->state_id], array('class' => 'form-control', 'disabled' => true, 'id' => 'from_city_name')) !!}
+								{!! Form::hidden('from_city', Auth::user()->state_id, array('class' => 'form-control')) !!}
+							@endif
 							@if ($errors->has('from_city'))
 								<span class="required">
 									<strong>{{ $errors->first('from_city') }}</strong>
@@ -415,6 +425,8 @@
 
 			$("#add-item").on("click",function(){
 				$("#outgoing-form :input").prop("disabled", false);
+				$('#from_country_name').prop("disabled", true);
+				$('#from_city_name').prop("disabled", true);
 			});
 
 

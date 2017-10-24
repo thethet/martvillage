@@ -24,8 +24,12 @@ class OutgoingController extends Controller {
 
 		if (Auth::user()->hasRole('administrator')) {
 			$outgoingList = Outgoing::where('deleted', 'N')->get();
-		} else {
+		} elseif (Auth::user()->hasRole('owner')) {
 			$outgoingList = Outgoing::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->get();
+		} else {
+			$outgoingList = Outgoing::where('company_id', Auth::user()->company_id)
+				->where('from_city', Auth::user()->state_id)
+				->where('deleted', 'N')->get();
 		}
 		$company       = Companies::find(Auth::user()->company_id);
 		$countryIds    = $company->countries;
@@ -254,7 +258,8 @@ class OutgoingController extends Controller {
 				->where('status', 0)->decrement('total_items');
 		}
 
-		$lotins = Lotin::where('total_items', 0)->where('company_id', Auth::user()->company_id)->get();
+		$lotins = Lotin::where('total_items', 0)->where('status', 0)
+			->where('company_id', Auth::user()->company_id)->get();
 
 		foreach ($lotins as $lotin) {
 			$updLotin = Lotin::find($lotin->id)->update(['status' => 1]);

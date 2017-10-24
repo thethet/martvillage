@@ -25,8 +25,12 @@ class LotInController extends Controller {
 	public function index(Request $request) {
 		if (Auth::user()->hasRole('administrator')) {
 			$lotinData = Lotin::where('deleted', 'N')->paginate(10);
+		} elseif (Auth::user()->hasRole('owner')) {
+			$lotinData = Lotin::where('company_id', Auth::user()->company_id)
+				->where('deleted', 'N')->paginate(10);
 		} else {
 			$lotinData = Lotin::where('company_id', Auth::user()->company_id)
+				->where('from_state', Auth::user()->state_id)
 				->where('deleted', 'N')->paginate(10);
 		}
 
@@ -89,7 +93,7 @@ class LotInController extends Controller {
 		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('id', 'asc')->lists('nric_code', 'id');
 		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('serial_no', 'asc')->lists('short_name', 'id');
 
-		$lastId = Lotin::where('company_id', Auth::user()->company_id)->count();
+		$lastId = Lotin::where('company_id', Auth::user()->company_id)->where('date', date('Y-m-d'))->count();
 		if ($lastId) {
 			$lastId = $lastId;
 		}
@@ -122,31 +126,31 @@ class LotInController extends Controller {
 	 */
 	public function store(Request $request) {
 		$messages = array(
-			's_contact_no.required'       => 'The Sender Contact Number  field is required.',
-			'member_no.exists'            => 'Your Member Number is wrong or you are not member.',
-			'sender_name.required'        => 'The Sender Name  field is required.',
-			'nric_code_id.required'       => 'The NRIC Code  field is required.',
-			'nric_township_id.required'   => 'The NRIC Township  field is required.',
-			'nric_no.required'            => 'The NRIC Number  field is required.',
+			's_contact_no.required'     => 'The Sender Contact Number  field is required.',
+			'member_no.exists'          => 'Your Member Number is wrong or you are not member.',
+			'sender_name.required'      => 'The Sender Name  field is required.',
+			// 'nric_code_id.required'       => 'The NRIC Code  field is required.',
+			// 'nric_township_id.required'   => 'The NRIC Township  field is required.',
+			// 'nric_no.required'            => 'The NRIC Number  field is required.',
 
-			'r_contact_no.required'       => 'The Receiver Contact Number  field is required.',
-			'receiver_name.required'      => 'The Receiver Name  field is required.',
-			'r_nric_code_id.required'     => 'The NRIC Code  field is required.',
-			'r_nric_township_id.required' => 'The NRIC Township  field is required.',
-			'r_nric_no.required'          => 'The NRIC Number  field is required.',
+			'r_contact_no.required'     => 'The Receiver Contact Number  field is required.',
+			'receiver_name.required'    => 'The Receiver Name  field is required.',
+			// 'r_nric_code_id.required'     => 'The NRIC Code  field is required.',
+			// 'r_nric_township_id.required' => 'The NRIC Township  field is required.',
+			// 'r_nric_no.required'          => 'The NRIC Number  field is required.',
 
-			'country_id.required'         => 'The From Country  field is required.',
-			'state_id.required'           => 'The From State  field is required.',
+			'country_id.required'       => 'The From Country  field is required.',
+			'state_id.required'         => 'The From State  field is required.',
 
-			'to_country_id.required'      => 'The From Country  field is required.',
-			'to_state_id.required'        => 'The From State  field is required.',
+			'to_country_id.required'    => 'The From Country  field is required.',
+			'to_state_id.required'      => 'The From State  field is required.',
 
-			'lots.*.item_name.required'   => 'The Item Name  field is required.',
-			'lots.*.barcode.required'     => 'The Barcode  field is required.',
-			'lots.*.price_id.required'    => 'The Price Category  field is required.',
-			'lots.*.unit.required'        => 'The Unit  field is required.',
-			'lots.*.quantity.required'    => 'The Quantity  field is required.',
-			'lots.*.amount.required'      => 'The Amount  field is required.',
+			'lots.*.item_name.required' => 'The Item Name  field is required.',
+			'lots.*.barcode.required'   => 'The Barcode  field is required.',
+			'lots.*.price_id.required'  => 'The Price Category  field is required.',
+			'lots.*.unit.required'      => 'The Unit  field is required.',
+			'lots.*.quantity.required'  => 'The Quantity  field is required.',
+			'lots.*.amount.required'    => 'The Amount  field is required.',
 		);
 
 		$this->validate($request, [
@@ -273,7 +277,6 @@ class LotInController extends Controller {
 		$noItems = 0;
 		for ($i = 0; $i < $size; $i++) {
 			if ($lots[$i]['item_name'] != "") {
-				$noItems++;
 				$itemData['lotin_id']    = $lotinId;
 				$itemData['item_name']   = $lots[$i]['item_name'];
 				$itemData['barcode']     = $lots[$i]['barcode'];
@@ -289,6 +292,8 @@ class LotInController extends Controller {
 			}
 
 		}
+
+		$noItems = Item::where('lotin_id', $lotinId)->count();
 
 		$updLotin = Lotin::find($lotinId)->update(['total_items' => $noItems]);
 

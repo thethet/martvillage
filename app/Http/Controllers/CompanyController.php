@@ -54,7 +54,6 @@ class CompanyController extends Controller {
 		$states    = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 		$townships = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 
-
 		return view('companies.create', ['countries' => $countries, 'states' => $states, 'townships' => $townships]);
 	}
 
@@ -127,7 +126,7 @@ class CompanyController extends Controller {
 	public function edit($id) {
 		$company = Companies::find($id);
 
-		$myCompany       = Companies::find(Auth::user()->company_id);
+		$myCompany     = Companies::find(Auth::user()->company_id);
 		$countryIds    = $myCompany->countries;
 		$countryIdList = array();
 		foreach ($countryIds as $country) {

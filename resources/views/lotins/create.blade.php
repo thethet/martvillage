@@ -63,7 +63,7 @@
 
 				<div class="form-group">
 					<label class="control-label col-sm-5" for="currency">
-						<strong>NRIC: <span class="required">*</span></strong>
+						<strong>NRIC:</strong>
 					</label>
 
 					<div class="col-sm-3" style="padding-right: 0;">
@@ -153,7 +153,7 @@
 
 				<div class="form-group">
 					<label class="control-label col-sm-5" for="currency">
-						<strong>NRIC: <span class="required">*</span></strong>
+						<strong>NRIC:</strong>
 					</label>
 
 					<div class="col-sm-3" style="padding-right: 0;">
@@ -705,11 +705,21 @@
 							$('#sender-name').val(data.s_name);
 							$('#sender-name').attr('readonly', true);
 
-							$('#nric_code').val(data.s_nric_code_id);
-							$('#select2-nric_code-container').text(data.s_nric_code_id);
+							if(data.s_nric_code_id) {
+								$('#nric_code').val(data.s_nric_code_id);
+								$('#select2-nric_code-container').text(data.s_nric_code_id);
+							}else {
+								$('#nric_code').val('');
+								$('#select2-nric_code-container').text('Code');
+							}
 
-							$('#nric_township').val(data.s_nric_tp_id);
-							$('#select2-nric_township-container').text(data.s_township);
+							if(data.s_nric_tp_id) {
+								$('#nric_township').val(data.s_nric_tp_id);
+								$('#select2-nric_township-container').text(data.s_township);
+							} else {
+								$('#nric_township').val('');
+								$('#select2-nric_township-container').text('Township');
+							}
 
 							$('#nric_no').val(data.s_nric_no);
 							$('#nric_no').attr('readonly', true);
@@ -777,11 +787,21 @@
 							$('#sender-name').val(data.s_name);
 							$('#sender-name').attr('readonly', true);
 
-							$('#nric_code').val(data.s_nric_code_id);
-							$('#select2-nric_code-container').text(data.s_nric_code_id);
+							if(data.s_nric_code_id) {
+								$('#nric_code').val(data.s_nric_code_id);
+								$('#select2-nric_code-container').text(data.s_nric_code_id);
+							}else {
+								$('#nric_code').val('');
+								$('#select2-nric_code-container').text('Code');
+							}
 
-							$('#nric_township').val(data.s_nric_tp_id);
-							$('#select2-nric_township-container').text(data.s_township);
+							if(data.s_nric_tp_id) {
+								$('#nric_township').val(data.s_nric_tp_id);
+								$('#select2-nric_township-container').text(data.s_township);
+							} else {
+								$('#nric_township').val('');
+								$('#select2-nric_township-container').text('Township');
+							}
 
 							$('#nric_no').val(data.s_nric_no);
 							$('#nric_no').attr('readonly', true);
@@ -815,6 +835,7 @@
 						address: address,
 					},
 					success: function(data) {
+						console.log(data)
 						if(!data) {
 							$('input').attr('readonly', false);
 							$("form select").attr('disabled', false);
@@ -844,11 +865,23 @@
 							$('#r_name').val(data.name);
 							$('#r_name').attr('readonly', true);
 
-							$('#r_nric_code').val(data.nric_code_id);
-							$('#select2-r_nric_code-container').text(data.nric_code_id);
+							if(data.nric_code_id) {
+								$('#r_nric_code').val(data.nric_code_id);
+								$('#select2-r_nric_code-container').text(data.nric_code_id);
+							} else {
+								$('#r_nric_code').val('');
+								$('#select2-r_nric_code-container').text('Code');
+							}
 
-							$('#r_nric_township').val(data.s_nric_tp_id);
-							$('#select2-r_nric_township-container').text(data.r_township);
+							if(data.nric_township_id) {
+								$('#r_nric_township').val(data.nric_township_id);
+								$('#select2-r_nric_township-container').text(data.r_township);
+							} else {
+								$('#nric_township').val('');
+								$('#select2-r_nric_township-container').text('Township');
+							}
+
+
 
 							$('#r_nric_no').val(data.nric_no);
 							$('#r_nric_no').attr('readonly', true);

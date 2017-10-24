@@ -96,47 +96,47 @@ class PermissionTableSeeder extends Seeder {
 				'description'  => 'Delete User',
 			],
 
-			[
-				'name'         => 'nric-code-list',
-				'display_name' => 'Display NRIC Code Listing',
-				'description'  => 'See only Listing Of NRIC Code',
+			/*[
+			'name'         => 'nric-code-list',
+			'display_name' => 'Display NRIC Code Listing',
+			'description'  => 'See only Listing Of NRIC Code',
 			],
 			[
-				'name'         => 'nric-code-create',
-				'display_name' => 'Create NRIC Code',
-				'description'  => 'Create New NRIC Code',
+			'name'         => 'nric-code-create',
+			'display_name' => 'Create NRIC Code',
+			'description'  => 'Create New NRIC Code',
 			],
 			[
-				'name'         => 'nric-code-edit',
-				'display_name' => 'Edit NRIC Code',
-				'description'  => 'Edit NRIC Code',
+			'name'         => 'nric-code-edit',
+			'display_name' => 'Edit NRIC Code',
+			'description'  => 'Edit NRIC Code',
 			],
 			[
-				'name'         => 'nric-code-delete',
-				'display_name' => 'Delete NRIC Code',
-				'description'  => 'Delete NRIC Code',
+			'name'         => 'nric-code-delete',
+			'display_name' => 'Delete NRIC Code',
+			'description'  => 'Delete NRIC Code',
 			],
 
 			[
-				'name'         => 'nric-township-list',
-				'display_name' => 'Display NRIC Township Listing',
-				'description'  => 'See only Listing Of NRIC Township',
+			'name'         => 'nric-township-list',
+			'display_name' => 'Display NRIC Township Listing',
+			'description'  => 'See only Listing Of NRIC Township',
 			],
 			[
-				'name'         => 'nric-township-create',
-				'display_name' => 'Create NRIC Township',
-				'description'  => 'Create New NRIC Township',
+			'name'         => 'nric-township-create',
+			'display_name' => 'Create NRIC Township',
+			'description'  => 'Create New NRIC Township',
 			],
 			[
-				'name'         => 'nric-township-edit',
-				'display_name' => 'Edit NRIC Township',
-				'description'  => 'Edit NRIC Township',
+			'name'         => 'nric-township-edit',
+			'display_name' => 'Edit NRIC Township',
+			'description'  => 'Edit NRIC Township',
 			],
 			[
-				'name'         => 'nric-township-delete',
-				'display_name' => 'Delete NRIC Township',
-				'description'  => 'Delete NRIC Township',
-			],
+			'name'         => 'nric-township-delete',
+			'display_name' => 'Delete NRIC Township',
+			'description'  => 'Delete NRIC Township',
+			],*/
 
 			[
 				'name'         => 'location-list',

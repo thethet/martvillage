@@ -69,13 +69,15 @@
 				<strong>Permission: <span class="required">*</span></strong>
 			</label>
 			<div class="col-sm-3">
-				{!! Form::checkbox('select_all', null, null, ['id' => 'select-all']) !!} &nbsp;
-				<span id="select-unselect">Select All</span>
-				@if ($errors->has('permission'))
-					<span class="required">
-						<strong>{{ $errors->first('permission') }}</strong>
-					</span>
-				@endif
+				<label>
+					{!! Form::checkbox('select_all', null, null, ['id' => 'select-all']) !!} &nbsp;
+					<span id="select-unselect">Select All</span>
+					@if ($errors->has('permission'))
+						<span class="required">
+							<strong>{{ $errors->first('permission') }}</strong>
+						</span>
+					@endif
+				</label>
 			</div>
 
 		</div><!-- .form-group -->

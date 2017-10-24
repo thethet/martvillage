@@ -24,7 +24,11 @@
 						Contact No:
 					</label>
 					<label class="control-label col-sm-7" for="contact">
-						{{ $sender->contact_no }}
+						@if($sender->contact_no)
+							{{ $sender->contact_no }}
+						@else
+							{{ '-' }}
+						@endif
 					</label>
 				</div><!-- .form-group -->
 
@@ -33,7 +37,11 @@
 						Member No:
 					</label>
 					<label class="control-label col-sm-7" for="member">
-						{{ $sender->member_no }}
+						@if($sender->member_no)
+							{{ $sender->member_no }}
+						@else
+							{{ '-' }}
+						@endif
 					</label>
 				</div><!-- .form-group -->
 
@@ -42,7 +50,11 @@
 						Sender Name:
 					</label>
 					<label class="control-label col-sm-7" for="sender">
-						{{ $sender->name }}
+						@if($sender->name)
+							{{ $sender->name }}
+						@else
+							{{ '-' }}
+						@endif
 					</label>
 				</div><!-- .form-group -->
 
@@ -52,7 +64,11 @@
 					</label>
 
 					<label class="control-label col-sm-7" for="nric">
-						{{ $nricCodes[$sender->nric_code_id] }} / {{ $nricTownships[$sender->nric_township_id] }} {{ $sender->nric_no }}
+						@if($sender->nric_code_id != 0 && $sender->nric_township_id != 0)
+							{{ $nricCodes[$sender->nric_code_id] }} / {{ $nricTownships[$sender->nric_township_id] }} {{ $sender->nric_no }}
+						@else
+							{{ '-' }}
+						@endif
 					</label>
 
 				</div><!-- .form-group -->
@@ -64,7 +80,11 @@
 						To:
 					</label>
 					<label class="control-label col-sm-7" for="address">
-						{{ $receiver->address }} of {{ $receiverCount }}
+						@if($receiver->address)
+							{{ $receiver->address }} of {{ $receiverCount }}
+						@else
+							{{ '-' }}
+						@endif
 					</label>
 				</div><!-- .form-group -->
 
@@ -73,7 +93,11 @@
 						Contact No:
 					</label>
 					<label class="control-label col-sm-7" for="contact">
-						{{ $receiver->contact_no }}
+						@if($receiver->contact_no)
+							{{ $receiver->contact_no }}
+						@else
+							{{ '-' }}
+						@endif
 					</label>
 				</div><!-- .form-group -->
 
@@ -82,7 +106,11 @@
 						Receiver Name:
 					</label>
 					<label class="control-label col-sm-7" for="receiver">
-						{{ $receiver->name }}
+						@if($receiver->name)
+							{{ $receiver->name }}
+						@else
+							{{ '-' }}
+						@endif
 					</label>
 				</div><!-- .form-group -->
 
@@ -91,7 +119,11 @@
 						NRIC:
 					</label>
 					<label class="control-label col-sm-7" for="nric">
-						{{ $nricCodes[$receiver->nric_code_id] }} / {{ $nricTownships[$receiver->nric_township_id] }} {{ $receiver->nric_no }}
+						@if($receiver->nric_code_id != 0 && $receiver->nric_township_id != 0)
+							{{ $nricCodes[$receiver->nric_code_id] }} / {{ $nricTownships[$receiver->nric_township_id] }} {{ $receiver->nric_no }}
+						@else
+							{{ '-' }}
+						@endif
 					</label>
 				</div><!-- .form-group -->
 

@@ -9,19 +9,17 @@ use DB;
 use Illuminate\Http\Request;
 use Session;
 
-class RoleController extends Controller
-{
+class RoleController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function index(Request $request)
-	{
+	public function index(Request $request) {
 		$roles = Role::orderBy('id', 'DESC')->paginate(10);
 
-		foreach($roles as $role) {
-			$roleUser = DB::table('role_user')->select( DB::raw('count(user_id) as users_count'))->where('role_id', $role->id)->first();
+		foreach ($roles as $role) {
+			$roleUser          = DB::table('role_user')->select(DB::raw('count(user_id) as users_count'))->where('role_id', $role->id)->first();
 			$role->users_count = $roleUser->users_count;
 		}
 
@@ -33,12 +31,11 @@ class RoleController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function create()
-	{
+	public function create() {
 		if (Auth::user()->hasRole('administrator')) {
 			$permission = Permission::get();
 		} else {
-			$permission = Permission::whereNotIn('id', [5, 6, 7, 8])->get();
+			$permission = Permission::whereNotIn('id', [5, 6, 7, 8, 10, 12])->get();
 		}
 		return view('roles.create', ['permission' => $permission]);
 	}
@@ -48,8 +45,7 @@ class RoleController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function store(Request $request)
-	{
+	public function store(Request $request) {
 		$this->validate($request, [
 			'name'         => 'required|unique:roles,name',
 			'display_name' => 'required',
@@ -78,8 +74,7 @@ class RoleController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
-	{
+	public function show($id) {
 		$role            = Role::find($id);
 		$rolePermissions = Permission::join("permission_role", "permission_role.permission_id", "=", "permissions.id")
 			->where("permission_role.role_id", $id)
@@ -94,8 +89,7 @@ class RoleController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function editAjax($userId, Request $request)
-	{
+	public function editAjax($userId, Request $request) {
 		$id       = $request->id;
 		$response = array('status' => 'success', 'url' => 'roles/' . $id . '/edit');
 		return response()->json($response);
@@ -108,8 +102,7 @@ class RoleController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
-	{
+	public function edit($id) {
 		$role = Role::find($id);
 
 		if (Auth::user()->hasRole('administrator')) {
@@ -129,8 +122,7 @@ class RoleController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id, Request $request)
-	{
+	public function update($id, Request $request) {
 		$this->validate($request, [
 			'display_name' => 'required',
 			'description'  => 'required',
@@ -160,8 +152,7 @@ class RoleController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
-	{
+	public function destroy($id) {
 		DB::table('roles')->where('id', $id)->delete();
 
 		DB::table('permission_role')->where('role_id', $id)->delete();
@@ -171,7 +162,6 @@ class RoleController extends Controller
 		// }
 
 		// $role->delete();
-
 
 		// return redirect()->route('roles.index')
 		//     ->with('success', 'Role deleted successfully');

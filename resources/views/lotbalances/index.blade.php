@@ -19,11 +19,12 @@
 		<div class="row">
 			{!! Form::open(array('route' => 'lotbalances.search','method'=>'POST', 'id' => 'search-form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data')) !!}
 			<div class="form-group">
+				@if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('owner'))
 				<label class="control-label col-sm-2" for="date">
 					<strong>From City:</strong>
 				</label>
 				<div class="col-sm-2">
-					{!! Form::select('from_state', ['' => 'State'] + $states->toArray(), null, ['id'=>'from_state', 'class' => 'form-control']) !!}
+					{!! Form::select('from_state', ['' => 'From City'] + $states->toArray(), null, ['id'=>'from_state', 'class' => 'form-control']) !!}
 					@if ($errors->has('from_state'))
 						<span class="required">
 							<strong>{{ $errors->first('from_state') }}</strong>
@@ -32,12 +33,13 @@
 				</div>
 
 				<label class="control-label col-sm-1" for="date"></label>
+				@endif
 
 				<label class="control-label col-sm-2" for="time">
 					<strong>To City:</strong>
 				</label>
 				<div class="col-sm-2">
-					{!! Form::select('to_state', ['' => 'State'] + $states->toArray(), null, ['id'=>'to_state', 'class' => 'form-control']) !!}
+					{!! Form::select('to_state', ['' => 'To City'] + $states->toArray(), null, ['id'=>'to_state', 'class' => 'form-control']) !!}
 					@if ($errors->has('to_state'))
 						<span class="required">
 							<strong>{{ $errors->first('to_state') }}</strong>
@@ -96,6 +98,9 @@
 																<th>Barcode</th>
 																<th>Unit(kg/ft<sup>3</sup>)</th>
 																<th>Split</th>
+																@if(Auth::user()->hasRole('administrator'))
+																	<th>Company</th>
+																@endif
 															</tr>
 														</thead>
 														<tbody>
@@ -130,6 +135,9 @@
 																		<td>
 																			0
 																		</td>
+																		@if(Auth::user()->hasRole('administrator'))
+																			<td>{{ $lotin->short_code }}</td>
+																		@endif
 																	</tr>
 																@endforeach
 															@endforeach

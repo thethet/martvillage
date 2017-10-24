@@ -321,6 +321,8 @@ Route::group(['middleware' => ['auth']], function () {
 	 */
 	Route::get('incomings', ['as' => 'incomings.index', 'uses' => 'IncomingController@index', 'middleware' => ['permission:incoming-list|incoming-create|incoming-edit|incoming-delete']]);
 
+	Route::post('incomings', ['as' => 'incomings.search', 'uses' => 'IncomingController@search', 'middleware' => ['permission:incoming-list|incoming-create|incoming-edit|incoming-delete']]);
+
 	Route::get('incomings/{id}', ['as' => 'incomings.show', 'uses' => 'IncomingController@show']);
 
 	Route::get('incomings/{id}/edit', ['as' => 'incomings.edit', 'uses' => 'IncomingController@edit', 'middleware' => ['permission:incoming-edit']]);

@@ -47,6 +47,7 @@
 				</div>
 				{{-- {!! $categories->render() !!} --}}
 
+				@permission('price-create')
 				{!! Form::open(array('route' => 'prices.currency.store','method'=>'POST', 'id' => 'currency-form', 'class' => 'form-horizontal')) !!}
 					{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
 					<div class="form-group">
@@ -83,8 +84,10 @@
 					@endif
 
 				{!! Form::close() !!}
+				@endpermission
 			</div>
 
+			@permission('price-create')
 			<div class="col-lg-6 price-add">
 				{!! Form::open(array('route' => 'prices.price.store','method'=>'POST', 'id' => 'price-form', 'class' => 'form-horizontal')) !!}
 					{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
@@ -170,6 +173,7 @@
 					</div><!-- .form-group -->
 				{!! Form::close() !!}
 			</div>
+			@endpermission
 
 		</div>
 

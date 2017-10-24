@@ -17,10 +17,10 @@
 		@endif
 
 		<div class="row">
-			{!! Form::open(array('route' => 'companies.store','method'=>'POST', 'id' => 'company-form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data')) !!}
+			{!! Form::open(array('route' => 'incomings.search','method'=>'POST', 'id' => 'incomings-search-form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data')) !!}
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="date">
-					<strong>Dept Date:<span class="required">*</span></strong>
+					<strong>Dept Date:</strong>
 				</label>
 				<div class="col-sm-2">
 					{!! Form::text('dept_date', null, array('placeholder' => 'Depature Date','class' => 'form-control')) !!}
@@ -34,7 +34,7 @@
 				<label class="control-label col-sm-1" for="date"></label>
 
 				<label class="control-label col-sm-2" for="time">
-					<strong>Time:<span class="required">*</span></strong>
+					<strong>Time:</strong>
 				</label>
 				<div class="col-sm-2">
 					{!! Form::text('time', null, array('placeholder' => 'Depature Time','class' => 'form-control', 'id' => 'timepicker')) !!}
@@ -44,12 +44,12 @@
 						</span>
 					@endif
 				</div>
-				<label class="control-label col-sm-2" for="button"></label>
-				<div class="col-sm-1">
-					<a href="#" id="add" onclick="document.getElementById('outgoing-form').submit();">
+				<label class="control-label col-sm-1" for="button"></label>
+				<div class="col-sm-2">
+					<a href="#" id="add" onclick="document.getElementById('incomings-search-form').submit();">
 						<div class="addbtn">
-							<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
-								Add
+							<img src="{{ asset('assets/img/Search.png') }}" alt="Search">
+								Search
 						</div>
 					</a>
 				</div>
@@ -120,53 +120,12 @@
 				</a>
 			</div><!-- .menu-icon -->
 
-			{{-- @permission('outgoing-create')
-				<div class="menu-icon">
-					<a href="#" id="add-item">
-						<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
-						New
-					</a>
-				</div><!-- .menu-icon -->
-			@endpermission
-
-			@permission('outgoing-edit')
-				<div class="menu-icon">
-					<a href="#" id="edit">
-						<img src="{{ asset('assets/img/edit-icon.png') }}" alt="Edit">
-						Edit
-					</a>
-				</div><!-- .menu-icon -->
-			@endpermission
-
-			@permission('outgoing-delete')
-				<div class="menu-icon">
-					<a href="#" id="delete">
-						<img src="{{ asset('assets/img/trash-icon.png') }}" alt="Delete">
-						Delete
-					</a>
-				</div><!-- .menu-icon -->
-			@endpermission
-
-			<div class="menu-icon">
-				<a href="#" id="reset" onclick="document.getElementById('outgoing-form').reset();">
-					<img src="{{ asset('assets/img/reset.png') }}" alt="Reset">
-					Reset
-				</a>
-			</div><!-- .menu-icon --> --}}
-
 			<div class="menu-icon">
 				<a href="{{ url('dashboard') }}" >
 					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
 					Back
 				</a>
 			</div><!-- .menu-icon -->
-
-			{{-- <div class="menu-icon">
-				<a href="#" id="add" onclick="document.getElementById('lotin-form').submit();">
-					<img src="{{ asset('assets/img/save-and-close.png') }}" alt="Save">
-					Save&Exit
-				</a>
-			</div><!-- .menu-icon --> --}}
 		</div>
 	</div><!-- .footer-menu -->
 @stop
@@ -182,6 +141,16 @@
 
 	<script>
 		$(document).ready(function(){
+			var date_input=$('input[name="dept_date"]'); //our date input has the name "date"
+			var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+			date_input.datepicker({
+				format: 'yyyy-mm-dd',
+				container: container,
+				todayHighlight: true,
+				autoclose: true,
+			});
+			date_input.datepicker('setDate', new Date());
+
 			$('#timepicker').timepicker({
 				minuteStep: 5
 			});

@@ -16,6 +16,7 @@
 		</div>
 		@endif
 
+		@permission('location-create')
 		<div class="row">
 			<div class="col-lg-3 pad0 bdr m030">
 				<div class="table-cont country-tbl">
@@ -164,6 +165,7 @@
 			</div>
 			@endif
 		</div>
+		@endpermission
 
 		@if(count($myCitiesLists) > 0)
 			<div class="row country-city">

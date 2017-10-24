@@ -24,11 +24,12 @@ class LotBalanceController extends Controller {
 		for ($k = 0; $k < 31; $k++) {
 			$startDate = date("Y-m-d", strtotime($start . "+" . $k . " day"));
 			$query     = DB::table('lotins as l')
-				->select('l.*', 's.name as sender_name', 'r.name as receiver_name', 'fst.state_name as fstate_name', 'tst.state_name as tstate_name')
+				->select('l.*', 's.name as sender_name', 'r.name as receiver_name', 'fst.state_name as fstate_name', 'tst.state_name as tstate_name', 'c.short_code')
 				->leftJoin('senders as s', 's.id', '=', 'l.sender_id')
 				->leftJoin('receivers as r', 'r.id', '=', 'l.receiver_id')
 				->leftJoin('states as fst', 'fst.id', '=', 'l.from_state')
 				->leftJoin('states as tst', 'tst.id', '=', 'l.to_state')
+				->leftJoin('companies as c', 'c.id', '=', 'l.company_id')
 				->where('l.status', '0')
 				->where('l.deleted', 'N')
 				->where('l.date', $startDate);
@@ -40,6 +41,7 @@ class LotBalanceController extends Controller {
 					->orderBy('l.date', 'ASC')->get();
 			} else {
 				$lotin = $query->where('l.from_state', Auth::user()->state_id)
+					->where('l.company_id', Auth::user()->company_id)
 					->orderBy('l.date', 'ASC')->get();
 			}
 			if (count($lotin) > 0) {
@@ -79,11 +81,12 @@ class LotBalanceController extends Controller {
 		for ($k = 0; $k < 31; $k++) {
 			$startDate = date("Y-m-d", strtotime($start . "+" . $k . " day"));
 			$query     = DB::table('lotins as l')
-				->select('l.*', 's.name as sender_name', 'r.name as receiver_name', 'fst.state_name as fstate_name', 'tst.state_name as tstate_name')
+				->select('l.*', 's.name as sender_name', 'r.name as receiver_name', 'fst.state_name as fstate_name', 'tst.state_name as tstate_name', 'c.short_code')
 				->leftJoin('senders as s', 's.id', '=', 'l.sender_id')
 				->leftJoin('receivers as r', 'r.id', '=', 'l.receiver_id')
 				->leftJoin('states as fst', 'fst.id', '=', 'l.from_state')
 				->leftJoin('states as tst', 'tst.id', '=', 'l.to_state')
+				->leftJoin('companies as c', 'c.id', '=', 'l.company_id')
 				->where('l.status', '0')
 				->where('l.deleted', 'N')
 				->where('l.date', $startDate);
@@ -102,6 +105,7 @@ class LotBalanceController extends Controller {
 					->orderBy('l.date', 'ASC')->get();
 			} else {
 				$lotin = $query->where('l.from_state', Auth::user()->state_id)
+					->where('l.company_id', Auth::user()->company_id)
 					->orderBy('l.date', 'ASC')->get();
 			}
 			if (count($lotin) > 0) {
