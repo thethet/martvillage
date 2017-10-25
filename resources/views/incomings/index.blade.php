@@ -149,7 +149,7 @@
 				todayHighlight: true,
 				autoclose: true,
 			});
-			date_input.datepicker('setDate', new Date());
+			// date_input.datepicker('setDate', new Date());
 
 			$('#timepicker').timepicker({
 				minuteStep: 5

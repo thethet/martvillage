@@ -6,6 +6,7 @@ use App\Item;
 use App\Lotin;
 use App\Outgoing;
 use Auth;
+use Illuminate\Http\Request;
 
 class IncomingController extends Controller {
 	/**
@@ -16,6 +17,40 @@ class IncomingController extends Controller {
 	public function index() {
 		$deptDate    = date('Y-m-d');
 		$currentTime = date('H:i A');
+
+		$query = Outgoing::where('dept_date', $deptDate)
+			->where('time', '<=', $currentTime)
+			->where('deleted', 'N');
+
+		if (Auth::user()->hasRole('administrator')) {
+			$outgoingList = $query->get();
+		} elseif (Auth::user()->hasRole('owner')) {
+			$outgoingList = $query->where('company_id', Auth::user()->company_id)->get();
+		} else {
+			$outgoingList = $query->where('company_id', Auth::user()->company_id)
+				->where('to_city', Auth::user()->state_id)->get();
+		}
+
+		return view('incomings.index', ['outgoingList' => $outgoingList]);
+	}
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function search(Request $request) {
+		if ($request->dept_date) {
+			$deptDate = date('Y-m-d', strtotime($request->dept_date));
+		} else {
+			$deptDate = date('Y-m-d');
+		}
+
+		if ($request->time) {
+			$currentTime = date('H:i A', strtotime($request->time));
+		} else {
+			$currentTime = date('H:i A');
+		}
 
 		$query = Outgoing::where('dept_date', $deptDate)
 			->where('time', '<=', $currentTime)

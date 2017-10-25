@@ -264,14 +264,14 @@
 				</div><!-- .form-group -->
 
 				<div class="form-group">
-					<label class="control-label col-sm-5" for="country"><strong>Country:</strong></label>
+					<label class="control-label col-sm-5" for="country"><strong>Country: <span class="required">*</span></strong></strong></label>
 					<div class="col-sm-7">
 						{!! Form::select('country_id', ['' => 'Select Country'] + $countries->toArray(), null, ['id'=>'country_id', 'class' => 'form-control']) !!}
 					</div>
 				</div><!-- .form-group -->
 
 				<div class="form-group">
-					<label class="control-label col-sm-5" for="state"><strong>State:</strong></label>
+					<label class="control-label col-sm-5" for="state"><strong>State: <span class="required">*</span></strong></strong></label>
 					<div class="col-sm-7">
 						{!! Form::select('state_id', ['' => 'Select State'] + $states->toArray(), null, ['id'=>'state_id', 'class' => 'form-control']) !!}
 					</div>

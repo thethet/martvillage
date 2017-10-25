@@ -51,7 +51,11 @@
 					</label>
 
 					<label class="control-label col-sm-7" for="nric">
-						{{ $nricCodes[$sender->nric_code_id] }} / {{ $nricTownships[$sender->nric_township_id] }} {{ $sender->nric_no }}
+						@if($sender->nric_code_id != 0 && $sender->nric_township_id != 0)
+							{{ $nricCodes[$sender->nric_code_id] }} / {{ $nricTownships[$sender->nric_township_id] }} {{ $sender->nric_no }}
+						@else
+							{{ '-' }}
+						@endif
 					</label>
 				</div><!-- .form-group -->
 			</div>
@@ -89,7 +93,11 @@
 						NRIC:
 					</label>
 					<label class="control-label col-sm-7" for="nric">
-						{{ $nricCodes[$receiver->nric_code_id] }} / {{ $nricTownships[$receiver->nric_township_id] }} {{ $receiver->nric_no }}
+						@if($receiver->nric_code_id != 0 && $receiver->nric_township_id != 0)
+							{{ $nricCodes[$receiver->nric_code_id] }} / {{ $nricTownships[$receiver->nric_township_id] }} {{ $receiver->nric_no }}
+						@else
+							{{ '-' }}
+						@endif
 					</label>
 				</div><!-- .form-group -->
 
