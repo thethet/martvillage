@@ -1221,7 +1221,7 @@
 			var discount = parseFloat((subTotal * 0.1)).toFixed(2);
 			var scharge = parseFloat((subTotal * 0.1)).toFixed(2);
 			var gst = parseFloat((subTotal * 0.07)).toFixed(2);
-			var total = parseFloat((subTotal - discount - scharge - gst)).toFixed(2);
+			var total = parseFloat((subTotal - discount + scharge + gst)).toFixed(2);
 
 			$('#discount').val(discount);
 			$('#discount-1').text(discount);

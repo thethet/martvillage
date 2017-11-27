@@ -21,6 +21,8 @@
 				{{-- <div id='calendar' ></div> --}}
 				<div class="table-cont">
 					<?php
+						$curY = date('Y', strtotime($currentMonthYear));
+						$curM = date('m', strtotime($currentMonthYear));
 						$startDay    = date('w', strtotime($currentMonthYear));
 						$daysInMonth = date('t', strtotime($currentMonthYear));
 						$today       = date('d');
@@ -55,7 +57,7 @@
 								@endforeach
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="calendar">
 							@if($startDay == 0)
 							<tr>
 							@endif
@@ -65,6 +67,10 @@
 							@endfor
 
 							@for($listDay = 1; $listDay <= $daysInMonth; $listDay++)
+								<?php
+									$searchDay = $curY . '-' . $curM . '-' . $listDay;
+									$sday = date('Y-m-d', strtotime($searchDay));
+								?>
 								@if($startDay == 7)
 								<?php $startDay = 0; ?>
 								</tr>
@@ -72,8 +78,10 @@
 
 
 								@if(array_key_exists($listDay, $outgoingPackingList))
-								<td @if($listDay == $today && $currentMonthYear == $thisMonth) class="today" @elseif($startDay == 0) class="sunday" @elseif($startDay == 6) class="saturday" @endif>
-									{{ $listDay }}
+								<td @if($listDay == $today && $currentMonthYear == $thisMonth) class="today" @elseif($startDay == 0) class="sunday" @elseif($startDay == 6) class="saturday" @else class="normal" @endif>
+									<a href="#" onClick = "searchByDay('{{ $sday }}');">
+										{{ $listDay }}
+									</a>
 
 									@if($outgoingPackingList[$listDay]['package_date'] == $currentMonthYear)
 										<span class="br-corner">
@@ -82,8 +90,10 @@
 									@endif
 								</td>
 								@else
-								<td @if($listDay == $today && $currentMonthYear == $thisMonth) class="today" @elseif($startDay == 0) class="sunday" @elseif($startDay == 6) class="saturday" @endif>
-									{{ $listDay }}
+								<td @if($listDay == $today && $currentMonthYear == $thisMonth) class="today" @elseif($startDay == 0) class="sunday" @elseif($startDay == 6) class="saturday" @else class="normal" @endif>
+									<a href="#" onClick = "searchByDay('{{ $sday }}');">
+										{{ $listDay }}
+									</a>
 								</td>
 								@endif
 
@@ -562,5 +572,23 @@
 				});
 			});
 		});
+
+
+		function searchByDay(sday) {
+
+			var url = "{{ url('outgoings/searchbyday') }}";
+			$.ajax({
+				url: url,
+				type: 'GET',
+				data: {
+					searchDay: sday,
+					// mode: 'edit'
+				},
+				success: function(data)
+				{
+					window.location.replace(data.url);
+				}
+			});
+		}
 	</script>
 @stop

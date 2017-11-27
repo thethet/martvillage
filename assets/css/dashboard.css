@@ -457,6 +457,7 @@ table.calendar td {
 	vertical-align: middle;	/*position: relative;*/
 
 	/*border: 1px solid #333;*/
+	padding: 0 !important;
 }
 
 .calendar th {
@@ -475,15 +476,26 @@ th.caption {
 	background-color: #fff;
 }
 
-.today {
-	background-color: #D3D3D3 !important;	/*color: #fff;*/
+.calendar a {
+	padding-bottom: 22px;
+	padding-right: 27px;
+	padding-left: 5px;
 }
 
-.sunday {
+.today{
+	background-color: #D3D3D3 !important;	/*color: #fff;*/
+	color: #333;
+}
+
+.normal a {
+	color: #333;
+}
+
+.sunday a {
 	color: #f00;
 }
 
-.saturday {
+.saturday a {
 	color: #00f;
 }
 

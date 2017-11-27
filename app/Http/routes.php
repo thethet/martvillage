@@ -300,6 +300,8 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('outgoings/calendar', ['as' => 'outgoings.calendar', 'uses' => 'OutgoingController@indexCalendar', 'middleware' => ['permission:outgoing-list|outgoing-create|outgoing-edit|outgoing-delete']]);
 
+	Route::get('outgoings/searchbyday', ['as' => 'outgoings.searchbyday', 'uses' => 'OutgoingController@searchByDay', 'middleware' => ['permission:outgoing-list|outgoing-create|outgoing-edit|outgoing-delete']]);
+
 	Route::post('outgoings/create', ['as' => 'outgoings.store', 'uses' => 'OutgoingController@store', 'middleware' => ['permission:outgoing-create']]);
 
 	Route::get('outgoings/ajax/{id}/edit', ['as' => 'outgoings.ajax.edit', 'uses' => 'OutgoingController@editAjax', 'middleware' => ['permission:outgoing-edit']]);

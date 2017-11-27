@@ -21,15 +21,53 @@ class OutgoingController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
+		if (Session::has('month')) {
+			$currentMonthYear = Session::get('month');
+
+			$startDay    = date('w', strtotime($currentMonthYear));
+			$daysInMonth = date('t', strtotime($currentMonthYear));
+			$today       = date('d');
+
+			$previousMonth = date('F Y', strtotime('-1 month', strtotime($currentMonthYear)));
+			$nextMonth     = date('F Y', strtotime('+1 month', strtotime($currentMonthYear)));
+		} else {
+			$currentMonthYear = date('F Y');
+
+			$startDay    = date('w', strtotime($currentMonthYear));
+			$daysInMonth = date('t', strtotime($currentMonthYear));
+			$today       = date('d');
+
+			$previousMonth = date('F Y', strtotime('-1 month', strtotime($currentMonthYear)));
+			$nextMonth     = date('F Y', strtotime('+1 month', strtotime($currentMonthYear)));
+		}
+
+		if(Session::has('searchYMD')) {
+			$searchYMD = date('Y-m-d', strtotime(Session::get('searchYMD')));
+
+			$year = date('Y', strtotime($searchYMD));
+			$month = date('m', strtotime($searchYMD));
+			$day = date('d', strtotime($searchYMD));
+		} else {
+			$year = date('Y', strtotime($currentMonthYear));
+			$month = date('m', strtotime($currentMonthYear));
+		}
+
+		$query = Outgoing::where('deleted', 'N')
+					->whereYear('dept_date', '=', $year)
+					->whereMonth('dept_date', '=', $month);
+
+		if(Session::has('searchYMD')) {
+			$query = $query->whereDay('dept_date', '=', $day);
+		}
 
 		if (Auth::user()->hasRole('administrator')) {
-			$outgoingList = Outgoing::where('deleted', 'N')->get();
+			$outgoingList = $query->get();
+
 		} elseif (Auth::user()->hasRole('owner')) {
-			$outgoingList = Outgoing::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->get();
+			$outgoingList = $query->where('company_id', Auth::user()->company_id)->get();
 		} else {
-			$outgoingList = Outgoing::where('company_id', Auth::user()->company_id)
-				->where('from_city', Auth::user()->state_id)
-				->where('deleted', 'N')->get();
+			$outgoingList =$query->where('company_id', Auth::user()->company_id)
+				->where('from_city', Auth::user()->state_id)->get();
 		}
 		$company       = Companies::find(Auth::user()->company_id);
 		$countryIds    = $company->countries;
@@ -47,19 +85,7 @@ class OutgoingController extends Controller {
 		$stateList   = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
 		$dayHeader = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-		if (Session::has('month')) {
-			$currentMonthYear = Session::get('month');
 
-			$startDay    = date('w', strtotime($currentMonthYear));
-			$daysInMonth = date('t', strtotime($currentMonthYear));
-			$today       = date('d');
-
-			$previousMonth = date('F Y', strtotime('-1 month', strtotime($currentMonthYear)));
-			$nextMonth     = date('F Y', strtotime('+1 month', strtotime($currentMonthYear)));
-		} else {
-			$currentMonthYear = date('F Y');
-		}
-		Session::forget('month');
 
 		$packages = Outgoing::select(DB::raw('sum(packing_list) as packing_list'), 'dept_date', DB::raw('count(id) as total'), DB::raw('YEAR(dept_date) year, MONTH(dept_date) month, DAY(dept_date) day'))
 			->groupby('year', 'month', 'day')
@@ -73,7 +99,11 @@ class OutgoingController extends Controller {
 			$outgoingPackingList[$package->day]['total']        = $package->total;
 			$outgoingPackingList[$package->day]['package']      = $package->total - $noPacking;
 			$outgoingPackingList[$package->day]['package_date'] = date('F Y', strtotime($package->dept_date));
+
 		}
+
+		Session::forget('month');
+		Session::forget('searchYMD');
 
 		return view('outgoings.index', ['countryList' => $countryList, 'stateList' => $stateList, 'dayHeader' => $dayHeader, 'currentMonthYear' => $currentMonthYear, 'outgoingList' => $outgoingList, 'outgoingPackingList' => $outgoingPackingList]);
 	}
@@ -85,6 +115,23 @@ class OutgoingController extends Controller {
 	 */
 	public function indexCalendar(Request $request) {
 		Session::flash('month', $request->calendarDate);
+		$response = array('status' => 'success', 'url' => 'outgoings');
+		return response()->json($response);
+
+	}
+
+	/**
+	 * Redirect Route Using Ajax.
+	 *
+	 * @return Response
+	 */
+	public function searchByDay(Request $request) {
+
+		$searchYMD = date('Y-m-d', strtotime( $request->searchDay));
+		$searchYM = date('F Y', strtotime( $request->searchDay));
+		Session::flash('month', $searchYM);
+
+		Session::flash('searchYMD', $searchYMD);
 		$response = array('status' => 'success', 'url' => 'outgoings');
 		return response()->json($response);
 
