@@ -15,7 +15,13 @@ class PermissionController extends Controller {
 	public function index(Request $request) {
 		$permissions = Permission::orderBy('id', 'DESC')->paginate(10);
 
-		return view('permissions.index', ['permissions' => $permissions])->with('i', ($request->get('page', 1) - 1) * 10);
+		$total       = $permissions->total();
+		$perPage     = $permissions->perPage();
+		$currentPage = $permissions->currentPage();
+		$lastPage    = $permissions->lastPage();
+		$lastItem    = $permissions->lastItem();
+
+		return view('permissions.index', ['permissions' => $permissions, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
 	/**
@@ -114,12 +120,12 @@ class PermissionController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id) {
-		// $permission = Permission::find($id);
+		$permission = Permission::find($id);
 		// $permission->delete();
-		// return redirect()->route('permissions.index')
-		// 	->with('success', 'Permission deleted successfully');
-		Session::flash('success', 'Permission deleted successfully');
+		return redirect()->route('permissions.index')
+			->with('success', 'Permission deleted successfully');
+		/*Session::flash('success', 'Permission deleted successfully');
 		$response = array('status' => 'success', 'url' => 'permissions');
-		return response()->json($response);
+		return response()->json($response);*/
 	}
 }

@@ -2,13 +2,23 @@
 
 namespace App\Http\Controllers;
 
-class HomeController extends Controller {
+use App\Companies;
+use App\Countries;
+use App\Member;
+use App\States;
+use App\Townships;
+use App\User;
+use Auth;
+
+class HomeController extends Controller
+{
 	/**
 	 * Create a new controller instance.
 	 *
 	 * @return void
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 		$this->middleware('auth');
 	}
 
@@ -17,7 +27,24 @@ class HomeController extends Controller {
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index() {
-		return view('dashboard.dashboard');
+	public function index()
+	{
+		if (Auth::user()->hasRole('administrator')) {
+			$companies = Companies::count();
+			$users     = User::count();
+			$members   = Member::count();
+			$countries = Countries::count();
+			$cities    = States::count();
+			$townships = Townships::count();
+		} else {
+			$companies = Companies::count();
+			$users     = User::count();
+			$members   = Member::count();
+			$countries = Countries::count();
+			$cities    = States::count();
+			$townships = Townships::count();
+		}
+
+		return view('dashboard.dashboard', ['companies' => $companies, 'users' => $users, 'members' => $members, 'countries' => $countries, 'cities' => $cities]);
 	}
 }

@@ -4,8 +4,7 @@
 			<!-- logo -->
 			<div class="logo">
 				<a href="{{ url("dashboard") }}">
-					{{-- <img src="assets/images/logo@2x.png" width="120" alt="" /> --}}
-					CARGO MANAGEMENT
+					<img src="{{ asset('assets/images/cargo-logo.jpg') }}" width="120" alt="" />
 				</a>
 			</div>
 
@@ -30,97 +29,21 @@
 		<ul id="main-menu" class="main-menu">
 			<!-- add class "multiple-expanded" to allow multiple submenus to open -->
 			<!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
-			<li class="has-sub">
-				<a href="index.html">
+			<li @if(Request::segment(1) == 'dashboard' || Request::segment(1) == null) class="active" @endif>
+				<a href="{{ url("dashboard") }}">
 					<i class="entypo-gauge"></i>
 					<span class="title">Dashboard</span>
 				</a>
-				<ul>
-					<li>
-						<a href="index.html">
-							<span class="title">Dashboard 1</span>
-						</a>
-					</li>
-					<li>
-						<a href="dashboard-2.html">
-							<span class="title">Dashboard 2</span>
-						</a>
-					</li>
-					<li>
-						<a href="dashboard-3.html">
-							<span class="title">Dashboard 3</span>
-						</a>
-					</li>
-					<li class="has-sub">
-						<a href="skin-black.html">
-							<span class="title">Skins</span>
-						</a>
-						<ul>
-							<li>
-								<a href="skin-black.html">
-									<span class="title">Black Skin</span>
-								</a>
-							</li>
-							<li>
-								<a href="skin-white.html">
-									<span class="title">White Skin</span>
-								</a>
-							</li>
-							<li>
-								<a href="skin-purple.html">
-									<span class="title">Purple Skin</span>
-								</a>
-							</li>
-							<li>
-								<a href="skin-cafe.html">
-									<span class="title">Cafe Skin</span>
-								</a>
-							</li>
-							<li>
-								<a href="skin-red.html">
-									<span class="title">Red Skin</span>
-								</a>
-							</li>
-							<li>
-								<a href="skin-green.html">
-									<span class="title">Green Skin</span>
-								</a>
-							</li>
-							<li>
-								<a href="skin-yellow.html">
-									<span class="title">Yellow Skin</span>
-								</a>
-							</li>
-							<li>
-								<a href="skin-blue.html">
-									<span class="title">Blue Skin</span>
-								</a>
-							</li>
-							<li>
-								<a href="skin-facebook.html">
-									<span class="title">Facebook Skin</span>
-									<span class="badge badge-secondary badge-roundless">New</span>
-								</a>
-							</li>
-						</ul>
-					</li>
-					<li>
-						<a href="highlights.html">
-							<span class="title">What's New</span>
-							<span class="badge badge-success badge-roundless">v2.0</span>
-						</a>
-					</li>
-				</ul>
 			</li>
 
-			<li class="opened active has-sub">
+			<li @if(Request::segment(1) == 'companies' || Request::segment(1) == 'locations' || Request::segment(1) == 'prices' || Request::segment(1) == 'roles' || Request::segment(1) == 'permissions') class="opened active has-sub" @else class="has-sub" @endif>
 				<a href="{{ url('settings') }}">
 					<i class="entypo-cog"></i>
 					<span class="title">Settings</span>
 				</a>
 				<ul>
 					@permission('company-list')
-					<li>
+					<li @if(Request::segment(1) == 'companies') class="active" @endif>
 						<a href="{{ url('/companies') }}">
 							<i class="entypo-suitcase"></i>
 							<span class="title">Company</span>
@@ -129,7 +52,7 @@
 					@endpermission
 
 					@permission('location-list')
-					<li>
+					<li @if(Request::segment(1) == 'locations') class="active" @endif>
 						<a href="{{ url('/locations') }}">
 							<i class="entypo-location"></i>
 							<span class="title">Location</span>
@@ -138,7 +61,7 @@
 					@endpermission
 
 					@permission('price-list')
-					<li>
+					<li @if(Request::segment(1) == 'prices') class="active" @endif>
 						<a href="{{ url('/prices') }}">
 							<i class="fa fa-money"></i>
 							<span class="title">Price</span>
@@ -147,7 +70,7 @@
 					@endpermission
 
 					@permission('role-list')
-					<li>
+					<li @if(Request::segment(1) == 'roles') class="active" @endif>
 						<a href="{{ url('/roles') }}">
 							<i class="entypo-flow-tree"></i>
 							<span class="title">Role</span>
@@ -156,7 +79,7 @@
 					@endpermission
 
 					@permission('permission-list')
-					<li>
+					<li @if(Request::segment(1) == 'permissions') class="active" @endif>
 						<a href="{{ url('/permissions') }}">
 							<i class="entypo-user"></i>
 							<span class="title">Permission</span>
@@ -167,7 +90,7 @@
 			</li>
 
 			@permission('user-list')
-			<li>
+			<li @if(Request::segment(1) == 'users') class="active" @endif>
 				<a href="{{ url('/users') }}">
 					<i class="entypo-users"></i>
 					<span class="title">Users</span>
@@ -176,7 +99,7 @@
 			@endpermission
 
 			@permission('lotin-list')
-			<li>
+			<li @if(Request::segment(1) == 'lotins') class="active" @endif>
 				<a href="{{ url('/lotins') }}">
 					<i class="fa fa-truck"></i>
 					<span class="title">Lot-in</span>
@@ -185,7 +108,7 @@
 			@endpermission
 
 			@permission('tracking-list')
-			<li>
+			<li @if(Request::segment(1) == 'trackings') class="active" @endif>
 				<a href="{{ url('/trackings') }}">
 					<i class="fa fa-map"></i>
 					<span class="title">Tracking</span>
@@ -194,16 +117,16 @@
 			@endpermission
 
 			@permission('collection-list')
-			<li>
+			<li @if(Request::segment(1) == 'collections') class="active" @endif>
 				<a href="{{ url('/collections') }}">
 					<i class="fa fa-database"></i>
-					<span class="title">Collection</span>
+					<span class="title">Collections</span>
 				</a>
 			</li>
 			@endpermission
 
 			@permission('lotbalance-list')
-			<li>
+			<li @if(Request::segment(1) == 'lotbalances') class="active" @endif>
 				<a href="{{ url('/lotbalances') }}">
 					<i class="fa fa-shopping-cart"></i>
 					<span class="title">Lot Balance</span>
@@ -212,7 +135,7 @@
 			@endpermission
 
 			@permission('message-list')
-			<li>
+			<li @if(Request::segment(1) == 'messages') class="active" @endif>
 				<a href="{{ url('/messages') }}">
 					<i class="entypo-mail"></i>
 					<span class="title">Messages</span>
@@ -242,7 +165,7 @@
 			@endpermission
 
 			@permission('report-list')
-			<li>
+			<li @if(Request::segment(1) == 'reports') class="active" @endif>
 				<a href="{{ url('/reports') }}">
 					<i class="entypo-chart-bar"></i>
 					<span class="title">Charts</span>
@@ -251,7 +174,7 @@
 			@endpermission
 
 			@permission('member-list')
-			<li>
+			<li @if(Request::segment(1) == 'members') class="active" @endif>
 				<a href="{{ url('/members') }}">
 					<i class="fa fa-user-secret"></i>
 					<span class="title">Members</span>
@@ -260,7 +183,7 @@
 			@endpermission
 
 			@permission('outgoing-list')
-			<li>
+			<li @if(Request::segment(1) == 'outgoings') class="active" @endif>
 				<a href="{{ url('/outgoings') }}">
 					<i class="fa fa-shopping-cart"></i>
 					<span class="title">Outgoing</span>
@@ -269,7 +192,7 @@
 			@endpermission
 
 			@permission('incoming-list')
-			<li>
+			<li @if(Request::segment(1) == 'incomings') class="active" @endif>
 				<a href="{{ url('/incomings') }}">
 					<i class="fa fa-truck"></i>
 					<span class="title">Incoming</span>

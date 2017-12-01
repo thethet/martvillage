@@ -8,7 +8,7 @@
 	<meta name="description" content="Neon Admin Panel" />
 	<meta name="author" content="" />
 
-	<link rel="icon" href="assets/images/favicon.ico">
+	<link rel="icon" href="{{ asset('assets/images/favicons.ico') }}">
 
 	<title>MART VILLAGE | LOGIN</title>
 

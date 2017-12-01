@@ -1,100 +1,118 @@
 @extends('layouts.layout')
 
-@section('site-title')
-	<div class="col-md-4 site-icon">
-		<img class="profile-icon" src="{{ asset('assets/img/permission.png') }}" alt="Permission">
-	</div>
-	<div class="col-md-8 site-header">Edit Permission</div>
+@section('page-title')
+	Permission
 @stop
 
 @section('main')
-{!! Form::model($permission, ['method' => 'PATCH','route' => ['permissions.update', $permission->id], 'id' => 'permission-form', 'class' => 'form-horizontal']) !!}
 	<div class="main-content">
-		{{-- <div class="row">
-			<div class="col-lg-12 margin-tb">
-				<div class="pull-left">
-					<h3>Edit Permission</h3>
+
+			@include('layouts.headerbar')
+			<hr />
+
+			<ol class="breadcrumb bc-3" >
+				<li>
+					<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
+				</li>
+				<li>
+					<a href="{{ url('settings') }}">Settings</a>
+				</li>
+				<li>
+					<a href="{{ url('permissions') }}">Permission Management</a>
+				</li>
+				<li class="active">
+					<strong>Edit Form</strong>
+				</li>
+			</ol>
+
+			<h2>Permission Management</h2>
+			<br />
+
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-primary" data-collapsed="0">
+						<div class="panel-heading">
+							<div class="panel-title">
+								<strong>Edit Form</strong>
+							</div>
+
+							<div class="panel-options">
+								<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+							</div>
+						</div>
+
+						<div class="panel-body">
+							{!! Form::model($permission, ['method' => 'PATCH', 'route' => ['permissions.update', $permission->id], 'id' => 'permission-form', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate']) !!}
+
+								<div class="form-group {{ $errors->has('display_name') ? ' has-error' : '' }}">
+									<label class="col-sm-3 control-label">Display Name <span class="text-danger">*</span></label>
+
+									<div class="col-sm-5">
+										<div class="input-group minimal">
+											<span class="input-group-addon"><i class="entypo-info"></i></span>
+											{!! Form::text('display_name', null, array('placeholder' => 'Display Name', 'class' => 'form-control')) !!}
+										</div>
+
+										@if ($errors->has('display_name'))
+											<span class="validate-has-error">
+												<strong>{{ $errors->first('display_name') }}</strong>
+											</span>
+										@endif
+									</div>
+								</div>
+
+								<div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
+									<label class="col-sm-3 control-label">Description <span class="text-danger">*</span></label>
+
+									<div class="col-sm-5">
+										<div class="input-group minimal">
+											<span class="input-group-addon"><i class="entypo-info"></i></span>
+											{!! Form::textarea('description', null, array('placeholder' => 'Description', 'class' => 'form-control')) !!}
+										</div>
+
+										@if ($errors->has('name'))
+											<span class="validate-has-error">
+												<strong>{{ $errors->first('name') }}</strong>
+											</span>
+										@endif
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-3 control-label"></label>
+
+									<div class="col-sm-5">
+										<button type="submit" class="btn btn-success">Save Changes</button>
+										<button type="reset" class="btn">Reset Previous</button>
+										<a href="{{ route('permissions.index') }}" class="btn btn-black">
+											Back
+										</a>
+									</div>
+								</div>
+							{!! Form::close() !!}
+						</div>
+					</div>
 				</div>
-				<div class="pull-right">
-				</div>
 			</div>
-		</div> --}}<!-- .row -->
 
-		{{-- @if (count($errors) > 0)
-			<div class="alert alert-danger">
-				<strong>Whoops!</strong> There were some problems with your input.<br><br>
-				<ul>
-					@foreach ($errors->all() as $error)
-						<li>{{ $error }}</li>
-					@endforeach
-				</ul>
-			</div>
-		@endif --}}
 
-		<div class="small-10 columns">
-			<p><b><span class="required">*</span> Fields are required</b></p>
+			<!-- Footer -->
+			<footer class="main">
+				Copyright &copy; 2017 All Rights Reserved. <strong>MSCT Co.Ltd</strong>
+			</footer>
 		</div>
+@stop
 
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="display name">
-				<strong>Display Name: <span class="required">*</span></strong>
-			</label>
-			<div class="col-sm-4">
-				{!! Form::text('display_name', null, array('placeholder' => 'Display Name','class' => 'form-control')) !!}
-				@if ($errors->has('display_name'))
-					<span class="required">
-						<strong>{{ $errors->first('display_name') }}</strong>
-					</span>
-				@endif
-			</div>
-		</div><!-- .form-group -->
+@section('my-script')
+	<!-- Imported styles on this page -->
+	<link rel="stylesheet" href="{{ asset('assets/js/datatables/datatables.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2-bootstrap.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2.css') }}">
 
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="description">
-				<strong>Description: <span class="required">*</span></strong>
-			</label>
-			<div class="col-sm-4">
-				{!! Form::textarea('description', null, array('placeholder' => 'Description','class' => 'form-control','style'=>'height:100px')) !!}
-				@if ($errors->has('description'))
-					<span class="required">
-						<strong>{{ $errors->first('description') }}</strong>
-					</span>
-				@endif
-			</div>
-		</div><!-- .form-group -->
-	</div><!-- .main-content -->
+	<!-- Imported scripts on this page -->
+	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
+	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
 
-	<div class="footer-menu">
-		<div class="footer-content">
-			<div class="menu-icon">
-				<a href="{{ url('/dashboard') }}">
-					<img src="{{ asset('assets/img/home-icon.jpeg') }}" alt="Go Home">
-					Home
-				</a>
-			</div><!-- .menu-icon -->
+@stop
 
-			<div class="menu-icon">
-				<a href="#" id="reset" onclick="document.getElementById('permission-form').reset();">
-					<img src="{{ asset('assets/img/reset.png') }}" alt="Reset">
-					Reset
-				</a>
-			</div><!-- .menu-icon -->
-
-			<div class="menu-icon">
-				<a href="{{ route('permissions.index') }}" >
-					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
-					Back
-				</a>
-			</div><!-- .menu-icon -->
-
-			<div class="menu-icon">
-				<a href="#" id="add" onclick="document.getElementById('permission-form').submit();">
-					<img src="{{ asset('assets/img/save-and-close.png') }}" alt="Save">
-					Save&Exit
-				</a>
-			</div><!-- .menu-icon -->
-		</div>
-	</div><!-- .footer-menu -->
-{!! Form::close() !!}
-
-@endsection

@@ -1,151 +1,117 @@
 @extends('layouts.layout')
 
-@section('site-title')
-	<div class="col-md-4 site-icon">
-		<img class="profile-icon" src="{{ asset('assets/img/permission.png') }}" alt="Permission">
-	</div>
-	<div class="col-md-8 site-header">Permission List</div>
+@section('page-title')
+	Permission
 @stop
 
 @section('main')
 	<div class="main-content">
-		<!-- <div class="row">
-			<div class="col-lg-12 margin-tb">
-				<div class="pull-left">
-					<h3>Permission Management</h3>
+
+			@include('layouts.headerbar')
+			<hr />
+
+			<ol class="breadcrumb bc-3" >
+				<li>
+					<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
+				</li>
+				<li>
+
+					<a href="{{ url('settings') }}">Settings</a>
+				</li>
+				<li class="active">
+
+					<strong>Permission Management</strong>
+				</li>
+			</ol>
+
+			<h2>Permission Management</h2>
+			<br />
+
+			<div class="panel panel-primary" data-collapsed="0">
+				<div class="panel-heading">
+					<div class="panel-title">
+						Showing {{ $i + 1 }} to @if($currentPage == $lastPage) {{ $lastItem }} @else {{ $i + $perPage }} @endif of {{ $total }} entries
+					</div>
+
+					<div class="panel-options">
+						@permission('permission-create')
+						<a href="{{ url('permissions/create') }}" class="bg">
+							<i class="entypo-plus-circled"></i>
+							Create New &nbsp;
+						</a>
+						@endpermission
+						<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+						{{-- <a href="#" data-rel="reload"><i class="entypo-arrows-ccw"></i></a> --}}
+						{{-- <a href="#" data-rel="close"><i class="entypo-cancel"></i></a> --}}
+					</div>
 				</div>
-				<div class="pull-right">
+
+				<div class="panel-body with-table">
+					<table class="table table-bordered responsive">
+						<thead>
+							<tr>
+								<th width="5%">SNo.</th>
+								<th>Name</th>
+								<th>Description</th>
+								<th width="20%">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach($permissions as $key => $permission)
+							<tr>
+								<td>{{ ++$i }}</td>
+								<td>{{ $permission->display_name }}</td>
+								{{-- <td>{{ $permission->name }}</td> --}}
+								<td>{{ $permission->description }}</td>
+								<td>
+									@if(Auth::user()->hasRole('administrator') || $permission->company_id == Auth::user()->company_id)
+										@permission('permission-edit')
+										<a href="{{ url('permissions/'. $permission->id .'/edit') }}" class="btn btn-default btn-sm btn-icon icon-left">
+											<i class="entypo-pencil"></i>
+											Edit
+										</a>
+										@endpermission
+
+										@permission('permission-delete')
+										<a href="{{ url('permissions/'. $permission->id .'/destroy') }}" class="btn btn-danger btn-sm btn-icon icon-left">
+											<i class="entypo-cancel"></i>
+											Delete
+										</a>
+										@endpermission
+
+										<a href="{{ url('permissions/'. $permission->id) }}" class="btn btn-info btn-sm btn-icon icon-left">
+											<i class="entypo-eye"></i>
+											View
+										</a>
+									@endif
+								</td>
+							</tr>
+							@endforeach
+						</tbody>
+					</table>
+
+					{!! $permissions->render() !!}
 				</div>
 			</div>
-		</div>.row -->
 
-		@if ($message = Session::get('success'))
-		<div class="alert alert-success">
-			<p>{{ $message }}</p>
+
+			<!-- Footer -->
+			<footer class="main">
+				Copyright &copy; 2017 All Rights Reserved. <strong>MSCT Co.Ltd</strong>
+			</footer>
 		</div>
-		@endif
-
-		<div class="table-cont">
-			<table class="table table-bordered table-responsive">
-				<thead>
-					<tr>
-						<th>No</th>
-						<th>Name</th>
-						<th>Description</th>
-						<th width="20px">Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach ($permissions as $key => $permission)
-					<tr>
-						<td>{{ ++$i }}</td>
-						<td>{{ $permission->display_name }}</td>
-						<td>{{ $permission->description }}</td>
-						<td>
-							{!! Form::checkbox('edit', $permission->id, null, ['class' => 'editboxes']) !!}
-						</td>
-					</tr>
-					@endforeach
-				</tbody>
-			</table>
-		</div>
-		{!! $permissions->render() !!}
-	</div><!-- .main-content -->
-
-	<div class="footer-menu">
-		<div class="footer-content">
-			<div class="menu-icon">
-				<a href="{{ url('/dashboard') }}">
-					<img src="{{ asset('assets/img/home-icon.jpeg') }}" alt="Go Home">
-					Home
-				</a>
-			</div><!-- .menu-icon -->
-
-			@permission('permission-create')
-				<div class="menu-icon">
-					<a href="{{ route('permissions.create') }}">
-						<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
-						New
-					</a>
-				</div><!-- .menu-icon -->
-			@endpermission
-
-			@permission('permission-edit')
-				<div class="menu-icon">
-					<a href="#" id="edit">
-						<img src="{{ asset('assets/img/edit-icon.png') }}" alt="Edit">
-						Edit
-					</a>
-				</div><!-- .menu-icon -->
-			@endpermission
-
-			@permission('permission-delete')
-				<div class="menu-icon">
-					<a href="#" id="delete">
-						<img src="{{ asset('assets/img/trash-icon.png') }}" alt="Delete">
-						Delete
-					</a>
-				</div><!-- .menu-icon -->
-			@endpermission
-
-			<div class="menu-icon">
-				<a href="{{ url('settings') }}" >
-					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
-					Back
-				</a>
-			</div><!-- .menu-icon -->
-		</div>
-	</div><!-- .footer-menu -->
 @stop
 
 @section('my-script')
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script>
-		$(document).ready(function(){
-			$(".editboxes").change(function() {
-				var $el = $(this);
-				if ($el.is(":checked")) {
-					$('.editboxes').attr('disabled', true);
-					$el.attr("disabled", false);
-				}
-				else {
-					$('.editboxes').attr('disabled', false);
-				}
-			});
+	<!-- Imported styles on this page -->
+	<link rel="stylesheet" href="{{ asset('assets/js/datatables/datatables.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2-bootstrap.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2.css') }}">
 
-			$("#edit").on("click",function(){
-				$(".editboxes").each(function() {
-					if ($(this).is(":checked")) {
-						var id = $(this).val();
-						$.ajax({
-							url: "{{ url('permissions/ajax/id/edit') }}",
-							type: 'GET',
-							data: { id: id },
-							success: function(data)
-							{
-								window.location.replace(data.url);
-							}
-						});
-					}
-				});
-			});
+	<!-- Imported scripts on this page -->
+	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
+	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
 
-			$("#delete").on("click",function(){
-				$(".editboxes").each(function() {
-					if ($(this).is(":checked")) {
-						var id = $(this).val();
-						$.ajax({
-							url: "{!! url('permissions/"+ id +"') !!}",
-							type: 'DELETE',
-							data: {_token: '{!! csrf_token() !!}'},
-							dataType: 'JSON',
-							success: function (data) {
-								window.location.replace(data.url);
-							}
-						});
-					}
-				});
-			});
-		});
-	</script>
 @stop
+
