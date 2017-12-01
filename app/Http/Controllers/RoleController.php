@@ -16,14 +16,14 @@ class RoleController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$roles = Role::orderBy('id', 'DESC')->paginate(10);
+		$roles = Role::orderBy('id', 'DESC')->paginate(1);
 
 		foreach ($roles as $role) {
 			$roleUser          = DB::table('role_user')->select(DB::raw('count(user_id) as users_count'))->where('role_id', $role->id)->first();
 			$role->users_count = $roleUser->users_count;
 		}
 
-		return view('roles.index', ['roles' => $roles])->with('i', ($request->get('page', 1) - 1) * 10);
+		return view('roles.index', ['roles' => $roles])->with('i', ($request->get('page', 1) - 1) * 1);
 	}
 
 	/**

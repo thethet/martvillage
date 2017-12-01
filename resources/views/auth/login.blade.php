@@ -2,66 +2,66 @@
 
 @section('content')
 	<div class="login-container">
-		<div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-			<div class="loginbox panel panel-info" >
-				<div class="headingbox panel-heading">
-					<div class="panel-title">Sign In</div>
+		<div class="login-header login-caret">
+			<div class="login-content">
+				<span class="description">CARGO MANAGEMENT SYSTEM</span>
+				<p class="description">Dear user, log in to access the admin area!</p>
+			</div>
+		</div>
+
+		<div class="login-progressbar">
+			<div></div>
+		</div>
+
+		<div class="login-form">
+			<div class="login-content">
+				<div class="form-login-error">
+					<h3>Invalid login</h3>
+					<p>Enter <strong>demo</strong>/<strong>demo</strong> as login and password.</p>
 				</div>
 
-				<div style="padding-top:30px" class="panel-body" >
+				<form class="form-horizontal" role="form" method="POST" id="form_login" action="{{ url('/login') }}">
+					{{ csrf_field() }}
 
-					<div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-					<form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
-						{{ csrf_field() }}
-
-						<div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-							<label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-							<div class="col-md-6">
-								<input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}">
-
-								@if ($errors->has('email'))
-									<span class="help-block">
-										<strong>{{ $errors->first('email') }}</strong>
-									</span>
-								@endif
+					<div class="form-group">
+						<div class="input-group {{ $errors->has('email') ? ' validate-has-error' : '' }}">
+							<div class="input-group-addon">
+								<i class="entypo-user"></i>
 							</div>
+
+							<input type="email" class="form-control" name="email" id="username" placeholder="Username" autocomplete="off" />
+
+							@if ($errors->has('email'))
+								<label id="username-error" class="error" for="username">{{ $errors->first('email') }}</label>
+							@endif
 						</div>
+					</div>
 
-						<div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-							<label for="password" class="col-md-4 control-label">Password</label>
-
-							<div class="col-md-6">
-								<input id="password" type="password" class="form-control" name="password">
-
-								@if ($errors->has('password'))
-									<span class="help-block">
-										<strong>{{ $errors->first('password') }}</strong>
-									</span>
-								@endif
+					<div class="form-group">
+						<div class="input-group {{ $errors->has('password') ? ' validate-has-error' : '' }}">
+							<div class="input-group-addon">
+								<i class="entypo-key"></i>
 							</div>
-						</div>
 
-						<div class="form-group">
-							<div class="col-md-6 col-md-offset-4">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="remember"> Remember Me
-									</label>
-								</div>
-							</div>
+							<input type="password" class="form-control" name="password" id="password" placeholder="Password" autocomplete="off" />
+							@if ($errors->has('password'))
+								<label id="password-error" class="error" for="password">{{ $errors->first('password') }}</label>
+							@endif
 						</div>
+					</div>
 
-						<div class="form-group">
-							<div class="col-md-6 col-md-offset-4">
-								<button type="submit" class="btn btn-primary">
-									<i class="fa fa-btn fa-sign-in"></i> Login
-								</button>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary btn-login">
+							<i class="entypo-login"></i>
+							Login In
+						</button>
+					</div>
+				</form>
 
-								{{-- <a class="btn btn-link txt-white" href="{{ url('/password/reset') }}">Forgot Your Password?</a> --}}
-							</div>
-						</div>
-					</form>
+				<div class="login-bottom-links">
+					{{-- <a href="extra-forgot-password.html" class="link">Forgot your password?</a> --}}
+					<br />
+					<a href="#">Copyright © 2017 All Rights Reserved. MSCT Co.Ltd </a>  - <a href="#">Privacy Policy</a>
 				</div>
 			</div>
 		</div>

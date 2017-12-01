@@ -9,154 +9,290 @@
 
 @section('main')
 	<div class="main-content">
-		<!-- <div class="row">
-			<div class="col-lg-12 margin-tb">
-				<div class="pull-left">
-					<h3>Role Management</h3>
-				</div>
-				<div class="pull-right">
+
+			@include('layouts.headerbar')
+
+			<hr />
+
+			<ol class="breadcrumb bc-3" >
+				<li>
+					<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
+				</li>
+				<li>
+
+					<a href="{{ url('settings') }}">Settings</a>
+				</li>
+				<li class="active">
+
+					<strong>Role Management</strong>
+				</li>
+			</ol>
+
+			<h2>Role Management</h2>
+			<br />
+
+			<div class="row">
+				<div class="col-md-12 dataTables_wrapper">
+
+					<div class="dataTables_info" id="table-2_info" role="status" aria-live="polite">
+						Showing 1 to 8 of 60 entries
+					</div>
+
+					<table class="table table-bordered responsive">
+						<thead>
+							<tr>
+								<th width="15%">ID</th>
+								<th>First name</th>
+								<th>Last name</th>
+								<th>ZIP</th>
+								<th width="33%">Country</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>65</td>
+								<td>Dillon</td>
+								<td>Garcia</td>
+								<td>13652</td>
+								<td>Holy See (Vatican City State)</td>
+							</tr>
+							<tr>
+								<td>66</td>
+								<td>Russell</td>
+								<td>Sweeney</td>
+								<td>T8P 2O6</td>
+								<td>Saint Kitts and Nevis</td>
+							</tr>
+							<tr>
+								<td>67</td>
+								<td>Zelda</td>
+								<td>Berg</td>
+								<td>84946</td>
+								<td>Afghanistan</td>
+							</tr>
+							<tr>
+								<td>68</td>
+								<td>Dexter</td>
+								<td>Mann</td>
+								<td>73596</td>
+								<td>Thailand</td>
+							</tr>
+							<tr>
+								<td>69</td>
+								<td>Maisie</td>
+								<td>Miller</td>
+								<td>X3M 6C1</td>
+								<td>Seychelles</td>
+							</tr>
+							<tr>
+								<td>70</td>
+								<td>Lynn</td>
+								<td>Mitchell</td>
+								<td>N5B 3Z9</td>
+								<td>Wallis and Futuna</td>
+							</tr>
+							<tr>
+								<td>71</td>
+								<td>Gay</td>
+								<td>Medina</td>
+								<td>66692</td>
+								<td>Germany</td>
+							</tr>
+							<tr>
+								<td>72</td>
+								<td>Olga</td>
+								<td>Clark</td>
+								<td>M6B 7B6</td>
+								<td>Kuwait</td>
+							</tr>
+							<tr>
+								<td>73</td>
+								<td>Brianna</td>
+								<td>Obrien</td>
+								<td>Z6Z 5R3</td>
+								<td>Bahrain</td>
+							</tr>
+							<tr>
+								<td>74</td>
+								<td>Daria</td>
+								<td>Byers</td>
+								<td>R9T 4N7</td>
+								<td>Ghana</td>
+							</tr>
+							<tr>
+								<td>75</td>
+								<td>Chiquita</td>
+								<td>Barker</td>
+								<td>28435</td>
+								<td>Ireland</td>
+							</tr>
+							<tr>
+								<td>76</td>
+								<td>Gray</td>
+								<td>Salazar</td>
+								<td>58618</td>
+								<td>Chile</td>
+							</tr>
+							<tr>
+								<td>77</td>
+								<td>Delilah</td>
+								<td>Kirby</td>
+								<td>42811</td>
+								<td>Oman</td>
+							</tr>
+							<tr>
+								<td>78</td>
+								<td>Xanthus</td>
+								<td>Holland</td>
+								<td>B8Q 9C4</td>
+								<td>Antigua and Barbuda</td>
+							</tr>
+							<tr>
+								<td>79</td>
+								<td>Reuben</td>
+								<td>Brennan</td>
+								<td>44693</td>
+								<td>Czech Republic</td>
+							</tr>
+							<tr>
+								<td>80</td>
+								<td>Alden</td>
+								<td>Long</td>
+								<td>94236</td>
+								<td>Slovakia</td>
+							</tr>
+							<tr>
+								<td>81</td>
+								<td>Blythe</td>
+								<td>Bender</td>
+								<td>04812</td>
+								<td>Guam</td>
+							</tr>
+							<tr>
+								<td>82</td>
+								<td>Aileen</td>
+								<td>Burgess</td>
+								<td>47942</td>
+								<td>Djibouti</td>
+							</tr>
+							<tr>
+								<td>83</td>
+								<td>Zeus</td>
+								<td>Craig</td>
+								<td>43002</td>
+								<td>Nicaragua</td>
+							</tr>
+							<tr>
+								<td>84</td>
+								<td>Jade</td>
+								<td>Garza</td>
+								<td>F2X 8F3</td>
+								<td>New Zealand</td>
+							</tr>
+							<tr>
+								<td>85</td>
+								<td>Noah</td>
+								<td>Barrera</td>
+								<td>K9C 8U0</td>
+								<td>Malawi</td>
+							</tr>
+							<tr>
+								<td>86</td>
+								<td>Quyn</td>
+								<td>Robertson</td>
+								<td>H3X 6J9</td>
+								<td>Bosnia and Herzegovina</td>
+							</tr>
+							<tr>
+								<td>87</td>
+								<td>Serena</td>
+								<td>Cabrera</td>
+								<td>83671</td>
+								<td>Slovenia</td>
+							</tr>
+							<tr>
+								<td>88</td>
+								<td>Charity</td>
+								<td>Chase</td>
+								<td>T9Q 7C4</td>
+								<td>Solomon Islands</td>
+							</tr>
+							<tr>
+								<td>89</td>
+								<td>Athena</td>
+								<td>Grimes</td>
+								<td>62801</td>
+								<td>Aruba</td>
+							</tr>
+							<tr>
+								<td>90</td>
+								<td>Mallory</td>
+								<td>Middleton</td>
+								<td>D2V 1M5</td>
+								<td>Italy</td>
+							</tr>
+							<tr>
+								<td>91</td>
+								<td>Xenos</td>
+								<td>Jones</td>
+								<td>46642</td>
+								<td>Singapore</td>
+							</tr>
+							<tr>
+								<td>92</td>
+								<td>Tate</td>
+								<td>Gregory</td>
+								<td>66538</td>
+								<td>Zimbabwe</td>
+							</tr>
+							<tr>
+								<td>93</td>
+								<td>Blaze</td>
+								<td>Taylor</td>
+								<td>70282</td>
+								<td>Paraguay</td>
+							</tr>
+							<tr>
+								<td>94</td>
+								<td>Jena</td>
+								<td>Duncan</td>
+								<td>63057</td>
+								<td>Cambodia</td>
+							</tr>
+							<tr>
+								<td>95</td>
+								<td>Thaddeus</td>
+								<td>Chase</td>
+								<td>66762</td>
+								<td>Netherlands Antilles</td>
+							</tr>
+						</tbody>
+					</table>
+
+
+					{!! $roles->render() !!}
+
 				</div>
 			</div>
-		</div>.row -->
 
-		@if ($message = Session::get('success'))
-		<div class="alert alert-success">
-			<p>{{ $message }}</p>
+
+			<!-- Footer -->
+			<footer class="main">
+				Copyright &copy; 2017 All Rights Reserved. <strong>MSCT Co.Ltd</strong>
+			</footer>
 		</div>
-		@endif
-
-		<div class="table-cont">
-			<table class="table table-bordered table-responsive">
-				<thead>
-					<tr>
-						<th>No</th>
-						<th>Name</th>
-						<th>Description</th>
-						<th width="20px">Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach ($roles as $key => $role)
-					<tr>
-						<td>{{ ++$i }}</td>
-						<td>{{ $role->display_name }}</td>
-						<td>{{ $role->description }}</td>
-						<td>
-							{{-- @if($role->users_count == 0) --}}
-								@if(Auth::user()->hasRole('administrator') || $role->company_id == Auth::user()->company_id)
-									{!! Form::checkbox('edit', $role->id, null, ['class' => 'editboxes']) !!}
-									{!! Form::hidden('users_count[]', $role->users_count, ['id' => 'users-count'.$role->id]) !!}
-								@endif
-							{{-- @endif --}}
-						</td>
-					</tr>
-					@endforeach
-				</tbody>
-			</table>
-		</div>
-		{!! $roles->render() !!}
-	</div><!-- .main-content -->
-
-	<div class="footer-menu">
-		<div class="footer-content">
-			<div class="menu-icon">
-				<a href="{{ url('/dashboard') }}">
-					<img src="{{ asset('assets/img/home-icon.jpeg') }}" alt="Go Home">
-					Home
-				</a>
-			</div><!-- .menu-icon -->
-
-			@permission('role-create')
-				<div class="menu-icon">
-					<a href="{{ route('roles.create') }}">
-						<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
-						New
-					</a>
-				</div><!-- .menu-icon -->
-			@endpermission
-
-			@permission('role-edit')
-				<div class="menu-icon">
-					<a href="#" id="edit">
-						<img src="{{ asset('assets/img/edit-icon.png') }}" alt="Edit">
-						Edit
-					</a>
-				</div><!-- .menu-icon -->
-			@endpermission
-
-			@permission('role-delete')
-				<div class="menu-icon">
-					<a href="#" id="delete">
-						<img src="{{ asset('assets/img/trash-icon.png') }}" alt="Delete">
-						Delete
-					</a>
-				</div><!-- .menu-icon -->
-			@endpermission
-
-			<div class="menu-icon">
-				<a href="{{ url('settings') }}" >
-					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
-					Back
-				</a>
-			</div><!-- .menu-icon -->
-		</div>
-	</div><!-- .footer-menu -->
 @stop
 
 @section('my-script')
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script>
-		$(document).ready(function(){
-			$(".editboxes").change(function() {
-				var $el = $(this);
-				if ($el.is(":checked")) {
-					$('.editboxes').attr('disabled', true);
-					$el.attr("disabled", false);
-				}
-				else {
-					$('.editboxes').attr('disabled', false);
-				}
-			});
+	<!-- Imported styles on this page -->
+	<link rel="stylesheet" href="{{ asset('assets/js/datatables/datatables.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2-bootstrap.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2.css') }}">
 
-			$("#edit").on("click",function(){
-				$(".editboxes").each(function() {
-					if ($(this).is(":checked")) {
-						var id = $(this).val();
-						$.ajax({
-							url: "{{ url('roles/ajax/id/edit') }}",
-							type: 'GET',
-							data: { id: id },
-							success: function(data)
-							{
-								window.location.replace(data.url);
-							}
-						});
-					}
-				});
-			});
+	<!-- Imported scripts on this page -->
+	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
+	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
 
-			$("#delete").on("click",function(){
-				$(".editboxes").each(function() {
-					if ($(this).is(":checked")) {
-						var id = $(this).val();
-						var user = $('#users-count'+id).val();
-						if(user == 0) {
-							$.ajax({
-								url: "{!! url('roles/"+ id +"') !!}",
-								type: 'DELETE',
-								data: {_token: '{!! csrf_token() !!}'},
-								dataType: 'JSON',
-								success: function (data) {
-									window.location.replace(data.url);
-								}
-							});
-						} else {
-							alert("Do not allow to delete. Someone is using this role!");
-							// window.location.reload(false);
-						}
-					}
-				});
-			});
-		});
-	</script>
 @stop
+
