@@ -27,8 +27,13 @@ class UserController extends Controller {
 		} else {
 			$users = User::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
 		}
+		$total       = $users->total();
+		$perPage     = $users->perPage();
+		$currentPage = $users->currentPage();
+		$lastPage    = $users->lastPage();
+		$lastItem    = $users->lastItem();
 
-		return view('users.index', ['users' => $users])->with('i', ($request->get('page', 1) - 1) * 10);
+		return view('users.index', ['users' => $users, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
 	/**
@@ -125,9 +130,46 @@ class UserController extends Controller {
 	 * @return Response
 	 */
 	public function show($id) {
-		$user = User::find($id);
+		$user     = User::find($id);
+		$userRole = $user->roles[0]->id;
 
-		return view('users.show', ['user' => $user]);
+		if (Auth::user()->hasRole('administrator')) {
+			$roles = Role::lists('display_name', 'id');
+
+		} else {
+			if (Auth::user()->hasRole('owner')) {
+				$roles = Role::where('id', '!=', 1)->lists('display_name', 'id');
+			} else {
+				$roles = Role::whereNotIn('id', [1, 2])->lists('display_name', 'id');
+			}
+		}
+
+		$company       = Companies::find(Auth::user()->company_id);
+		$countryIds    = $company->countries;
+		$countryIdList = array();
+		foreach ($countryIds as $country) {
+			$countryIdList[] = $country->id;
+		}
+		$stateIds    = $company->states;
+		$stateIdList = array();
+		foreach ($stateIds as $stateId) {
+			$stateIdList[] = $stateId->id;
+		}
+		$townshipIds    = $company->states;
+		$townshipIdList = array();
+		foreach ($townshipIds as $townshipId) {
+			$townshipIdList[] = $townshipId->id;
+		}
+
+		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$states    = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$townships = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
+
+		$companies     = Companies::where('deleted', 'N')->lists('company_name', 'id');
+		$nricCodes     = NricCodes::orderBy('id', 'asc')->lists('nric_code', 'id');
+		$nricTownships = NricTownships::orderBy('serial_no', 'asc')->lists('short_name', 'id');
+
+		return view('users.show', ['user' => $user, 'userRole' => $userRole, 'roles' => $roles, 'companies' => $companies, 'countries' => $countries, 'states' => $states, 'townships' => $townships, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships]);
 	}
 
 	/**

@@ -20,7 +20,8 @@ class LocationController extends Controller {
 	public function index(Request $request) {
 
 		if (Auth::user()->hasRole('administrator')) {
-			$countries   = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->get();
+			$countries   = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->paginate(10);
+
 			$countryList = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 			$stateLists  = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 

@@ -122,10 +122,10 @@ class PermissionController extends Controller {
 	public function destroy($id) {
 		$permission = Permission::find($id);
 		// $permission->delete();
-		return redirect()->route('permissions.index')
-			->with('success', 'Permission deleted successfully');
-		/*Session::flash('success', 'Permission deleted successfully');
+		/*return redirect()->route('permissions.index')
+			->with('success', 'Permission deleted successfully');*/
+		Session::flash('success', 'Permission deleted successfully');
 		$response = array('status' => 'success', 'url' => 'permissions');
-		return response()->json($response);*/
+		return response()->json($response);
 	}
 }
