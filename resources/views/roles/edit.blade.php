@@ -44,30 +44,13 @@
 					<div class="panel-body">
 						{!! Form::model($role, ['method' => 'PATCH', 'route' => ['roles.update', $role->id], 'id' => 'role-form', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate']) !!}
 
-							<div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
-								<label class="col-sm-3 control-label">Name <span class="text-danger">*</span></label>
-
-								<div class="col-sm-5">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-info"></i></span>
-										{!! Form::text('name', null, array('placeholder' => 'Name', 'class' => 'form-control')) !!}
-									</div>
-
-									@if ($errors->has('name'))
-										<span class="validate-has-error">
-											<strong>{{ $errors->first('name') }}</strong>
-										</span>
-									@endif
-								</div>
-							</div>
-
 							<div class="form-group {{ $errors->has('display_name') ? ' has-error' : '' }}">
 								<label class="col-sm-3 control-label">Display Name <span class="text-danger">*</span></label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-info"></i></span>
-										{!! Form::text('display_name', null, array('placeholder' => 'Display Name', 'class' => 'form-control')) !!}
+										{!! Form::text('display_name', null, array('placeholder' => 'Display Name', 'class' => 'form-control', 'autocomplete' => 'off')) !!}
 									</div>
 
 									@if ($errors->has('display_name'))
@@ -84,7 +67,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-info"></i></span>
-										{!! Form::textarea('description', null, array('placeholder' => 'Description', 'class' => 'form-control')) !!}
+										{!! Form::textarea('description', null, array('placeholder' => 'Description', 'class' => 'form-control', 'autocomplete' => 'off')) !!}
 									</div>
 
 									@if ($errors->has('name'))

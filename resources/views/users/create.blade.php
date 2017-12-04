@@ -47,7 +47,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-user"></i></span>
-										{!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
+										{!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control', 'autocomplete' => 'off')) !!}
 									</div>
 
 									@if ($errors->has('name'))
@@ -78,7 +78,7 @@
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-vcard"></i></span>
-										{!! Form::text('nric_no', null, array('placeholder' => '(N) xxxxxx','class' => 'form-control')) !!}
+										{!! Form::text('nric_no', null, array('placeholder' => '(N) xxxxxx','class' => 'form-control', 'autocomplete' => 'off')) !!}
 									</div>
 								</div>
 							</div>
@@ -89,7 +89,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-calendar"></i></span>
-										{!! Form::text('dob', null, array('placeholder' => 'Date of Birth','class' => 'form-control datepicker', 'id' => 'dob', 'data-format' => 'yyyy-mm-dd')) !!}
+										{!! Form::text('dob', null, array('placeholder' => 'Date of Birth','class' => 'form-control datepicker', 'id' => 'dob', 'data-format' => 'yyyy-mm-dd', 'autocomplete' => 'off')) !!}
 									</div>
 
 									@if ($errors->has('dob'))
@@ -106,7 +106,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-mobile"></i></span>
-										{!! Form::text('contact_no', null, array('placeholder' => 'Contact Number','class' => 'form-control')) !!}
+										{!! Form::text('contact_no', null, array('placeholder' => 'Contact Number','class' => 'form-control', 'autocomplete' => 'off')) !!}
 									</div>
 
 									@if ($errors->has('contact_no'))
@@ -123,7 +123,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-mail"></i></span>
-										{!! Form::text('email', null, array('placeholder' => 'Email','class' => 'form-control', 'id' => 'email')) !!}
+										{!! Form::text('email', null, array('placeholder' => 'Email','class' => 'form-control', 'id' => 'email', 'autocomplete' => 'off')) !!}
 									</div>
 
 									@if ($errors->has('email'))
@@ -163,7 +163,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="fa fa-venus-mars"></i></span>
-										{!! Form::select('gender', ['' => 'Select Gender'] + Config::get('myVars.Gender'), null, ['class' => 'form-control', 'id' => 'gender']) !!}
+										{!! Form::select('gender', ['' => 'Select Gender'] + Config::get('myVars.Gender'), null, ['class' => 'form-control', 'id' => 'gender', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('gender'))
@@ -180,7 +180,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-info"></i></span>
-										{!! Form::select('marital_status', ['' => 'Select Marital Status'] + Config::get('myVars.MaritalStatus'), null, ['class' => 'form-control']) !!}
+										{!! Form::select('marital_status', ['' => 'Select Marital Status'] + Config::get('myVars.MaritalStatus'), null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('marital_status'))
@@ -197,7 +197,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-flow-tree"></i></span>
-										{!! Form::select('role', ['' => 'Select Role'] + $roles->toArray(), null, ['class' => 'form-control']) !!}
+										{!! Form::select('role', ['' => 'Select Role'] + $roles->toArray(), null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('role'))
@@ -214,7 +214,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-users"></i></span>
-										{!! Form::text('position', null, array('placeholder' => 'Position','class' => 'form-control')) !!}
+										{!! Form::text('position', null, array('placeholder' => 'Position','class' => 'form-control', 'autocomplete' => 'off')) !!}
 									</div>
 								</div>
 							</div>
@@ -225,7 +225,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-mail"></i></span>
-										{!! Form::text('username', null, array('placeholder' => 'Username','class' => 'form-control', 'id' => 'username', 'readonly' => true)) !!}
+										{!! Form::text('username', null, array('placeholder' => 'Username','class' => 'form-control', 'id' => 'username', 'readonly' => true, 'autocomplete' => 'off')) !!}
 									</div>
 
 									@if ($errors->has('username'))
@@ -242,7 +242,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-key"></i></span>
-										{!! Form::password('password', array('placeholder' => 'Password','class' => 'form-control')) !!}
+										{!! Form::password('password', array('placeholder' => 'Password','class' => 'form-control', 'autocomplete' => 'off')) !!}
 									</div>
 
 									@if ($errors->has('password'))
@@ -259,7 +259,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-key"></i></span>
-										{!! Form::password('confirm_password', array('placeholder' => 'Confirm Password','class' => 'form-control')) !!}
+										{!! Form::password('confirm_password', array('placeholder' => 'Confirm Password','class' => 'form-control', 'autocomplete' => 'off')) !!}
 									</div>
 
 									@if ($errors->has('confirm_password'))
@@ -277,9 +277,9 @@
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-suitcase"></i></span>
 										@if(Auth::user()->hasRole('administrator'))
-										{!! Form::select('company_id', ['' => 'Select Company'] + $companies->toArray(), null, ['class' => 'form-control', 'id' => 'company_id']) !!}
+										{!! Form::select('company_id', ['' => 'Select Company'] + $companies->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off']) !!}
 										@else
-											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'readonly' => true]) !!}
+											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'readonly' => true, 'autocomplete' => 'off']) !!}
 											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
 										@endif
 									</div>
@@ -298,21 +298,21 @@
 								<div class="col-sm-2">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-direction"></i></span>
-										{!! Form::text('unit_number', null, array('placeholder' => 'Unit Number','class' => 'form-control')) !!}
+										{!! Form::text('unit_number', null, array('placeholder' => 'Unit Number','class' => 'form-control', 'autocomplete' => 'off')) !!}
 									</div>
 								</div>
 
 								<div class="col-sm-2">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-home"></i></span>
-										{!! Form::text('building_name', null, array('placeholder' => 'Building Name','class' => 'form-control')) !!}
+										{!! Form::text('building_name', null, array('placeholder' => 'Building Name','class' => 'form-control', 'autocomplete' => 'off')) !!}
 									</div>
 								</div>
 
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-address"></i></span>
-										{!! Form::text('street', null, array('placeholder' => 'Street','class' => 'form-control')) !!}
+										{!! Form::text('street', null, array('placeholder' => 'Street','class' => 'form-control', 'autocomplete' => 'off')) !!}
 									</div>
 								</div>
 							</div>
@@ -323,7 +323,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-globe"></i></span>
-										{!! Form::select('country_id', ['' => 'Select Country'] + $countries->toArray(), null, ['id'=>'country_id', 'class' => 'form-control']) !!}
+										{!! Form::select('country_id', ['' => 'Select Country'] + $countries->toArray(), null, ['id'=>'country_id', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('country_id'))
@@ -340,7 +340,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-location"></i></span>
-										{!! Form::select('state_id', ['' => 'Select State/City'] + $states->toArray(), null, ['id'=>'state_id', 'class' => 'form-control']) !!}
+										{!! Form::select('state_id', ['' => 'Select State/City'] + $states->toArray(), null, ['id'=>'state_id', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('state_id'))

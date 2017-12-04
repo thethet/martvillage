@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('page-title')
-	Company
+	NRIC Code
 @stop
 
 @section('main')
@@ -9,7 +9,7 @@
 		@include('layouts.headerbar')
 		<hr />
 
-		<ol class="breadcrumb bc-3" >
+		<ol class="breadcrumb bc-3">
 			<li>
 				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
 			</li>
@@ -17,11 +17,11 @@
 				<a href="{{ url('settings') }}">Settings</a>
 			</li>
 			<li class="active">
-				<strong>Company Management</strong>
+				<strong>NRIC Code Management</strong>
 			</li>
 		</ol>
 
-		<h2>Company Management</h2>
+		<h2>NRIC Code Management</h2>
 		<br />
 
 		@if ($message = Session::get('success'))
@@ -37,12 +37,10 @@
 				</div>
 
 				<div class="panel-options">
-					@permission('permission-create')
-					<a href="{{ url('companies/create') }}" class="bg">
+					<a href="{{ url('nric-codes/create') }}" class="bg">
 						<i class="entypo-plus-circled"></i>
 						Create New &nbsp;
 					</a>
-					@endpermission
 					<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
 					{{-- <a href="#" data-rel="reload"><i class="entypo-arrows-ccw"></i></a> --}}
 					{{-- <a href="#" data-rel="close"><i class="entypo-cancel"></i></a> --}}
@@ -54,42 +52,36 @@
 					<thead>
 						<tr>
 							<th width="5%">SNo.</th>
-							<th>Name</th>
-							<th>Short Code</th>
-							<th>Email</th>
-							<th>Contact</th>
-							<th>Address</th>
-							<th>Expiry Date</th>
+							<th>Code</th>
+							<th>Description</th>
 							<th width="15%">Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach($companies as $key => $company)
+						@foreach($codes as $key => $code)
 						<tr>
 							<td>{{ ++$i }}</td>
-							<td>{{ strtoupper($company->company_name) }}</td>
-							<td>{{ $company->short_code }}</td>
-							<td>{{ $company->email }}</td>
-							<td>{{ $company->contact_no }}</td>
-							<td>{{ $company->address }}</td>
-							<td>{{ $company->expiry_date }}</td>
+							<td>{{ $code->nric_code }}</td>
+							<td>{{ $code->description }}</td>
 							<td>
-								@if(Auth::user()->hasRole('administrator') || $company->company_id == Auth::user()->company_id)
-									@permission('company-edit')
-									<a href="{{ url('companies/'. $company->id .'/edit') }}" class="btn btn-default btn-sm">
-										<i class="entypo-pencil"></i>
-									</a>
+								@if(Auth::user()->hasRole('administrator') || $role->company_id == Auth::user()->company_id)
+									@permission('nric-code-edit')
+										<a href="{{ url('nric-codes/'. $code->id .'/edit') }}" class="btn btn-default btn-sm">
+											<i class="entypo-pencil"></i>
+										</a>
 									@endpermission
 
-									@permission('company-delete')
-									<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $company->id }}">
-										<i class="entypo-trash"></i>
-									</a>
+									@permission('nric-code-edit')
+										<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $code->id }}">
+											<i class="entypo-trash"></i>
+										</a>
 									@endpermission
 
-									<a href="{{ url('companies/'. $company->id) }}" class="btn btn-info btn-sm">
-										<i class="entypo-eye"></i>
-									</a>
+									@permission('nric-code-edit')
+										<a href="{{ url('nric-codes/'. $code->id) }}" class="btn btn-info btn-sm">
+											<i class="entypo-eye"></i>
+										</a>
+									@endpermission
 								@endif
 							</td>
 						</tr>
@@ -97,7 +89,7 @@
 					</tbody>
 				</table>
 
-				{!! $companies->render() !!}
+				{!! $codes->render() !!}
 			</div>
 		</div>
 
@@ -123,9 +115,10 @@
 	<script>
 		$(document).ready(function(){
 			$(".destroy").on("click", function(event){
+				alert("Hello: "+$(this).attr('id'));
 				var id = $(this).attr('id');
 				$.ajax({
-					url: "{!! url('companies/"+ id +"') !!}",
+					url: "{!! url('nric-codes/"+ id +"') !!}",
 					type: 'DELETE',
 					data: {_token: '{!! csrf_token() !!}'},
 					dataType: 'JSON',

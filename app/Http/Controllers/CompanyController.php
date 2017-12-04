@@ -10,21 +10,28 @@ use Auth;
 use Illuminate\Http\Request;
 use Session;
 
-class CompanyController extends Controller {
+class CompanyController extends Controller
+{
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function index(Request $request) {
+	public function index(Request $request)
+	{
 		if (Auth::user()->hasRole('administrator')) {
 			$companies = Companies::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
 		} else {
 			$companies = Companies::where('id', Auth::user()->company_id)->where('deleted', 'N')
 				->orderBy('id', 'DESC')->paginate(10);
 		}
+		$total       = $companies->total();
+		$perPage     = $companies->perPage();
+		$currentPage = $companies->currentPage();
+		$lastPage    = $companies->lastPage();
+		$lastItem    = $companies->lastItem();
 
-		return view('companies.index', ['companies' => $companies])->with('i', ($request->get('page', 1) - 1) * 10);
+		return view('companies.index', ['companies' => $companies, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
 	/**
@@ -32,7 +39,8 @@ class CompanyController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function create() {
+	public function create()
+	{
 		$company       = Companies::find(Auth::user()->company_id);
 		$countryIds    = $company->countries;
 		$countryIdList = array();
@@ -62,14 +70,20 @@ class CompanyController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store(Request $request) {
+	public function store(Request $request)
+	{
 		$this->validate($request, [
-			'company_name' => 'required',
-			'short_code'   => 'required|unique:companies,short_code',
-			'contact_no'   => 'required',
-			'email'        => 'required|email|unique:companies,email',
-			'expiry_date'  => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
-			'image'        => 'mimes:jpeg,bmp,png',
+			'company_name'  => 'required',
+			'short_code'    => 'required|unique:companies,short_code',
+			'contact_no'    => 'required',
+			'email'         => 'required|email|unique:companies,email',
+			'expiry_date'   => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
+			'image'         => 'mimes:jpeg,bmp,png',
+			'return_period' => 'required|integer',
+			'gst_rate'      => 'required|numeric',
+			'service_rate'  => 'required|numeric',
+			'country_id'    => 'required',
+			'state_id'      => 'required',
 		]);
 
 		$imageName = $this->fileUpload($request);
@@ -97,10 +111,32 @@ class CompanyController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id) {
+	public function show($id)
+	{
 		$company = Companies::find($id);
 
-		return view('companies.show', ['company' => $company]);
+		$myCompany     = Companies::find(Auth::user()->company_id);
+		$countryIds    = $myCompany->countries;
+		$countryIdList = array();
+		foreach ($countryIds as $country) {
+			$countryIdList[] = $country->id;
+		}
+		$stateIds    = $myCompany->states;
+		$stateIdList = array();
+		foreach ($stateIds as $stateId) {
+			$stateIdList[] = $stateId->id;
+		}
+		$townshipIds    = $myCompany->states;
+		$townshipIdList = array();
+		foreach ($townshipIds as $townshipId) {
+			$townshipIdList[] = $townshipId->id;
+		}
+
+		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$states    = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$townships = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
+
+		return view('companies.show', ['company' => $company, 'countries' => $countries, 'states' => $states, 'townships' => $townships]);
 	}
 
 	/**
@@ -109,7 +145,8 @@ class CompanyController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function editAjax($companyId, Request $request) {
+	public function editAjax($companyId, Request $request)
+	{
 		$id       = $request->id;
 		$response = array('status' => 'success', 'url' => 'companies/' . $id . '/edit');
 
@@ -123,7 +160,8 @@ class CompanyController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id) {
+	public function edit($id)
+	{
 		$company = Companies::find($id);
 
 		$myCompany     = Companies::find(Auth::user()->company_id);
@@ -156,13 +194,19 @@ class CompanyController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id, Request $request) {
+	public function update($id, Request $request)
+	{
 		$this->validate($request, [
-			'company_name' => 'required',
+			'company_name'  => 'required',
 			// 'short_code'   => 'required|unique:companies,short_code',
-			'contact_no'   => 'required',
-			'expiry_date'  => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
-			'image'        => 'mimes:jpeg,bmp,png',
+			'contact_no'    => 'required',
+			'expiry_date'   => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
+			'image'         => 'mimes:jpeg,bmp,png',
+			'return_period' => 'required|integer',
+			'gst_rate'      => 'required|numeric',
+			'service_rate'  => 'required|numeric',
+			'country_id'    => 'required',
+			'state_id'      => 'required',
 		]);
 
 		$data    = $request->all();
@@ -208,7 +252,8 @@ class CompanyController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id) {
+	public function destroy($id)
+	{
 		Companies::find($id)->update(['deleted' => 'Y']);
 		Session::flash('success', 'Company deleted successfully');
 		$response = array('status' => 'success', 'url' => 'companies');
@@ -224,7 +269,8 @@ class CompanyController extends Controller {
 	 * @param ConsultantRequest $request
 	 * @return static
 	 */
-	public function fileUpload($request) {
+	public function fileUpload($request)
+	{
 		if ($request->hasFile('image') && $request->file('image')->getError() == 0) {
 			$extension = $request->file('image')->getClientOriginalExtension();
 			$imageName = rand(11111, 99999) . '.' . $extension;
@@ -243,7 +289,8 @@ class CompanyController extends Controller {
  * @param ConsultantRequest $request
  * @return static
  */
-	public function destroyFile($file) {
+	public function destroyFile($file)
+	{
 		$fileName = 'uploads/logos/' . $file;
 		if (file_exists($fileName)) {
 			@unlink($fileName);

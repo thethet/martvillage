@@ -27,6 +27,9 @@ class CreateTblCompanies extends Migration {
 			$table->text('address')->nullable();
 			$table->text('location')->nullable();
 			$table->date('expiry_date');
+			$table->integer('return_period');
+			$table->double('gst_rate', 12, 2);
+			$table->double('service_rate', 12, 2);
 			$table->enum('deleted', ['N', 'Y']);
 			$table->integer('created_by');
 			$table->integer('updated_by');

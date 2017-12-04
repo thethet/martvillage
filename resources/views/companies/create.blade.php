@@ -1,284 +1,333 @@
 @extends('layouts.layout')
 
-@section('site-title')
-	<div class="col-md-4 site-icon">
-		<img class="profile-icon" src="{{ asset('assets/img/company.png') }}" alt="Company">
-	</div>
-	<div class="col-md-8 site-header">Company Profile</div>
+@section('page-title')
+	company
 @stop
 
 @section('main')
-{!! Form::open(array('route' => 'companies.store','method'=>'POST', 'id' => 'company-form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data')) !!}
 	<div class="main-content">
-		{{-- <div class="row">
-			<div class="col-lg-12 margin-tb">
-				<div class="pull-left">
-					<h3 class="page-title">Create New Company</h3>
-				</div>
-				<div class="pull-right">
-				</div>
-			</div>
-		</div> --}} <!-- .row -->
 
-		{{-- @if (count($errors) > 0)
-			<div class="alert alert-danger">
-				<strong>Whoops!</strong> There were some problems with your input.<br><br>
-				<ul>
-					@foreach ($errors->all() as $error)
-						<li>{{ $error }}</li>
-					@endforeach
-				</ul>
-			</div>
-		@endif --}}
+		@include('layouts.headerbar')
+		<hr />
 
-		<div class="small-10 columns">
-			<p><b><span class="required">*</span> Fields are required</b></p>
-		</div>
+		<ol class="breadcrumb bc-3" >
+			<li>
+				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
+			</li>
+			<li>
+				<a href="{{ url('settings') }}">Settings</a>
+			</li>
+			<li>
+				<a href="{{ url('companies') }}">Company Management</a>
+			</li>
+			<li class="active">
+				<strong>New Create Form</strong>
+			</li>
+		</ol>
+
+		<h2>Company Management</h2>
+		<br />
 
 		<div class="row">
-			<div class="col col-md-8">
-				<div class="form-group">
-					<label class="control-label col-sm-3" for="company"><strong>Company Name: <span class="required">*</span></strong></label>
-					<div class="col-sm-6">
-						{!! Form::text('company_name', null, array('placeholder' => 'Please Enter Company Name','class' => 'form-control')) !!}
-						@if ($errors->has('company_name'))
-							<span class="required">
-								<strong>{{ $errors->first('company_name') }}</strong>
-							</span>
-						@endif
+			<div class="col-md-12">
+				<div class="panel panel-primary" data-collapsed="0">
+					<div class="panel-heading">
+						<div class="panel-title">
+							<strong>New Create Form</strong>
+						</div>
+
+						<div class="panel-options">
+							<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+						</div>
 					</div>
-				</div><!-- .form-group -->
 
-				<div class="form-group">
-					<label class="control-label col-sm-3" for="company"><strong>Short Code: <span class="required">*</span></strong></label>
-					<div class="col-sm-6">
-						{!! Form::text('short_code', null, array('placeholder' => 'Enter Short Code','class' => 'form-control')) !!}
-						@if ($errors->has('short_code'))
-							<span class="required">
-								<strong>{{ $errors->first('short_code') }}</strong>
-							</span>
-						@endif
+					<div class="panel-body">
+						{!! Form::open(array('route' => 'companies.store','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate', 'enctype' => 'multipart/form-data')) !!}
+
+							<div class="form-group {{ $errors->has('company_name') ? ' has-error' : '' }}">
+								<label class="col-sm-3 control-label">Name <span class="text-danger">*</span></label>
+
+								<div class="col-sm-5">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-suitcase "></i></span>
+										{!! Form::text('company_name', null, array('placeholder' => 'Company Name','class' => 'form-control', 'autocomplete' => 'off')) !!}
+									</div>
+
+									@if ($errors->has('company_name'))
+										<span class="validate-has-error">
+											<strong>{{ $errors->first('company_name') }}</strong>
+										</span>
+									@endif
+								</div>
+							</div>
+
+							<div class="form-group {{ $errors->has('short_code') ? ' has-error' : '' }}">
+								<label class="col-sm-3 control-label">Short Code <span class="text-danger">*</span></label>
+
+								<div class="col-sm-5">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-bookmarks"></i></span>
+										{!! Form::text('short_code', null, array('placeholder' => 'Short Code','class' => 'form-control', 'autocomplete' => 'off')) !!}
+									</div>
+
+									@if ($errors->has('short_code'))
+										<span class="required">
+											<strong>{{ $errors->first('short_code') }}</strong>
+										</span>
+									@endif
+								</div>
+							</div>
+
+							<div class="form-group {{ $errors->has('contact_no') ? ' has-error' : '' }}">
+								<label class="col-sm-3 control-label">Contact No <span class="text-danger">*</span></label>
+
+								<div class="col-sm-5">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-mobile"></i></span>
+										{!! Form::text('contact_no', null, array('placeholder' => 'Contact Number','class' => 'form-control', 'autocomplete' => 'off')) !!}
+									</div>
+
+									@if ($errors->has('contact_no'))
+										<span class="required">
+											<strong>{{ $errors->first('contact_no') }}</strong>
+										</span>
+									@endif
+								</div>
+							</div>
+
+							<div class="form-group {{ $errors->has('email') ? ' has-error' : '' }}">
+								<label class="col-sm-3 control-label">Email <span class="text-danger">*</span></label>
+
+								<div class="col-sm-5">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-mail"></i></span>
+										{!! Form::text('email', null, array('placeholder' => 'Email','class' => 'form-control', 'id' => 'email', 'autocomplete' => 'off')) !!}
+									</div>
+
+									@if ($errors->has('email'))
+										<span class="required">
+											<strong>{{ $errors->first('email') }}</strong>
+										</span>
+									@endif
+								</div>
+							</div>
+
+							<div class="form-group {{ $errors->has('expiry_date') ? ' has-error' : '' }}">
+								<label class="col-sm-3 control-label">Expiry Date <span class="text-danger">*</span></label>
+
+								<div class="col-sm-5">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-calendar"></i></span>
+										{!! Form::text('expiry_date', null, array('placeholder' => 'Expiry Date','class' => 'form-control datepicker', 'id' => 'expiry_date', 'data-format' => 'yyyy-mm-dd', 'autocomplete' => 'off')) !!}
+									</div>
+
+									@if ($errors->has('expiry_date'))
+										<span class="required">
+											<strong>{{ $errors->first('expiry_date') }}</strong>
+										</span>
+									@endif
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Company Logo</label>
+
+								<div class="col-sm-5">
+
+									<div class="fileinput fileinput-new" data-provides="fileinput">
+										<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;" data-trigger="fileinput">
+											<img src="http://placehold.it/200x150" alt="...">
+										</div>
+										<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
+										<div>
+											<span class="btn btn-white btn-file">
+												<span class="fileinput-new">Select image</span>
+												<span class="fileinput-exists">Change</span>
+												<input type="file" name="image" accept="image/*">
+											</span>
+											<a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput">Remove</a>
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+							<div class="form-group {{ $errors->has('return_period') ? ' has-error' : '' }}">
+								<label class="col-sm-3 control-label">Return Period <span class="text-danger">*</span></label>
+
+								<div class="col-sm-5">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-calendar"></i></span>
+										{!! Form::text('return_period', null, array('placeholder' => 'Return Period','class' => 'form-control', 'autocomplete' => 'off')) !!}
+										<span class="input-group-addon">Days</span>
+									</div>
+
+									@if ($errors->has('return_period'))
+										<span class="required">
+											<strong>{{ $errors->first('return_period') }}</strong>
+										</span>
+									@endif
+								</div>
+							</div>
+
+							<div class="form-group {{ $errors->has('gst_rate') ? ' has-error' : '' }}">
+								<label class="col-sm-3 control-label">GST <span class="text-danger">*</span></label>
+
+								<div class="col-sm-5">
+									<div class="input-group minimal">
+										<span class="input-group-addon">&nbsp;%&nbsp;</span>
+										{!! Form::text('gst_rate', null, array('placeholder' => 'GST','class' => 'form-control', 'autocomplete' => 'off')) !!}
+									</div>
+
+									@if ($errors->has('gst_rate'))
+										<span class="required">
+											<strong>{{ $errors->first('gst_rate') }}</strong>
+										</span>
+									@endif
+								</div>
+							</div>
+
+							<div class="form-group {{ $errors->has('service_rate') ? ' has-error' : '' }}">
+								<label class="col-sm-3 control-label">Service Charges <span class="text-danger">*</span></label>
+
+								<div class="col-sm-5">
+									<div class="input-group minimal">
+										<span class="input-group-addon">&nbsp;%&nbsp;</span>
+										{!! Form::text('service_rate', null, array('placeholder' => 'Service Charges','class' => 'form-control', 'autocomplete' => 'off')) !!}
+									</div>
+
+									@if ($errors->has('service_rate'))
+										<span class="required">
+											<strong>{{ $errors->first('service_rate') }}</strong>
+										</span>
+									@endif
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Address</label>
+
+								<div class="col-sm-2">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-direction"></i></span>
+										{!! Form::text('unit_number', null, array('placeholder' => 'Unit Number','class' => 'form-control', 'autocomplete' => 'off')) !!}
+									</div>
+								</div>
+
+								<div class="col-sm-2">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-home"></i></span>
+										{!! Form::text('building_name', null, array('placeholder' => 'Building Name','class' => 'form-control', 'autocomplete' => 'off')) !!}
+									</div>
+								</div>
+
+								<div class="col-sm-4">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-address"></i></span>
+										{!! Form::text('street', null, array('placeholder' => 'Street','class' => 'form-control', 'autocomplete' => 'off')) !!}
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group {{ $errors->has('country_id') ? ' has-error' : '' }}">
+								<label class="col-sm-3 control-label">Country <span class="text-danger">*</span></label>
+
+								<div class="col-sm-5">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-globe"></i></span>
+										{!! Form::select('country_id', ['' => 'Select Country'] + $countries->toArray(), null, ['id'=>'country_id', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+									</div>
+
+									@if ($errors->has('country_id'))
+										<span class="required">
+											<strong>{{ $errors->first('country_id') }}</strong>
+										</span>
+									@endif
+								</div>
+							</div>
+
+							<div class="form-group {{ $errors->has('state_id') ? ' has-error' : '' }}">
+								<label class="col-sm-3 control-label">State/City <span class="text-danger">*</span></label>
+
+								<div class="col-sm-5">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-location"></i></span>
+										{!! Form::select('state_id', ['' => 'Select State/City'] + $states->toArray(), null, ['id'=>'state_id', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+									</div>
+
+									@if ($errors->has('state_id'))
+										<span class="required">
+											<strong>{{ $errors->first('state_id') }}</strong>
+										</span>
+									@endif
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label"></label>
+
+								<div class="col-sm-5">
+									<button type="submit" class="btn btn-success">Save</button>
+									<button type="reset" class="btn">Reset</button>
+									<a href="{{ route('companies.index') }}" class="btn btn-black">
+										Back
+									</a>
+								</div>
+							</div>
+						{!! Form::close() !!}
 					</div>
-				</div><!-- .form-group -->
-
-				<div class="form-group">
-					<label class="control-label col-sm-3" for="contact-no"><strong>Contact No.: <span class="required">*</span></strong></label>
-					<div class="col-sm-6">
-						{!! Form::text('contact_no', null, array('placeholder' => 'Please Enter Contact Number','class' => 'form-control')) !!}
-						@if ($errors->has('contact_no'))
-							<span class="required">
-								<strong>{{ $errors->first('contact_no') }}</strong>
-							</span>
-						@endif
-					</div>
-				</div><!-- .form-group -->
-
-				{{-- <div class="form-group">
-					<label class="control-label col-sm-3" for="fax"><strong>Fax: <span class="required">*</span></strong></label>
-					<div class="col-sm-6">
-						{!! Form::text('fax', null, array('placeholder' => 'Please Enter Fax Number','class' => 'form-control')) !!}
-						@if ($errors->has('fax'))
-							<span class="required">
-								<strong>{{ $errors->first('fax') }}</strong>
-							</span>
-						@endif
-					</div>
-				</div><!-- .form-group --> --}}
-
-				<div class="form-group">
-					<label class="control-label col-sm-3" for="email"><strong>Email: <span class="required">*</span></strong></label>
-					<div class="col-sm-6">
-						{!! Form::text('email', null, array('placeholder' => 'Please Enter Email','class' => 'form-control')) !!}
-						@if ($errors->has('email'))
-							<span class="required">
-								<strong>{{ $errors->first('email') }}</strong>
-							</span>
-						@endif
-					</div>
-				</div><!-- .form-group -->
-
-				<div class="form-group">
-					<label class="control-label col-sm-3" for="email"><strong>Expiry Date: <span class="required">*</span></strong></label>
-					<div class="col-sm-6">
-						{!! Form::text('expiry_date', null, array('placeholder' => 'Please Enter Expiry Date','class' => 'form-control', 'id' => 'expiry_date')) !!}
-						@if ($errors->has('expiry_date'))
-							<span class="required">
-								<strong>{{ $errors->first('expiry_date') }}</strong>
-							</span>
-						@endif
-					</div>
-				</div><!-- .form-group -->
-
-				<div class="form-group">
-					<label class="control-label col-sm-3" for="email"><strong>Company Logo:</strong></label>
-					<div class="col-sm-6">
-						{!! Form::file('image') !!}
-						@if ($errors->has('image'))
-							<span class="required">
-								<strong>{{ $errors->first('image') }}</strong>
-							</span>
-						@endif
-					</div>
-				</div><!-- .form-group -->
-			</div>
-
-			<div class="col-sm-3">
-				{{-- <div class="photobox">
-					<img src="{{ asset('assets/img/msct_logo.jpg') }}" alt="Company Logo">
-				</div> --}}
-
-				<div class="photobox">
-					Company Logo
 				</div>
 			</div>
 		</div>
 
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="address"><strong>Address</strong></label>
-		</div><!-- .form-group -->
 
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="unit number"><strong>Unit Number:</strong></label>
-			<div class="col-sm-4">
-				{!! Form::text('unit_number', null, array('placeholder' => 'Please Enter Unit Number','class' => 'form-control')) !!}
-			</div>
-		</div><!-- .form-group -->
-
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="building"><strong>Building Name:</strong></label>
-			<div class="col-sm-4">
-				{!! Form::text('building_name', null, array('placeholder' => 'Please Enter Building Name','class' => 'form-control')) !!}
-			</div>
-		</div><!-- .form-group -->
-
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="street"><strong>Street:</strong></label>
-			<div class="col-sm-4">
-				{!! Form::text('street', null, array('placeholder' => 'Please Enter Street','class' => 'form-control')) !!}
-			</div>
-		</div><!-- .form-group -->
-
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="country"><strong>Country:</strong></label>
-			<div class="col-sm-4">
-				{!! Form::select('country_id', ['' => 'Select Country'] + $countries->toArray(), null, ['id'=>'country_id', 'class' => 'form-control']) !!}
-			</div>
-		</div><!-- .form-group -->
-
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="state"><strong>State:</strong></label>
-			<div class="col-sm-4">
-				{!! Form::select('state_id', ['' => 'Select State'] + $states->toArray(), null, ['id'=>'state_id', 'class' => 'form-control']) !!}
-			</div>
-		</div><!-- .form-group -->
-
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="township"><strong>Township:</strong></label>
-			<div class="col-sm-4">
-				{!! Form::select('township_id', ['' => 'Select Township'] + $townships->toArray(), null, ['id'=>'township_id', 'class' => 'form-control']) !!}
-			</div>
-		</div><!-- .form-group -->
-
-	</div><!-- .main-content -->
-
-	<div class="footer-menu">
-		<div class="footer-content">
-			<div class="menu-icon">
-				<a href="{{ url('/dashboard') }}">
-					<img src="{{ asset('assets/img/home-icon.jpeg') }}" alt="Go Home">
-					Home
-				</a>
-			</div><!-- .menu-icon -->
-
-			<div class="menu-icon">
-				<a href="#" id="reset" onclick="document.getElementById('company-form').reset();">
-					<img src="{{ asset('assets/img/reset.png') }}" alt="Reset">
-					Reset
-				</a>
-			</div><!-- .menu-icon -->
-
-			<div class="menu-icon">
-				<a href="{{ route('companies.index') }}" >
-					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
-					Back
-				</a>
-			</div><!-- .menu-icon -->
-
-			<div class="menu-icon">
-				<a href="#" id="add" onclick="document.getElementById('company-form').submit();">
-					<img src="{{ asset('assets/img/save-and-close.png') }}" alt="Save">
-					Save&Exit
-				</a>
-			</div><!-- .menu-icon -->
-		</div>
-	</div><!-- .footer-menu -->
-{!! Form::close() !!}
+		<!-- Footer -->
+		<footer class="main">
+			Copyright &copy; 2017 All Rights Reserved. <strong>MSCT Co.Ltd</strong>
+		</footer>
+	</div>
 @stop
 
 @section('my-script')
-	<!-- Extra JavaScript/CSS added manually in "Settings" tab -->
-<!-- Include jQuery -->
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/select2/dist/css/select2.css') }}">
-	<script src="{{ asset('plugins/select2/dist/js/select2.js') }}"></script>
+	<!-- Imported styles on this page -->
+	<link rel="stylesheet" href="{{ asset('assets/js/datatables/datatables.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2-bootstrap.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2.css') }}">
+
+	<!-- Imported scripts on this page -->
+	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+	<script src="{{ asset('assets/js/bootstrap-datepicker.js') }}"></script>
+	<script src="{{ asset('assets/js/bootstrap-timepicker.min.js') }}"></script>
+	<script src="{{ asset('assets/js/daterangepicker/daterangepicker.js') }}"></script>
+	<script src="{{ asset('assets/js/fileinput.js') }}"></script>
+	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
+
 	<script>
 		$(document).ready(function(){
-			var date_input=$('input[name="expiry_date"]'); //our date input has the name "date"
-			var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-			date_input.datepicker({
-				format: 'yyyy-mm-dd',
-				container: container,
-				todayHighlight: true,
-				autoclose: true,
-			});
-
-			$("#country_id").select2();
-
-			$("#state_id").select2({
-				ajax: {
+			$("#country_id").change(function(event) {
+				// Fetch the preselected item, and add to the control
+				var countryId = $('#country_id').val();
+				var stateSelect = $('#state_id');
+				$.ajax({
+					type: 'GET',
 					url: "{{ url('states/search-state-country') }}",
 					dataType: 'json',
 					delay: 250,
-					data: function (params) {
-						var countryId = $('#country_id').val();
-						return {
-							search: params.term,
-							countryId: countryId
-						};
-					},
-					processResults: function (data, params) {
-						console.log(data)
-						return {
-							results: data.items
-						};
-					},
-					cache: true
-				},
+					data: {
+						search: '',
+						countryId: countryId
+					}
+					,
+				}).then(function (data) {
+					var html = '<option value="">Select State/City</option>';
+					for (var i = 0, len = data.items.length; i < len; ++i) {
+						html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+					}
+					stateSelect.children().remove().end().append(html) ;
+				});
 			});
 
-			$("#township_id").select2({
-				ajax: {
-					url: "{{ url('townships/search-township-state') }}",
-					dataType: 'json',
-					delay: 250,
-					data: function (params) {
-						var stateId = $('#state_id').val();
-						return {
-							search: params.term,
-							stateId: stateId
-						};
-					},
-					processResults: function (data, params) {
-						console.log(data)
-						return {
-							results: data.items
-						};
-					},
-					cache: true
-				},
-			});
-		})
+		});
 	</script>
 @stop
+

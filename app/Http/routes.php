@@ -182,6 +182,27 @@ Route::group(['middleware' => ['auth']], function () {
 
 	/*
 	|--------------------------------------------------------------------------
+	| NRIC Code Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for NRIC Code Model CRUD
+	|
+	 */
+	Route::get('nric-codes', ['as' => 'nric-codes.index', 'uses' => 'NricCodeController@index', 'middleware' => ['permission:nric-code-list|nric-code-create|nric-code-edit|nric-code-delete']]);
+
+	Route::get('nric-codes/create', ['as' => 'nric-codes.create', 'uses' => 'NricCodeController@create', 'middleware' => ['permission:nric-code-create']]);
+	Route::post('nric-codes/create', ['as' => 'nric-codes.store', 'uses' => 'NricCodeController@store', 'middleware' => ['permission:nric-code-create']]);
+
+	Route::get('nric-codes/{id}', ['as' => 'nric-codes.show', 'uses' => 'NricCodeController@show']);
+
+	Route::get('nric-codes/ajax/{id}/edit', ['as' => 'nric-codes.ajax.edit', 'uses' => 'NricCodeController@editAjax', 'middleware' => ['permission:nric-code-edit']]);
+	Route::get('nric-codes/{id}/edit', ['as' => 'nric-codes.edit', 'uses' => 'NricCodeController@edit', 'middleware' => ['permission:nric-code-edit']]);
+	Route::patch('nric-codes/{id}', ['as' => 'nric-codes.update', 'uses' => 'NricCodeController@update', 'middleware' => ['permission:nric-code-edit']]);
+
+	Route::delete('nric-codes/{id}', ['as' => 'nric-codes.destroy', 'uses' => 'NricCodeController@destroy', 'middleware' => ['permission:nric-code-delete']]);
+
+	/*
+	|--------------------------------------------------------------------------
 	| User Controller
 	|--------------------------------------------------------------------------
 	|

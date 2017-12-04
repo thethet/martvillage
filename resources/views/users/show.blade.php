@@ -39,7 +39,7 @@
 					</div>
 
 					<div class="panel-body">
-						{!! Form::model($user, ['method' => 'GET', 'route' => ['users.index', $user->id], 'id' => 'user-form', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered']) !!}
+						{!! Form::model($user, ['method' => 'GET', 'route' => ['users.index', $user->id], 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered']) !!}
 
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Name</label>
