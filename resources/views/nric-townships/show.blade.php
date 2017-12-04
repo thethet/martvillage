@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('page-title')
-	Role
+	NRIC Township
 @stop
 
 @section('main')
@@ -18,14 +18,14 @@
 				<a href="{{ url('settings') }}">Settings</a>
 			</li>
 			<li>
-				<a href="{{ url('roles') }}">Role Management</a>
+				<a href="{{ url('nric-townships') }}">NRIC Township Management</a>
 			</li>
 			<li class="active">
-				<strong>Edit Form</strong>
+				<strong>Detail Form</strong>
 			</li>
 		</ol>
 
-		<h2>Role Management</h2>
+		<h2>NRIC Township Management</h2>
 		<br />
 
 		<div class="row">
@@ -33,7 +33,7 @@
 				<div class="panel panel-primary" data-collapsed="0">
 					<div class="panel-heading">
 						<div class="panel-title">
-							<strong>Edit Form</strong>
+							<strong>Detail Form</strong>
 						</div>
 
 						<div class="panel-options">
@@ -42,51 +42,49 @@
 					</div>
 
 					<div class="panel-body">
-						{!! Form::model($role, ['method' => 'PATCH', 'route' => ['roles.update', $role->id], 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate']) !!}
+						{!! Form::model($nricTownship, ['method' => 'GET', 'route' => ['nric-townships.index', $nricTownship->id], 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate']) !!}
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Name</label>
+								<label class="col-sm-3 control-label">NRIC Code</label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-info"></i></span>
-										{!! Form::text('name', null, ['placeholder' => 'Name', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+										<span class="input-group-addon"><i class="entypo-vcard"></i></span>
+										{!! Form::select('nric_code_id', ['' => 'Select NRIC Code'] + $nricCodes->toArray(), null, ['class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Display Name</label>
+								<label class="col-sm-3 control-label">Township</label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-info"></i></span>
-										{!! Form::text('display_name', null, ['placeholder' => 'Display Name', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+										<span class="input-group-addon"><i class="entypo-location"></i></span>
+										{!! Form::text('township', null, ['placeholder' => 'Township', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Description</label>
+								<label class="col-sm-3 control-label">Township Short Name</label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-info"></i></span>
-										{!! Form::text('description', null, ['placeholder' => 'Description', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+										{!! Form::text('short_name', null, ['placeholder' => 'Township Short Name', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Permission</label>
-								<div class="col-sm-9">
-									@if(!empty($rolePermissions))
-										@foreach($rolePermissions as $v)
-											<label class="label label-success">{{ $v->display_name }}</label>
-										@endforeach
-									@else
-										{{ '-' }}
-									@endif
+								<label class="col-sm-3 control-label">Serial Number</label>
+
+								<div class="col-sm-5">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-info"></i></span>
+										{!! Form::text('serial_no', null, ['placeholder' => 'Serial Number', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+									</div>
 								</div>
 							</div>
 
@@ -94,7 +92,7 @@
 								<label class="col-sm-3 control-label"></label>
 
 								<div class="col-sm-5">
-									<a href="{{ route('roles.index') }}" class="btn btn-black">
+									<a href="{{ route('nric-townships.index') }}" class="btn btn-black">
 										Back
 									</a>
 								</div>

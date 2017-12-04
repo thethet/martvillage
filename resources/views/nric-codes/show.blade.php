@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('page-title')
-	Role
+	NRIC Code
 @stop
 
 @section('main')
@@ -18,14 +18,14 @@
 				<a href="{{ url('settings') }}">Settings</a>
 			</li>
 			<li>
-				<a href="{{ url('roles') }}">Role Management</a>
+				<a href="{{ url('nric-codes') }}">NRIC Code Management</a>
 			</li>
 			<li class="active">
-				<strong>Edit Form</strong>
+				<strong>Detail Form</strong>
 			</li>
 		</ol>
 
-		<h2>Role Management</h2>
+		<h2>NRIC Code Management</h2>
 		<br />
 
 		<div class="row">
@@ -33,7 +33,7 @@
 				<div class="panel panel-primary" data-collapsed="0">
 					<div class="panel-heading">
 						<div class="panel-title">
-							<strong>Edit Form</strong>
+							<strong>Detail Form</strong>
 						</div>
 
 						<div class="panel-options">
@@ -42,32 +42,21 @@
 					</div>
 
 					<div class="panel-body">
-						{!! Form::model($role, ['method' => 'PATCH', 'route' => ['roles.update', $role->id], 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate']) !!}
+						{!! Form::model($code, ['method' => 'GET', 'route' => ['nric-codes.index', $code->id], 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate']) !!}
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Name</label>
+								<label class="col-sm-3 control-label">NRIC Code <span class="text-danger">*</span></label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-info"></i></span>
-										{!! Form::text('name', null, ['placeholder' => 'Name', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+										<span class="input-group-addon"><i class="entypo-vcard"></i></span>
+										{!! Form::text('nric_code', null, ['placeholder' => 'NRIC Code', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Display Name</label>
-
-								<div class="col-sm-5">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-info"></i></span>
-										{!! Form::text('display_name', null, ['placeholder' => 'Display Name', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Description</label>
+								<label class="col-sm-3 control-label">Description <span class="text-danger">*</span></label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
@@ -78,23 +67,10 @@
 							</div>
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Permission</label>
-								<div class="col-sm-9">
-									@if(!empty($rolePermissions))
-										@foreach($rolePermissions as $v)
-											<label class="label label-success">{{ $v->display_name }}</label>
-										@endforeach
-									@else
-										{{ '-' }}
-									@endif
-								</div>
-							</div>
-
-							<div class="form-group">
 								<label class="col-sm-3 control-label"></label>
 
 								<div class="col-sm-5">
-									<a href="{{ route('roles.index') }}" class="btn btn-black">
+									<a href="{{ route('nric-codes.index') }}" class="btn btn-black">
 										Back
 									</a>
 								</div>

@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('page-title')
-	User
+	NRIC Township
 @stop
 
 @section('main')
@@ -9,16 +9,19 @@
 		@include('layouts.headerbar')
 		<hr />
 
-		<ol class="breadcrumb bc-3" >
+		<ol class="breadcrumb bc-3">
 			<li>
 				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
 			</li>
+			<li>
+				<a href="{{ url('settings') }}">Settings</a>
+			</li>
 			<li class="active">
-				<strong>User Management</strong>
+				<strong>NRIC Township Management</strong>
 			</li>
 		</ol>
 
-		<h2>User Management</h2>
+		<h2>NRIC Township Management</h2>
 		<br />
 
 		@if ($message = Session::get('success'))
@@ -34,12 +37,10 @@
 				</div>
 
 				<div class="panel-options">
-					@permission('permission-create')
-					<a href="{{ url('users/create') }}" class="bg">
+					<a href="{{ url('nric-townships/create') }}" class="bg">
 						<i class="entypo-plus-circled"></i>
 						Create New &nbsp;
 					</a>
-					@endpermission
 					<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
 					{{-- <a href="#" data-rel="reload"><i class="entypo-arrows-ccw"></i></a> --}}
 					{{-- <a href="#" data-rel="close"><i class="entypo-cancel"></i></a> --}}
@@ -51,38 +52,43 @@
 					<thead>
 						<tr>
 							<th width="5%">SNo.</th>
-							<th>Name</th>
-							<th>Contact</th>
-							<th>Role</th>
-							<th>Email</th>
+							<th>Region/State</th>
+							<th>Township Name</th>
+							<th>Short Name</th>
 							<th width="15%">Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach($users as $key => $user)
+						@foreach($townships as $key => $township)
 						<tr>
 							<td>{{ ++$i }}</td>
-							<td>{{ strtoupper($user->name) }}</td>
-							<td>{{ $user->contact_no }}</td>
-							<td>{{ $user->roles[0]->display_name }}</td>
-							<td>{{ $user->email }}</td>
 							<td>
-								@if(Auth::user()->hasRole('administrator') || $user->company_id == Auth::user()->company_id)
-									@permission('user-edit')
-									<a href="{{ url('users/'. $user->id .'/edit') }}" class="btn btn-default btn-sm">
-										<i class="entypo-pencil"></i>
-									</a>
+								<?php
+									$description = App\NricCodes::where('id', $township->nric_code_id)->pluck('description');
+								?>
+								{{ $description[0] }}
+							</td>
+							<td>{{ $township->township }}</td>
+							<td>{{ $township->short_name }}</td>
+							<td>
+								@if(Auth::user()->hasRole('administrator') || $role->company_id == Auth::user()->company_id)
+									@permission('nric-township-edit')
+										<a href="{{ url('nric-townships/'. $township->id .'/edit') }}" class="btn btn-default btn-sm">
+											<i class="entypo-pencil"></i>
+										</a>
 									@endpermission
 
-									@permission('user-delete')
-									<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $user->id }}">
-										<i class="entypo-trash"></i>
-									</a>
+									@permission('nric-township-edit')
+										<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $township->id }}">
+											<i class="entypo-trash"></i>
+										</a>
 									@endpermission
 
-									<a href="{{ url('users/'. $user->id) }}" class="btn btn-info btn-sm">
-										<i class="entypo-eye"></i>
-									</a>
+									@permission('nric-township-edit')
+										<a href="{{ url('nric-townships/'. $township->id) }}" class="btn btn-info btn-sm">
+											<i class="entypo-eye"></i>
+										</a>
+									@endpermission
 								@endif
 							</td>
 						</tr>
@@ -90,7 +96,7 @@
 					</tbody>
 				</table>
 
-				{!! $users->render() !!}
+				{!! $townships->render() !!}
 			</div>
 		</div>
 
@@ -119,7 +125,7 @@
 				if (confD) {
 					var id = $(this).attr('id');
 					$.ajax({
-						url: "{!! url('users/"+ id +"') !!}",
+						url: "{!! url('nric-townships/"+ id +"') !!}",
 						type: 'DELETE',
 						data: {_token: '{!! csrf_token() !!}'},
 						dataType: 'JSON',

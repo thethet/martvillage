@@ -93,7 +93,6 @@
 			</div>
 		</div>
 
-
 		<!-- Footer -->
 		<footer class="main">
 			Copyright &copy; 2017 All Rights Reserved. <strong>MSCT Co.Ltd</strong>
@@ -115,21 +114,21 @@
 	<script>
 		$(document).ready(function(){
 			$(".destroy").on("click", function(event){
-				alert("Hello: "+$(this).attr('id'));
-				var id = $(this).attr('id');
-				$.ajax({
-					url: "{!! url('nric-codes/"+ id +"') !!}",
-					type: 'DELETE',
-					data: {_token: '{!! csrf_token() !!}'},
-					dataType: 'JSON',
-					success: function (data) {
-						window.location.replace(data.url);
-					}
-				});
-
+				var confD = confirm('Are you sure to delete?');
+				if (confD) {
+					var id = $(this).attr('id');
+					$.ajax({
+						url: "{!! url('nric-codes/"+ id +"') !!}",
+						type: 'DELETE',
+						data: {_token: '{!! csrf_token() !!}'},
+						dataType: 'JSON',
+						success: function (data) {
+							window.location.replace(data.url);
+						}
+					});
+				}
 			});
 		});
 	</script>
-
 @stop
 

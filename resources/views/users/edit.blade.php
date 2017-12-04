@@ -39,7 +39,7 @@
 					</div>
 
 					<div class="panel-body">
-						{!! Form::model($user, ['method' => 'PATCH','route' => ['users.update', $user->id], 'id' => 'user-form', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate', 'enctype' => 'multipart/form-data']) !!}
+						{!! Form::model($user, ['method' => 'PATCH','route' => ['users.update', $user->id], 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate', 'enctype' => 'multipart/form-data']) !!}
 
 							<div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
 								<label class="col-sm-3 control-label">Name <span class="text-danger">*</span></label>
@@ -47,7 +47,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-user"></i></span>
-										{!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control', 'autocomplete' => 'off')) !!}
+										{!! Form::text('name', null, ['placeholder' => 'Name','class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('name'))
@@ -78,7 +78,7 @@
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-vcard"></i></span>
-										{!! Form::text('nric_no', null, array('placeholder' => '(N) xxxxxx','class' => 'form-control', 'autocomplete' => 'off')) !!}
+										{!! Form::text('nric_no', null, ['placeholder' => '(N) xxxxxx','class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 								</div>
 							</div>
@@ -89,7 +89,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-calendar"></i></span>
-										{!! Form::text('dob', null, array('placeholder' => 'Date of Birth','class' => 'form-control datepicker', 'id' => 'dob', 'data-format' => 'yyyy-mm-dd', 'autocomplete' => 'off')) !!}
+										{!! Form::text('dob', null, ['placeholder' => 'Date of Birth','class' => 'form-control datepicker', 'id' => 'dob', 'data-format' => 'yyyy-mm-dd', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('dob'))
@@ -106,7 +106,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-mobile"></i></span>
-										{!! Form::text('contact_no', null, array('placeholder' => 'Contact Number','class' => 'form-control', 'autocomplete' => 'off')) !!}
+										{!! Form::text('contact_no', null, ['placeholder' => 'Contact Number','class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('contact_no'))
@@ -123,7 +123,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-mail"></i></span>
-										{!! Form::text('email', null, array('placeholder' => 'Email','class' => 'form-control', 'id' => 'email', 'autocomplete' => 'off')) !!}
+										{!! Form::text('email', null, ['placeholder' => 'Email','class' => 'form-control', 'id' => 'email', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('email'))
@@ -224,7 +224,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-users"></i></span>
-										{!! Form::text('position', null, array('placeholder' => 'Position','class' => 'form-control', 'autocomplete' => 'off')) !!}
+										{!! Form::text('position', null, ['placeholder' => 'Position','class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 								</div>
 							</div>
@@ -235,7 +235,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-mail"></i></span>
-										{!! Form::text('username', null, array('placeholder' => 'Username','class' => 'form-control', 'id' => 'username', 'readonly' => true, 'autocomplete' => 'off')) !!}
+										{!! Form::text('username', null, ['placeholder' => 'Username','class' => 'form-control', 'id' => 'username', 'readonly' => true, 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('username'))
@@ -252,7 +252,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-key"></i></span>
-										{!! Form::password('password', array('placeholder' => 'Password','class' => 'form-control', 'autocomplete' => 'off')) !!}
+										{!! Form::password('password', ['placeholder' => 'Password','class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('password'))
@@ -269,7 +269,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-key"></i></span>
-										{!! Form::password('confirm_password', array('placeholder' => 'Confirm Password','class' => 'form-control', 'autocomplete' => 'off')) !!}
+										{!! Form::password('confirm_password', ['placeholder' => 'Confirm Password','class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('confirm_password'))
@@ -308,21 +308,21 @@
 								<div class="col-sm-2">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-direction"></i></span>
-										{!! Form::text('unit_number', null, array('placeholder' => 'Unit Number','class' => 'form-control', 'autocomplete' => 'off')) !!}
+										{!! Form::text('unit_number', null, ['placeholder' => 'Unit Number','class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 								</div>
 
 								<div class="col-sm-2">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-home"></i></span>
-										{!! Form::text('building_name', null, array('placeholder' => 'Building Name','class' => 'form-control', 'autocomplete' => 'off')) !!}
+										{!! Form::text('building_name', null, ['placeholder' => 'Building Name','class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 								</div>
 
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-address"></i></span>
-										{!! Form::text('street', null, array('placeholder' => 'Street','class' => 'form-control', 'autocomplete' => 'off')) !!}
+										{!! Form::text('street', null, ['placeholder' => 'Street','class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 								</div>
 							</div>
@@ -378,7 +378,6 @@
 			</div>
 		</div>
 
-
 		<!-- Footer -->
 		<footer class="main">
 			Copyright &copy; 2017 All Rights Reserved. <strong>MSCT Co.Ltd</strong>
@@ -399,10 +398,6 @@
 	<script src="{{ asset('assets/js/daterangepicker/daterangepicker.js') }}"></script>
 	<script src="{{ asset('assets/js/fileinput.js') }}"></script>
 	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
-
-	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-	<link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
-	<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
 
 	<script>
 		$(document).ready(function(){

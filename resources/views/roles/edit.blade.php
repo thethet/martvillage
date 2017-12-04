@@ -42,7 +42,7 @@
 					</div>
 
 					<div class="panel-body">
-						{!! Form::model($role, ['method' => 'PATCH', 'route' => ['roles.update', $role->id], 'id' => 'role-form', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate']) !!}
+						{!! Form::model($role, ['method' => 'PATCH', 'route' => ['roles.update', $role->id], 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate']) !!}
 
 							<div class="form-group {{ $errors->has('display_name') ? ' has-error' : '' }}">
 								<label class="col-sm-3 control-label">Display Name <span class="text-danger">*</span></label>
@@ -50,7 +50,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-info"></i></span>
-										{!! Form::text('display_name', null, array('placeholder' => 'Display Name', 'class' => 'form-control', 'autocomplete' => 'off')) !!}
+										{!! Form::text('display_name', null, ['placeholder' => 'Display Name', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('display_name'))
@@ -61,18 +61,18 @@
 								</div>
 							</div>
 
-							<div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
+							<div class="form-group {{ $errors->has('description') ? ' has-error' : '' }}">
 								<label class="col-sm-3 control-label">Description <span class="text-danger">*</span></label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-info"></i></span>
-										{!! Form::textarea('description', null, array('placeholder' => 'Description', 'class' => 'form-control', 'autocomplete' => 'off')) !!}
+										{!! Form::text('description', null, ['placeholder' => 'Description', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 
-									@if ($errors->has('name'))
+									@if ($errors->has('description'))
 										<span class="validate-has-error">
-											<strong>{{ $errors->first('name') }}</strong>
+											<strong>{{ $errors->first('description') }}</strong>
 										</span>
 									@endif
 								</div>
@@ -90,7 +90,7 @@
 
 								@foreach($permission as $value)
 									<div class="col-sm-3">
-										{{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, array('class' => 'permission-name', 'id' => 'chk-20')) }}
+										{{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, ['class' => 'permission-name', 'id' => 'chk-20']) }}
 										<label>{{ $value->display_name }}</label>
 									</div>
 								@endforeach

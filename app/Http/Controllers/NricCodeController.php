@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
 use App\NricCodes;
+use Session;
 
 class NricCodeController extends Controller
 {
@@ -16,11 +17,7 @@ class NricCodeController extends Controller
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		if (Auth::user()->hasRole('administrator')) {
-			$codes = NricCodes::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
-		} else {
-			$codes = NricCodes::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
-		}
+		$codes = NricCodes::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
 		$total       = $codes->total();
 		$perPage     = $codes->perPage();
 		$currentPage = $codes->currentPage();
@@ -36,7 +33,7 @@ class NricCodeController extends Controller
 	 * @return Response
 	 */
 	public function create() {
-		//
+		return view('nric-codes.create');
 	}
 
 	/**
@@ -44,8 +41,18 @@ class NricCodeController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function store() {
-		//
+	public function store(Request $request) {
+		$this->validate($request, [
+			'nric_code' => 'required',
+			'description'  => 'required',
+		]);
+
+		$data    = $request->all();
+		$data['created_by'] = Auth::user()->id;
+		NricCodes::create($data);
+
+		return redirect()->route('nric-codes.index')
+			->with('success', 'NRIC Code created successfully');
 	}
 
 	/**
@@ -55,7 +62,8 @@ class NricCodeController extends Controller
 	 * @return Response
 	 */
 	public function show($id) {
-		//
+		$code = NricCodes::find($id);
+		return view('nric-codes.show', ['code' => $code]);
 	}
 
 	/**
@@ -65,7 +73,8 @@ class NricCodeController extends Controller
 	 * @return Response
 	 */
 	public function edit($id) {
-		//
+		$code = NricCodes::find($id);
+		return view('nric-codes.edit', ['code' => $code]);
 	}
 
 	/**
@@ -74,8 +83,18 @@ class NricCodeController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id) {
-		//
+	public function update($id, Request $request) {
+		$this->validate($request, [
+			'description'  => 'required',
+		]);
+
+		$code  = NricCodes::find($id);
+		$data    = $request->all();
+		$data['updated_by'] = Auth::user()->id;
+		$code->update($data);
+
+		return redirect()->route('nric-codes.index')
+			->with('success', 'NRIC Code updated successfully');
 	}
 
 	/**
@@ -85,6 +104,10 @@ class NricCodeController extends Controller
 	 * @return Response
 	 */
 	public function destroy($id) {
-		//
+		NricCodes::find($id)->update(['deleted' => 'Y']);
+		Session::flash('success', 'NRIC Code deleted successfully');
+		$response = array('status' => 'success', 'url' => 'nric-codes');
+
+		return response()->json($response);
 	}
 }

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\NricTownships;
+use App\NricCodes;
 use Illuminate\Http\Request;
+use Auth;
+use Session;
 
 class NricTownshipController extends Controller {
 	/**
@@ -11,8 +14,15 @@ class NricTownshipController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index() {
-		//
+	public function index(Request $request) {
+		$townships = NricTownships::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
+		$total       = $townships->total();
+		$perPage     = $townships->perPage();
+		$currentPage = $townships->currentPage();
+		$lastPage    = $townships->lastPage();
+		$lastItem    = $townships->lastItem();
+
+		return view('nric-townships.index', ['townships' => $townships, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
 	/**
@@ -21,7 +31,9 @@ class NricTownshipController extends Controller {
 	 * @return Response
 	 */
 	public function create() {
-		//
+		$nricCodes = NricCodes::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'nric_code');
+
+		return view('nric-townships.create', ['nricCodes' => $nricCodes]);
 	}
 
 	/**
@@ -29,8 +41,20 @@ class NricTownshipController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store() {
-		//
+	public function store(Request $request) {
+		$this->validate($request, [
+			'nric_code_id' => 'required',
+			'township'  => 'required',
+			'short_name' => 'required',
+			'serial_no'  => 'required|integer',
+		]);
+
+		$data    = $request->all();
+		$data['created_by'] = Auth::user()->id;
+		NricTownships::create($data);
+
+		return redirect()->route('nric-townships.index')
+			->with('success', 'NRIC Township created successfully');
 	}
 
 	/**
@@ -40,7 +64,10 @@ class NricTownshipController extends Controller {
 	 * @return Response
 	 */
 	public function show($id) {
-		//
+		$nricCodes = NricCodes::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'nric_code');
+
+		$nricTownship = NricTownships::find($id);
+		return view('nric-townships.show', ['nricTownship' => $nricTownship, 'nricCodes' => $nricCodes]);
 	}
 
 	/**
@@ -50,7 +77,10 @@ class NricTownshipController extends Controller {
 	 * @return Response
 	 */
 	public function edit($id) {
-		//
+		$nricCodes = NricCodes::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'nric_code');
+
+		$nricTownship = NricTownships::find($id);
+		return view('nric-townships.edit', ['nricTownship' => $nricTownship, 'nricCodes' => $nricCodes]);
 	}
 
 	/**
@@ -59,8 +89,21 @@ class NricTownshipController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id) {
-		//
+	public function update($id, Request $request) {
+		$this->validate($request, [
+			'nric_code_id' => 'required',
+			'township'  => 'required',
+			'short_name' => 'required',
+			'serial_no'  => 'required|integer',
+		]);
+
+		$nricTownship  = NricTownships::find($id);
+		$data    = $request->all();
+		$data['updated_by'] = Auth::user()->id;
+		$nricTownship->update($data);
+
+		return redirect()->route('nric-townships.index')
+			->with('success', 'NRIC Township updated successfully');
 	}
 
 	/**
@@ -70,7 +113,11 @@ class NricTownshipController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id) {
-		//
+		NricTownships::find($id)->update(['deleted' => 'Y']);
+		Session::flash('success', 'NRIC Township deleted successfully');
+		$response = array('status' => 'success', 'url' => 'nric-townships');
+
+		return response()->json($response);
 	}
 
 	/**

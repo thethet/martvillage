@@ -50,7 +50,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-suitcase "></i></span>
-										{!! Form::text('company_name', null, array('placeholder' => 'Company Name','class' => 'form-control', 'autocomplete' => 'off')) !!}
+										{!! Form::text('company_name', null, ['placeholder' => 'Company Name','class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('company_name'))
@@ -67,7 +67,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-bookmarks"></i></span>
-										{!! Form::text('short_code', null, array('placeholder' => 'Short Code','class' => 'form-control', 'autocomplete' => 'off')) !!}
+										{!! Form::text('short_code', null, ['placeholder' => 'Short Code','class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('short_code'))
@@ -84,7 +84,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-mobile"></i></span>
-										{!! Form::text('contact_no', null, array('placeholder' => 'Contact Number','class' => 'form-control', 'autocomplete' => 'off')) !!}
+										{!! Form::text('contact_no', null, ['placeholder' => 'Contact Number','class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('contact_no'))
@@ -101,7 +101,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-mail"></i></span>
-										{!! Form::text('email', null, array('placeholder' => 'Email','class' => 'form-control', 'id' => 'email', 'autocomplete' => 'off')) !!}
+										{!! Form::text('email', null, ['placeholder' => 'Email','class' => 'form-control', 'id' => 'email', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('email'))
@@ -118,7 +118,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-calendar"></i></span>
-										{!! Form::text('expiry_date', null, array('placeholder' => 'Expiry Date','class' => 'form-control datepicker', 'id' => 'expiry_date', 'data-format' => 'yyyy-mm-dd', 'autocomplete' => 'off')) !!}
+										{!! Form::text('expiry_date', null, ['placeholder' => 'Expiry Date','class' => 'form-control datepicker', 'id' => 'expiry_date', 'data-format' => 'yyyy-mm-dd', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('expiry_date'))
@@ -158,7 +158,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-calendar"></i></span>
-										{!! Form::text('return_period', null, array('placeholder' => 'Return Period','class' => 'form-control', 'autocomplete' => 'off')) !!}
+										{!! Form::text('return_period', null, ['placeholder' => 'Return Period','class' => 'form-control', 'autocomplete' => 'off']) !!}
 										<span class="input-group-addon">Days</span>
 									</div>
 
@@ -176,7 +176,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon">&nbsp;%&nbsp;</span>
-										{!! Form::text('gst_rate', null, array('placeholder' => 'GST','class' => 'form-control', 'autocomplete' => 'off')) !!}
+										{!! Form::text('gst_rate', null, ['placeholder' => 'GST','class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('gst_rate'))
@@ -193,7 +193,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon">&nbsp;%&nbsp;</span>
-										{!! Form::text('service_rate', null, array('placeholder' => 'Service Charges','class' => 'form-control', 'autocomplete' => 'off')) !!}
+										{!! Form::text('service_rate', null, ['placeholder' => 'Service Charges','class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('service_rate'))
@@ -210,21 +210,21 @@
 								<div class="col-sm-2">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-direction"></i></span>
-										{!! Form::text('unit_number', null, array('placeholder' => 'Unit Number','class' => 'form-control', 'autocomplete' => 'off')) !!}
+										{!! Form::text('unit_number', null, ['placeholder' => 'Unit Number','class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 								</div>
 
 								<div class="col-sm-2">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-home"></i></span>
-										{!! Form::text('building_name', null, array('placeholder' => 'Building Name','class' => 'form-control', 'autocomplete' => 'off')) !!}
+										{!! Form::text('building_name', null, ['placeholder' => 'Building Name','class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 								</div>
 
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-address"></i></span>
-										{!! Form::text('street', null, array('placeholder' => 'Street','class' => 'form-control', 'autocomplete' => 'off')) !!}
+										{!! Form::text('street', null, ['placeholder' => 'Street','class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 								</div>
 							</div>
@@ -279,7 +279,6 @@
 				</div>
 			</div>
 		</div>
-
 
 		<!-- Footer -->
 		<footer class="main">

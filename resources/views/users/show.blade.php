@@ -47,7 +47,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-user"></i></span>
-										{!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control', 'disabled')) !!}
+										{!! Form::text('name', null, ['placeholder' => 'Name','class' => 'form-control', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -72,7 +72,7 @@
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-vcard"></i></span>
-										{!! Form::text('nric_no', null, array('placeholder' => '(N) xxxxxx','class' => 'form-control', 'disabled')) !!}
+										{!! Form::text('nric_no', null, ['placeholder' => '(N) xxxxxx','class' => 'form-control', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -83,7 +83,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-calendar"></i></span>
-										{!! Form::text('dob', null, array('placeholder' => 'Date of Birth','class' => 'form-control datepicker', 'id' => 'dob', 'data-format' => 'yyyy-mm-dd', 'disabled')) !!}
+										{!! Form::text('dob', null, ['placeholder' => 'Date of Birth','class' => 'form-control datepicker', 'id' => 'dob', 'data-format' => 'yyyy-mm-dd', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -94,7 +94,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-mobile"></i></span>
-										{!! Form::text('contact_no', null, array('placeholder' => 'Contact Number','class' => 'form-control', 'disabled')) !!}
+										{!! Form::text('contact_no', null, ['placeholder' => 'Contact Number','class' => 'form-control', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -105,7 +105,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-mail"></i></span>
-										{!! Form::text('email', null, array('placeholder' => 'Email','class' => 'form-control', 'id' => 'email', 'disabled')) !!}
+										{!! Form::text('email', null, ['placeholder' => 'Email','class' => 'form-control', 'id' => 'email', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -174,7 +174,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-users"></i></span>
-										{!! Form::text('position', null, array('placeholder' => 'Position','class' => 'form-control', 'disabled')) !!}
+										{!! Form::text('position', null, ['placeholder' => 'Position','class' => 'form-control', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -185,7 +185,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-mail"></i></span>
-										{!! Form::text('username', null, array('placeholder' => 'Username','class' => 'form-control', 'id' => 'username', 'disabled')) !!}
+										{!! Form::text('username', null, ['placeholder' => 'Username','class' => 'form-control', 'id' => 'username', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -196,7 +196,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-key"></i></span>
-										{!! Form::password('password', array('placeholder' => 'Password','class' => 'form-control', 'disabled')) !!}
+										{!! Form::password('password', ['placeholder' => 'Password','class' => 'form-control', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -207,7 +207,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-key"></i></span>
-										{!! Form::password('confirm_password', array('placeholder' => 'Confirm Password','class' => 'form-control', 'disabled')) !!}
+										{!! Form::password('confirm_password', ['placeholder' => 'Confirm Password','class' => 'form-control', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -229,21 +229,21 @@
 								<div class="col-sm-2">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-direction"></i></span>
-										{!! Form::text('unit_number', null, array('placeholder' => 'Unit Number','class' => 'form-control', 'disabled')) !!}
+										{!! Form::text('unit_number', null, ['placeholder' => 'Unit Number','class' => 'form-control', 'disabled']) !!}
 									</div>
 								</div>
 
 								<div class="col-sm-2">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-home"></i></span>
-										{!! Form::text('building_name', null, array('placeholder' => 'Building Name','class' => 'form-control', 'disabled')) !!}
+										{!! Form::text('building_name', null, ['placeholder' => 'Building Name','class' => 'form-control', 'disabled']) !!}
 									</div>
 								</div>
 
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-address"></i></span>
-										{!! Form::text('street', null, array('placeholder' => 'Street','class' => 'form-control', 'disabled')) !!}
+										{!! Form::text('street', null, ['placeholder' => 'Street','class' => 'form-control', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -285,7 +285,6 @@
 			</div>
 		</div>
 
-
 		<!-- Footer -->
 		<footer class="main">
 			Copyright &copy; 2017 All Rights Reserved. <strong>MSCT Co.Ltd</strong>
@@ -303,6 +302,5 @@
 	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
 	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
-
 @stop
 

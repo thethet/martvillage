@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('page-title')
-	Permission
+	NRIC Township
 @stop
 
 @section('main')
@@ -18,14 +18,14 @@
 				<a href="{{ url('settings') }}">Settings</a>
 			</li>
 			<li>
-				<a href="{{ url('permissions') }}">Permission Management</a>
+				<a href="{{ url('nric-townships') }}">NRIC Township Management</a>
 			</li>
 			<li class="active">
 				<strong>New Create Form</strong>
 			</li>
 		</ol>
 
-		<h2>Permission Management</h2>
+		<h2>NRIC Township Management</h2>
 		<br />
 
 		<div class="row">
@@ -42,54 +42,71 @@
 					</div>
 
 					<div class="panel-body">
-						{!! Form::open(array('route' => 'permissions.store','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate')) !!}
+						{!! Form::open(array('route' => 'nric-townships.store','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate')) !!}
 
-							<div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
-								<label class="col-sm-3 control-label">Name <span class="text-danger">*</span></label>
+							<div class="form-group {{ $errors->has('nric_code_id') ? ' has-error' : '' }}">
+								<label class="col-sm-3 control-label">NRIC Code <span class="text-danger">*</span></label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-info"></i></span>
-										{!! Form::text('name', null, ['placeholder' => 'Name', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+										<span class="input-group-addon"><i class="entypo-vcard"></i></span>
+										{!! Form::select('nric_code_id', ['' => 'Select NRIC Code'] + $nricCodes->toArray(), null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 
-									@if ($errors->has('name'))
+									@if ($errors->has('nric_code_id'))
 										<span class="validate-has-error">
-											<strong>{{ $errors->first('name') }}</strong>
+											<strong>{{ $errors->first('nric_code_id') }}</strong>
 										</span>
 									@endif
 								</div>
 							</div>
 
-							<div class="form-group {{ $errors->has('display_name') ? ' has-error' : '' }}">
-								<label class="col-sm-3 control-label">Display Name <span class="text-danger">*</span></label>
+							<div class="form-group {{ $errors->has('township') ? ' has-error' : '' }}">
+								<label class="col-sm-3 control-label">Township <span class="text-danger">*</span></label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-info"></i></span>
-										{!! Form::text('display_name', null, ['placeholder' => 'Display Name', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+										<span class="input-group-addon"><i class="entypo-location"></i></span>
+										{!! Form::text('township', null, ['placeholder' => 'Township', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 
-									@if ($errors->has('display_name'))
+									@if ($errors->has('township'))
 										<span class="validate-has-error">
-											<strong>{{ $errors->first('display_name') }}</strong>
+											<strong>{{ $errors->first('township') }}</strong>
 										</span>
 									@endif
 								</div>
 							</div>
 
-							<div class="form-group {{ $errors->has('description') ? ' has-error' : '' }}">
-								<label class="col-sm-3 control-label">Description <span class="text-danger">*</span></label>
+							<div class="form-group {{ $errors->has('short_name') ? ' has-error' : '' }}">
+								<label class="col-sm-3 control-label">Township Short Name <span class="text-danger">*</span></label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-info"></i></span>
-										{!! Form::text('description', null, ['placeholder' => 'Description', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+										{!! Form::text('short_name', null,['placeholder' => 'Township Short Name', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 
-									@if ($errors->has('description'))
+									@if ($errors->has('short_name'))
 										<span class="validate-has-error">
-											<strong>{{ $errors->first('description') }}</strong>
+											<strong>{{ $errors->first('short_name') }}</strong>
+										</span>
+									@endif
+								</div>
+							</div>
+
+							<div class="form-group {{ $errors->has('serial_no') ? ' has-error' : '' }}">
+								<label class="col-sm-3 control-label">Serial Number <span class="text-danger">*</span></label>
+
+								<div class="col-sm-5">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-info"></i></span>
+										{!! Form::text('serial_no', null, ['placeholder' => 'Serial Number', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+									</div>
+
+									@if ($errors->has('serial_no'))
+										<span class="validate-has-error">
+											<strong>{{ $errors->first('serial_no') }}</strong>
 										</span>
 									@endif
 								</div>
@@ -101,7 +118,7 @@
 								<div class="col-sm-5">
 									<button type="submit" class="btn btn-success">Save</button>
 									<button type="reset" class="btn">Reset</button>
-									<a href="{{ route('permissions.index') }}" class="btn btn-black">
+									<a href="{{ route('nric-townships.index') }}" class="btn btn-black">
 										Back
 									</a>
 								</div>
@@ -111,7 +128,6 @@
 				</div>
 			</div>
 		</div>
-
 
 		<!-- Footer -->
 		<footer class="main">
@@ -130,6 +146,5 @@
 	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
 	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
-
 @stop
 

@@ -203,6 +203,27 @@ Route::group(['middleware' => ['auth']], function () {
 
 	/*
 	|--------------------------------------------------------------------------
+	| NRIC township Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for NRIC township Model CRUD
+	|
+	 */
+	Route::get('nric-townships', ['as' => 'nric-townships.index', 'uses' => 'NricTownshipController@index', 'middleware' => ['permission:nric-township-list|nric-township-create|nric-township-edit|nric-township-delete']]);
+
+	Route::get('nric-townships/create', ['as' => 'nric-townships.create', 'uses' => 'NricTownshipController@create', 'middleware' => ['permission:nric-township-create']]);
+	Route::post('nric-townships/create', ['as' => 'nric-townships.store', 'uses' => 'NricTownshipController@store', 'middleware' => ['permission:nric-township-create']]);
+
+	Route::get('nric-townships/{id}', ['as' => 'nric-townships.show', 'uses' => 'NricTownshipController@show']);
+
+	Route::get('nric-townships/ajax/{id}/edit', ['as' => 'nric-townships.ajax.edit', 'uses' => 'NricTownshipController@editAjax', 'middleware' => ['permission:nric-township-edit']]);
+	Route::get('nric-townships/{id}/edit', ['as' => 'nric-townships.edit', 'uses' => 'NricTownshipController@edit', 'middleware' => ['permission:nric-township-edit']]);
+	Route::patch('nric-townships/{id}', ['as' => 'nric-townships.update', 'uses' => 'NricTownshipController@update', 'middleware' => ['permission:nric-township-edit']]);
+
+	Route::delete('nric-townships/{id}', ['as' => 'nric-townships.destroy', 'uses' => 'NricTownshipController@destroy', 'middleware' => ['permission:nric-township-delete']]);
+
+	/*
+	|--------------------------------------------------------------------------
 	| User Controller
 	|--------------------------------------------------------------------------
 	|

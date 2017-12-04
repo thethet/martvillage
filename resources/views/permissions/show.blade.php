@@ -42,29 +42,38 @@
 					</div>
 
 					<div class="panel-body">
-						{!! Form::model($permission, ['method' => 'GET', 'route' => ['permissions.index', $permission->id], 'id' => 'permission-form', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered']) !!}
+						{!! Form::model($permission, ['method' => 'GET', 'route' => ['permissions.index', $permission->id], 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate']) !!}
 
-							<div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
+						<div class="form-group">
 								<label class="col-sm-3 control-label">Name <span class="text-danger">*</span></label>
 
 								<div class="col-sm-5">
-									{!! Form::text('name', null, array('placeholder' => 'Name', 'class' => 'form-control', 'disabled')) !!}
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-info"></i></span>
+										{!! Form::text('name', null, ['placeholder' => 'Name', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+									</div>
 								</div>
 							</div>
 
-							<div class="form-group {{ $errors->has('display_name') ? ' has-error' : '' }}">
+							<div class="form-group">
 								<label class="col-sm-3 control-label">Display Name <span class="text-danger">*</span></label>
 
 								<div class="col-sm-5">
-									{!! Form::text('display_name', null, array('placeholder' => 'Display Name', 'class' => 'form-control', 'disabled')) !!}
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-info"></i></span>
+										{!! Form::text('display_name', null, ['placeholder' => 'Display Name', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+									</div>
 								</div>
 							</div>
 
-							<div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
+							<div class="form-group">
 								<label class="col-sm-3 control-label">Description <span class="text-danger">*</span></label>
 
 								<div class="col-sm-5">
-									{!! Form::textarea('description', null, array('placeholder' => 'Description', 'class' => 'form-control', 'disabled')) !!}
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-info"></i></span>
+										{!! Form::text('description', null, ['placeholder' => 'Description', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+									</div>
 								</div>
 							</div>
 
@@ -72,7 +81,9 @@
 								<label class="col-sm-3 control-label"></label>
 
 								<div class="col-sm-5">
-									<button type="submit" class="btn btn-black">Back</button>
+									<a href="{{ route('permissions.index') }}" class="btn btn-black">
+										Back
+									</a>
 								</div>
 							</div>
 						{!! Form::close() !!}
@@ -80,7 +91,6 @@
 				</div>
 			</div>
 		</div>
-
 
 		<!-- Footer -->
 		<footer class="main">
@@ -99,6 +109,5 @@
 	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
 	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
-
 @stop
 

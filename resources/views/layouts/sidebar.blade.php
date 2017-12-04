@@ -42,6 +42,24 @@
 					<span class="title">Settings</span>
 				</a>
 				<ul>
+					@permission('nric-code-list')
+					<li @if(Request::segment(1) == 'nric-codes') class="active" @endif>
+						<a href="{{ url('/nric-codes') }}">
+							<i class="entypo-vcard"></i>
+							<span class="title">NRIC Code</span>
+						</a>
+					</li>
+					@endpermission
+
+					@permission('nric-township-list')
+					<li @if(Request::segment(1) == 'nric-townships') class="active" @endif>
+						<a href="{{ url('/nric-townships') }}">
+							<i class="entypo-vcard"></i>
+							<span class="title">NRIC Township</span>
+						</a>
+					</li>
+					@endpermission
+
 					@permission('company-list')
 					<li @if(Request::segment(1) == 'companies') class="active" @endif>
 						<a href="{{ url('/companies') }}">

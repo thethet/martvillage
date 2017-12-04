@@ -115,17 +115,19 @@
 	<script>
 		$(document).ready(function(){
 			$(".destroy").on("click", function(event){
-				var id = $(this).attr('id');
-				$.ajax({
-					url: "{!! url('permissions/"+ id +"') !!}",
-					type: 'DELETE',
-					data: {_token: '{!! csrf_token() !!}'},
-					dataType: 'JSON',
-					success: function (data) {
-						window.location.replace(data.url);
-					}
-				});
-
+				var confD = confirm('Are you sure to delete?');
+				if (confD) {
+					var id = $(this).attr('id');
+					$.ajax({
+						url: "{!! url('permissions/"+ id +"') !!}",
+						type: 'DELETE',
+						data: {_token: '{!! csrf_token() !!}'},
+						dataType: 'JSON',
+						success: function (data) {
+							window.location.replace(data.url);
+						}
+					});
+				}
 			});
 		});
 	</script>
