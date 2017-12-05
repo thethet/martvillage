@@ -9,10 +9,10 @@
 
 			@permission('collection-list')
 			<div class="col-md-2">
-				<a href="{{ url('/collections/ready-collect') }}">
+				<a href="{{ url('reports/main') }}">
 					<div class="card">
-						<img class="profile-icon" src="{{ asset('assets/img/collection.png') }}" alt="Collection">
-						<p>Ready to Collect</p>
+						<img class="profile-icon" src="{{ asset('assets/img/report-icon.png') }}" alt="Main Report">
+						<p>Main Report</p>
 					</div>
 				</a>
 			</div>
@@ -20,10 +20,10 @@
 
 			@permission('collection-list')
 			<div class="col-md-2">
-				<a href="{{ url('/collections/return') }}">
+				<a href="{{ url('/reports/bytrips') }}">
 					<div class="card">
-						<img class="profile-icon" src="{{ asset('assets/img/incoming.png') }}" alt="Collection">
-						<p>Return to Head Office</p>
+						<img class="profile-icon" src="{{ asset('assets/img/report-icon.png') }}" alt="Trip Report">
+						<p>Trip Report</p>
 					</div>
 				</a>
 			</div>
