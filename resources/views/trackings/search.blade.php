@@ -1,302 +1,239 @@
 @extends('layouts.layout')
 
-@section('site-title')
-	<div class="col-md-4 site-icon">
-		<img class="profile-icon" src="{{ asset('assets/img/tracking-icon.png') }}" alt="Tracking">
-	</div>
-	<div class="col-md-8 site-header">Tracking List</div>
+@section('page-title')
+	Tracking
 @stop
 
 @section('main')
 	<div class="main-content">
 
-		@if ($message = Session::get('success'))
-		<div class="alert alert-success">
-			<p>{{ $message }}</p>
-		</div>
-		@endif
+		@include('layouts.headerbar')
+		<hr />
 
+		<ol class="breadcrumb bc-3" >
+			<li>
+				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
+			</li>
+			<li>
+				<a href="{{ url('settings') }}">Settings</a>
+			</li>
+			<li>
+				<a href="{{ url('trackings') }}">Tracking Management</a>
+			</li>
+			<li class="active">
+				<strong>Result Form</strong>
+			</li>
+		</ol>
 
-		<div class="row">
-			<div class="col-sm-4">
-				<div class="form-group">
-					<label class="control-label col-sm-5" for="contact">
-						Contact No:
-					</label>
-					<label class="control-label col-sm-7" for="contact">
-						@if($sender->contact_no)
-							{{ $sender->contact_no }}
-						@else
-							{{ '-' }}
-						@endif
-					</label>
-				</div><!-- .form-group -->
-
-				<div class="form-group">
-					<label class="control-label col-sm-5" for="member">
-						Member No:
-					</label>
-					<label class="control-label col-sm-7" for="member">
-						@if($sender->member_no)
-							{{ $sender->member_no }}
-						@else
-							{{ '-' }}
-						@endif
-					</label>
-				</div><!-- .form-group -->
-
-				<div class="form-group">
-					<label class="control-label col-sm-5" for="sender">
-						Sender Name:
-					</label>
-					<label class="control-label col-sm-7" for="sender">
-						@if($sender->name)
-							{{ $sender->name }}
-						@else
-							{{ '-' }}
-						@endif
-					</label>
-				</div><!-- .form-group -->
-
-				<div class="form-group">
-					<label class="control-label col-sm-5" for="nric">
-						NRIC:
-					</label>
-
-					<label class="control-label col-sm-7" for="nric">
-						@if($sender->nric_code_id != 0 && $sender->nric_township_id != 0)
-							{{ $nricCodes[$sender->nric_code_id] }} / {{ $nricTownships[$sender->nric_township_id] }} {{ $sender->nric_no }}
-						@else
-							{{ '-' }}
-						@endif
-					</label>
-
-				</div><!-- .form-group -->
-			</div>
-
-			<div class="col-sm-4">
-				<div class="form-group">
-					<label class="control-label col-sm-5" for="address">
-						To:
-					</label>
-					<label class="control-label col-sm-7" for="address">
-						@if($receiver->address)
-							{{ $receiver->address }} of {{ $receiverCount }}
-						@else
-							{{ '-' }}
-						@endif
-					</label>
-				</div><!-- .form-group -->
-
-				<div class="form-group">
-					<label class="control-label col-sm-5" for="contact">
-						Contact No:
-					</label>
-					<label class="control-label col-sm-7" for="contact">
-						@if($receiver->contact_no)
-							{{ $receiver->contact_no }}
-						@else
-							{{ '-' }}
-						@endif
-					</label>
-				</div><!-- .form-group -->
-
-				<div class="form-group">
-					<label class="control-label col-sm-5" for="receiver">
-						Receiver Name:
-					</label>
-					<label class="control-label col-sm-7" for="receiver">
-						@if($receiver->name)
-							{{ $receiver->name }}
-						@else
-							{{ '-' }}
-						@endif
-					</label>
-				</div><!-- .form-group -->
-
-				<div class="form-group">
-					<label class="control-label col-sm-5" for="nric">
-						NRIC:
-					</label>
-					<label class="control-label col-sm-7" for="nric">
-						@if($receiver->nric_code_id != 0 && $receiver->nric_township_id != 0)
-							{{ $nricCodes[$receiver->nric_code_id] }} / {{ $nricTownships[$receiver->nric_township_id] }} {{ $receiver->nric_no }}
-						@else
-							{{ '-' }}
-						@endif
-					</label>
-				</div><!-- .form-group -->
-
-			</div>
-
-			<div class="col-sm-4">
-				<div class="form-group">
-					<label class="control-label col-sm-3" for="date">
-						Date:
-					</label>
-					<label class="control-label col-sm-7" for="date">
-						{{ $lotinData->date }}
-					</label>
-				</div><!-- .form-group -->
-
-				<div class="form-group">
-					<label class="control-label col-sm-3" for="lotno">
-						Lot No:
-					</label>
-					<label class="control-label col-sm-7" for="lotno">
-						{{ $lotinData->lot_no }}
-					</label>
-				</div><!-- .form-group -->
-
-				<div class="form-group">
-					<label class="control-label col-sm-3" for="from">
-						From:
-					</label>
-					<label class="control-label col-sm-7" for="from">
-						{{ $states[$lotinData->from_state] }}, {{ $countries[$lotinData->from_country] }}
-					</label>
-				</div><!-- .form-group -->
-
-				<div class="form-group">
-					<label class="control-label col-sm-3" for="to">
-						To:
-					</label>
-					<label class="control-label col-sm-7" for="to">
-						{{ $states[$lotinData->to_state] }}, {{ $countries[$lotinData->to_country] }}
-					</label>
-				</div><!-- .form-group -->
-
-				<div class="form-group">
-					<label class="control-label col-sm-3" for="payment">
-						Payment:
-					</label>
-					<label class="control-label col-sm-7" for="payment">
-						{{ $lotinData->payment }}
-					</label>
-				</div><!-- .form-group -->
-			</div>
-		</div>
-
-		<div class="row tracking-status">
-			<div class="col-sm-1"></div>
-			<div class="col-sm-1 block pad0">
-				<?php $status = (int)$lotinData->status; ?>
-				<div @if( $status >= 0) class="circle circletrack-color" @else class="circle" @endif>
-					<p>&nbsp;</p>
-				</div>
-			</div>
-			<div class="col-sm-2 bline pad0">
-				<div @if( $status >= 1) class="line linetrack-color" @else class="line" @endif></div>
-			</div>
-
-			<div class="col-sm-1 block pad0">
-				<div @if( $status >= 1) class="circle circletrack-color" @else class="circle" @endif>
-					<p>&nbsp;</p>
-				</div>
-			</div>
-			<div class="col-sm-2 bline pad0">
-				<div @if( $status >= 2) class="line linetrack-color" @else class="line" @endif></div>
-			</div>
-
-			<div class="col-sm-1 block pad0">
-				<div @if( $status >= 2) class="circle circletrack-color" @else class="circle" @endif>
-					<p>&nbsp;</p>
-				</div>
-			</div>
-			<div class="col-sm-2 bline pad0">
-				<div @if( $status >= 3) class="line linetrack-color" @else class="line" @endif></div>
-			</div>
-
-			<div class="col-sm-1 block pad0">
-				<div @if( $status >= 3) class="circle circletrack-color" @else class="circle" @endif>
-					<p>&nbsp;</p>
-				</div>
-			</div>
-			{{-- <div class="col-sm-2 bline pad0">
-				<div @if( $status >= 4) class="line linetrack-color" @else class="line" @endif></div>
-			</div>
-
-			<div class="col-sm-1 block pad0">
-				<div @if( $status >= 4) class="circle circletrack-color" @else class="circle" @endif>
-					<p>&nbsp;</p>
-				</div>
-			</div> --}}
-
-		</div>
+		<h2>Tracking Management</h2>
+		<br />
 
 		<div class="row">
-			<div class="col-sm-1"></div>
-			<div class="col-sm-2 trans ml-30 mt54">
-				Sender Office
-				<br>
-				(Start Point)
-			</div>
+			<div class="col-md-12">
+				<div class="panel panel-primary" data-collapsed="0">
+					<div class="panel-heading">
+						<div class="panel-title">
+							<strong>Search Form</strong>
+						</div>
 
-			<div class="col-sm-2 trans ml60 mt54">
-				On Boarding
-			</div>
+						<div class="panel-options">
+							<a href="{{ url('trackings/' . $lotinData->id) }}">
+								<i class="entypo-list"></i> Detail
+							</a>
+							&nbsp;|&nbsp;
+							<a href="{{ url('trackings') }}"><i class="entypo-cancel"></i></a>
+							&nbsp;|&nbsp;
+							<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+						</div>
+					</div>
 
-			{{-- <div class="col-sm-2 trans ml60 mt54">
-				Landed Destination
-			</div> --}}
+					<div class="panel-body">
+						{!! Form::open(array('route' => 'trackings.search','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal form-wizard', 'id' => 'rootwizard')) !!}
 
-			<div class="col-sm-2 trans ml60 mt54">
-				Destination Office
-				<br>
-				(Ready Collect)
-			</div>
+							<?php $status = (int)$lotinData->status; ?>
 
-			<div class="col-sm-1 trans ml108 mt54">
-				Collected
+							<div class="form-group">
+								<label class="col-sm-4">
+									Contact No:
+									@if($sender->contact_no)
+										{{ $sender->contact_no }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
+
+								<label class="col-sm-4">
+									To:
+									@if($receiver->address)
+										{{ $receiver->address }} of {{ $receiverCount }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
+
+								<label class="col-sm-4">
+									Date: {{ $lotinData->date }}
+								</label>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-4">
+									Member No:
+									@if($sender->member_no)
+										{{ $sender->member_no }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
+
+								<label class="col-sm-4">
+									Contact No:
+									@if($receiver->contact_no)
+										{{ $receiver->contact_no }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
+
+								<label class="col-sm-4">
+									Lot No: {{ $lotinData->lot_no }}
+								</label>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-4">
+									Sender Name:
+									@if($sender->name)
+										{{ $sender->name }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
+
+								<label class="col-sm-4">
+									Receiver Name:
+									@if($receiver->name)
+										{{ $receiver->name }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
+
+								<label class="col-sm-4">
+									From: {{ $states[$lotinData->from_state] }}, {{ $countries[$lotinData->from_country] }}
+								</label>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-4">
+									NRIC:
+									@if($sender->nric_code_id != 0 && $sender->nric_township_id != 0)
+										{{ $nricCodes[$sender->nric_code_id] }} / {{ $nricTownships[$sender->nric_township_id] }} {{ $sender->nric_no }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
+
+								<label class="col-sm-4">
+									NRIC:
+									@if($receiver->nric_code_id != 0 && $receiver->nric_township_id != 0)
+										{{ $nricCodes[$receiver->nric_code_id] }} / {{ $nricTownships[$receiver->nric_township_id] }} {{ $receiver->nric_no }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
+
+								<label class="col-sm-4">
+									To: {{ $states[$lotinData->to_state] }}, {{ $countries[$lotinData->to_country] }}
+								</label>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-4">&nbsp;</label>
+
+								<label class="col-sm-4">&nbsp;</label>
+
+								<label class="col-sm-4">
+									Payment: {{ $lotinData->payment }}
+								</label>
+							</div>
+
+							<br><br>
+							<br><br>
+
+							<div class="steps-progress">
+								<div class="progress-indicator"></div>
+							</div>
+
+							<ul>
+								<li @if($status == 0) class="complete" @endif>
+									<a href="#tab1" data-toggle="tab">
+										<span>1</span>Sender Office (Start Point)
+									</a>
+								</li>
+								<li @if($status >= 1) class="complete" @elseif($status == 0) class="active" @endif>
+									<a href="#tab2" data-toggle="tab">
+										<span>2</span>On Boarding
+									</a>
+								</li>
+								<li @if($status >= 2) class="complete" @elseif($status == 1) class="active" @endif>
+									<a href="#tab3" data-toggle="tab">
+										<span>3</span>Destination Office (Ready Collect)
+									</a>
+								</li>
+								<li @if($status >= 3) class="complete" @elseif($status == 2) class="active" @endif>
+									<a href="#tab4" data-toggle="tab">
+										<span>4</span>Collected
+									</a>
+								</li>
+								<li>
+									<a href="#tab5" data-toggle="tab">
+										<span>5</span>Customer Received
+									</a>
+								</li>
+							</ul>
+
+							<br><br>
+							<br><br>
+
+							<div class="form-group">
+								<label class="col-sm-1 control-label"></label>
+
+								<div class="col-sm-5">
+									<a href="{{ url('trackings/' . $lotinData->id) }}" class="btn btn-success">
+										<i class="entypo-list"></i> Detail
+									</a>
+									<a href="{{ route('trackings.index') }}" class="btn btn-black">
+										Back
+									</a>
+								</div>
+							</div>
+						{!! Form::close() !!}
+					</div>
+				</div>
 			</div>
 		</div>
 
-
-
-	</div><!-- .main-content -->
-
-	<div class="footer-menu">
-		<div class="footer-content">
-			<div class="menu-icon">
-				<a href="{{ url('/dashboard') }}">
-					<img src="{{ asset('assets/img/home-icon.jpeg') }}" alt="Go Home">
-					Home
-				</a>
-			</div><!-- .menu-icon -->
-
-			@permission('tracking-show')
-			<div class="menu-icon">
-				<a href="{{ url('trackings/' . $lotinData->id) }}" >
-					<img src="{{ asset('assets/img/Show list.png') }}" alt="Detail">
-					Detail
-				</a>
-			</div><!-- .menu-icon -->
-			@endpermission
-
-			<div class="menu-icon">
-				<a href="{{ url('dashboard') }}" >
-					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
-					Back
-				</a>
-			</div><!-- .menu-icon -->
-
-			<div class="menu-icon">
-				<a href="{{ url('trackings') }}" >
-					<img src="{{ asset('assets/img/Close.png') }}" alt="Close">
-					Close
-				</a>
-			</div><!-- .menu-icon -->
-		</div>
-	</div><!-- .footer-menu -->
+		<!-- Footer -->
+		<footer class="main">
+			Copyright &copy; 2017 All Rights Reserved. <strong>MSCT Co.Ltd</strong>
+		</footer>
+	</div>
 @stop
 
 @section('my-script')
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/select2/dist/css/select2.css') }}">
-	<script src="{{ asset('plugins/select2/dist/js/select2.js') }}"></script>
-	<script>
-		$(document).ready(function(){});
-	</script>
+	<!-- Imported styles on this page -->
+	<link rel="stylesheet" href="assets/js/selectboxit/jquery.selectBoxIt.css">
+
+	<!-- Imported scripts on this page -->
+	<script src="assets/js/jquery.bootstrap.wizard.min.js"></script>
+	<script src="assets/js/jquery.validate.min.js"></script>
+	<script src="assets/js/jquery.inputmask.bundle.js"></script>
+	<script src="assets/js/selectboxit/jquery.selectBoxIt.min.js"></script>
+	<script src="assets/js/bootstrap-datepicker.js"></script>
+	<script src="assets/js/bootstrap-switch.min.js"></script>
+	<script src="assets/js/jquery.multi-select.js"></script>
+	<script src="assets/js/neon-chat.js"></script>
+
 @stop
+

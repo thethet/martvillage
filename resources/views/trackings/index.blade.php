@@ -1,140 +1,108 @@
 @extends('layouts.layout')
 
-@section('site-title')
-	<div class="col-md-4 site-icon">
-		<img class="profile-icon" src="{{ asset('assets/img/tracking-icon.png') }}" alt="Tracking">
-	</div>
-	<div class="col-md-8 site-header">Tracking List</div>
+@section('page-title')
+	Tracking
 @stop
 
 @section('main')
-	{!! Form::open(array('route' => 'trackings.search','method'=>'POST', 'id' => 'tracking-form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data')) !!}
 	<div class="main-content">
+
+		@include('layouts.headerbar')
+		<hr />
+
+		<ol class="breadcrumb bc-3" >
+			<li>
+				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
+			</li>
+			<li>
+				<a href="{{ url('settings') }}">Settings</a>
+			</li>
+			<li class="active">
+				<strong>Tracking Management</strong>
+			</li>
+		</ol>
+
+		<h2>Tracking Management</h2>
+		<br />
+
 		<div class="row">
-			<div class="form-group"></div>
-			<div class="form-group"></div>
-		</div>
-		<div class="row">
-			<div class="col col-md-2"></div>
-			<div class="col col-md-6 loginbox">
-				<div class="form-group"></div>
-
-				<div class="form-group center lottitle">
-					<b>Please Enter Your Lot No.</b>
-				</div><!-- .form-group -->
-
-				<div class="form-group"></div>
-				<div class="form-group center">
-					@if ($message = Session::get('success'))
-					<span class="required">
-						<strong>{{ $message }}</strong>
-					</span>
-					@endif
-				</div>
-
-				<div class="form-group">
-					<label class="control-label col-sm-3" for="lotNo"></label>
-					<div class="col-sm-6">
-						{!! Form::text('lot_no', null, array('placeholder' => 'Please Enter Lot Number','class' => 'form-control')) !!}
-						@if ($errors->has('lot_no'))
-							<span class="required">
-								<strong>{{ $errors->first('lot_no') }}</strong>
-							</span>
-						@endif
-					</div>
-				</div><!-- .form-group -->
-
-				<div class="form-group"></div>
-				<div class="form-group"></div>
-				<div class="form-group">
-					<div class="form-group" style="margin-bottom: 0;">
-						<label class="control-label col-sm-3" for="from"></label>
-						<div class="col-sm-4"></div>
-						<div class="col-sm-3">
-							<a href="#" id="add" onclick="document.getElementById('tracking-form').submit();">
-								<div class="addbtn">
-									<img src="{{ asset('assets/img/Search.png') }}" alt="Search">
-										Search
-								</div>
-							</a>
+			<div class="col-md-12">
+				<div class="panel panel-primary" data-collapsed="0">
+					<div class="panel-heading">
+						<div class="panel-title">
+							<strong>Search Form</strong>
 						</div>
-						<div class="col-sm-2"></div>
-					</div><!-- .form-group -->
+
+						<div class="panel-options">
+							<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+						</div>
+					</div>
+
+					<div class="panel-body">
+						{!! Form::open(array('route' => 'trackings.search','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate')) !!}
+
+							<div class="form-group {{ $errors->has('lot_no') ? ' has-error' : '' }}">
+								@if ($message = Session::get('error'))
+									<div class="row">
+										<label class="col-sm-3 control-label">&nbsp;</span></label>
+										<div class="col-sm-5">
+											<div class="alert alert-danger">
+												<strong>Sorry!</strong> {{ $message }}
+											</div>
+										</div>
+									</div>
+								@endif
+
+								<label class="col-sm-3 control-label">Lot Number <span class="text-danger">*</span></label>
+
+								<div class="col-sm-5">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-map"></i></span>
+										{!! Form::text('lot_no', null, ['placeholder' => 'Lot Number', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+									</div>
+
+									@if ($errors->has('lot_no'))
+										<span class="validate-has-error">
+											<strong>{{ $errors->first('lot_no') }}</strong>
+										</span>
+									@endif
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label"></label>
+
+								<div class="col-sm-5">
+									<button type="submit" class="btn btn-success btn-icon">
+										Search <i class="entypo-search"></i>
+									</button>
+									<button type="reset" class="btn">Reset</button>
+								</div>
+							</div>
+						{!! Form::close() !!}
+					</div>
 				</div>
 			</div>
-			<div class="col col-md-3"></div>
 		</div>
 
-	</div><!-- .main-content -->
 
-	<div class="footer-menu">
-		<div class="footer-content">
-			<div class="menu-icon">
-				<a href="{{ url('/dashboard') }}">
-					<img src="{{ asset('assets/img/home-icon.jpeg') }}" alt="Go Home">
-					Home
-				</a>
-			</div><!-- .menu-icon -->
-
-			<div class="menu-icon">
-				<a href="{{ url('dashboard') }}" >
-					<img src="{{ asset('assets/img/go-back.png') }}" alt="Save">
-					Back
-				</a>
-			</div><!-- .menu-icon -->
-		</div>
-	</div><!-- .footer-menu -->
-{!! Form::close() !!}
+		<!-- Footer -->
+		<footer class="main">
+			Copyright &copy; 2017 All Rights Reserved. <strong>MSCT Co.Ltd</strong>
+		</footer>
+	</div>
 @stop
 
 @section('my-script')
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script>
-		$(document).ready(function(){
-			$(".editboxes").change(function() {
-				var $el = $(this);
-				if ($el.is(":checked")) {
-					$('.editboxes').attr('disabled', true);
-					$el.attr("disabled", false);
-				}
-				else {
-					$('.editboxes').attr('disabled', false);
-				}
-			});
+	<!-- Imported styles on this page -->
+	<link rel="stylesheet" href="{{ asset('assets/js/datatables/datatables.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2-bootstrap.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2.css') }}">
 
-			$("#edit").on("click",function(){
-				$(".editboxes").each(function() {
-					if ($(this).is(":checked")) {
-						var id = $(this).val();
-						$.ajax({
-							url: "{{ url('permissions/ajax/id/edit') }}",
-							type: 'GET',
-							data: { id: id },
-							success: function(data)
-							{
-								window.location.replace(data.url);
-							}
-						});
-					}
-				});
-			});
+	<!-- Imported scripts on this page -->
+	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
+	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
 
-			$("#delete").on("click",function(){
-				$(".editboxes").each(function() {
-					if ($(this).is(":checked")) {
-						var id = $(this).val();
-						$.ajax({
-							url: "{!! url('permissions/"+ id +"') !!}",
-							type: 'DELETE',
-							data: {_token: '{!! csrf_token() !!}'},
-							dataType: 'JSON',
-							success: function (data) {
-								window.location.replace(data.url);
-							}
-						});
-					}
-				});
-			});
-		});
-	</script>
 @stop
+

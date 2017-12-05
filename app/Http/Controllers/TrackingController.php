@@ -59,7 +59,11 @@ class TrackingController extends Controller {
 		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('id', 'asc')->lists('nric_code', 'id');
 		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('serial_no', 'asc')->lists('short_name', 'id');
 
-		$receivers     = Receiver::where('company_id', Auth::user()->company_id)->get();
+		if(Auth::user()->hasRole('administrator')) {
+			$receivers     = Receiver::get();
+		} else {
+			$receivers     = Receiver::where('company_id', Auth::user()->company_id)->get();
+		}
 		$receiverCount = count($receivers);
 
 		$items = Item::where('lotin_id', $id)->get();
@@ -111,7 +115,7 @@ class TrackingController extends Controller {
 			$receiver = Receiver::find($lotinData->receiver_id);
 		} else {
 			return redirect()->route('trackings.index')
-				->with('success', 'Your Lot No does not exist');
+				->with('error', 'Your Lot Number does not exist.');
 		}
 
 		$countries = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
@@ -120,7 +124,11 @@ class TrackingController extends Controller {
 		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('id', 'asc')->lists('nric_code', 'id');
 		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('serial_no', 'asc')->lists('short_name', 'id');
 
-		$receivers     = Receiver::where('company_id', Auth::user()->company_id)->get();
+		if(Auth::user()->hasRole('administrator')) {
+			$receivers     = Receiver::get();
+		} else {
+			$receivers     = Receiver::where('company_id', Auth::user()->company_id)->get();
+		}
 		$receiverCount = count($receivers);
 
 		return view('trackings.search', ['lotinData' => $lotinData, 'sender' => $sender, 'receiver' => $receiver, 'countries' => $countries, 'states' => $states, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships, 'receiverCount' => $receiverCount]);
