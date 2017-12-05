@@ -43,11 +43,11 @@ class CollectionController extends Controller
 		if (Auth::user()->hasRole('administrator')) {
 			$lotins = $query->orderBy('incoming_date', 'ASC')->paginate(10);
 		} elseif (Auth::user()->hasRole('owner')) {
-			$lotins = $query->where('company_id', Auth::user()->company_id)
+			$lotins = $query->where('l.company_id', Auth::user()->company_id)
 				->orderBy('incoming_date', 'ASC')->paginate(10);
 		} else {
 			$lotins = $query->where('to_state', Auth::user()->state_id)
-				->where('company_id', Auth::user()->company_id)
+				->where('l.company_id', Auth::user()->company_id)
 				->orderBy('incoming_date', 'ASC')->paginate(10);
 		}
 
@@ -159,11 +159,11 @@ class CollectionController extends Controller
 		if (Auth::user()->hasRole('administrator')) {
 			$lotins = $query->orderBy('incoming_date', 'ASC')->paginate(10);
 		} elseif (Auth::user()->hasRole('owner')) {
-			$lotins = $query->where('company_id', Auth::user()->company_id)
+			$lotins = $query->where('l.company_id', Auth::user()->company_id)
 				->orderBy('incoming_date', 'ASC')->paginate(10);
 		} else {
 			$lotins = $query->where('to_state', Auth::user()->state_id)
-				->where('company_id', Auth::user()->company_id)
+				->where('l.company_id', Auth::user()->company_id)
 				->orderBy('incoming_date', 'ASC')->paginate(10);
 		}
 

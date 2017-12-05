@@ -4,7 +4,7 @@
 	<div class="col-md-4 site-icon">
 		<img class="profile-icon" src="{{ asset('assets/img/incoming.png') }}" alt="Incoming">
 	</div>
-	<div class="col-md-8 site-header">Cargo Income Report By Trip+</div>
+	<div class="col-md-8 site-header">Income Report By Trip</div>
 @stop
 
 @section('main')
@@ -15,6 +15,38 @@
 			<p>{{ $message }}</p>
 		</div>
 		@endif
+
+		<div class="row">
+			{!! Form::open(array('route' => 'reports.bytrips','method'=>'POST', 'id' => 'incomings-search-form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data')) !!}
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="date">
+					<strong>Departure Date:</strong>
+				</label>
+				<div class="col-sm-2">
+					{!! Form::text('dept_date', null, array('placeholder' => 'Departure Date','class' => 'form-control')) !!}
+					@if ($errors->has('dept_date'))
+						<span class="required">
+							<strong>{{ $errors->first('dept_date') }}</strong>
+						</span>
+					@endif
+				</div>
+
+				<label class="control-label col-sm-1" for="date"></label>
+
+				<label class="control-label col-sm-1" for="button"></label>
+				<div class="col-sm-2">
+					<a href="#" id="add" onclick="document.getElementById('incomings-search-form').submit();">
+						<div class="addbtn">
+							<img src="{{ asset('assets/img/Search.png') }}" alt="Search">
+								Search
+						</div>
+					</a>
+				</div>
+			</div><!-- .form-group -->
+
+			<div class="form-group"></div>
+			{!! Form::close() !!}
+		</div>
 
 		@for ($t = 0; $t < count($tripList); $t++)
 			<h5>{{ $tripList[$t] }}</h5>
@@ -29,22 +61,34 @@
 						<th>Toll Fees</th>
 						<th>FOC</th>
 						<th>Discount</th>
-						<th>Sub Income</th>
-						<th>Income</th>
+						<th>Income <br>(Include GST & Service Charge)</th>
+						<th>Net Income <br>(Income - Discount)</th>
 					</tr>
 
 						@for($rp = 0; $rp < count($tripReportLists[$tripList[$t]]); $rp++)
 							<tr>
-								<td>&nbsp;</td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
+								<td>{{ $rp + 1 }}</td>
+								<td>
+									{{ $tripReportLists[$tripList[$t]][$rp]->dept_date }}
+								</td>
+								<td>
+									{{ $tripReportLists[$tripList[$t]][$rp]->dept_time }}
+								</td>
+								<td>
+									{{ $tripReportLists[$tripList[$t]][$rp]->vessel_no }}
+								</td>
+								<td>{{ '-' }}</td>
+								<td>{{ '-' }}</td>
+								<td>{{ '-' }}</td>
+								<td style="text-align: right;">
+									{{ number_format($tripReportLists[$tripList[$t]][$rp]->total_discount, 2) }}
+								</td>
+								<td style="text-align: right;">
+									{{ number_format($tripReportLists[$tripList[$t]][$rp]->total_income, 2) }}
+								</td>
+								<td style="text-align: right;">
+									{{ number_format($tripReportLists[$tripList[$t]][$rp]->net_income, 2) }}
+								</td>
 							</tr>
 						@endfor
 
@@ -65,7 +109,7 @@
 			</div><!-- .menu-icon -->
 
 			<div class="menu-icon">
-				<a href="{{ url('collections') }}" >
+				<a href="{{ url('reports') }}" >
 					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
 					Back
 				</a>
@@ -85,23 +129,14 @@
 
 	<script>
 		$(document).ready(function(){
-			var incoming_date=$('input[name="incoming_date"]'); //our date input has the name "date"
+			var dept_date=$('input[name="dept_date"]'); //our date input has the name "date"
 			var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-			incoming_date.datepicker({
+			dept_date.datepicker({
 				format: 'yyyy-mm-dd',
 				container: container,
 				todayHighlight: true,
 				autoclose: true,
 			});
-
-			var date_input=$('input[name="date"]'); //our date input has the name "date"
-			date_input.datepicker({
-				format: 'yyyy-mm-dd',
-				container: container,
-				todayHighlight: true,
-				autoclose: true,
-			});
-			// date_input.datepicker('setDate', new Date());
 
 			$('#timepicker').timepicker({
 				minuteStep: 5

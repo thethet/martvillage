@@ -377,6 +377,9 @@ Route::group(['middleware' => ['auth']], function () {
 	|
 	 */
 	Route::get('reports', ['as' => 'reports.index', 'uses' => 'ReportController@index', 'middleware' => ['permission:report-list|report-create|report-edit|report-delete']]);
+
 	Route::get('reports/bytrips', ['as' => 'reports.bytrips', 'uses' => 'ReportController@reportByTrips', 'middleware' => ['permission:report-list|report-create|report-edit|report-delete']]);
+
+	Route::post('reports/bytrips', ['as' => 'reports.bytrips', 'uses' => 'ReportController@reportByTrips', 'middleware' => ['permission:report-list|report-create|report-edit|report-delete']]);
 
 });

@@ -33,7 +33,7 @@
 
 				<label class="control-label col-sm-1" for="date"></label>
 
-				<label class="control-label col-sm-2" for="time">
+				{{-- <label class="control-label col-sm-2" for="time">
 					<strong>Arrival Time:</strong>
 				</label>
 				<div class="col-sm-2">
@@ -43,7 +43,7 @@
 							<strong>{{ $errors->first('arrival_time') }}</strong>
 						</span>
 					@endif
-				</div>
+				</div> --}}
 				<label class="control-label col-sm-1" for="button"></label>
 				<div class="col-sm-2">
 					<a href="#" id="add" onclick="document.getElementById('incomings-search-form').submit();">

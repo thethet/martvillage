@@ -28,7 +28,13 @@ class ReportController extends Controller
 	 */
 	public function reportByTrips(Request $request)
 	{
-		$outgoings = DB::table('outgoings')->where('packing_list', '!=', 0)->orderBy('dept_date', 'ASC')->get();
+		if($request->dept_date) {
+			$deptDate = date('Y-m-d', strtotime($request->dept_date));
+		} else {
+			$deptDate = date('Y-m-d');
+		}
+
+		$outgoings = DB::table('outgoings')->where('packing_list', '!=', 0)->orderBy('dept_date', 'ASC')->where('dept_date', $deptDate)->get();
 		$company   = Companies::find(Auth::user()->company_id);
 
 		$stateIds    = $company->states;
@@ -44,6 +50,7 @@ class ReportController extends Controller
 		$tripList = array();
 
 		foreach ($outgoings as $outgoing) {
+			$incomeWithGst         = 0;
 			$totalIncome         = 0;
 			$totalGst            = 0;
 			$totalServiceCharges = 0;
@@ -53,14 +60,19 @@ class ReportController extends Controller
 			$items               = DB::table('items')->where('outgoing_id', $outgoing->id)->get();
 			foreach ($items as $item) {
 				$lotin = Lotin::find($item->lotin_id);
-				$totalIncome += $item->unit_price;
-				$totalGst += $item->unit_price * $company->gst_rate / 100;
-				$totalServiceCharges += $item->unit_price * $company->service_rate / 100;
-				$totalMemberDiscount += $item->unit_price * $lotin->member_discount / 100;
-				// $totalOtherDiscount += $item->unit_price * $lotin->other_discount / 100;
+				$totalIncome += $item->amount;
+				$totalGst += $item->amount * $company->gst_rate / 100;
+				$totalServiceCharges += $item->amount * $company->service_rate / 100;
+				$totalMemberDiscount += $item->amount * $lotin->member_discount / 100;
+				// $totalOtherDiscount += $item->amount * $lotin->other_discount / 100;
+				$totalOtherDiscount += $item->amount * 10 / 100;
+
+				$incomeWithGst += $totalIncome + $totalGst + $totalServiceCharges;
 			}
-			$totalDiscount                   = $totalMemberDiscount                   = $totalOtherDiscount;
-			$outgoing->total_income          = $totalIncome;
+			$totalDiscount                   = $totalMemberDiscount + $totalOtherDiscount;
+			$netIncome                       = $incomeWithGst - $totalDiscount;
+			$outgoing->total_income          = $incomeWithGst;
+			$outgoing->net_income            = $netIncome;
 			$outgoing->total_gst             = $totalGst;
 			$outgoing->total_service_charges = $totalServiceCharges;
 			$outgoing->total_member_discount = $totalMemberDiscount;
@@ -83,12 +95,9 @@ class ReportController extends Controller
 			}
 		}
 
-		// dd($tripList);
+		// dd($tripReportLists);
 
 		return view('reports.report-by-trip', ['tripList' => $tripList, 'tripReportLists' => $tripReportLists]);
-
-		dd($tripReportLists);
-		echo "welcome";
 	}
 
 	/**

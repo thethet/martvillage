@@ -46,14 +46,14 @@ class IncomingController extends Controller {
 			$arrivalDate = date('Y-m-d');
 		}
 
-		if ($request->time) {
-			$currentTime = date('H:i A', strtotime($request->arrival_));
+		if ($request->arrival_time) {
+			$currentTime = date('H:i A', strtotime($request->arrival_time));
 		} else {
 			$currentTime = date('H:i A');
 		}
 
 		$query = Outgoing::where('arrival_date', $arrivalDate)
-			->where('arrival_time', '>=', $currentTime)
+			// ->where('arrival_time', '>=', $currentTime)
 			->where('deleted', 'N');
 
 		if (Auth::user()->hasRole('administrator')) {

@@ -459,6 +459,14 @@
 				autoclose: true,
 			});
 
+			var arrival_date=$('input[name="arrival_date"]'); //our date input has the name "date"
+			arrival_date.datepicker({
+				format: 'yyyy-mm-dd',
+				container: container,
+				todayHighlight: true,
+				autoclose: true,
+			});
+
 			$("#outgoing-form :input").prop("disabled", true);
 
 			$("#add-item").on("click",function(){

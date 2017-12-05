@@ -423,7 +423,7 @@
 						</tr>
 						<tr>
 							<td colspan="6" class="right">Total</td>
-							<td class="right" id="total-10">
+							<td class="right" id="total-0">
 								{{ Form::hidden('total', null, ['id' => 'total']) }}
 							</td>
 							<td class="right" id="total-1"></td>
@@ -1218,10 +1218,17 @@
 			subTotal = parseFloat(subTotal).toFixed(2);
 			$('#subtotal-1').text(subTotal);
 
-			var discount = parseFloat((subTotal * 0.1)).toFixed(2);
-			var scharge = parseFloat((subTotal * 0.1)).toFixed(2);
-			var gst = parseFloat((subTotal * 0.07)).toFixed(2);
-			var total = parseFloat((subTotal - discount + scharge + gst)).toFixed(2);
+			var discount = 0;
+			var scharge = 0;
+			var gst = 0;
+			var total = 0;
+
+			discount = parseFloat((subTotal * 0.1)).toFixed(2);
+			scharge = parseFloat((subTotal * 0.1)).toFixed(2);
+			gst = parseFloat((subTotal * 0.07)).toFixed(2);
+			total = parseFloat(subTotal) + parseFloat(gst) + parseFloat(scharge) - parseFloat(discount);
+			total = parseFloat(total).toFixed(2);
+			console.log("Total: "+ total);
 
 			$('#discount').val(discount);
 			$('#discount-1').text(discount);
