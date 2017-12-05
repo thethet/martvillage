@@ -344,4 +344,27 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('lotbalances/{id}', ['as' => 'lotbalances.show', 'uses' => 'LotBalanceController@show']);
 
+
+	/*
+	|--------------------------------------------------------------------------
+	| Collection Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Collection Model CRUD
+	|
+	 */
+	Route::get('collections', ['as' => 'collections.index', 'uses' => 'CollectionController@index', 'middleware' => ['permission:collection-list|collection-create|collection-edit|collection-delete']]);
+
+	Route::get('collections/ready-collect', ['as' => 'collections.ready.collect', 'uses' => 'CollectionController@readyToCollect', 'middleware' => ['permission:collection-list|collection-create|collection-edit|collection-delete']]);
+
+	Route::post('collections/ready-collect', ['as' => 'collections.ready.search', 'uses' => 'CollectionController@search', 'middleware' => ['permission:collection-list|collection-create|collection-edit|collection-delete']]);
+
+	Route::get('collections/collected/{id}', ['as' => 'collections.collected', 'uses' => 'CollectionController@updateCollectionStatus']);
+
+	Route::get('collections/return', ['as' => 'collections.return', 'uses' => 'CollectionController@returnLots']);
+
+
+
+	Route::get('collections/{id}', ['as' => 'collections.show', 'uses' => 'CollectionController@show']);
+
 });

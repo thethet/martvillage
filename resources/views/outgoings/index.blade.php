@@ -125,9 +125,7 @@
 							</span>
 						@endif
 					</div>
-				</div><!-- .form-group -->
 
-				<div class="form-group" style="margin-bottom: 8px; margin-top: 10px;">
 					<label class="control-label col-sm-2" for="phone">
 						<strong>Phone:<span class="required">*</span></strong>
 					</label>
@@ -139,7 +137,9 @@
 							</span>
 						@endif
 					</div>
+				</div><!-- .form-group -->
 
+				<div class="form-group" style="margin-bottom: 8px; margin-top: 10px;">
 					<label class="control-label col-sm-2" for="date">
 						<strong>Dept Date:<span class="required">*</span></strong>
 					</label>
@@ -148,6 +148,44 @@
 						@if ($errors->has('dept_date'))
 							<span class="required">
 								<strong>{{ $errors->first('dept_date') }}</strong>
+							</span>
+						@endif
+					</div>
+
+					<label class="control-label col-sm-2" for="time">
+						<strong>Dept Time:<span class="required">*</span></strong>
+					</label>
+					<div class="col-sm-4">
+						{!! Form::text('dept_time', null, array('placeholder' => 'Depature Time','class' => 'form-control', 'id' => 'timepicker')) !!}
+						@if ($errors->has('dept_time'))
+							<span class="required">
+								<strong>{{ $errors->first('dept_time') }}</strong>
+							</span>
+						@endif
+					</div>
+				</div><!-- .form-group -->
+
+				<div class="form-group" style="margin-bottom: 8px; margin-top: 10px;">
+					<label class="control-label col-sm-2" for="date">
+						<strong>Arrival Date:<span class="required">*</span></strong>
+					</label>
+					<div class="col-sm-4">
+						{!! Form::text('arrival_date', null, array('placeholder' => 'Arrival Date','class' => 'form-control')) !!}
+						@if ($errors->has('arrival_date'))
+							<span class="required">
+								<strong>{{ $errors->first('arrival_date') }}</strong>
+							</span>
+						@endif
+					</div>
+
+					<label class="control-label col-sm-2" for="time">
+						<strong>Arrival Time:<span class="required">*</span></strong>
+					</label>
+					<div class="col-sm-4">
+						{!! Form::text('arrival_time', null, array('placeholder' => 'Arrival Time','class' => 'form-control', 'id' => 'arrival_timepicker')) !!}
+						@if ($errors->has('arrival_time'))
+							<span class="required">
+								<strong>{{ $errors->first('arrival_time') }}</strong>
 							</span>
 						@endif
 					</div>
@@ -264,18 +302,8 @@
 				</div><!-- .form-group -->
 
 				<div class="form-group" style="margin-bottom: 21px; margin-top: 10px;">
-					<label class="control-label col-sm-2" for="time">
-						<strong>Time:<span class="required">*</span></strong>
-					</label>
-					<div class="col-sm-4">
-						{!! Form::text('time', null, array('placeholder' => 'Depature Time','class' => 'form-control', 'id' => 'timepicker')) !!}
-						@if ($errors->has('time'))
-							<span class="required">
-								<strong>{{ $errors->first('time') }}</strong>
-							</span>
-						@endif
-					</div>
-					<label class="control-label col-sm-4" for="button"></label>
+
+					<label class="control-label col-sm-10" for="button"></label>
 					<div class="col-sm-2">
 						<a href="#" id="add" onclick="document.getElementById('outgoing-form').submit();">
 							<div class="addbtn">
@@ -441,6 +469,10 @@
 
 
 			$('#timepicker').timepicker({
+				minuteStep: 5
+			});
+
+			$('#arrival_timepicker').timepicker({
 				minuteStep: 5
 			});
 

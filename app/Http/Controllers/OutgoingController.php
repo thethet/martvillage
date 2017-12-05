@@ -14,13 +14,15 @@ use DB;
 use Illuminate\Http\Request;
 use Session;
 
-class OutgoingController extends Controller {
+class OutgoingController extends Controller
+{
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function index(Request $request) {
+	public function index(Request $request)
+	{
 		if (Session::has('month')) {
 			$currentMonthYear = Session::get('month');
 
@@ -41,22 +43,22 @@ class OutgoingController extends Controller {
 			$nextMonth     = date('F Y', strtotime('+1 month', strtotime($currentMonthYear)));
 		}
 
-		if(Session::has('searchYMD')) {
+		if (Session::has('searchYMD')) {
 			$searchYMD = date('Y-m-d', strtotime(Session::get('searchYMD')));
 
-			$year = date('Y', strtotime($searchYMD));
+			$year  = date('Y', strtotime($searchYMD));
 			$month = date('m', strtotime($searchYMD));
-			$day = date('d', strtotime($searchYMD));
+			$day   = date('d', strtotime($searchYMD));
 		} else {
-			$year = date('Y', strtotime($currentMonthYear));
+			$year  = date('Y', strtotime($currentMonthYear));
 			$month = date('m', strtotime($currentMonthYear));
 		}
 
 		$query = Outgoing::where('deleted', 'N')
-					->whereYear('dept_date', '=', $year)
-					->whereMonth('dept_date', '=', $month);
+			->whereYear('dept_date', '=', $year)
+			->whereMonth('dept_date', '=', $month);
 
-		if(Session::has('searchYMD')) {
+		if (Session::has('searchYMD')) {
 			$query = $query->whereDay('dept_date', '=', $day);
 		}
 
@@ -66,7 +68,7 @@ class OutgoingController extends Controller {
 		} elseif (Auth::user()->hasRole('owner')) {
 			$outgoingList = $query->where('company_id', Auth::user()->company_id)->get();
 		} else {
-			$outgoingList =$query->where('company_id', Auth::user()->company_id)
+			$outgoingList = $query->where('company_id', Auth::user()->company_id)
 				->where('from_city', Auth::user()->state_id)->get();
 		}
 		$company       = Companies::find(Auth::user()->company_id);
@@ -85,7 +87,6 @@ class OutgoingController extends Controller {
 		$stateList   = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
 		$dayHeader = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
 
 		$packages = Outgoing::select(DB::raw('sum(packing_list) as packing_list'), 'dept_date', DB::raw('count(id) as total'), DB::raw('YEAR(dept_date) year, MONTH(dept_date) month, DAY(dept_date) day'))
 			->groupby('year', 'month', 'day')
@@ -113,7 +114,8 @@ class OutgoingController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function indexCalendar(Request $request) {
+	public function indexCalendar(Request $request)
+	{
 		Session::flash('month', $request->calendarDate);
 		$response = array('status' => 'success', 'url' => 'outgoings');
 		return response()->json($response);
@@ -125,10 +127,11 @@ class OutgoingController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function searchByDay(Request $request) {
+	public function searchByDay(Request $request)
+	{
 
-		$searchYMD = date('Y-m-d', strtotime( $request->searchDay));
-		$searchYM = date('F Y', strtotime( $request->searchDay));
+		$searchYMD = date('Y-m-d', strtotime($request->searchDay));
+		$searchYM  = date('F Y', strtotime($request->searchDay));
 		Session::flash('month', $searchYM);
 
 		Session::flash('searchYMD', $searchYMD);
@@ -142,7 +145,8 @@ class OutgoingController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function create() {
+	public function create()
+	{
 		//
 	}
 
@@ -151,23 +155,27 @@ class OutgoingController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store(Request $request) {
+	public function store(Request $request)
+	{
 		$this->validate($request, [
 			'passenger_name' => 'required',
 			'contact_no'     => 'required',
 			'dept_date'      => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
+			'dept_time'      => 'required',
+			'arrival_date'   => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
+			'arrival_time'   => 'required|after:dept_time',
 			'from_city'      => 'required',
 			'to_city'        => 'required',
 			'weight'         => 'required',
 			// 'other'          => 'required',
 			'carrier'        => 'required',
 			// 'vessel_no'      => 'required',
-			'time'           => 'required',
 		]);
 
-		$data               = $request->all();
-		$data['time']       = date('H:i A', strtotime($request->time));
-		$data['created_by'] = Auth::user()->id;
+		$data                 = $request->all();
+		$data['dept_time']    = date('H:i A', strtotime($request->dept_time));
+		$data['arrival_time'] = date('H:i A', strtotime($request->arrival_time));
+		$data['created_by']   = Auth::user()->id;
 
 		$outgoing = Outgoing::create($data);
 
@@ -181,7 +189,8 @@ class OutgoingController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id) {
+	public function show($id)
+	{
 		//
 	}
 
@@ -191,7 +200,8 @@ class OutgoingController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function editAjax($userId, Request $request) {
+	public function editAjax($userId, Request $request)
+	{
 		$id       = $request->id;
 		$response = array('status' => 'success', 'url' => 'outgoings/' . $id . '/edit');
 		return response()->json($response);
@@ -204,7 +214,8 @@ class OutgoingController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id) {
+	public function edit($id)
+	{
 		echo "In Edit";
 	}
 
@@ -214,7 +225,8 @@ class OutgoingController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id) {
+	public function update($id)
+	{
 		//
 	}
 
@@ -224,7 +236,8 @@ class OutgoingController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id) {
+	public function destroy($id)
+	{
 		//
 	}
 
@@ -234,7 +247,8 @@ class OutgoingController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function packingList($id) {
+	public function packingList($id)
+	{
 		$outgoing = Outgoing::find($id);
 
 		$start = date("Y-m-d", strtotime($outgoing->dept_date . "-30 day"));
@@ -269,7 +283,8 @@ class OutgoingController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function packingListStore(Request $request) {
+	public function packingListStore(Request $request)
+	{
 		$data               = $request->all();
 		$data['created_by'] = Auth::user()->id;
 
@@ -301,15 +316,16 @@ class OutgoingController extends Controller {
 			$item = Item::find($itemIds[$i]);
 			$item->update($ItemData);
 
-			Lotin::find($item->lotin_id)->where('company_id', Auth::user()->company_id)
+			Lotin::find($item->lotin_id)->where('company_id', $outgoing->company_id)
 				->where('status', 0)->decrement('total_items');
 		}
 
 		$lotins = Lotin::where('total_items', 0)->where('status', 0)
-			->where('company_id', Auth::user()->company_id)->get();
+			->where('company_id', $outgoing->company_id)->where('outgoing_date', '0000-00-00')->get();
 
+		$outgoingDate = date('Y-m-d');
 		foreach ($lotins as $lotin) {
-			$updLotin = Lotin::find($lotin->id)->update(['status' => 1]);
+			$updLotin = Lotin::find($lotin->id)->update(['status' => 1, 'outgoing_date' => $outgoingDate]);
 		}
 
 		return redirect()->route('outgoings.index')

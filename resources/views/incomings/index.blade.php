@@ -20,13 +20,13 @@
 			{!! Form::open(array('route' => 'incomings.search','method'=>'POST', 'id' => 'incomings-search-form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data')) !!}
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="date">
-					<strong>Dept Date:</strong>
+					<strong>Arrival Date:</strong>
 				</label>
 				<div class="col-sm-2">
-					{!! Form::text('dept_date', null, array('placeholder' => 'Depature Date','class' => 'form-control')) !!}
-					@if ($errors->has('dept_date'))
+					{!! Form::text('arrival_date', null, array('placeholder' => 'Arrival Date','class' => 'form-control')) !!}
+					@if ($errors->has('arrival_date'))
 						<span class="required">
-							<strong>{{ $errors->first('dept_date') }}</strong>
+							<strong>{{ $errors->first('arrival_date') }}</strong>
 						</span>
 					@endif
 				</div>
@@ -34,13 +34,13 @@
 				<label class="control-label col-sm-1" for="date"></label>
 
 				<label class="control-label col-sm-2" for="time">
-					<strong>Time:</strong>
+					<strong>Arrival Time:</strong>
 				</label>
 				<div class="col-sm-2">
-					{!! Form::text('time', null, array('placeholder' => 'Depature Time','class' => 'form-control', 'id' => 'timepicker')) !!}
-					@if ($errors->has('time'))
+					{!! Form::text('arrival_time', null, array('placeholder' => 'Arrival Time','class' => 'form-control', 'id' => 'timepicker')) !!}
+					@if ($errors->has('arrival_time'))
 						<span class="required">
-							<strong>{{ $errors->first('time') }}</strong>
+							<strong>{{ $errors->first('arrival_time') }}</strong>
 						</span>
 					@endif
 				</div>
@@ -76,7 +76,8 @@
 							<th>Weight</th>
 							<th>Carrier</th>
 							<th>Vessel No.</th>
-							<th>Time</th>
+							<th>Depture Time</th>
+							<th>Arrival Time</th>
 							<th>Package List</th>
 						</tr>
 					</thead>
@@ -96,7 +97,8 @@
 								<td>{{ $outgoing->weight }}</td>
 								<td>{{ $outgoing->carrier_name }}</td>
 								<td>{{ $outgoing->vessel_no }}</td>
-								<td>{{ $outgoing->dept_date }} [ {{ date('H:i A', strtotime($outgoing->time)) }} ]</td>
+								<td>{{ $outgoing->dept_date }} [ {{ date('H:i A', strtotime($outgoing->dept_time)) }} ]</td>
+								<td>{{ $outgoing->arrival_date }} [ {{ date('H:i A', strtotime($outgoing->arrival_time)) }} ]</td>
 								<td>
 									<a href="{{ url('incomings/'. $outgoing->id) }}">
 										{{ $outgoing->packing_list }}
@@ -141,7 +143,7 @@
 
 	<script>
 		$(document).ready(function(){
-			var date_input=$('input[name="dept_date"]'); //our date input has the name "date"
+			var date_input=$('input[name="arrival_date"]'); //our date input has the name "date"
 			var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
 			date_input.datepicker({
 				format: 'yyyy-mm-dd',
