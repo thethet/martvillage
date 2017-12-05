@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Companies;
+use App\States;
 use App\Lotin;
 use Auth;
 use DB;
@@ -30,12 +31,17 @@ class ReportController extends Controller
 		$outgoings = DB::table('outgoings')->where('packing_list', '!=', 0)->orderBy('dept_date', 'ASC')->get();
 		$company   = Companies::find(Auth::user()->company_id);
 
+		$stateIds    = $company->states;
+		$stateIdList = array();
+		foreach ($stateIds as $stateId) {
+			$stateIdList[] = $stateId->id;
+		};
+
+		$stateList   = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_code', 'ASC')->lists('state_code', 'id');
+
 		$tripReportLists = array();
 
-		$tripLists = array();
-		$tripLists[] = '1-4';
-		$tripLists[] = '1-3';
-
+		$tripList = array();
 
 		foreach ($outgoings as $outgoing) {
 			$totalIncome         = 0;
@@ -61,21 +67,25 @@ class ReportController extends Controller
 			$outgoing->total_other_discount  = $totalOtherDiscount;
 			$outgoing->total_discount        = $totalDiscount;
 
-			$tripList[] = $outgoing->from_city . '-' . $outgoing->to_city;
-			if (array_key_exists($outgoing->from_city . '-' . $outgoing->to_city, $tripReportLists)) {
-				$count                                                              = count($tripReportLists[$outgoing->from_city . '-' . $outgoing->to_city]);
-				$tripReportLists[$outgoing->from_city . '-' . $outgoing->to_city][$count] = $outgoing;
+
+			if(!in_array($stateList[$outgoing->from_city] . '-' . $stateList[$outgoing->to_city], $tripList)) {
+				$tripList[] = $stateList[$outgoing->from_city] . '-' . $stateList[$outgoing->to_city];
+			}
+
+			if (array_key_exists($stateList[$outgoing->from_city] . '-' . $stateList[$outgoing->to_city], $tripReportLists)) {
+				$count                                                              = count($tripReportLists[$stateList[$outgoing->from_city] . '-' . $stateList[$outgoing->to_city]]);
+				$tripReportLists[$stateList[$outgoing->from_city] . '-' . $stateList[$outgoing->to_city]][$count] = $outgoing;
 			} else {
 
-				$tripReportLists[$outgoing->from_city . '-' . $outgoing->to_city]         = array();
-				$count                                                              = count($tripReportLists[$outgoing->from_city . '-' . $outgoing->to_city]);
-				$tripReportLists[$outgoing->from_city . '-' . $outgoing->to_city][$count] = $outgoing;
+				$tripReportLists[$stateList[$outgoing->from_city] . '-' . $stateList[$outgoing->to_city]]         = array();
+				$count                                                              = count($tripReportLists[$stateList[$outgoing->from_city] . '-' . $stateList[$outgoing->to_city]]);
+				$tripReportLists[$stateList[$outgoing->from_city] . '-' . $stateList[$outgoing->to_city]][$count] = $outgoing;
 			}
 		}
 
-		dd($tripList);
+		// dd($tripList);
 
-		return view('reports.report-by-trip', ['tripList' => $tripReportLists]);
+		return view('reports.report-by-trip', ['tripList' => $tripList, 'tripReportLists' => $tripReportLists]);
 
 		dd($tripReportLists);
 		echo "welcome";
