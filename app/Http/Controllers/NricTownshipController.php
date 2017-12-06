@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\NricTownships;
 use App\NricCodes;
-use Illuminate\Http\Request;
+use App\NricTownships;
 use Auth;
+use Illuminate\Http\Request;
 use Session;
 
 class NricTownshipController extends Controller {
@@ -15,7 +15,7 @@ class NricTownshipController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$townships = NricTownships::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
+		$townships   = NricTownships::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->paginate(10);
 		$total       = $townships->total();
 		$perPage     = $townships->perPage();
 		$currentPage = $townships->currentPage();
@@ -44,12 +44,12 @@ class NricTownshipController extends Controller {
 	public function store(Request $request) {
 		$this->validate($request, [
 			'nric_code_id' => 'required',
-			'township'  => 'required',
-			'short_name' => 'required',
-			'serial_no'  => 'required|integer',
+			'township'     => 'required',
+			'short_name'   => 'required',
+			'serial_no'    => 'required|integer',
 		]);
 
-		$data    = $request->all();
+		$data               = $request->all();
 		$data['created_by'] = Auth::user()->id;
 		NricTownships::create($data);
 
@@ -92,13 +92,13 @@ class NricTownshipController extends Controller {
 	public function update($id, Request $request) {
 		$this->validate($request, [
 			'nric_code_id' => 'required',
-			'township'  => 'required',
-			'short_name' => 'required',
-			'serial_no'  => 'required|integer',
+			'township'     => 'required',
+			'short_name'   => 'required',
+			'serial_no'    => 'required|integer',
 		]);
 
-		$nricTownship  = NricTownships::find($id);
-		$data    = $request->all();
+		$nricTownship       = NricTownships::find($id);
+		$data               = $request->all();
 		$data['updated_by'] = Auth::user()->id;
 		$nricTownship->update($data);
 
@@ -129,9 +129,9 @@ class NricTownshipController extends Controller {
 		$search     = $request->get('search');
 		$nricCodeId = $request->get('nricCodeId');
 		if ($nricCodeId) {
-			$items = NricTownships::select(\DB::raw('id as id, short_name as text'))->where('nric_code_id', $nricCodeId)->where('short_name', 'like', "{$search}%")->get();
+			$items = NricTownships::select(\DB::raw('id as id, short_name as text'))->where('nric_code_id', $nricCodeId)->where('short_name', 'like', "{$search}%")->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->get();
 		} else {
-			$items = NricTownships::select(\DB::raw('id as id, short_name as text'))->where('short_name', 'like', "{$search}%")->get();
+			$items = NricTownships::select(\DB::raw('id as id, short_name as text'))->where('short_name', 'like', "{$search}%")->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->get();
 		}
 
 		$header = array(

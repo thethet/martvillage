@@ -19,6 +19,9 @@ class CreateTblLotins extends Migration {
 			$table->string('lot_no');
 			$table->date('date');
 			$table->time('time');
+			$table->date('outgoing_date');
+			$table->date('incoming_date');
+			$table->date('collected_date');
 			$table->integer('from_country');
 			$table->integer('from_state');
 			$table->integer('to_country');

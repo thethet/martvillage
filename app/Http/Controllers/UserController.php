@@ -74,8 +74,8 @@ class UserController extends Controller {
 		}
 
 		$companies     = Companies::where('deleted', 'N')->lists('company_name', 'id');
-		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('id', 'asc')->lists('nric_code', 'id');
-		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('serial_no', 'asc')->lists('short_name', 'id');
+		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
+		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
 
 		return view('users.create', ['roles' => $roles, 'companies' => $companies, 'countries' => $countries, 'states' => $states, 'townships' => $townships, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships]);
 	}
@@ -166,8 +166,8 @@ class UserController extends Controller {
 		$townships = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 
 		$companies     = Companies::where('deleted', 'N')->lists('company_name', 'id');
-		$nricCodes     = NricCodes::orderBy('id', 'asc')->lists('nric_code', 'id');
-		$nricTownships = NricTownships::orderBy('serial_no', 'asc')->lists('short_name', 'id');
+		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
+		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
 
 		return view('users.show', ['user' => $user, 'userRole' => $userRole, 'roles' => $roles, 'companies' => $companies, 'countries' => $countries, 'states' => $states, 'townships' => $townships, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships]);
 	}
@@ -228,8 +228,8 @@ class UserController extends Controller {
 		$townships = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 
 		$companies     = Companies::where('deleted', 'N')->lists('company_name', 'id');
-		$nricCodes     = NricCodes::orderBy('id', 'asc')->lists('nric_code', 'id');
-		$nricTownships = NricTownships::orderBy('serial_no', 'asc')->lists('short_name', 'id');
+		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
+		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
 
 		return view('users.edit', ['user' => $user, 'userRole' => $userRole, 'roles' => $roles, 'companies' => $companies, 'countries' => $countries, 'states' => $states, 'townships' => $townships, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships]);
 	}

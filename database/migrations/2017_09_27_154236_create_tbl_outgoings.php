@@ -21,7 +21,9 @@ class CreateTblOutgoings extends Migration {
 			$table->string('shipping_line')->nullable();
 			$table->string('vessel_no')->nullable();
 			$table->date('dept_date');
-			$table->time('time');
+			$table->time('dept_time');
+			$table->date('arrival_date');
+			$table->time('arrival_time');
 			$table->string('weight');
 			$table->string('other_weight')->default(0);
 			$table->integer('box')->default(0);

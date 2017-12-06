@@ -123,7 +123,7 @@ class PermissionController extends Controller {
 		$permission = Permission::find($id);
 		// $permission->delete();
 		/*return redirect()->route('permissions.index')
-			->with('success', 'Permission deleted successfully');*/
+		->with('success', 'Permission deleted successfully');*/
 		Session::flash('success', 'Permission deleted successfully');
 		$response = array('status' => 'success', 'url' => 'permissions');
 		return response()->json($response);

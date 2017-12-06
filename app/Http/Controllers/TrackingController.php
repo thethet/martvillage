@@ -50,19 +50,17 @@ class TrackingController extends Controller {
 	public function show($id) {
 		$lotinData = Lotin::find($id);
 
-		$sender   = Sender::find($lotinData->sender_id);
-		$receiver = Receiver::find($lotinData->receiver_id);
+		$sender        = Sender::find($lotinData->sender_id);
+		$receiver      = Receiver::find($lotinData->receiver_id);
+		$countries     = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$states        = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('inric_code', 'ASC')->lists('nric_code', 'id');
+		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
 
-		$countries = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$states    = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
-
-		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('id', 'asc')->lists('nric_code', 'id');
-		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('serial_no', 'asc')->lists('short_name', 'id');
-
-		if(Auth::user()->hasRole('administrator')) {
-			$receivers     = Receiver::get();
+		if (Auth::user()->hasRole('administrator')) {
+			$receivers = Receiver::get();
 		} else {
-			$receivers     = Receiver::where('company_id', Auth::user()->company_id)->get();
+			$receivers = Receiver::where('company_id', Auth::user()->company_id)->get();
 		}
 		$receiverCount = count($receivers);
 
@@ -118,16 +116,15 @@ class TrackingController extends Controller {
 				->with('error', 'Your Lot Number does not exist.');
 		}
 
-		$countries = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$states    = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$countries     = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$states        = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('inric_code', 'ASC')->lists('nric_code', 'id');
+		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
 
-		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('id', 'asc')->lists('nric_code', 'id');
-		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('serial_no', 'asc')->lists('short_name', 'id');
-
-		if(Auth::user()->hasRole('administrator')) {
-			$receivers     = Receiver::get();
+		if (Auth::user()->hasRole('administrator')) {
+			$receivers = Receiver::get();
 		} else {
-			$receivers     = Receiver::where('company_id', Auth::user()->company_id)->get();
+			$receivers = Receiver::where('company_id', Auth::user()->company_id)->get();
 		}
 		$receiverCount = count($receivers);
 

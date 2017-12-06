@@ -10,15 +10,13 @@ use Auth;
 use Illuminate\Http\Request;
 use Session;
 
-class CompanyController extends Controller
-{
+class CompanyController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function index(Request $request)
-	{
+	public function index(Request $request) {
 		if (Auth::user()->hasRole('administrator')) {
 			$companies = Companies::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
 		} else {
@@ -39,8 +37,7 @@ class CompanyController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function create()
-	{
+	public function create() {
 		$company       = Companies::find(Auth::user()->company_id);
 		$countryIds    = $company->countries;
 		$countryIdList = array();
@@ -70,8 +67,7 @@ class CompanyController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function store(Request $request)
-	{
+	public function store(Request $request) {
 		$this->validate($request, [
 			'company_name'  => 'required',
 			'short_code'    => 'required|unique:companies,short_code',
@@ -111,8 +107,7 @@ class CompanyController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
-	{
+	public function show($id) {
 		$company = Companies::find($id);
 
 		$myCompany     = Companies::find(Auth::user()->company_id);
@@ -145,8 +140,7 @@ class CompanyController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function editAjax($companyId, Request $request)
-	{
+	public function editAjax($companyId, Request $request) {
 		$id       = $request->id;
 		$response = array('status' => 'success', 'url' => 'companies/' . $id . '/edit');
 
@@ -160,8 +154,7 @@ class CompanyController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
-	{
+	public function edit($id) {
 		$company = Companies::find($id);
 
 		$myCompany     = Companies::find(Auth::user()->company_id);
@@ -194,8 +187,7 @@ class CompanyController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id, Request $request)
-	{
+	public function update($id, Request $request) {
 		$this->validate($request, [
 			'company_name'  => 'required',
 			// 'short_code'   => 'required|unique:companies,short_code',
@@ -252,8 +244,7 @@ class CompanyController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
-	{
+	public function destroy($id) {
 		Companies::find($id)->update(['deleted' => 'Y']);
 		Session::flash('success', 'Company deleted successfully');
 		$response = array('status' => 'success', 'url' => 'companies');
@@ -269,8 +260,7 @@ class CompanyController extends Controller
 	 * @param ConsultantRequest $request
 	 * @return static
 	 */
-	public function fileUpload($request)
-	{
+	public function fileUpload($request) {
 		if ($request->hasFile('image') && $request->file('image')->getError() == 0) {
 			$extension = $request->file('image')->getClientOriginalExtension();
 			$imageName = rand(11111, 99999) . '.' . $extension;
@@ -289,8 +279,7 @@ class CompanyController extends Controller
  * @param ConsultantRequest $request
  * @return static
  */
-	public function destroyFile($file)
-	{
+	public function destroyFile($file) {
 		$fileName = 'uploads/logos/' . $file;
 		if (file_exists($fileName)) {
 			@unlink($fileName);

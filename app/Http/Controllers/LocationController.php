@@ -20,7 +20,7 @@ class LocationController extends Controller {
 	public function index(Request $request) {
 
 		if (Auth::user()->hasRole('administrator')) {
-			$countries   = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->paginate(10);
+			$countries = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->paginate(10);
 
 			$countryList = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 			$stateLists  = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
@@ -42,9 +42,9 @@ class LocationController extends Controller {
 				$states = States::where('country_id', $cList->id)->where('deleted', 'N')->orderBy('state_name', 'ASC')->get();
 				$j      = 0;
 				foreach ($states as $state) {
-					$citiesLists[$j][$cList->country_name]['id']           = $state->id;
-					$citiesLists[$j][$cList->country_name]['state_name']   = $state->state_name;
-					$citiesLists[$j][$cList->country_name]['state_code']   = $state->state_code;
+					$citiesLists[$j][$cList->country_name]['id']         = $state->id;
+					$citiesLists[$j][$cList->country_name]['state_name'] = $state->state_name;
+					$citiesLists[$j][$cList->country_name]['state_code'] = $state->state_code;
 					// $citiesLists[$j][$cList->country_name]['company_name'] = $state->companies[0]->short_code;
 					$j++;
 				}
@@ -75,9 +75,9 @@ class LocationController extends Controller {
 				$states = States::where('country_id', $cList->id)->where('deleted', 'N')->orderBy('state_name', 'ASC')->get();
 				$j      = 0;
 				foreach ($states as $state) {
-					$citiesLists[$j][$cList->country_name]['id']           = $state->id;
-					$citiesLists[$j][$cList->country_name]['state_name']   = $state->state_name;
-					$citiesLists[$j][$cList->country_name]['state_code']   = $state->state_code;
+					$citiesLists[$j][$cList->country_name]['id']         = $state->id;
+					$citiesLists[$j][$cList->country_name]['state_name'] = $state->state_name;
+					$citiesLists[$j][$cList->country_name]['state_code'] = $state->state_code;
 					// $citiesLists[$j][$cList->country_name]['company_name'] = $state->companies[0]->short_code;
 					$j++;
 				}

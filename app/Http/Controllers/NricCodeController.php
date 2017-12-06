@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use Auth;
 use App\NricCodes;
+use Auth;
+use Illuminate\Http\Request;
 use Session;
 
-class NricCodeController extends Controller
-{
+class NricCodeController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$codes = NricCodes::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
+		$codes       = NricCodes::where('deleted', 'N')->orderBy('nric_code', 'ASC')->paginate(10);
 		$total       = $codes->total();
 		$perPage     = $codes->perPage();
 		$currentPage = $codes->currentPage();
@@ -43,11 +40,11 @@ class NricCodeController extends Controller
 	 */
 	public function store(Request $request) {
 		$this->validate($request, [
-			'nric_code' => 'required',
-			'description'  => 'required',
+			'nric_code'   => 'required',
+			'description' => 'required',
 		]);
 
-		$data    = $request->all();
+		$data               = $request->all();
 		$data['created_by'] = Auth::user()->id;
 		NricCodes::create($data);
 
@@ -85,11 +82,11 @@ class NricCodeController extends Controller
 	 */
 	public function update($id, Request $request) {
 		$this->validate($request, [
-			'description'  => 'required',
+			'description' => 'required',
 		]);
 
-		$code  = NricCodes::find($id);
-		$data    = $request->all();
+		$code               = NricCodes::find($id);
+		$data               = $request->all();
 		$data['updated_by'] = Auth::user()->id;
 		$code->update($data);
 

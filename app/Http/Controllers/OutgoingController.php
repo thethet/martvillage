@@ -41,22 +41,22 @@ class OutgoingController extends Controller {
 			$nextMonth     = date('F Y', strtotime('+1 month', strtotime($currentMonthYear)));
 		}
 
-		if(Session::has('searchYMD')) {
+		if (Session::has('searchYMD')) {
 			$searchYMD = date('Y-m-d', strtotime(Session::get('searchYMD')));
 
-			$year = date('Y', strtotime($searchYMD));
+			$year  = date('Y', strtotime($searchYMD));
 			$month = date('m', strtotime($searchYMD));
-			$day = date('d', strtotime($searchYMD));
+			$day   = date('d', strtotime($searchYMD));
 		} else {
-			$year = date('Y', strtotime($currentMonthYear));
+			$year  = date('Y', strtotime($currentMonthYear));
 			$month = date('m', strtotime($currentMonthYear));
 		}
 
 		$query = Outgoing::where('deleted', 'N')
-					->whereYear('dept_date', '=', $year)
-					->whereMonth('dept_date', '=', $month);
+			->whereYear('dept_date', '=', $year)
+			->whereMonth('dept_date', '=', $month);
 
-		if(Session::has('searchYMD')) {
+		if (Session::has('searchYMD')) {
 			$query = $query->whereDay('dept_date', '=', $day);
 		}
 
@@ -66,7 +66,7 @@ class OutgoingController extends Controller {
 		} elseif (Auth::user()->hasRole('owner')) {
 			$outgoingList = $query->where('company_id', Auth::user()->company_id)->get();
 		} else {
-			$outgoingList =$query->where('company_id', Auth::user()->company_id)
+			$outgoingList = $query->where('company_id', Auth::user()->company_id)
 				->where('from_city', Auth::user()->state_id)->get();
 		}
 		$company       = Companies::find(Auth::user()->company_id);
@@ -85,7 +85,6 @@ class OutgoingController extends Controller {
 		$stateList   = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
 		$dayHeader = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
 
 		$packages = Outgoing::select(DB::raw('sum(packing_list) as packing_list'), 'dept_date', DB::raw('count(id) as total'), DB::raw('YEAR(dept_date) year, MONTH(dept_date) month, DAY(dept_date) day'))
 			->groupby('year', 'month', 'day')
@@ -127,8 +126,8 @@ class OutgoingController extends Controller {
 	 */
 	public function searchByDay(Request $request) {
 
-		$searchYMD = date('Y-m-d', strtotime( $request->searchDay));
-		$searchYM = date('F Y', strtotime( $request->searchDay));
+		$searchYMD = date('Y-m-d', strtotime($request->searchDay));
+		$searchYM  = date('F Y', strtotime($request->searchDay));
 		Session::flash('month', $searchYM);
 
 		Session::flash('searchYMD', $searchYMD);
