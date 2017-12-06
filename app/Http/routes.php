@@ -344,7 +344,6 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('lotbalances/{id}', ['as' => 'lotbalances.show', 'uses' => 'LotBalanceController@show']);
 
-
 	/*
 	|--------------------------------------------------------------------------
 	| Collection Controller
@@ -363,10 +362,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('collections/return', ['as' => 'collections.return', 'uses' => 'CollectionController@returnLots']);
 
-
-
 	Route::get('collections/{id}', ['as' => 'collections.show', 'uses' => 'CollectionController@show']);
-
 
 	/*
 	|--------------------------------------------------------------------------
@@ -379,7 +375,9 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('reports', ['as' => 'reports.index', 'uses' => 'ReportController@index', 'middleware' => ['permission:report-list|report-create|report-edit|report-delete']]);
 
 	Route::get('reports/bytrips', ['as' => 'reports.bytrips', 'uses' => 'ReportController@reportByTrips', 'middleware' => ['permission:report-list|report-create|report-edit|report-delete']]);
-
 	Route::post('reports/bytrips', ['as' => 'reports.bytrips', 'uses' => 'ReportController@reportByTrips', 'middleware' => ['permission:report-list|report-create|report-edit|report-delete']]);
+
+	Route::get('reports/sales', ['as' => 'reports.sales', 'uses' => 'ReportController@salesReport', 'middleware' => ['permission:report-list|report-create|report-edit|report-delete']]);
+	Route::post('reports/sales', ['as' => 'reports.sales', 'uses' => 'ReportController@salesReport', 'middleware' => ['permission:report-list|report-create|report-edit|report-delete']]);
 
 });

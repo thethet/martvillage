@@ -4,24 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Companies;
 use App\Countries;
+use App\Item;
 use App\Lotin;
 use App\Receiver;
 use App\Sender;
 use App\States;
-use App\Item;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
 
-class CollectionController extends Controller
-{
+class CollectionController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function index()
-	{
+	public function index() {
 		return view('collections.index');
 	}
 
@@ -30,10 +28,9 @@ class CollectionController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function readyToCollect(Request $request)
-	{
+	public function readyToCollect(Request $request) {
 		$date  = date('Y-m-d');
-		$query =  DB::table('lotins as l')
+		$query = DB::table('lotins as l')
 			->select('l.*', 's.name as sender_name', 's.member_no', 's.contact_no as sender_contact', 'r.name as receiver_name', 'r.contact_no as receiver_contact')
 			->leftJoin('senders as s', 's.id', '=', 'l.sender_id')
 			->leftJoin('receivers as r', 'r.id', '=', 'l.receiver_id')
@@ -62,8 +59,7 @@ class CollectionController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function search(Request $request)
-	{
+	public function search(Request $request) {
 		$query = DB::table('lotins as l')
 			->select('l.*', 's.name as sender_name', 's.member_no', 's.contact_no as sender_contact', 'r.name as receiver_name', 'r.contact_no as receiver_contact')
 			->leftJoin('senders as s', 's.id', '=', 'l.sender_id')
@@ -88,10 +84,9 @@ class CollectionController extends Controller
 		if ($request->contact_no) {
 			$contactNo = $request->contact_no;
 
-			$query      = $query->where('r.contact_no', $contactNo);
+			$query = $query->where('r.contact_no', $contactNo);
 
 		}
-
 
 		if (Auth::user()->hasRole('administrator')) {
 			$lotins = $query->orderBy('l.incoming_date', 'ASC')->paginate(10);
@@ -117,17 +112,15 @@ class CollectionController extends Controller
 		return view('collections.collect', ['lotins' => $lotins, 'countries' => $countries, 'states' => $states])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
-
 	/**
 	 * Update the specified resource in storage.
 	 *
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function updateCollectionStatus($id)
-	{
+	public function updateCollectionStatus($id) {
 		$collectedDate = date('Y-m-d');
-		$lotin = Lotin::find($id)->update(['status' => 3, 'collection_date' => $collectedDate]);
+		$lotin         = Lotin::find($id)->update(['status' => 3, 'collection_date' => $collectedDate]);
 
 		Item::where('lotin_id', $id)->update(['status' => 3]);
 
@@ -141,20 +134,19 @@ class CollectionController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function returnLots(Request $request)
-	{
+	public function returnLots(Request $request) {
 		$company = Companies::find(Auth::user()->company_id);
-		$today  = date('Y-m-d');
-		$start = date("Y-m-d", strtotime($today . "-0 day"));
+		$today   = date('Y-m-d');
+		$start   = date("Y-m-d", strtotime($today . "-0 day"));
 		// dd($start);
 
-		$query =  DB::table('lotins as l')
+		$query = DB::table('lotins as l')
 			->select('l.*', 's.name as sender_name', 's.member_no', 's.contact_no as sender_contact', 'r.name as receiver_name', 'r.contact_no as receiver_contact')
 			->leftJoin('senders as s', 's.id', '=', 'l.sender_id')
 			->leftJoin('receivers as r', 'r.id', '=', 'l.receiver_id')
 			->where('l.status', 2)
 			->where('incoming_date', '<=', $start);
-			// ->whereBetween('incoming_date', [$start, $today]);
+		// ->whereBetween('incoming_date', [$start, $today]);
 
 		if (Auth::user()->hasRole('administrator')) {
 			$lotins = $query->orderBy('incoming_date', 'ASC')->paginate(10);
@@ -178,8 +170,7 @@ class CollectionController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function create()
-	{
+	public function create() {
 		//
 	}
 
@@ -188,8 +179,7 @@ class CollectionController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function store()
-	{
+	public function store() {
 		//
 	}
 
@@ -199,8 +189,7 @@ class CollectionController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
-	{
+	public function show($id) {
 		//
 	}
 
@@ -210,8 +199,7 @@ class CollectionController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
-	{
+	public function edit($id) {
 		//
 	}
 
@@ -221,8 +209,7 @@ class CollectionController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
-	{
+	public function update($id) {
 		//
 	}
 
@@ -232,8 +219,7 @@ class CollectionController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
-	{
+	public function destroy($id) {
 		//
 	}
 }

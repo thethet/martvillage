@@ -23,7 +23,11 @@
 					<strong>Departure Date:</strong>
 				</label>
 				<div class="col-sm-2">
+					@if(Request::has('dept_date'))
 					{!! Form::text('dept_date', null, array('placeholder' => 'Departure Date','class' => 'form-control')) !!}
+					@else
+					{!! Form::text('dept_date', date('Y-m-d'), array('placeholder' => 'Departure Date','class' => 'form-control')) !!}
+					@endif
 					@if ($errors->has('dept_date'))
 						<span class="required">
 							<strong>{{ $errors->first('dept_date') }}</strong>
@@ -137,10 +141,7 @@
 				todayHighlight: true,
 				autoclose: true,
 			});
-
-			$('#timepicker').timepicker({
-				minuteStep: 5
-			});
+			// dept_date.datepicker('setDate', new Date());
 		});
 	</script>
 @stop

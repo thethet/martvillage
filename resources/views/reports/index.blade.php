@@ -9,7 +9,7 @@
 
 			@permission('collection-list')
 			<div class="col-md-2">
-				<a href="{{ url('reports/main') }}">
+				<a href="{{ url('reports/sales') }}">
 					<div class="card">
 						<img class="profile-icon" src="{{ asset('assets/img/report-icon.png') }}" alt="Main Report">
 						<p>Main Report</p>
