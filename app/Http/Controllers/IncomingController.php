@@ -15,11 +15,11 @@ class IncomingController extends Controller {
 	 * @return Response
 	 */
 	public function index() {
-		$deptDate    = date('Y-m-d');
+		$arrivalDate = date('Y-m-d');
 		$currentTime = date('H:i A');
 
-		$query = Outgoing::where('dept_date', $deptDate)
-			->where('time', '<=', $currentTime)
+		$query = Outgoing::where('arrival_date', $arrivalDate)
+			->where('arrival_time', '<=', $currentTime)
 			->where('deleted', 'N');
 
 		if (Auth::user()->hasRole('administrator')) {
@@ -40,20 +40,20 @@ class IncomingController extends Controller {
 	 * @return Response
 	 */
 	public function search(Request $request) {
-		if ($request->dept_date) {
-			$deptDate = date('Y-m-d', strtotime($request->dept_date));
+		if ($request->arrival_date) {
+			$arrivalDate = date('Y-m-d', strtotime($request->arrival_date));
 		} else {
-			$deptDate = date('Y-m-d');
+			$arrivalDate = date('Y-m-d');
 		}
 
-		if ($request->time) {
-			$currentTime = date('H:i A', strtotime($request->time));
+		if ($request->arrival_time) {
+			$currentTime = date('H:i A', strtotime($request->arrival_time));
 		} else {
 			$currentTime = date('H:i A');
 		}
 
-		$query = Outgoing::where('dept_date', $deptDate)
-			->where('time', '<=', $currentTime)
+		$query = Outgoing::where('arrival_date', $arrivalDate)
+		// ->where('arrival_time', '>=', $currentTime)
 			->where('deleted', 'N');
 
 		if (Auth::user()->hasRole('administrator')) {
@@ -113,8 +113,9 @@ class IncomingController extends Controller {
 
 		$arriveLotCount = Item::where('lotin_id', $item->lotin_id)->where('status', 2)->count();
 
+		$incomingDate = date('Y-m-d');
 		if ($allLotCount == $arriveLotCount) {
-			Lotin::find($item->lotin_id)->update(['status' => 2]);
+			Lotin::find($item->lotin_id)->update(['status' => 2, 'incoming_date' => $incomingDate]);
 		}
 		return redirect()->back()->with('success', 'Item is successfully arrive');
 	}

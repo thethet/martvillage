@@ -86,13 +86,24 @@ class OutgoingController extends Controller {
 
 		$dayHeader = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-		$packages = Outgoing::select(DB::raw('sum(packing_list) as packing_list'), 'dept_date', DB::raw('count(id) as total'), DB::raw('YEAR(dept_date) year, MONTH(dept_date) month, DAY(dept_date) day'))
-			->groupby('year', 'month', 'day')
-			->get();
+		if (Auth::user()->hasRole('administrator')) {
+			$packages = Outgoing::select(DB::raw('sum(packing_list) as packing_list'), 'dept_date', DB::raw('count(id) as total'), DB::raw('YEAR(dept_date) year, MONTH(dept_date) month, DAY(dept_date) day'))
+				->groupby('year', 'month', 'day')
+				->get();
+		} else {
+			$packages = Outgoing::select(DB::raw('sum(packing_list) as packing_list'), 'dept_date', DB::raw('count(id) as total'), DB::raw('YEAR(dept_date) year, MONTH(dept_date) month, DAY(dept_date) day'))
+				->groupby('year', 'month', 'day')
+				->where('company_id', Auth::user()->company_id)
+				->get();
+		}
 
 		$outgoingPackingList = array();
 		foreach ($packages as $package) {
-			$noPacking = Outgoing::where('dept_date', $package->dept_date)->where('packing_list', 0)->count();
+			if (Auth::user()->hasRole('administrator')) {
+				$noPacking = Outgoing::where('dept_date', $package->dept_date)->where('packing_list', 0)->count();
+			} else {
+				$noPacking = Outgoing::where('dept_date', $package->dept_date)->where('packing_list', 0)->where('company_id', Auth::user()->company_id)->count();
+			}
 
 			$yearMonth                                          = date('F Y', strtotime($package->dept_date));
 			$outgoingPackingList[$package->day]['total']        = $package->total;
@@ -155,18 +166,21 @@ class OutgoingController extends Controller {
 			'passenger_name' => 'required',
 			'contact_no'     => 'required',
 			'dept_date'      => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
+			'dept_time'      => 'required',
+			'arrival_date'   => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
+			'arrival_time'   => 'required',
 			'from_city'      => 'required',
 			'to_city'        => 'required',
 			'weight'         => 'required',
 			// 'other'          => 'required',
 			'carrier'        => 'required',
 			// 'vessel_no'      => 'required',
-			'time'           => 'required',
 		]);
 
-		$data               = $request->all();
-		$data['time']       = date('H:i A', strtotime($request->time));
-		$data['created_by'] = Auth::user()->id;
+		$data                 = $request->all();
+		$data['dept_time']    = date('H:i A', strtotime($request->dept_time));
+		$data['arrival_time'] = date('H:i A', strtotime($request->arrival_time));
+		$data['created_by']   = Auth::user()->id;
 
 		$outgoing = Outgoing::create($data);
 
@@ -300,15 +314,16 @@ class OutgoingController extends Controller {
 			$item = Item::find($itemIds[$i]);
 			$item->update($ItemData);
 
-			Lotin::find($item->lotin_id)->where('company_id', Auth::user()->company_id)
+			Lotin::find($item->lotin_id)->where('company_id', $outgoing->company_id)
 				->where('status', 0)->decrement('total_items');
 		}
 
 		$lotins = Lotin::where('total_items', 0)->where('status', 0)
-			->where('company_id', Auth::user()->company_id)->get();
+			->where('company_id', $outgoing->company_id)->where('outgoing_date', '0000-00-00')->get();
 
+		$outgoingDate = date('Y-m-d', strtotime($outgoing->dept_date));
 		foreach ($lotins as $lotin) {
-			$updLotin = Lotin::find($lotin->id)->update(['status' => 1]);
+			$updLotin = Lotin::find($lotin->id)->update(['status' => 1, 'outgoing_date' => $outgoingDate]);
 		}
 
 		return redirect()->route('outgoings.index')

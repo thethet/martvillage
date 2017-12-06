@@ -32,7 +32,11 @@
 						Member No:
 					</label>
 					<label class="control-label col-sm-7" for="member">
+						@if($sender->member_no)
 						{{ $sender->member_no }}
+						@else
+						{{ '-' }}
+						@endif
 					</label>
 				</div><!-- .form-group -->
 
@@ -301,7 +305,7 @@
 
 
 			<div class="menu-icon">
-				<a href="{{ url('dashboard') }}" >
+				<a href="{{ URL::previous() }}" >
 					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
 					Back
 				</a>
