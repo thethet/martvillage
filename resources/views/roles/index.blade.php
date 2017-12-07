@@ -76,7 +76,7 @@
 										</a>
 									@endpermission
 
-									@permission('role-edit')
+									@permission('role-delete')
 										<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $role->id }}">
 											<i class="entypo-trash"></i>
 										</a>

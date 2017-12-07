@@ -1,16 +1,15 @@
 @extends('layouts.layout')
 
 @section('page-title')
-	Member Offer
+	State/City
 @stop
 
 @section('main')
 	<div class="main-content">
-
 		@include('layouts.headerbar')
 		<hr />
 
-		<ol class="breadcrumb bc-3" >
+		<ol class="breadcrumb bc-3">
 			<li>
 				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
 			</li>
@@ -18,14 +17,17 @@
 				<a href="{{ url('settings') }}">Settings</a>
 			</li>
 			<li>
-				<a href="{{ url('member-offers') }}">Member Offer Management</a>
+				<a href="#">Location</a>
+			</li>
+			<li>
+				<a href="{{ url('states') }}">State/City Management</a>
 			</li>
 			<li class="active">
-				<strong>Detial Form</strong>
+				<strong>Detail Form</strong>
 			</li>
 		</ol>
 
-		<h2>Member Offer Management</h2>
+		<h2>State/City Management</h2>
 		<br />
 
 		<div class="row">
@@ -33,7 +35,7 @@
 				<div class="panel panel-primary" data-collapsed="0">
 					<div class="panel-heading">
 						<div class="panel-title">
-							<strong>Detial Form</strong>
+							<strong>Detail Form</strong>
 						</div>
 
 						<div class="panel-options">
@@ -42,42 +44,48 @@
 					</div>
 
 					<div class="panel-body">
-						{!! Form::model($offer, ['method' => 'PATCH','route' => ['member-offers.update', $offer->id], 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate', 'enctype' => 'multipart/form-data']) !!}
+						{!! Form::model($state, ['method' => 'PATCH','route' => ['states.update', $state->id], 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate']) !!}
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Company Name</label>
+								<label class="col-sm-3 control-label">Country</label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-suitcase"></i></span>
-										@if(Auth::user()->hasRole('administrator'))
-										{!! Form::select('company_id', ['' => 'Select Company'] + $companyList->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off', 'disabled']) !!}
-										@else
-											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'readonly' => true, 'autocomplete' => 'off', 'disabled']) !!}
-											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
-										@endif
+										<span class="input-group-addon"><i class="entypo-globe"></i></span>
+										{!! Form::select('country_id', ['' => 'Select Country'] + $countries->toArray(), null, ['id'=>'country_id', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Offer Type</label>
+								<label class="col-sm-3 control-label">State/City Name</label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-tag"></i></span>
-										{!! Form::text('type', null, ['placeholder' => 'Offer Type', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+										<span class="input-group-addon"><i class="entypo-location"></i></span>
+										{!! Form::text('state_name', null, ['placeholder' => 'State/City Name', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Offer Rate</label>
+								<label class="col-sm-3 control-label">Country Code</label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
-										<span class="input-group-addon">&nbsp;%&nbsp;</span>
-										{!! Form::text('rate', null, ['placeholder' => 'Offer Rate', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+										<span class="input-group-addon"><i class="entypo-flag"></i></span>
+										{!! Form::text('state_code', null, ['placeholder' => 'Country Code', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Description</label>
+
+								<div class="col-sm-5">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-info"></i></span>
+										{!! Form::text('description', null, ['placeholder' => 'Description', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -86,7 +94,7 @@
 								<label class="col-sm-3 control-label"></label>
 
 								<div class="col-sm-5">
-									<a href="{{ route('member-offers.index') }}" class="btn btn-black">
+									<a href="{{ route('states.index') }}" class="btn btn-black">
 										Back
 									</a>
 								</div>

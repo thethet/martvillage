@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('page-title')
-	User
+	State/City
 @stop
 
 @section('main')
@@ -9,20 +9,32 @@
 		@include('layouts.headerbar')
 		<hr />
 
-		<ol class="breadcrumb bc-3" >
+		<ol class="breadcrumb bc-3">
 			<li>
 				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
 			</li>
+			<li>
+				<a href="{{ url('settings') }}">Settings</a>
+			</li>
+			<li>
+				<a href="#">Location</a>
+			</li>
 			<li class="active">
-				<strong>User Management</strong>
+				<strong>State/City Management</strong>
 			</li>
 		</ol>
 
-		<h2>User Management</h2>
+		<h2>State/City Management</h2>
 		<br />
 
 		@if ($message = Session::get('success'))
 			<div class="alert alert-success">
+				<strong>Well done!</strong> {{ $message }}
+			</div>
+		@endif
+
+		@if ($message = Session::get('unsuccess'))
+			<div class="alert alert-danger">
 				<strong>Well done!</strong> {{ $message }}
 			</div>
 		@endif
@@ -34,8 +46,8 @@
 				</div>
 
 				<div class="panel-options">
-					@permission('user-create')
-						<a href="{{ url('users/create') }}">
+					@permission('state-create')
+						<a href="{{ url('states/create') }}">
 							<i class="entypo-plus-squared"></i>
 							New
 						</a>
@@ -50,58 +62,51 @@
 					<thead>
 						<tr>
 							<th width="5%">SNo.</th>
-							<th>Name</th>
-							<th>Contact</th>
-							<th>Role</th>
-							<th>Email</th>
-							@if(Auth::user()->hasRole('administrator'))
-							<th>Company Name</th>
-							@endif
+							<th>State/City Name</th>
+							<th>State/City Code</th>
+							<th>Description</th>
+							<th>Total Townships</th>
+							<th>Country</th>
 							<th width="15%">Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach($users as $key => $user)
+						@foreach($states as $key => $state)
 						<tr>
 							<td>{{ ++$i }}</td>
-							<td>{{ strtoupper($user->name) }}</td>
-							<td>{{ $user->contact_no }}</td>
-							<td>{{ $user->roles[0]->display_name }}</td>
-							<td>{{ $user->email }}</td>
-							@if(Auth::user()->hasRole('administrator'))
-								<td>
-									{{ $companyList[$user->company_id] }}
-								</td>
-							@endif
+							<td>{{ $state->state_name }}</td>
+							<td>{{ $state->state_code }}</td>
+							<td>{{ $state->description }}</td>
+							<td></td>
+							<td>{{ $countries[$state->country_id] }}</td>
 							<td>
-								<a href="{{ url('users/'. $user->id) }}" class="btn btn-info btn-sm">
+								<a href="{{ url('states/'. $state->id) }}" class="btn btn-info btn-sm">
 									<i class="entypo-eye"></i>
 								</a>
 
-								@if(Auth::user()->hasRole('administrator') || $user->company_id == Auth::user()->company_id)
-									@permission('user-edit')
-									<a href="{{ url('users/'. $user->id .'/edit') }}" class="btn btn-success btn-sm">
-										<i class="entypo-pencil"></i>
-									</a>
-									@endpermission
-
-									@if($user->id != Auth::user()->id)
-										@permission('user-delete')
-										<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $user->id }}">
-											<i class="entypo-trash"></i>
+								@if(Auth::user()->hasRole('administrator'))
+									@permission('state-edit')
+										<a href="{{ url('states/'. $state->id .'/edit') }}" class="btn btn-success btn-sm">
+											<i class="entypo-pencil"></i>
 										</a>
-										@endpermission
-									@endif
+									@endpermission
 								@endif
+
+								@permission('state-delete')
+									<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $state->id }}">
+										<i class="entypo-trash"></i>
+									</a>
+								@endpermission
 							</td>
 						</tr>
 						@endforeach
 					</tbody>
 				</table>
 
-				{!! $users->render() !!}
+				{!! $states->render() !!}
 			</div>
 		</div>
+
 
 		<!-- Footer -->
 		<footer class="main">
@@ -128,7 +133,7 @@
 				if (confD) {
 					var id = $(this).attr('id');
 					$.ajax({
-						url: "{!! url('users/"+ id +"') !!}",
+						url: "{!! url('states/"+ id +"') !!}",
 						type: 'DELETE',
 						data: {_token: '{!! csrf_token() !!}'},
 						dataType: 'JSON',
@@ -140,5 +145,6 @@
 			});
 		});
 	</script>
+
 @stop
 

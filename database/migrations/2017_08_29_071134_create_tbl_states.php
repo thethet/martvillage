@@ -14,6 +14,7 @@ class CreateTblStates extends Migration {
 			$table->increments('id');
 			$table->integer('country_id');
 			$table->string('state_name');
+			$table->integer('total_townships');
 			$table->string('description')->nullable();
 			$table->string('state_code')->nullable();
 			$table->enum('deleted', ['N', 'Y']);

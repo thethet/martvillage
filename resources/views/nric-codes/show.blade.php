@@ -45,7 +45,7 @@
 						{!! Form::model($code, ['method' => 'GET', 'route' => ['nric-codes.index', $code->id], 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate']) !!}
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">NRIC Code <span class="text-danger">*</span></label>
+								<label class="col-sm-3 control-label">NRIC Code</label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
@@ -56,7 +56,7 @@
 							</div>
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Description <span class="text-danger">*</span></label>
+								<label class="col-sm-3 control-label">Description</label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">

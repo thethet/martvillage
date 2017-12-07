@@ -83,7 +83,7 @@
 										</a>
 									@endpermission
 
-									@permission('nric-township-edit')
+									@permission('nric-township-delete')
 										<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $township->id }}">
 											<i class="entypo-trash"></i>
 										</a>

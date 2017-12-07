@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('page-title')
-	User
+	Country
 @stop
 
 @section('main')
@@ -9,20 +9,32 @@
 		@include('layouts.headerbar')
 		<hr />
 
-		<ol class="breadcrumb bc-3" >
+		<ol class="breadcrumb bc-3">
 			<li>
 				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
 			</li>
+			<li>
+				<a href="{{ url('settings') }}">Settings</a>
+			</li>
+			<li>
+				<a href="#">Location</a>
+			</li>
 			<li class="active">
-				<strong>User Management</strong>
+				<strong>Country Management</strong>
 			</li>
 		</ol>
 
-		<h2>User Management</h2>
+		<h2>Country Management</h2>
 		<br />
 
 		@if ($message = Session::get('success'))
 			<div class="alert alert-success">
+				<strong>Well done!</strong> {{ $message }}
+			</div>
+		@endif
+
+		@if ($message = Session::get('unsuccess'))
+			<div class="alert alert-danger">
 				<strong>Well done!</strong> {{ $message }}
 			</div>
 		@endif
@@ -34,8 +46,8 @@
 				</div>
 
 				<div class="panel-options">
-					@permission('user-create')
-						<a href="{{ url('users/create') }}">
+					@permission('country-create')
+						<a href="{{ url('countries/create') }}">
 							<i class="entypo-plus-squared"></i>
 							New
 						</a>
@@ -50,58 +62,49 @@
 					<thead>
 						<tr>
 							<th width="5%">SNo.</th>
-							<th>Name</th>
-							<th>Contact</th>
-							<th>Role</th>
-							<th>Email</th>
-							@if(Auth::user()->hasRole('administrator'))
-							<th>Company Name</th>
-							@endif
+							<th>Country Name</th>
+							<th>Country Code</th>
+							<th>Description</th>
+							<th>Total State/Cities</th>
 							<th width="15%">Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach($users as $key => $user)
+						@foreach($countries as $key => $country)
 						<tr>
 							<td>{{ ++$i }}</td>
-							<td>{{ strtoupper($user->name) }}</td>
-							<td>{{ $user->contact_no }}</td>
-							<td>{{ $user->roles[0]->display_name }}</td>
-							<td>{{ $user->email }}</td>
-							@if(Auth::user()->hasRole('administrator'))
-								<td>
-									{{ $companyList[$user->company_id] }}
-								</td>
-							@endif
+							<td>{{ $country->country_name }}</td>
+							<td>{{ $country->country_code }}</td>
+							<td>{{ $country->description }}</td>
+							<td>{{ $country->total_cities }}</td>
 							<td>
-								<a href="{{ url('users/'. $user->id) }}" class="btn btn-info btn-sm">
+								<a href="{{ url('countries/'. $country->id) }}" class="btn btn-info btn-sm">
 									<i class="entypo-eye"></i>
 								</a>
 
-								@if(Auth::user()->hasRole('administrator') || $user->company_id == Auth::user()->company_id)
-									@permission('user-edit')
-									<a href="{{ url('users/'. $user->id .'/edit') }}" class="btn btn-success btn-sm">
-										<i class="entypo-pencil"></i>
-									</a>
-									@endpermission
-
-									@if($user->id != Auth::user()->id)
-										@permission('user-delete')
-										<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $user->id }}">
-											<i class="entypo-trash"></i>
+								@if(Auth::user()->hasRole('administrator'))
+									@permission('country-edit')
+										<a href="{{ url('countries/'. $country->id .'/edit') }}" class="btn btn-success btn-sm">
+											<i class="entypo-pencil"></i>
 										</a>
-										@endpermission
-									@endif
+									@endpermission
 								@endif
+
+								@permission('country-delete')
+									<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $country->id }}">
+										<i class="entypo-trash"></i>
+									</a>
+								@endpermission
 							</td>
 						</tr>
 						@endforeach
 					</tbody>
 				</table>
 
-				{!! $users->render() !!}
+				{!! $countries->render() !!}
 			</div>
 		</div>
+
 
 		<!-- Footer -->
 		<footer class="main">
@@ -128,7 +131,7 @@
 				if (confD) {
 					var id = $(this).attr('id');
 					$.ajax({
-						url: "{!! url('users/"+ id +"') !!}",
+						url: "{!! url('countries/"+ id +"') !!}",
 						type: 'DELETE',
 						data: {_token: '{!! csrf_token() !!}'},
 						dataType: 'JSON',
@@ -140,5 +143,6 @@
 			});
 		});
 	</script>
+
 @stop
 

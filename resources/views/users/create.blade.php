@@ -39,7 +39,7 @@
 					</div>
 
 					<div class="panel-body">
-						{!! Form::open(array('route' => 'users.store','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate', 'enctype' => 'multipart/form-data')) !!}
+						{!! Form::open(['route' => 'users.store','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate', 'enctype' => 'multipart/form-data']) !!}
 
 							<div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
 								<label class="col-sm-3 control-label">Name <span class="text-danger">*</span></label>
