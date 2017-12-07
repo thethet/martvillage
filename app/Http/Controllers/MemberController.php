@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Companies;
 use App\Countries;
 use App\Member;
+use App\MemberOffer;
 use App\NricCodes;
 use App\NricTownships;
 use App\States;
@@ -20,13 +21,22 @@ class MemberController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		if (Auth::user()->hasRole('administrator')) {
-			$members = Member::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
-		} else {
-			$members = Member::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
-		}
+		$companyList = Companies::where('deleted', 'N')->lists('company_name', 'id');
 
-		return view('members.index', ['members' => $members])->with('i', ($request->get('page', 1) - 1) * 10);
+		if (Auth::user()->hasRole('administrator')) {
+			$members   = Member::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
+			$offerList = MemberOffer::where('deleted', 'N')->lists('type', 'id');
+		} else {
+			$members   = Member::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
+			$offerList = MemberOffer::where('deleted', 'N')->where('company_id', Auth::user()->company_id)->lists('type', 'id');
+		}
+		$total       = $members->total();
+		$perPage     = $members->perPage();
+		$currentPage = $members->currentPage();
+		$lastPage    = $members->lastPage();
+		$lastItem    = $members->lastItem();
+
+		return view('members.index', ['members' => $members, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'companyList' => $companyList, 'offerList' => $offerList])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
 	/**
@@ -66,9 +76,16 @@ class MemberController extends Controller {
 		$townships = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 
 		$companies     = Companies::where('deleted', 'N')->lists('company_name', 'id');
-		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('inric_code', 'ASC')->lists('nric_code', 'id');
+		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
 		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
-		return view('members.create', ['companies' => $companies, 'countries' => $countries, 'states' => $states, 'townships' => $townships, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships, 'memberNo' => $memberNo]);
+
+		if (Auth::user()->hasRole('administrator')) {
+			$offerList = MemberOffer::where('deleted', 'N')->lists('type', 'id');
+		} else {
+			$offerList = MemberOffer::where('deleted', 'N')->where('company_id', Auth::user()->company_id)->lists('type', 'id');
+		}
+
+		return view('members.create', ['companies' => $companies, 'countries' => $countries, 'states' => $states, 'townships' => $townships, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships, 'memberNo' => $memberNo, 'offerList' => $offerList]);
 	}
 
 	/**
@@ -156,7 +173,7 @@ class MemberController extends Controller {
 		$townships = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 
 		$companies     = Companies::where('deleted', 'N')->lists('company_name', 'id');
-		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('inric_code', 'ASC')->lists('nric_code', 'id');
+		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
 		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
 		return view('members.edit', ['member' => $member, 'companies' => $companies, 'countries' => $countries, 'states' => $states, 'townships' => $townships, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships]);
 	}

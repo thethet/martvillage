@@ -21,6 +21,7 @@ class Member extends Model {
 	 */
 	protected $fillable = [
 		'company_id',
+		'member_offers_id',
 		'name',
 		'dob',
 		'nric_no',

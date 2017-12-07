@@ -33,11 +33,12 @@
 					</div>
 
 					<div class="panel-options">
-						@permission('permission-create')
-						<a href="{{ url('countries/create') }}" class="bg">
-							<i class="entypo-plus-circled"></i>
-							Create New &nbsp;
+						@permission('countries-create')
+						<a href="{{ url('countries/create') }}">
+							<i class="entypo-plus-squared"></i>
+							New
 						</a>
+						&nbsp;|&nbsp;
 						@endpermission
 						<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
 						{{-- <a href="#" data-rel="reload"><i class="entypo-arrows-ccw"></i></a> --}}
@@ -96,11 +97,12 @@
 						</div>
 
 						<div class="panel-options">
-							@permission('permission-create')
+							@permission('countries-create')
 							<a href="{{ url('countries/create') }}" class="bg">
 								<i class="entypo-plus-circled"></i>
 								Create New &nbsp;
 							</a>
+							&nbsp;|&nbsp;
 							@endpermission
 							<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
 							{{-- <a href="#" data-rel="reload"><i class="entypo-arrows-ccw"></i></a> --}}

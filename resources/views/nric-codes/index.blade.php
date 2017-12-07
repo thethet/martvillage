@@ -37,13 +37,14 @@
 				</div>
 
 				<div class="panel-options">
-					<a href="{{ url('nric-codes/create') }}" class="bg">
-						<i class="entypo-plus-circled"></i>
-						Create New &nbsp;
-					</a>
+					@permission('nric-code-create')
+						<a href="{{ url('nric-codes/create') }}">
+							<i class="entypo-plus-squared"></i>
+							New
+						</a>
+						&nbsp;|&nbsp;
+					@endpermission
 					<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-					{{-- <a href="#" data-rel="reload"><i class="entypo-arrows-ccw"></i></a> --}}
-					{{-- <a href="#" data-rel="close"><i class="entypo-cancel"></i></a> --}}
 				</div>
 			</div>
 
@@ -64,22 +65,20 @@
 							<td>{{ $code->nric_code }}</td>
 							<td>{{ $code->description }}</td>
 							<td>
-								@if(Auth::user()->hasRole('administrator') || $role->company_id == Auth::user()->company_id)
+								<a href="{{ url('nric-codes/'. $code->id) }}" class="btn btn-info btn-sm">
+									<i class="entypo-eye"></i>
+								</a>
+
+								@if(Auth::user()->hasRole('administrator'))
 									@permission('nric-code-edit')
-										<a href="{{ url('nric-codes/'. $code->id .'/edit') }}" class="btn btn-default btn-sm">
+										<a href="{{ url('nric-codes/'. $code->id .'/edit') }}" class="btn btn-success btn-sm">
 											<i class="entypo-pencil"></i>
 										</a>
 									@endpermission
 
-									@permission('nric-code-edit')
+									@permission('nric-code-delete')
 										<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $code->id }}">
 											<i class="entypo-trash"></i>
-										</a>
-									@endpermission
-
-									@permission('nric-code-edit')
-										<a href="{{ url('nric-codes/'. $code->id) }}" class="btn btn-info btn-sm">
-											<i class="entypo-eye"></i>
 										</a>
 									@endpermission
 								@endif

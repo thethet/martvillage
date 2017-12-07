@@ -34,15 +34,14 @@
 				</div>
 
 				<div class="panel-options">
-					@permission('permission-create')
-					<a href="{{ url('users/create') }}" class="bg">
-						<i class="entypo-plus-circled"></i>
-						Create New &nbsp;
-					</a>
+					@permission('users-create')
+						<a href="{{ url('users/create') }}">
+							<i class="entypo-plus-squared"></i>
+							New
+						</a>
+						&nbsp;|&nbsp;
 					@endpermission
 					<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-					{{-- <a href="#" data-rel="reload"><i class="entypo-arrows-ccw"></i></a> --}}
-					{{-- <a href="#" data-rel="close"><i class="entypo-cancel"></i></a> --}}
 				</div>
 			</div>
 
@@ -55,6 +54,9 @@
 							<th>Contact</th>
 							<th>Role</th>
 							<th>Email</th>
+							@if(Auth::user()->hasRole('administrator'))
+							<th>Company Name</th>
+							@endif
 							<th width="15%">Action</th>
 						</tr>
 					</thead>
@@ -66,23 +68,30 @@
 							<td>{{ $user->contact_no }}</td>
 							<td>{{ $user->roles[0]->display_name }}</td>
 							<td>{{ $user->email }}</td>
+							@if(Auth::user()->hasRole('administrator'))
+								<td>
+									{{ $companyList[$user->company_id] }}
+								</td>
+							@endif
 							<td>
+								<a href="{{ url('users/'. $user->id) }}" class="btn btn-info btn-sm">
+									<i class="entypo-eye"></i>
+								</a>
+
 								@if(Auth::user()->hasRole('administrator') || $user->company_id == Auth::user()->company_id)
 									@permission('user-edit')
-									<a href="{{ url('users/'. $user->id .'/edit') }}" class="btn btn-default btn-sm">
+									<a href="{{ url('users/'. $user->id .'/edit') }}" class="btn btn-success btn-sm">
 										<i class="entypo-pencil"></i>
 									</a>
 									@endpermission
 
-									@permission('user-delete')
-									<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $user->id }}">
-										<i class="entypo-trash"></i>
-									</a>
-									@endpermission
-
-									<a href="{{ url('users/'. $user->id) }}" class="btn btn-info btn-sm">
-										<i class="entypo-eye"></i>
-									</a>
+									@if($user->id != Auth::user()->id)
+										@permission('user-delete')
+										<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $user->id }}">
+											<i class="entypo-trash"></i>
+										</a>
+										@endpermission
+									@endif
 								@endif
 							</td>
 						</tr>

@@ -22,6 +22,8 @@ class UserController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
+		$companyList = Companies::lists('company_name', 'id');
+
 		if (Auth::user()->hasRole('administrator')) {
 			$users = User::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
 		} else {
@@ -33,7 +35,7 @@ class UserController extends Controller {
 		$lastPage    = $users->lastPage();
 		$lastItem    = $users->lastItem();
 
-		return view('users.index', ['users' => $users, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem])->with('i', ($request->get('page', 1) - 1) * 10);
+		return view('users.index', ['users' => $users, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'companyList' => $companyList])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
 	/**

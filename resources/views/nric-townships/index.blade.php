@@ -37,13 +37,14 @@
 				</div>
 
 				<div class="panel-options">
-					<a href="{{ url('nric-townships/create') }}" class="bg">
-						<i class="entypo-plus-circled"></i>
-						Create New &nbsp;
-					</a>
+					@permission('nric-township-create')
+						<a href="{{ url('nric-townships/create') }}">
+							<i class="entypo-plus-squared"></i>
+							New
+						</a>
+						&nbsp;|&nbsp;
+					@endpermission
 					<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-					{{-- <a href="#" data-rel="reload"><i class="entypo-arrows-ccw"></i></a> --}}
-					{{-- <a href="#" data-rel="close"><i class="entypo-cancel"></i></a> --}}
 				</div>
 			</div>
 
@@ -71,9 +72,13 @@
 							<td>{{ $township->township }}</td>
 							<td>{{ $township->short_name }}</td>
 							<td>
-								@if(Auth::user()->hasRole('administrator') || $role->company_id == Auth::user()->company_id)
+								<a href="{{ url('nric-townships/'. $township->id) }}" class="btn btn-info btn-sm">
+									<i class="entypo-eye"></i>
+								</a>
+
+								@if(Auth::user()->hasRole('administrator'))
 									@permission('nric-township-edit')
-										<a href="{{ url('nric-townships/'. $township->id .'/edit') }}" class="btn btn-default btn-sm">
+										<a href="{{ url('nric-townships/'. $township->id .'/edit') }}" class="btn btn-success btn-sm">
 											<i class="entypo-pencil"></i>
 										</a>
 									@endpermission
@@ -81,12 +86,6 @@
 									@permission('nric-township-edit')
 										<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $township->id }}">
 											<i class="entypo-trash"></i>
-										</a>
-									@endpermission
-
-									@permission('nric-township-edit')
-										<a href="{{ url('nric-townships/'. $township->id) }}" class="btn btn-info btn-sm">
-											<i class="entypo-eye"></i>
 										</a>
 									@endpermission
 								@endif

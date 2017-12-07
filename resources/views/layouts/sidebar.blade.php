@@ -60,6 +60,24 @@
 					</li>
 					@endpermission
 
+					@permission('permission-list')
+					<li @if(Request::segment(1) == 'permissions') class="active" @endif>
+						<a href="{{ url('/permissions') }}">
+							<i class="entypo-user"></i>
+							<span class="title">Permission</span>
+						</a>
+					</li>
+					@endpermission
+
+					@permission('role-list')
+					<li @if(Request::segment(1) == 'roles') class="active" @endif>
+						<a href="{{ url('/roles') }}">
+							<i class="entypo-flow-tree"></i>
+							<span class="title">Role</span>
+						</a>
+					</li>
+					@endpermission
+
 					@permission('company-list')
 					<li @if(Request::segment(1) == 'companies') class="active" @endif>
 						<a href="{{ url('/companies') }}">
@@ -87,20 +105,11 @@
 					</li>
 					@endpermission
 
-					@permission('role-list')
-					<li @if(Request::segment(1) == 'roles') class="active" @endif>
-						<a href="{{ url('/roles') }}">
-							<i class="entypo-flow-tree"></i>
-							<span class="title">Role</span>
-						</a>
-					</li>
-					@endpermission
-
-					@permission('permission-list')
-					<li @if(Request::segment(1) == 'permissions') class="active" @endif>
-						<a href="{{ url('/permissions') }}">
-							<i class="entypo-user"></i>
-							<span class="title">Permission</span>
+					@permission('member-offer-list')
+					<li @if(Request::segment(1) == 'member-offers') class="active" @endif>
+						<a href="{{ url('/member-offers') }}">
+							<i class="entypo-tag"></i>
+							<span class="title">Member Offers</span>
 						</a>
 					</li>
 					@endpermission

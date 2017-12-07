@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('page-title')
-	Roles
+	Member Offers
 @stop
 
 @section('main')
@@ -9,7 +9,7 @@
 		@include('layouts.headerbar')
 		<hr />
 
-		<ol class="breadcrumb bc-3">
+		<ol class="breadcrumb bc-3" >
 			<li>
 				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
 			</li>
@@ -17,11 +17,11 @@
 				<a href="{{ url('settings') }}">Settings</a>
 			</li>
 			<li class="active">
-				<strong>Role Management</strong>
+				<strong>Member Offers Management</strong>
 			</li>
 		</ol>
 
-		<h2>Role Management</h2>
+		<h2>Member Offers Management</h2>
 		<br />
 
 		@if ($message = Session::get('success'))
@@ -37,8 +37,8 @@
 				</div>
 
 				<div class="panel-options">
-					@permission('role-create')
-						<a href="{{ url('roles/create') }}">
+					@permission('member-offer-create')
+						<a href="{{ url('member-offers/create') }}">
 							<i class="entypo-plus-squared"></i>
 							New
 						</a>
@@ -53,33 +53,41 @@
 					<thead>
 						<tr>
 							<th width="5%">SNo.</th>
-							<th>Name</th>
-							<th>Description</th>
+							<th>Type</th>
+							<th>Rate</th>
+							@if(Auth::user()->hasRole('administrator'))
+							<th>Company Name</th>
+							@endif
 							<th width="15%">Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach($roles as $key => $role)
+						@foreach($offers as $key => $offer)
 						<tr>
 							<td>{{ ++$i }}</td>
-							<td>{{ $role->name }}</td>
-							<td>{{ $role->description }}</td>
+							<td>{{ $offer->type }}</td>
+							<td>{{ $offer->rate }} %</td>
+							@if(Auth::user()->hasRole('administrator'))
+								<td>
+									{{ $companyList[$offer->company_id] }}
+								</td>
+							@endif
 							<td>
-								<a href="{{ url('roles/'. $role->id) }}" class="btn btn-info btn-sm">
+								<a href="{{ url('member-offers/'. $offer->id) }}" class="btn btn-info btn-sm">
 									<i class="entypo-eye"></i>
 								</a>
 
-								@if(Auth::user()->hasRole('administrator') || $role->company_id == Auth::user()->company_id)
-									@permission('role-edit')
-										<a href="{{ url('roles/'. $role->id .'/edit') }}" class="btn btn-success btn-sm">
-											<i class="entypo-pencil"></i>
-										</a>
+								@if(Auth::user()->hasRole('administrator') || $offer->company_id == Auth::user()->company_id)
+									@permission('member-offer-edit')
+									<a href="{{ url('member-offers/'. $offer->id .'/edit') }}" class="btn btn-success btn-sm">
+										<i class="entypo-pencil"></i>
+									</a>
 									@endpermission
 
-									@permission('role-edit')
-										<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $role->id }}">
-											<i class="entypo-trash"></i>
-										</a>
+									@permission('member-offer-delete')
+									<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $offer->id }}">
+										<i class="entypo-trash"></i>
+									</a>
 									@endpermission
 								@endif
 							</td>
@@ -88,10 +96,9 @@
 					</tbody>
 				</table>
 
-				{!! $roles->render() !!}
+				{!! $offers->render() !!}
 			</div>
 		</div>
-
 
 		<!-- Footer -->
 		<footer class="main">
@@ -118,7 +125,7 @@
 				if (confD) {
 					var id = $(this).attr('id');
 					$.ajax({
-						url: "{!! url('roles/"+ id +"') !!}",
+						url: "{!! url('member-offers/"+ id +"') !!}",
 						type: 'DELETE',
 						data: {_token: '{!! csrf_token() !!}'},
 						dataType: 'JSON',

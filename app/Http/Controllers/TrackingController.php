@@ -54,7 +54,7 @@ class TrackingController extends Controller {
 		$receiver      = Receiver::find($lotinData->receiver_id);
 		$countries     = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 		$states        = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
-		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('inric_code', 'ASC')->lists('nric_code', 'id');
+		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
 		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
 
 		if (Auth::user()->hasRole('administrator')) {
@@ -118,7 +118,7 @@ class TrackingController extends Controller {
 
 		$countries     = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 		$states        = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
-		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('inric_code', 'ASC')->lists('nric_code', 'id');
+		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
 		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
 
 		if (Auth::user()->hasRole('administrator')) {

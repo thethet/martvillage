@@ -132,7 +132,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('roles/{id}', ['as' => 'roles.show', 'uses' => 'RoleController@show']);
 
-	Route::get('roles/ajax/{id}/edit', ['as' => 'roles.ajax.edit', 'uses' => 'RoleController@editAjax', 'middleware' => ['permission:role-edit']]);
+	// Route::get('roles/ajax/{id}/edit', ['as' => 'roles.ajax.edit', 'uses' => 'RoleController@editAjax', 'middleware' => ['permission:role-edit']]);
 	Route::get('roles/{id}/edit', ['as' => 'roles.edit', 'uses' => 'RoleController@edit', 'middleware' => ['permission:role-edit']]);
 	Route::patch('roles/{id}', ['as' => 'roles.update', 'uses' => 'RoleController@update', 'middleware' => ['permission:role-edit']]);
 
@@ -153,7 +153,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('permissions/{id}', ['as' => 'permissions.show', 'uses' => 'PermissionController@show']);
 
-	Route::get('permissions/ajax/{id}/edit', ['as' => 'permissions.ajax.edit', 'uses' => 'PermissionController@editAjax', 'middleware' => ['permission:permission-edit']]);
+	// Route::get('permissions/ajax/{id}/edit', ['as' => 'permissions.ajax.edit', 'uses' => 'PermissionController@editAjax', 'middleware' => ['permission:permission-edit']]);
 	Route::get('permissions/{id}/edit', ['as' => 'permissions.edit', 'uses' => 'PermissionController@edit', 'middleware' => ['permission:permission-edit']]);
 	Route::patch('permissions/{id}', ['as' => 'permissions.update', 'uses' => 'PermissionController@update', 'middleware' => ['permission:permission-edit']]);
 
@@ -174,7 +174,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('companies/{id}', ['as' => 'companies.show', 'uses' => 'CompanyController@show']);
 
-	Route::get('companies/ajax/{id}/edit', ['as' => 'companies.ajax.edit', 'uses' => 'CompanyController@editAjax', 'middleware' => ['permission:company-edit']]);
+	// Route::get('companies/ajax/{id}/edit', ['as' => 'companies.ajax.edit', 'uses' => 'CompanyController@editAjax', 'middleware' => ['permission:company-edit']]);
 	Route::get('companies/{id}/edit', ['as' => 'companies.edit', 'uses' => 'CompanyController@edit', 'middleware' => ['permission:company-edit']]);
 	Route::patch('companies/{id}', ['as' => 'companies.update', 'uses' => 'CompanyController@update', 'middleware' => ['permission:company-edit']]);
 
@@ -195,7 +195,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('nric-codes/{id}', ['as' => 'nric-codes.show', 'uses' => 'NricCodeController@show']);
 
-	Route::get('nric-codes/ajax/{id}/edit', ['as' => 'nric-codes.ajax.edit', 'uses' => 'NricCodeController@editAjax', 'middleware' => ['permission:nric-code-edit']]);
+	// Route::get('nric-codes/ajax/{id}/edit', ['as' => 'nric-codes.ajax.edit', 'uses' => 'NricCodeController@editAjax', 'middleware' => ['permission:nric-code-edit']]);
 	Route::get('nric-codes/{id}/edit', ['as' => 'nric-codes.edit', 'uses' => 'NricCodeController@edit', 'middleware' => ['permission:nric-code-edit']]);
 	Route::patch('nric-codes/{id}', ['as' => 'nric-codes.update', 'uses' => 'NricCodeController@update', 'middleware' => ['permission:nric-code-edit']]);
 
@@ -216,7 +216,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('nric-townships/{id}', ['as' => 'nric-townships.show', 'uses' => 'NricTownshipController@show']);
 
-	Route::get('nric-townships/ajax/{id}/edit', ['as' => 'nric-townships.ajax.edit', 'uses' => 'NricTownshipController@editAjax', 'middleware' => ['permission:nric-township-edit']]);
+	// Route::get('nric-townships/ajax/{id}/edit', ['as' => 'nric-townships.ajax.edit', 'uses' => 'NricTownshipController@editAjax', 'middleware' => ['permission:nric-township-edit']]);
 	Route::get('nric-townships/{id}/edit', ['as' => 'nric-townships.edit', 'uses' => 'NricTownshipController@edit', 'middleware' => ['permission:nric-township-edit']]);
 	Route::patch('nric-townships/{id}', ['as' => 'nric-townships.update', 'uses' => 'NricTownshipController@update', 'middleware' => ['permission:nric-township-edit']]);
 
@@ -237,7 +237,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('users/{id}', ['as' => 'users.show', 'uses' => 'UserController@show']);
 
-	Route::get('users/ajax/{id}/edit', ['as' => 'users.ajax.edit', 'uses' => 'UserController@editAjax', 'middleware' => ['permission:user-edit']]);
+	// Route::get('users/ajax/{id}/edit', ['as' => 'users.ajax.edit', 'uses' => 'UserController@editAjax', 'middleware' => ['permission:user-edit']]);
 	Route::get('users/{id}/edit', ['as' => 'users.edit', 'uses' => 'UserController@edit', 'middleware' => ['permission:user-edit']]);
 	Route::patch('users/{id}', ['as' => 'users.update', 'uses' => 'UserController@update', 'middleware' => ['permission:user-edit']]);
 
@@ -283,6 +283,26 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::patch('prices/{id}', ['as' => 'prices.update', 'uses' => 'PricingController@update', 'middleware' => ['permission:price-edit']]);
 
 	Route::delete('prices/{id}', ['as' => 'nrictownships.destroy', 'uses' => 'PricingController@destroy', 'middleware' => ['permission:price-delete']]);
+
+	/*
+	|--------------------------------------------------------------------------
+	| Member Offer Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Member Model CRUD
+	|
+	 */
+	Route::get('member-offers', ['as' => 'member-offers.index', 'uses' => 'MemberOfferController@index', 'middleware' => ['permission:member-offer-list|member-offer-create|member-offer-edit|member-offer-delete']]);
+
+	Route::get('member-offers/create', ['as' => 'member-offers.create', 'uses' => 'MemberOfferController@create', 'middleware' => ['permission:member-offer-create']]);
+	Route::post('member-offers/create', ['as' => 'member-offers.store', 'uses' => 'MemberOfferController@store', 'middleware' => ['permission:member-offer-create']]);
+
+	Route::get('member-offers/{id}', ['as' => 'member-offers.show', 'uses' => 'MemberOfferController@show']);
+
+	Route::get('member-offers/{id}/edit', ['as' => 'member-offers.edit', 'uses' => 'MemberOfferController@edit', 'middleware' => ['permission:member-offer-edit']]);
+	Route::patch('member-offers/{id}', ['as' => 'member-offers.update', 'uses' => 'MemberOfferController@update', 'middleware' => ['permission:member-offer-edit']]);
+
+	Route::delete('member-offers/{id}', ['as' => 'member-offers.destroy', 'uses' => 'MemberOfferController@destroy', 'middleware' => ['permission:member-offer-delete']]);
 
 	/*
 	|--------------------------------------------------------------------------

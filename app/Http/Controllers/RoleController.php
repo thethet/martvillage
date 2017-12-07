@@ -41,7 +41,7 @@ class RoleController extends Controller {
 		if (Auth::user()->hasRole('administrator')) {
 			$permission = Permission::get();
 		} else {
-			$permission = Permission::whereNotIn('id', [5, 6, 7, 8, 10, 12])->get();
+			$permission = Permission::whereNotIn('id', [5, 6, 7, 8, 10, 12, 18, 19, 20, 22, 23, 24])->get();
 		}
 		return view('roles.create', ['permission' => $permission]);
 	}

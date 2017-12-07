@@ -4,15 +4,13 @@ use App\Permission;
 use App\Role;
 use Illuminate\Database\Seeder;
 
-class PermissionTableSeeder extends Seeder
-{
+class PermissionTableSeeder extends Seeder {
 	/**
 	 * Run the database seeds.
 	 *
 	 * @return void
 	 */
-	public function run()
-	{
+	public function run() {
 		$permission = [
 			[
 				'name'         => 'role-list',
@@ -243,6 +241,27 @@ class PermissionTableSeeder extends Seeder
 				'name'         => 'price-delete',
 				'display_name' => 'Delete Price',
 				'description'  => 'Delete Price',
+			],
+
+			[
+				'name'         => 'member-offer-list',
+				'display_name' => 'Display Member Offer Listing',
+				'description'  => 'See only Listing Of Member Offer',
+			],
+			[
+				'name'         => 'member-offer-create',
+				'display_name' => 'Create Member Offer',
+				'description'  => 'Create Member Offer',
+			],
+			[
+				'name'         => 'member-offer-edit',
+				'display_name' => 'Edit Member Offer',
+				'description'  => 'Edit Member Offer',
+			],
+			[
+				'name'         => 'member-offer-delete',
+				'display_name' => 'Delete Member Offer',
+				'description'  => 'Delete Member Offer',
 			],
 
 			[
