@@ -13,6 +13,7 @@ class CreateTblMembers extends Migration {
 		Schema::create('members', function (Blueprint $table) {
 			$table->increments('id');
 			$table->integer('company_id');
+			$table->integer('member_offers_id');
 			$table->string('name');
 			$table->date('dob');
 			$table->string('nric_no', 50)->nullable();
