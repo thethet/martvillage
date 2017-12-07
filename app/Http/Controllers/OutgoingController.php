@@ -14,15 +14,13 @@ use DB;
 use Illuminate\Http\Request;
 use Session;
 
-class OutgoingController extends Controller
-{
+class OutgoingController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function index(Request $request)
-	{
+	public function index(Request $request) {
 		if (Session::has('month')) {
 			$currentMonthYear = Session::get('month');
 
@@ -88,8 +86,6 @@ class OutgoingController extends Controller
 
 		$dayHeader = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-
-
 		if (Auth::user()->hasRole('administrator')) {
 			$packages = Outgoing::select(DB::raw('sum(packing_list) as packing_list'), 'dept_date', DB::raw('count(id) as total'), DB::raw('YEAR(dept_date) year, MONTH(dept_date) month, DAY(dept_date) day'))
 				->groupby('year', 'month', 'day')
@@ -109,7 +105,6 @@ class OutgoingController extends Controller
 				$noPacking = Outgoing::where('dept_date', $package->dept_date)->where('packing_list', 0)->where('company_id', Auth::user()->company_id)->count();
 			}
 
-
 			$yearMonth                                          = date('F Y', strtotime($package->dept_date));
 			$outgoingPackingList[$package->day]['total']        = $package->total;
 			$outgoingPackingList[$package->day]['package']      = $package->total - $noPacking;
@@ -128,8 +123,7 @@ class OutgoingController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function indexCalendar(Request $request)
-	{
+	public function indexCalendar(Request $request) {
 		Session::flash('month', $request->calendarDate);
 		$response = array('status' => 'success', 'url' => 'outgoings');
 		return response()->json($response);
@@ -141,8 +135,7 @@ class OutgoingController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function searchByDay(Request $request)
-	{
+	public function searchByDay(Request $request) {
 
 		$searchYMD = date('Y-m-d', strtotime($request->searchDay));
 		$searchYM  = date('F Y', strtotime($request->searchDay));
@@ -159,8 +152,7 @@ class OutgoingController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function create()
-	{
+	public function create() {
 		//
 	}
 
@@ -169,8 +161,7 @@ class OutgoingController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function store(Request $request)
-	{
+	public function store(Request $request) {
 		$this->validate($request, [
 			'passenger_name' => 'required',
 			'contact_no'     => 'required',
@@ -203,8 +194,7 @@ class OutgoingController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
-	{
+	public function show($id) {
 		//
 	}
 
@@ -214,8 +204,7 @@ class OutgoingController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function editAjax($userId, Request $request)
-	{
+	public function editAjax($userId, Request $request) {
 		$id       = $request->id;
 		$response = array('status' => 'success', 'url' => 'outgoings/' . $id . '/edit');
 		return response()->json($response);
@@ -228,8 +217,7 @@ class OutgoingController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
-	{
+	public function edit($id) {
 		echo "In Edit";
 	}
 
@@ -239,8 +227,7 @@ class OutgoingController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
-	{
+	public function update($id) {
 		//
 	}
 
@@ -250,8 +237,7 @@ class OutgoingController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
-	{
+	public function destroy($id) {
 		//
 	}
 
@@ -261,8 +247,7 @@ class OutgoingController extends Controller
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function packingList($id)
-	{
+	public function packingList($id) {
 		$outgoing = Outgoing::find($id);
 
 		$start = date("Y-m-d", strtotime($outgoing->dept_date . "-30 day"));
@@ -297,8 +282,7 @@ class OutgoingController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function packingListStore(Request $request)
-	{
+	public function packingListStore(Request $request) {
 		$data               = $request->all();
 		$data['created_by'] = Auth::user()->id;
 

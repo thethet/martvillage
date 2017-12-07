@@ -468,6 +468,7 @@
 			});
 
 			$("#outgoing-form :input").prop("disabled", true);
+			$("input[name='_token']").prop("disabled", false);
 
 			$("#add-item").on("click",function(){
 				$("#outgoing-form :input").prop("disabled", false);
