@@ -38,7 +38,7 @@
 
 				<div class="panel-options">
 					@permission('nric-code-create')
-						<a href="{{ url('nric-codes/create') }}">
+						<a href="{{ url('nric-codes/create') }}" title="Create">
 							<i class="entypo-plus-squared"></i>
 							New
 						</a>
@@ -65,19 +65,19 @@
 							<td>{{ $code->nric_code }}</td>
 							<td>{{ $code->description }}</td>
 							<td>
-								<a href="{{ url('nric-codes/'. $code->id) }}" class="btn btn-info btn-sm">
+								<a href="{{ url('nric-codes/'. $code->id) }}" class="btn btn-info btn-sm" title="Detail">
 									<i class="entypo-eye"></i>
 								</a>
 
 								@if(Auth::user()->hasRole('administrator'))
 									@permission('nric-code-edit')
-										<a href="{{ url('nric-codes/'. $code->id .'/edit') }}" class="btn btn-success btn-sm">
+										<a href="{{ url('nric-codes/'. $code->id .'/edit') }}" class="btn btn-success btn-sm" title="Edit">
 											<i class="entypo-pencil"></i>
 										</a>
 									@endpermission
 
 									@permission('nric-code-delete')
-										<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $code->id }}">
+										<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $code->id }}" title="Delete">
 											<i class="entypo-trash"></i>
 										</a>
 									@endpermission

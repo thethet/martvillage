@@ -28,17 +28,23 @@ class StateController extends Controller {
 			$stateIdList[] = $stateId->id;
 		}
 
-		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$countries = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 
-		$states = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->paginate(10);
-
+		$states      = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->paginate(10);
 		$total       = $states->total();
 		$perPage     = $states->perPage();
 		$currentPage = $states->currentPage();
 		$lastPage    = $states->lastPage();
 		$lastItem    = $states->lastItem();
 
-		return view('states.index', ['states' => $states, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'countries' => $countries])->with('i', ($request->get('page', 1) - 1) * 10);
+		$allStates      = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->paginate(10, ['*'], 'apage');
+		$allTotal       = $allStates->total();
+		$allPerPage     = $allStates->perPage();
+		$allCurrentPage = $allStates->currentPage();
+		$allLastPage    = $allStates->lastPage();
+		$allLastItem    = $allStates->lastItem();
+
+		return view('states.index', ['states' => $states, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'countries' => $countries, 'allStates' => $allStates, 'allTotal' => $allTotal, 'allPerPage' => $allPerPage, 'allCurrentPage' => $allCurrentPage, 'allLastPage' => $allLastPage, 'allLastItem' => $allLastItem, 'countryIdList' => $countryIdList, 'stateIdList' => $stateIdList])->with('i', ($request->get('page', 1) - 1) * 10)->with('a', ($request->get('apage', 1) - 1) * 10);
 	}
 
 	/**
@@ -80,6 +86,21 @@ class StateController extends Controller {
 		$company->states()->attach($state);
 
 		Countries::find($request->country_id)->increment('total_cities');
+
+		return redirect()->route('states.index')
+			->with('success', 'State created successfully');
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function storeByCompany($id) {
+		$state = States::find($id);
+
+		$company = Companies::find(Auth::user()->company_id);
+		$company->states()->attach($state);
 
 		return redirect()->route('states.index')
 			->with('success', 'State created successfully');
@@ -169,6 +190,22 @@ class StateController extends Controller {
 			Session::flash('unsuccess', 'State deleted unsuccessfully');
 			$response = array('status' => 'success', 'url' => 'states');
 		}
+
+		return response()->json($response);
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroyByCompany($id) {
+		$company = Companies::find(Auth::user()->company_id);
+		$company->states()->detach($id);
+
+		Session::flash('success', 'State deleted successfully');
+		$response = array('status' => 'success', 'url' => 'states');
 
 		return response()->json($response);
 	}

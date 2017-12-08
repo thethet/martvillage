@@ -30,7 +30,14 @@ class CountryController extends Controller {
 		$lastPage    = $countries->lastPage();
 		$lastItem    = $countries->lastItem();
 
-		return view('countries.index', ['countries' => $countries, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem])->with('i', ($request->get('page', 1) - 1) * 10);
+		$allCountries   = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->paginate(10, ['*'], 'apage');
+		$allTotal       = $allCountries->total();
+		$allPerPage     = $allCountries->perPage();
+		$allCurrentPage = $allCountries->currentPage();
+		$allLastPage    = $allCountries->lastPage();
+		$allLastItem    = $allCountries->lastItem();
+
+		return view('countries.index', ['countries' => $countries, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'allCountries' => $allCountries, 'allTotal' => $allTotal, 'allPerPage' => $allPerPage, 'allCurrentPage' => $allCurrentPage, 'allLastPage' => $allLastPage, 'allLastItem' => $allLastItem, 'countryIdList' => $countryIdList])->with('i', ($request->get('page', 1) - 1) * 10)->with('a', ($request->get('apage', 1) - 1) * 10);
 	}
 
 	/**
@@ -58,6 +65,21 @@ class CountryController extends Controller {
 		$data['created_by'] = Auth::user()->id;
 
 		$country = Countries::create($data);
+
+		$company = Companies::find(Auth::user()->company_id);
+		$company->countries()->attach($country);
+
+		return redirect()->route('countries.index')
+			->with('success', 'Country created successfully');
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function storeByCompany($id) {
+		$country = Countries::find($id);
 
 		$company = Companies::find(Auth::user()->company_id);
 		$company->countries()->attach($country);
@@ -132,6 +154,22 @@ class CountryController extends Controller {
 			Session::flash('unsuccess', 'Country deleted unsuccessfully');
 			$response = array('status' => 'success', 'url' => 'countries');
 		}
+
+		return response()->json($response);
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroyByCompany($id) {
+		$company = Companies::find(Auth::user()->company_id);
+		$company->countries()->detach($id);
+
+		Session::flash('success', 'Country deleted successfully');
+		$response = array('status' => 'success', 'url' => 'countries');
 
 		return response()->json($response);
 	}

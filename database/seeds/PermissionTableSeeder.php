@@ -139,27 +139,6 @@ class PermissionTableSeeder extends Seeder {
 			],
 
 			[
-				'name'         => 'location-list',
-				'display_name' => 'Display Location Listing',
-				'description'  => 'See only Listing Of Location',
-			],
-			[
-				'name'         => 'location-create',
-				'display_name' => 'Create Location',
-				'description'  => 'Create New Location',
-			],
-			[
-				'name'         => 'location-edit',
-				'display_name' => 'Edit Location',
-				'description'  => 'Edit Location',
-			],
-			[
-				'name'         => 'location-delete',
-				'display_name' => 'Delete Location',
-				'description'  => 'Delete Location',
-			],
-
-			[
 				'name'         => 'country-list',
 				'display_name' => 'Display Country Listing',
 				'description'  => 'See only Listing Of Country',
@@ -220,6 +199,48 @@ class PermissionTableSeeder extends Seeder {
 				'name'         => 'township-delete',
 				'display_name' => 'Delete Township',
 				'description'  => 'Delete Township',
+			],
+
+			[
+				'name'         => 'category-list',
+				'display_name' => 'Display Category Listing',
+				'description'  => 'See only Listing Of Category',
+			],
+			[
+				'name'         => 'category-create',
+				'display_name' => 'Create Category',
+				'description'  => 'Create New Category',
+			],
+			[
+				'name'         => 'category-edit',
+				'display_name' => 'Edit Category',
+				'description'  => 'Edit Category',
+			],
+			[
+				'name'         => 'category-delete',
+				'display_name' => 'Delete Category',
+				'description'  => 'Delete Category',
+			],
+
+			[
+				'name'         => 'currency-list',
+				'display_name' => 'Display Currency Listing',
+				'description'  => 'See only Listing Of Currency',
+			],
+			[
+				'name'         => 'currency-create',
+				'display_name' => 'Create Currency',
+				'description'  => 'Create New Currency',
+			],
+			[
+				'name'         => 'currency-edit',
+				'display_name' => 'Edit Currency',
+				'description'  => 'Edit Currency',
+			],
+			[
+				'name'         => 'currency-delete',
+				'display_name' => 'Delete Currency',
+				'description'  => 'Delete Currency',
 			],
 
 			[

@@ -17,7 +17,7 @@
 				<a href="{{ url('settings') }}">Settings</a>
 			</li>
 			<li>
-				<a href="#">Location</a>
+				<a href="{{ url('locations') }}">Location</a>
 			</li>
 			<li class="active">
 				<strong>State/City Management</strong>
@@ -39,20 +39,23 @@
 			</div>
 		@endif
 
+		<h4><strong>All States/Cities List</strong></h4>
 		<div class="panel panel-primary" data-collapsed="0">
 			<div class="panel-heading">
 				<div class="panel-title">
-					Showing {{ $i + 1 }} to @if($currentPage == $lastPage) {{ $lastItem }} @else {{ $i + $perPage }} @endif of {{ $total }} entries
+					Showing {{ $a + 1 }} to @if($allCurrentPage == $allLastPage) {{ $allLastItem }} @else {{ $a + $allPerPage }} @endif of {{ $allTotal }} entries
 				</div>
 
 				<div class="panel-options">
-					@permission('state-create')
-						<a href="{{ url('states/create') }}">
-							<i class="entypo-plus-squared"></i>
-							New
-						</a>
-						&nbsp;|&nbsp;
-					@endpermission
+					@if(Auth::user()->hasRole('administrator'))
+						@permission('state-create')
+							<a href="{{ url('states/create') }}" title="Create">
+								<i class="entypo-plus-squared"></i>
+								New
+							</a>
+							&nbsp;|&nbsp;
+						@endpermission
+					@endif
 					<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
 				</div>
 			</div>
@@ -71,42 +74,106 @@
 						</tr>
 					</thead>
 					<tbody>
-						@foreach($states as $key => $state)
+						@foreach($allStates as $key => $state)
 						<tr>
-							<td>{{ ++$i }}</td>
+							<td>{{ ++$a }}</td>
 							<td>{{ $state->state_name }}</td>
 							<td>{{ $state->state_code }}</td>
 							<td>{{ $state->description }}</td>
-							<td></td>
+							<td>{{ $state->total_townships }}</td>
 							<td>{{ $countries[$state->country_id] }}</td>
 							<td>
-								<a href="{{ url('states/'. $state->id) }}" class="btn btn-info btn-sm">
+								<a href="{{ url('states/'. $state->id) }}" class="btn btn-info btn-sm" title="Detail">
 									<i class="entypo-eye"></i>
 								</a>
 
 								@if(Auth::user()->hasRole('administrator'))
 									@permission('state-edit')
-										<a href="{{ url('states/'. $state->id .'/edit') }}" class="btn btn-success btn-sm">
+										<a href="{{ url('states/'. $state->id .'/edit') }}" class="btn btn-success btn-sm" title="Edit">
 											<i class="entypo-pencil"></i>
 										</a>
 									@endpermission
-								@endif
 
-								@permission('state-delete')
-									<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $state->id }}">
-										<i class="entypo-trash"></i>
-									</a>
-								@endpermission
+									@if($state->total_townships == 0)
+										@permission('state-delete')
+											<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $state->id }}" title="Delete">
+												<i class="entypo-trash"></i>
+											</a>
+										@endpermission
+									@endif
+								@else
+									@permission('state-create')
+										@if((!in_array($state->id, $stateIdList)) && in_array($state->country_id, $countryIdList))
+										<a href="{{ url('states/create-by-company/' . $state->id ) }}" class="btn btn-success btn-sm" title="Add to List">
+											<i class="entypo-list-add"></i>
+										</a>
+										@endif
+									@endpermission
+								@endif
 							</td>
 						</tr>
 						@endforeach
 					</tbody>
 				</table>
 
-				{!! $states->render() !!}
+				{!! $allStates->appends(['apage' => $allStates->currentPage()])->links() !!}
 			</div>
 		</div>
 
+		@if(!Auth::user()->hasRole('administrator'))
+			<br>
+			<h4><strong>My States/Cities List</strong></h4>
+			<div class="panel panel-primary" data-collapsed="0">
+				<div class="panel-heading">
+					<div class="panel-title">
+						Showing {{ $i + 1 }} to @if($currentPage == $lastPage) {{ $lastItem }} @else {{ $i + $perPage }} @endif of {{ $total }} entries
+					</div>
+
+					<div class="panel-options">
+						<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+					</div>
+				</div>
+
+				<div class="panel-body with-table">
+					<table class="table table-bordered responsive">
+						<thead>
+							<tr>
+								<th width="5%">SNo.</th>
+								<th>State/City Name</th>
+								<th>State/City Code</th>
+								<th>Description</th>
+								<th>Country</th>
+								<th width="15%">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach($states as $key => $state)
+							<tr>
+								<td>{{ ++$i }}</td>
+								<td>{{ $state->state_name }}</td>
+								<td>{{ $state->state_code }}</td>
+								<td>{{ $state->description }}</td>
+								<td>{{ $countries[$state->country_id] }}</td>
+								<td>
+									<a href="{{ url('states/'. $state->id) }}" class="btn btn-info btn-sm" title="Detail">
+										<i class="entypo-eye"></i>
+									</a>
+
+									@permission('state-delete')
+										<a href="#" class="btn btn-danger btn-sm destroy-by-company" id="{{ $state->id }}" title="Delete">
+											<i class="entypo-trash"></i>
+										</a>
+									@endpermission
+								</td>
+							</tr>
+							@endforeach
+						</tbody>
+					</table>
+
+					{!! $states->render() !!}
+				</div>
+			</div>
+		@endif
 
 		<!-- Footer -->
 		<footer class="main">
@@ -134,6 +201,22 @@
 					var id = $(this).attr('id');
 					$.ajax({
 						url: "{!! url('states/"+ id +"') !!}",
+						type: 'DELETE',
+						data: {_token: '{!! csrf_token() !!}'},
+						dataType: 'JSON',
+						success: function (data) {
+							window.location.replace(data.url);
+						}
+					});
+				}
+			});
+
+			$(".destroy-by-company").on("click", function(event){
+				var confD = confirm('Are you sure to delete?');
+				if (confD) {
+					var id = $(this).attr('id');
+					$.ajax({
+						url: "{!! url('states/destroy-by-company/"+ id +"') !!}",
 						type: 'DELETE',
 						data: {_token: '{!! csrf_token() !!}'},
 						dataType: 'JSON',

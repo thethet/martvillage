@@ -69,12 +69,12 @@
 							</div>
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Country Code</label>
+								<label class="col-sm-3 control-label">State Code</label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-flag"></i></span>
-										{!! Form::text('state_code', null, ['placeholder' => 'Country Code', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+										{!! Form::text('state_code', null, ['placeholder' => 'State Code', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>

@@ -200,6 +200,17 @@
 							</div>
 
 							<div class="form-group">
+								<label class="col-sm-3 control-label">Township</label>
+
+								<div class="col-sm-5">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-direction"></i></span>
+										{!! Form::select('township_id', ['' => 'Select Township'] + $townships->toArray(), null, ['id'=>'township_id', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
 								<label class="col-sm-3 control-label"></label>
 
 								<div class="col-sm-5">

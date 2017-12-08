@@ -29,7 +29,28 @@ class CompanyController extends Controller {
 		$lastPage    = $companies->lastPage();
 		$lastItem    = $companies->lastItem();
 
-		return view('companies.index', ['companies' => $companies, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem])->with('i', ($request->get('page', 1) - 1) * 10);
+		$company       = Companies::find(Auth::user()->company_id);
+		$countryIds    = $company->countries;
+		$countryIdList = array();
+		foreach ($countryIds as $country) {
+			$countryIdList[] = $country->id;
+		}
+		$stateIds    = $company->states;
+		$stateIdList = array();
+		foreach ($stateIds as $stateId) {
+			$stateIdList[] = $stateId->id;
+		}
+		$townshipIds    = $company->townships;
+		$townshipIdList = array();
+		foreach ($townshipIds as $townshipId) {
+			$townshipIdList[] = $townshipId->id;
+		}
+
+		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$states    = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$townships = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
+
+		return view('companies.index', ['companies' => $companies, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'countries' => $countries, 'states' => $states, 'townships' => $townships])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
 	/**
@@ -49,7 +70,7 @@ class CompanyController extends Controller {
 		foreach ($stateIds as $stateId) {
 			$stateIdList[] = $stateId->id;
 		}
-		$townshipIds    = $company->states;
+		$townshipIds    = $company->townships;
 		$townshipIdList = array();
 		foreach ($townshipIds as $townshipId) {
 			$townshipIdList[] = $townshipId->id;
@@ -80,6 +101,7 @@ class CompanyController extends Controller {
 			'service_rate'  => 'required|numeric',
 			'country_id'    => 'required',
 			'state_id'      => 'required',
+			'township_id'   => 'required',
 		]);
 
 		$imageName = $this->fileUpload($request);
@@ -89,9 +111,9 @@ class CompanyController extends Controller {
 
 		$data    = $request->all();
 		$address = '';
-		$address .= ($request->unit_number) ? ($request->unit_number . ', ') : '';
+		$address .= ($request->unit_number) ? ($request->unit_number . '-') : '';
 		$address .= ($request->building_name) ? ($request->building_name . ', ') : '';
-		$address .= ($request->street) ? ($request->street) : '';
+		$address .= ($request->street) ? ($request->street . ', ') : '';
 		$data['address']    = $address;
 		$data['created_by'] = Auth::user()->id;
 
@@ -121,7 +143,7 @@ class CompanyController extends Controller {
 		foreach ($stateIds as $stateId) {
 			$stateIdList[] = $stateId->id;
 		}
-		$townshipIds    = $myCompany->states;
+		$townshipIds    = $myCompany->townships;
 		$townshipIdList = array();
 		foreach ($townshipIds as $townshipId) {
 			$townshipIdList[] = $townshipId->id;
@@ -168,7 +190,7 @@ class CompanyController extends Controller {
 		foreach ($stateIds as $stateId) {
 			$stateIdList[] = $stateId->id;
 		}
-		$townshipIds    = $myCompany->states;
+		$townshipIds    = $myCompany->townships;
 		$townshipIdList = array();
 		foreach ($townshipIds as $townshipId) {
 			$townshipIdList[] = $townshipId->id;
@@ -199,13 +221,14 @@ class CompanyController extends Controller {
 			'service_rate'  => 'required|numeric',
 			'country_id'    => 'required',
 			'state_id'      => 'required',
+			'township_id'   => 'required',
 		]);
 
 		$data    = $request->all();
 		$address = '';
-		$address .= ($request->unit_number) ? ($request->unit_number . ', ') : '';
+		$address .= ($request->unit_number) ? ($request->unit_number . '-') : '';
 		$address .= ($request->building_name) ? ($request->building_name . ', ') : '';
-		$address .= ($request->street) ? ($request->street) : '';
+		$address .= ($request->street) ? ($request->street . ', ') : '';
 		$data['address']    = $address;
 		$data['updated_by'] = Auth::user()->id;
 

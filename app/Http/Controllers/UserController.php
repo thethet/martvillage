@@ -55,7 +55,7 @@ class UserController extends Controller {
 		foreach ($stateIds as $stateId) {
 			$stateIdList[] = $stateId->id;
 		}
-		$townshipIds    = $company->states;
+		$townshipIds    = $company->townships;
 		$townshipIdList = array();
 		foreach ($townshipIds as $townshipId) {
 			$townshipIdList[] = $townshipId->id;
@@ -157,7 +157,7 @@ class UserController extends Controller {
 		foreach ($stateIds as $stateId) {
 			$stateIdList[] = $stateId->id;
 		}
-		$townshipIds    = $company->states;
+		$townshipIds    = $company->townships;
 		$townshipIdList = array();
 		foreach ($townshipIds as $townshipId) {
 			$townshipIdList[] = $townshipId->id;
@@ -219,7 +219,7 @@ class UserController extends Controller {
 		foreach ($stateIds as $stateId) {
 			$stateIdList[] = $stateId->id;
 		}
-		$townshipIds    = $company->states;
+		$townshipIds    = $company->townships;
 		$townshipIdList = array();
 		foreach ($townshipIds as $townshipId) {
 			$townshipIdList[] = $townshipId->id;

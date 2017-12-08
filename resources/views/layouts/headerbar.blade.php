@@ -6,7 +6,7 @@
 			<li class="profile-info dropdown"><!-- add class "pull-right" if you want to place this from right -->
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 					@if(Auth::user()->photo == null)
-						<img src="{{ asset('assets/images/thumb-1@2x.png') }}" alt="" class="img-circle" width="44" />
+						<img src="{{ asset('assets/images/thumb-1@2d.png') }}" alt="" class="img-circle" width="44" />
 					@else
 						<img src="{{ asset('uploads/profile/' . Auth::user()->photo) }}" alt="" class="img-circle" width="44" >
 					@endif

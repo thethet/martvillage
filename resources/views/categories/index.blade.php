@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('page-title')
-	Company
+	Category
 @stop
 
 @section('main')
@@ -9,19 +9,22 @@
 		@include('layouts.headerbar')
 		<hr />
 
-		<ol class="breadcrumb bc-3" >
+		<ol class="breadcrumb bc-3">
 			<li>
 				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
 			</li>
 			<li>
 				<a href="{{ url('settings') }}">Settings</a>
 			</li>
+			<li>
+				<a href="{{ url('prices') }}">Price</a>
+			</li>
 			<li class="active">
-				<strong>Company Management</strong>
+				<strong>Category Management</strong>
 			</li>
 		</ol>
 
-		<h2>Company Management</h2>
+		<h2>Category Management</h2>
 		<br />
 
 		@if ($message = Session::get('success'))
@@ -37,8 +40,8 @@
 				</div>
 
 				<div class="panel-options">
-					@permission('company-create')
-						<a href="{{ url('companies/create') }}" title="Create">
+					@permission('category-create')
+						<a href="{{ url('categorys/create') }}" title="Create">
 							<i class="entypo-plus-squared"></i>
 							New
 						</a>
@@ -53,46 +56,34 @@
 					<thead>
 						<tr>
 							<th width="5%">SNo.</th>
-							<th>Name</th>
-							<th>Short Code</th>
-							<th>Email</th>
-							<th>Contact</th>
-							<th>Address</th>
-							<th>Expiry Date</th>
+							<th>Category Name</th>
+							<th>Unit</th>
 							<th width="15%">Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach($companies as $key => $company)
+						@foreach($categories as $key => $category)
 						<tr>
 							<td>{{ ++$i }}</td>
-							<td>{{ strtoupper($company->company_name) }}</td>
-							<td>{{ $company->short_code }}</td>
-							<td>{{ $company->email }}</td>
-							<td>{{ $company->contact_no }}</td>
+							<td>{{ $category->name }}</td>
+							<td>{{ $category->unit }}</td>
 							<td>
-								{{ $company->address }}{{ $townships[$company->township_id] }} , {{ $states[$company->state_id] }}, {{ $countries[$company->country_id] }}
-							</td>
-							<td>{{ $company->expiry_date }}</td>
-							<td>
-								<a href="{{ url('companies/'. $company->id) }}" class="btn btn-info btn-sm" title="Detail">
+								<a href="{{ url('categories/'. $category->id) }}" class="btn btn-info btn-sm" title="Detail">
 									<i class="entypo-eye"></i>
 								</a>
 
-								@if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('owner'))
-									@permission('company-edit')
-										<a href="{{ url('companies/'. $company->id .'/edit') }}" class="btn btn-success btn-sm" title="Edit">
+								@if(Auth::user()->hasRole('administrator'))
+									@permission('category-edit')
+										<a href="{{ url('categories/'. $category->id .'/edit') }}" class="btn btn-success btn-sm" title="Edit">
 											<i class="entypo-pencil"></i>
 										</a>
 									@endpermission
 
-									@if($company->id != Auth::user()->company_id)
-										@permission('company-delete')
-											<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $company->id }}" title="Delete">
-												<i class="entypo-trash"></i>
-											</a>
-										@endpermission
-									@endif
+									@permission('category-delete')
+										<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $category->id }}" title="Delete">
+											<i class="entypo-trash"></i>
+										</a>
+									@endpermission
 								@endif
 							</td>
 						</tr>
@@ -100,10 +91,9 @@
 					</tbody>
 				</table>
 
-				{!! $companies->render() !!}
+				{!! $categories->render() !!}
 			</div>
 		</div>
-
 
 		<!-- Footer -->
 		<footer class="main">
@@ -130,7 +120,7 @@
 				if (confD) {
 					var id = $(this).attr('id');
 					$.ajax({
-						url: "{!! url('companies/"+ id +"') !!}",
+						url: "{!! url('categories/"+ id +"') !!}",
 						type: 'DELETE',
 						data: {_token: '{!! csrf_token() !!}'},
 						dataType: 'JSON',
@@ -142,6 +132,5 @@
 			});
 		});
 	</script>
-
 @stop
 

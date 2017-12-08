@@ -81,12 +81,12 @@
 							</div>
 
 							<div class="form-group {{ $errors->has('state_code') ? ' has-error' : '' }}">
-								<label class="col-sm-3 control-label">Township Code <span class="text-danger">*</span></label>
+								<label class="col-sm-3 control-label">State Code <span class="text-danger">*</span></label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-flag"></i></span>
-										{!! Form::text('state_code', null, ['placeholder' => 'Township Code', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+										{!! Form::text('state_code', null, ['placeholder' => 'State Code', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('state_code'))

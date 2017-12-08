@@ -59,7 +59,7 @@
 							</div>
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">NRIC Number <span class="text-danger">*</span></label>
+								<label class="col-sm-3 control-label">NRIC Number</label>
 
 								<div class="col-sm-2">
 									<div class="input-group minimal">
@@ -361,6 +361,23 @@
 								</div>
 							</div>
 
+							<div class="form-group {{ $errors->has('township_id') ? ' has-error' : '' }}">
+								<label class="col-sm-3 control-label">Township <span class="text-danger">*</span></label>
+
+								<div class="col-sm-5">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-direction"></i></span>
+										{!! Form::select('township_id', ['' => 'Select Township'] + $townships->toArray(), null, ['id'=>'township_id', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+									</div>
+
+									@if ($errors->has('township_id'))
+										<span class="required">
+											<strong>{{ $errors->first('township_id') }}</strong>
+										</span>
+									@endif
+								</div>
+							</div>
+
 							<div class="form-group">
 								<label class="col-sm-3 control-label"></label>
 
@@ -454,6 +471,29 @@
 						html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
 					}
 					stateSelect.children().remove().end().append(html) ;
+				});
+			});
+
+			$("#state_id").change(function(event) {
+				// Fetch the preselected item, and add to the control
+				var stateId = $('#state_id').val();
+				var townshipSelect = $('#township_id');
+				$.ajax({
+					type: 'GET',
+					url: "{{ url('townships/search-township-state') }}",
+					dataType: 'json',
+					delay: 250,
+					data: {
+						search: '',
+						stateId: stateId
+					}
+					,
+				}).then(function (data) {
+					var html = '<option value="">Select Township</option>';
+					for (var i = 0, len = data.items.length; i < len; ++i) {
+						html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+					}
+					townshipSelect.children().remove().end().append(html) ;
 				});
 			});
 
