@@ -38,7 +38,7 @@
 
 				<div class="panel-options">
 					@permission('member-offer-create')
-						<a href="{{ url('member-offers/create') }}">
+						<a href="{{ url('member-offers/create') }}" title="Create">
 							<i class="entypo-plus-squared"></i>
 							New
 						</a>
@@ -56,7 +56,7 @@
 							<th>Type</th>
 							<th>Rate</th>
 							@if(Auth::user()->hasRole('administrator'))
-							<th>Company Name</th>
+								<th>Company Name</th>
 							@endif
 							<th width="15%">Action</th>
 						</tr>
@@ -73,21 +73,21 @@
 								</td>
 							@endif
 							<td>
-								<a href="{{ url('member-offers/'. $offer->id) }}" class="btn btn-info btn-sm">
+								<a href="{{ url('member-offers/'. $offer->id) }}" class="btn btn-info btn-sm" title="Detail">
 									<i class="entypo-eye"></i>
 								</a>
 
 								@if(Auth::user()->hasRole('administrator') || $offer->company_id == Auth::user()->company_id)
 									@permission('member-offer-edit')
-									<a href="{{ url('member-offers/'. $offer->id .'/edit') }}" class="btn btn-success btn-sm">
-										<i class="entypo-pencil"></i>
-									</a>
+										<a href="{{ url('member-offers/'. $offer->id .'/edit') }}" class="btn btn-success btn-sm" title="Edit">
+											<i class="entypo-pencil"></i>
+										</a>
 									@endpermission
 
 									@permission('member-offer-delete')
-									<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $offer->id }}">
-										<i class="entypo-trash"></i>
-									</a>
+										<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $offer->id }}" title="Delete">
+											<i class="entypo-trash"></i>
+										</a>
 									@endpermission
 								@endif
 							</td>

@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('page-title')
-	Member Offer
+	Category
 @stop
 
 @section('main')
@@ -18,14 +18,17 @@
 				<a href="{{ url('settings') }}">Settings</a>
 			</li>
 			<li>
-				<a href="{{ url('member-offers') }}">Member Offer Management</a>
+				<a href="{{ url('pricing-setup') }}">Pricing Setup</a>
+			</li>
+			<li>
+				<a href="{{ url('categories') }}">Category Management</a>
 			</li>
 			<li class="active">
 				<strong>New Create Form</strong>
 			</li>
 		</ol>
 
-		<h2>Member Offer Management</h2>
+		<h2>Category Management</h2>
 		<br />
 
 		<div class="row">
@@ -42,7 +45,7 @@
 					</div>
 
 					<div class="panel-body">
-						{!! Form::open(array('route' => 'member-offers.store','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate')) !!}
+						{!! Form::open(array('route' => 'categories.store','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate')) !!}
 
 							<div class="form-group {{ $errors->has('company_id') ? ' has-error' : '' }}">
 								<label class="col-sm-3 control-label">Company Name <span class="text-danger">*</span></label>
@@ -51,7 +54,7 @@
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-suitcase"></i></span>
 										@if(Auth::user()->hasRole('administrator'))
-										{!! Form::select('company_id', ['' => 'Select Company'] + $companyList->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off']) !!}
+										{!! Form::select('company_id', ['' => 'Select Company'] + $companies->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off']) !!}
 										@else
 											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
@@ -66,35 +69,35 @@
 								</div>
 							</div>
 
-							<div class="form-group {{ $errors->has('type') ? ' has-error' : '' }}">
-								<label class="col-sm-3 control-label">Offer Type <span class="text-danger">*</span></label>
+							<div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
+								<label class="col-sm-3 control-label">Name <span class="text-danger">*</span></label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-tag"></i></span>
-										{!! Form::text('type', null, ['placeholder' => 'Offer Type', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+										<span class="input-group-addon"><i class="entypo-info"></i></span>
+										{!! Form::text('name', null, ['placeholder' => 'Name', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 
-									@if ($errors->has('type'))
+									@if ($errors->has('name'))
 										<span class="validate-has-error">
-											<strong>{{ $errors->first('type') }}</strong>
+											<strong>{{ $errors->first('name') }}</strong>
 										</span>
 									@endif
 								</div>
 							</div>
 
-							<div class="form-group {{ $errors->has('rate') ? ' has-error' : '' }}">
-								<label class="col-sm-3 control-label">Offer Rate <span class="text-danger">*</span></label>
+							<div class="form-group {{ $errors->has('unit') ? ' has-error' : '' }}">
+								<label class="col-sm-3 control-label">Unit <span class="text-danger">*</span></label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
-										<span class="input-group-addon">&nbsp;%&nbsp;</span>
-										{!! Form::text('rate', null, ['placeholder' => 'Offer Rate', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+										<span class="input-group-addon"><i class="fa fa-balance-scale"></i></span>
+										{!! Form::text('unit', null, ['placeholder' => 'Unit', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
 									</div>
 
-									@if ($errors->has('rate'))
+									@if ($errors->has('unit'))
 										<span class="validate-has-error">
-											<strong>{{ $errors->first('rate') }}</strong>
+											<strong>{{ $errors->first('unit') }}</strong>
 										</span>
 									@endif
 								</div>
@@ -112,7 +115,7 @@
 										Reset
 										<i class="entypo-erase"></i>
 									</button>
-									<a href="{{ route('member-offers.index') }}" class="btn btn-orange btn-icon">
+									<a href="{{ route('categories.index') }}" class="btn btn-gold btn-icon">
 										Back
 										<i class="entypo-reply"></i>
 									</a>
@@ -123,7 +126,6 @@
 				</div>
 			</div>
 		</div>
-
 
 		<!-- Footer -->
 		<footer class="main">

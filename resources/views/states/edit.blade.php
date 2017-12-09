@@ -118,10 +118,17 @@
 								<label class="col-sm-3 control-label"></label>
 
 								<div class="col-sm-5">
-									<button type="submit" class="btn btn-success">Save Changes</button>
-									<button type="reset" class="btn">Reset Previous</button>
-									<a href="{{ route('states.index') }}" class="btn btn-black">
+									<button type="submit" class="btn btn-success btn-icon">
+										Save Changes
+										<i class="entypo-floppy"></i>
+									</button>
+									<button type="reset" class="btn btn-info btn-icon">
+										Reset Previous
+										<i class="entypo-erase"></i>
+									</button>
+									<a href="{{ route('states.index') }}" class="btn btn-orange btn-icon">
 										Back
+										<i class="entypo-reply"></i>
 									</a>
 								</div>
 							</div>
@@ -130,7 +137,6 @@
 				</div>
 			</div>
 		</div>
-
 
 		<!-- Footer -->
 		<footer class="main">

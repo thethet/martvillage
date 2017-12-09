@@ -1,15 +1,16 @@
 @extends('layouts.layout')
 
 @section('page-title')
-	Township
+	Category
 @stop
 
 @section('main')
 	<div class="main-content">
+
 		@include('layouts.headerbar')
 		<hr />
 
-		<ol class="breadcrumb bc-3">
+		<ol class="breadcrumb bc-3" >
 			<li>
 				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
 			</li>
@@ -17,17 +18,17 @@
 				<a href="{{ url('settings') }}">Settings</a>
 			</li>
 			<li>
-				<a href="#">Location</a>
+				<a href="{{ url('pricing-setup') }}">Pricing Setup</a>
 			</li>
 			<li>
-				<a href="{{ url('townships') }}">Township Management</a>
+				<a href="{{ url('categories') }}">Category Management</a>
 			</li>
 			<li class="active">
 				<strong>Detail Form</strong>
 			</li>
 		</ol>
 
-		<h2>Township Management</h2>
+		<h2>Category Management</h2>
 		<br />
 
 		<div class="row">
@@ -44,48 +45,42 @@
 					</div>
 
 					<div class="panel-body">
-						{!! Form::model($township, ['method' => 'PATCH','route' => ['townships.update', $township->id], 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate']) !!}
+						{!! Form::model($category, ['method' => 'PATCH','route' => ['categories.update', $category->id], 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate']) !!}
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">State/City</label>
+								<label class="col-sm-3 control-label">Company Name</label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-location"></i></span>
-										{!! Form::select('state_id', ['' => 'Select State'] + $states->toArray(), null, ['id'=>'state_id', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+										<span class="input-group-addon"><i class="entypo-suitcase"></i></span>
+										@if(Auth::user()->hasRole('administrator'))
+										{!! Form::select('company_id', ['' => 'Select Company'] + $companies->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off', 'disabled']) !!}
+										@else
+											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
+										@endif
 									</div>
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Township Name</label>
-
-								<div class="col-sm-5">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-direction"></i></span>
-										{!! Form::text('township_name', null, ['placeholder' => 'Township Name', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Township Code</label>
-
-								<div class="col-sm-5">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-flag"></i></span>
-										{!! Form::text('code', null, ['placeholder' => 'Township Code', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Description</label>
+								<label class="col-sm-3 control-label">Name</label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-info"></i></span>
-										{!! Form::text('description', null, ['placeholder' => 'Description', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+										{!! Form::text('name', null, ['placeholder' => 'Name', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Unit</label>
+
+								<div class="col-sm-5">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="fa fa-balance-scale"></i></span>
+										{!! Form::text('unit', null, ['placeholder' => 'Unit', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -94,7 +89,7 @@
 								<label class="col-sm-3 control-label"></label>
 
 								<div class="col-sm-5">
-									<a href="{{ route('townships.index') }}" class="btn btn-orange btn-icon">
+									<a href="{{ route('categories.index') }}" class="btn btn-gold btn-icon">
 										Back
 										<i class="entypo-reply"></i>
 									</a>

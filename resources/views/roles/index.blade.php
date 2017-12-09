@@ -38,7 +38,7 @@
 
 				<div class="panel-options">
 					@permission('role-create')
-						<a href="{{ url('roles/create') }}">
+						<a href="{{ url('roles/create') }}" title="Create">
 							<i class="entypo-plus-squared"></i>
 							New
 						</a>
@@ -65,19 +65,19 @@
 							<td>{{ $role->name }}</td>
 							<td>{{ $role->description }}</td>
 							<td>
-								<a href="{{ url('roles/'. $role->id) }}" class="btn btn-info btn-sm">
+								<a href="{{ url('roles/'. $role->id) }}" class="btn btn-info btn-sm" title="Detail">
 									<i class="entypo-eye"></i>
 								</a>
 
 								@if(Auth::user()->hasRole('administrator') || $role->company_id == Auth::user()->company_id)
 									@permission('role-edit')
-										<a href="{{ url('roles/'. $role->id .'/edit') }}" class="btn btn-success btn-sm">
+										<a href="{{ url('roles/'. $role->id .'/edit') }}" class="btn btn-success btn-sm" title="Edit">
 											<i class="entypo-pencil"></i>
 										</a>
 									@endpermission
 
 									@permission('role-delete')
-										<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $role->id }}">
+										<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $role->id }}" title="Delete">
 											<i class="entypo-trash"></i>
 										</a>
 									@endpermission

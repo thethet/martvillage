@@ -71,7 +71,16 @@
 							<td>{{ $company->email }}</td>
 							<td>{{ $company->contact_no }}</td>
 							<td>
-								{{ $company->address }}{{ $townships[$company->township_id] }} , {{ $states[$company->state_id] }}, {{ $countries[$company->country_id] }}
+								{{ $company->address }}
+								@if($company->township_id > 0)
+									{{ $townships[$company->township_id] }}
+								@endif
+								@if($company->state_id > 0)
+									, {{ $states[$company->state_id] }}
+								@endif
+								@if($company->country_id > 0)
+									, {{ $countries[$company->country_id] }}
+								@endif
 							</td>
 							<td>{{ $company->expiry_date }}</td>
 							<td>

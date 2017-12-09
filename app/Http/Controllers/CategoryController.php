@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
+use App\Companies;
+use Auth;
 use Illuminate\Http\Request;
+use Session;
 
 class CategoryController extends Controller {
 	/**
@@ -11,14 +15,15 @@ class CategoryController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$categories  = Categories::where('deleted', 'N')->paginate(10);
+		$companies   = Companies::lists('company_name', 'id');
+		$categories  = Category::where('deleted', 'N')->paginate(10);
 		$total       = $categories->total();
 		$perPage     = $categories->perPage();
 		$currentPage = $categories->currentPage();
 		$lastPage    = $categories->lastPage();
 		$lastItem    = $categories->lastItem();
 
-		return view('categories.index', ['categories' => $categories, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem])->with('i', ($request->get('page', 1) - 1) * 10);
+		return view('categories.index', ['categories' => $categories, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'companies' => $companies])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
 	/**
@@ -27,7 +32,9 @@ class CategoryController extends Controller {
 	 * @return Response
 	 */
 	public function create() {
-		//
+		$companies = Companies::lists('company_name', 'id');
+
+		return view('categories.create', ['companies' => $companies]);
 	}
 
 	/**
@@ -36,7 +43,19 @@ class CategoryController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
-		//
+		$this->validate($request, [
+			'company_id' => 'required',
+			'name'       => 'required',
+			'unit'       => 'required',
+		]);
+
+		$data               = $request->all();
+		$data['created_by'] = Auth::user()->id;
+
+		$category = Category::create($data);
+
+		return redirect()->route('categories.index')
+			->with('success', 'Category created successfully');
 	}
 
 	/**
@@ -46,7 +65,10 @@ class CategoryController extends Controller {
 	 * @return Response
 	 */
 	public function show($id) {
-		//
+		$companies = Companies::lists('company_name', 'id');
+		$category  = Category::find($id);
+
+		return view('categories.show', ['category' => $category, 'companies' => $companies]);
 	}
 
 	/**
@@ -56,7 +78,10 @@ class CategoryController extends Controller {
 	 * @return Response
 	 */
 	public function edit($id) {
-		//
+		$companies = Companies::lists('company_name', 'id');
+		$category  = Category::find($id);
+
+		return view('categories.edit', ['category' => $category, 'companies' => $companies]);
 	}
 
 	/**
@@ -66,7 +91,20 @@ class CategoryController extends Controller {
 	 * @return Response
 	 */
 	public function update($id, Request $request) {
-		//
+		$this->validate($request, [
+			'company_id' => 'required',
+			'name'       => 'required',
+			'unit'       => 'required',
+		]);
+
+		$data               = $request->all();
+		$data['updated_by'] = Auth::user()->id;
+
+		$category = Category::find($id);
+		$category->update($data);
+
+		return redirect()->route('categories.index')
+			->with('success', 'Category updated successfully');
 	}
 
 	/**
@@ -76,6 +114,10 @@ class CategoryController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id) {
-		//
+		Category::find($id)->update(['deleted' => 'Y']);
+		Session::flash('success', 'Category deleted successfully');
+		$response = array('status' => 'success', 'url' => 'categories');
+
+		return response()->json($response);
 	}
 }

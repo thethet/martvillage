@@ -276,7 +276,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-direction"></i></span>
-										{!! Form::select('township_id', ['' => 'Select Township'] + $townships->toArray(), null, ['id'=>'township_id', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+										{!! Form::select('township_id', ['' => 'Select Township'] + $townships->toArray(), null, ['id'=>'township_id', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -285,8 +285,9 @@
 								<label class="col-sm-3 control-label"></label>
 
 								<div class="col-sm-5">
-									<a href="{{ route('users.index') }}" class="btn btn-black">
+									<a href="{{ route('users.index') }}" class="btn btn-orange btn-icon">
 										Back
+										<i class="entypo-reply"></i>
 									</a>
 								</div>
 							</div>

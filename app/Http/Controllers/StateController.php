@@ -30,14 +30,25 @@ class StateController extends Controller {
 
 		$countries = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 
-		$states      = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->paginate(10);
+		$query = States::whereIn('id', $stateIdList)->where('deleted', 'N');
+		if ($request->country_id) {
+			$states = $query->where('country_id', $request->country_id)->orderBy('state_name', 'ASC')->paginate(10);
+		} else {
+			$states = $query->orderBy('state_name', 'ASC')->paginate(10);
+		}
 		$total       = $states->total();
 		$perPage     = $states->perPage();
 		$currentPage = $states->currentPage();
 		$lastPage    = $states->lastPage();
 		$lastItem    = $states->lastItem();
 
-		$allStates      = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->paginate(10, ['*'], 'apage');
+		$allQuery = States::where('deleted', 'N');
+		if ($request->all_country_id) {
+			$allStates = $allQuery->where('country_id', $request->all_country_id)->orderBy('state_name', 'ASC')->paginate(10, ['*'], 'apage');
+		} else {
+			$allStates = $allQuery->orderBy('state_name', 'ASC')->paginate(10, ['*'], 'apage');
+		}
+
 		$allTotal       = $allStates->total();
 		$allPerPage     = $allStates->perPage();
 		$allCurrentPage = $allStates->currentPage();

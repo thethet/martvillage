@@ -17,7 +17,7 @@
 				<a href="{{ url('settings') }}">Settings</a>
 			</li>
 			<li>
-				<a href="{{ url('prices') }}">Price</a>
+				<a href="{{ url('pricing-setup') }}">Pricing Setup</a>
 			</li>
 			<li class="active">
 				<strong>Category Management</strong>
@@ -41,7 +41,7 @@
 
 				<div class="panel-options">
 					@permission('category-create')
-						<a href="{{ url('categorys/create') }}" title="Create">
+						<a href="{{ url('categories/create') }}" title="Create">
 							<i class="entypo-plus-squared"></i>
 							New
 						</a>
@@ -58,6 +58,9 @@
 							<th width="5%">SNo.</th>
 							<th>Category Name</th>
 							<th>Unit</th>
+							@if(Auth::user()->hasRole('administrator'))
+								<th>Company Name</th>
+							@endif
 							<th width="15%">Action</th>
 						</tr>
 					</thead>
@@ -67,6 +70,9 @@
 							<td>{{ ++$i }}</td>
 							<td>{{ $category->name }}</td>
 							<td>{{ $category->unit }}</td>
+							@if(Auth::user()->hasRole('administrator'))
+								<td>{{ $companies[$category->company_id] }}</td>
+							@endif
 							<td>
 								<a href="{{ url('categories/'. $category->id) }}" class="btn btn-info btn-sm" title="Detail">
 									<i class="entypo-eye"></i>

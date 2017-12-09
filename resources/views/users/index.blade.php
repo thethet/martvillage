@@ -35,7 +35,7 @@
 
 				<div class="panel-options">
 					@permission('user-create')
-						<a href="{{ url('users/create') }}">
+						<a href="{{ url('users/create') }}" title="Create">
 							<i class="entypo-plus-squared"></i>
 							New
 						</a>
@@ -55,7 +55,7 @@
 							<th>Role</th>
 							<th>Email</th>
 							@if(Auth::user()->hasRole('administrator'))
-							<th>Company Name</th>
+								<th>Company Name</th>
 							@endif
 							<th width="15%">Action</th>
 						</tr>
@@ -74,22 +74,22 @@
 								</td>
 							@endif
 							<td>
-								<a href="{{ url('users/'. $user->id) }}" class="btn btn-info btn-sm">
+								<a href="{{ url('users/'. $user->id) }}" class="btn btn-info btn-sm" title="Detail">
 									<i class="entypo-eye"></i>
 								</a>
 
 								@if(Auth::user()->hasRole('administrator') || $user->company_id == Auth::user()->company_id)
 									@permission('user-edit')
-									<a href="{{ url('users/'. $user->id .'/edit') }}" class="btn btn-success btn-sm">
-										<i class="entypo-pencil"></i>
-									</a>
+										<a href="{{ url('users/'. $user->id .'/edit') }}" class="btn btn-success btn-sm" title="Edit">
+											<i class="entypo-pencil"></i>
+										</a>
 									@endpermission
 
 									@if($user->id != Auth::user()->id)
 										@permission('user-delete')
-										<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $user->id }}">
-											<i class="entypo-trash"></i>
-										</a>
+											<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $user->id }}" title="Delete">
+												<i class="entypo-trash"></i>
+											</a>
 										@endpermission
 									@endif
 								@endif

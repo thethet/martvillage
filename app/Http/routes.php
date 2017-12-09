@@ -117,66 +117,6 @@ Route::group(['middleware' => ['auth']], function () {
 
 	/*
 	|--------------------------------------------------------------------------
-	| Roles Controller
-	|--------------------------------------------------------------------------
-	|
-	| This is the route for Role Model CRUD
-	|
-	 */
-	Route::get('roles', ['as' => 'roles.index', 'uses' => 'RoleController@index', 'middleware' => ['permission:role-list|role-create|role-edit|role-delete']]);
-
-	Route::get('roles/create', ['as' => 'roles.create', 'uses' => 'RoleController@create', 'middleware' => ['permission:role-create']]);
-	Route::post('roles/create', ['as' => 'roles.store', 'uses' => 'RoleController@store', 'middleware' => ['permission:role-create']]);
-
-	Route::get('roles/{id}', ['as' => 'roles.show', 'uses' => 'RoleController@show']);
-
-	Route::get('roles/{id}/edit', ['as' => 'roles.edit', 'uses' => 'RoleController@edit', 'middleware' => ['permission:role-edit']]);
-	Route::patch('roles/{id}', ['as' => 'roles.update', 'uses' => 'RoleController@update', 'middleware' => ['permission:role-edit']]);
-
-	Route::delete('roles/{id}', ['as' => 'roles.destroy', 'uses' => 'RoleController@destroy', 'middleware' => ['permission:role-delete']]);
-
-	/*
-	|--------------------------------------------------------------------------
-	| Permissions Controller
-	|--------------------------------------------------------------------------
-	|
-	| This is the route for Permission Model CRUD
-	|
-	 */
-	Route::get('permissions', ['as' => 'permissions.index', 'uses' => 'PermissionController@index', 'middleware' => ['permission:permission-list|permission-create|permission-edit|permission-delete']]);
-
-	Route::get('permissions/create', ['as' => 'permissions.create', 'uses' => 'PermissionController@create', 'middleware' => ['permission:permission-create']]);
-	Route::post('permissions/create', ['as' => 'permissions.store', 'uses' => 'PermissionController@store', 'middleware' => ['permission:permission-create']]);
-
-	Route::get('permissions/{id}', ['as' => 'permissions.show', 'uses' => 'PermissionController@show']);
-
-	Route::get('permissions/{id}/edit', ['as' => 'permissions.edit', 'uses' => 'PermissionController@edit', 'middleware' => ['permission:permission-edit']]);
-	Route::patch('permissions/{id}', ['as' => 'permissions.update', 'uses' => 'PermissionController@update', 'middleware' => ['permission:permission-edit']]);
-
-	Route::delete('permissions/{id}', ['as' => 'permissions.destroy', 'uses' => 'PermissionController@destroy', 'middleware' => ['permission:permission-delete']]);
-
-	/*
-	|--------------------------------------------------------------------------
-	| Permissions Controller
-	|--------------------------------------------------------------------------
-	|
-	| This is the route for Permission Model CRUD
-	|
-	 */
-	Route::get('companies', ['as' => 'companies.index', 'uses' => 'CompanyController@index', 'middleware' => ['permission:company-list|company-create|company-edit|company-delete']]);
-
-	Route::get('companies/create', ['as' => 'companies.create', 'uses' => 'CompanyController@create', 'middleware' => ['permission:company-create']]);
-	Route::post('companies/create', ['as' => 'companies.store', 'uses' => 'CompanyController@store', 'middleware' => ['permission:company-create']]);
-
-	Route::get('companies/{id}', ['as' => 'companies.show', 'uses' => 'CompanyController@show']);
-
-	Route::get('companies/{id}/edit', ['as' => 'companies.edit', 'uses' => 'CompanyController@edit', 'middleware' => ['permission:company-edit']]);
-	Route::patch('companies/{id}', ['as' => 'companies.update', 'uses' => 'CompanyController@update', 'middleware' => ['permission:company-edit']]);
-
-	Route::delete('companies/{id}', ['as' => 'companies.destroy', 'uses' => 'CompanyController@destroy', 'middleware' => ['permission:company-delete']]);
-
-	/*
-	|--------------------------------------------------------------------------
 	| NRIC Code Controller
 	|--------------------------------------------------------------------------
 	|
@@ -203,7 +143,7 @@ Route::group(['middleware' => ['auth']], function () {
 	| This is the route for NRIC township Model CRUD
 	|
 	 */
-	Route::get('nric-townships', ['as' => 'nric-townships.index', 'uses' => 'NricTownshipController@index', 'middleware' => ['permission:nric-township-list|nric-township-create|nric-township-edit|nric-township-delete']]);
+	Route::match(['get', 'post'], 'nric-townships', ['as' => 'nric-townships.index', 'uses' => 'NricTownshipController@index', 'middleware' => ['permission:nric-township-list|nric-township-create|nric-township-edit|nric-township-delete']]);
 
 	Route::get('nric-townships/create', ['as' => 'nric-townships.create', 'uses' => 'NricTownshipController@create', 'middleware' => ['permission:nric-township-create']]);
 	Route::post('nric-townships/create', ['as' => 'nric-townships.store', 'uses' => 'NricTownshipController@store', 'middleware' => ['permission:nric-township-create']]);
@@ -214,6 +154,145 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::patch('nric-townships/{id}', ['as' => 'nric-townships.update', 'uses' => 'NricTownshipController@update', 'middleware' => ['permission:nric-township-edit']]);
 
 	Route::delete('nric-townships/{id}', ['as' => 'nric-townships.destroy', 'uses' => 'NricTownshipController@destroy', 'middleware' => ['permission:nric-township-delete']]);
+
+	/*
+	|--------------------------------------------------------------------------
+	| Permissions Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Permission Model CRUD
+	|
+	 */
+	Route::get('permissions', ['as' => 'permissions.index', 'uses' => 'PermissionController@index', 'middleware' => ['permission:permission-list|permission-create|permission-edit|permission-delete']]);
+
+	Route::get('permissions/create', ['as' => 'permissions.create', 'uses' => 'PermissionController@create', 'middleware' => ['permission:permission-create']]);
+	Route::post('permissions/create', ['as' => 'permissions.store', 'uses' => 'PermissionController@store', 'middleware' => ['permission:permission-create']]);
+
+	Route::get('permissions/{id}', ['as' => 'permissions.show', 'uses' => 'PermissionController@show']);
+
+	Route::get('permissions/{id}/edit', ['as' => 'permissions.edit', 'uses' => 'PermissionController@edit', 'middleware' => ['permission:permission-edit']]);
+	Route::patch('permissions/{id}', ['as' => 'permissions.update', 'uses' => 'PermissionController@update', 'middleware' => ['permission:permission-edit']]);
+
+	Route::delete('permissions/{id}', ['as' => 'permissions.destroy', 'uses' => 'PermissionController@destroy', 'middleware' => ['permission:permission-delete']]);
+
+	/*
+	|--------------------------------------------------------------------------
+	| Roles Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Role Model CRUD
+	|
+	 */
+	Route::get('roles', ['as' => 'roles.index', 'uses' => 'RoleController@index', 'middleware' => ['permission:role-list|role-create|role-edit|role-delete']]);
+
+	Route::get('roles/create', ['as' => 'roles.create', 'uses' => 'RoleController@create', 'middleware' => ['permission:role-create']]);
+	Route::post('roles/create', ['as' => 'roles.store', 'uses' => 'RoleController@store', 'middleware' => ['permission:role-create']]);
+
+	Route::get('roles/{id}', ['as' => 'roles.show', 'uses' => 'RoleController@show']);
+
+	Route::get('roles/{id}/edit', ['as' => 'roles.edit', 'uses' => 'RoleController@edit', 'middleware' => ['permission:role-edit']]);
+	Route::patch('roles/{id}', ['as' => 'roles.update', 'uses' => 'RoleController@update', 'middleware' => ['permission:role-edit']]);
+
+	Route::delete('roles/{id}', ['as' => 'roles.destroy', 'uses' => 'RoleController@destroy', 'middleware' => ['permission:role-delete']]);
+
+	/*
+	|--------------------------------------------------------------------------
+	| Company Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Company Model CRUD
+	|
+	 */
+	Route::get('companies', ['as' => 'companies.index', 'uses' => 'CompanyController@index', 'middleware' => ['permission:company-list|company-create|company-edit|company-delete']]);
+
+	Route::get('companies/create', ['as' => 'companies.create', 'uses' => 'CompanyController@create', 'middleware' => ['permission:company-create']]);
+	Route::post('companies/create', ['as' => 'companies.store', 'uses' => 'CompanyController@store', 'middleware' => ['permission:company-create']]);
+
+	Route::get('companies/{id}', ['as' => 'companies.show', 'uses' => 'CompanyController@show']);
+
+	Route::get('companies/{id}/edit', ['as' => 'companies.edit', 'uses' => 'CompanyController@edit', 'middleware' => ['permission:company-edit']]);
+	Route::patch('companies/{id}', ['as' => 'companies.update', 'uses' => 'CompanyController@update', 'middleware' => ['permission:company-edit']]);
+
+	Route::delete('companies/{id}', ['as' => 'companies.destroy', 'uses' => 'CompanyController@destroy', 'middleware' => ['permission:company-delete']]);
+
+	/*
+	|--------------------------------------------------------------------------
+	| Location Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Country, States and Township Models CRUD
+	|
+	 */
+	Route::get('locations', ['as' => 'locations.index', 'uses' => 'LocationController@index']);
+
+	/*
+	|--------------------------------------------------------------------------
+	| Country Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Country Model CRUD
+	|
+	 */
+	Route::get('countries', ['as' => 'countries.index', 'uses' => 'CountryController@index', 'middleware' => ['permission:country-list|country-create|country-edit|country-delete']]);
+
+	Route::get('countries/create', ['as' => 'countries.create', 'uses' => 'CountryController@create', 'middleware' => ['permission:country-create']]);
+	Route::post('countries/create', ['as' => 'countries.store', 'uses' => 'CountryController@store', 'middleware' => ['permission:country-create']]);
+
+	Route::get('countries/create-by-company/{id}', ['as' => 'countries.store.bycompany', 'uses' => 'CountryController@storeByCompany', 'middleware' => ['permission:country-create']]);
+
+	Route::get('countries/{id}', ['as' => 'countries.show', 'uses' => 'CountryController@show']);
+
+	Route::get('countries/{id}/edit', ['as' => 'countries.edit', 'uses' => 'CountryController@edit', 'middleware' => ['permission:country-edit']]);
+	Route::patch('countries/{id}', ['as' => 'countries.update', 'uses' => 'CountryController@update', 'middleware' => ['permission:country-edit']]);
+
+	Route::delete('countries/{id}', ['as' => 'countries.destroy', 'uses' => 'CountryController@destroy', 'middleware' => ['permission:country-delete']]);
+	Route::delete('countries/destroy-by-company/{id}', ['as' => 'countries.destroy.bycompany', 'uses' => 'CountryController@destroyByCompany', 'middleware' => ['permission:country-delete']]);
+
+	/*
+	|--------------------------------------------------------------------------
+	| State Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for State Model CRUD
+	|
+	 */
+	Route::match(['get', 'post'], 'states', ['as' => 'states.index', 'uses' => 'StateController@index', 'middleware' => ['permission:state-list|state-create|state-edit|state-delete']]);
+
+	Route::get('states/create', ['as' => 'states.create', 'uses' => 'StateController@create', 'middleware' => ['permission:state-create']]);
+	Route::post('states/create', ['as' => 'states.store', 'uses' => 'StateController@store', 'middleware' => ['permission:state-create']]);
+
+	Route::get('states/create-by-company/{id}', ['as' => 'states.store.bycompany', 'uses' => 'StateController@storeByCompany', 'middleware' => ['permission:state-create']]);
+
+	Route::get('states/{id}', ['as' => 'states.show', 'uses' => 'StateController@show']);
+
+	Route::get('states/{id}/edit', ['as' => 'states.edit', 'uses' => 'StateController@edit', 'middleware' => ['permission:state-edit']]);
+	Route::patch('states/{id}', ['as' => 'states.update', 'uses' => 'StateController@update', 'middleware' => ['permission:state-edit']]);
+
+	Route::delete('states/{id}', ['as' => 'states.destroy', 'uses' => 'StateController@destroy', 'middleware' => ['permission:state-delete']]);
+	Route::delete('states/destroy-by-company/{id}', ['as' => 'states.destroy.bycompany', 'uses' => 'StateController@destroyByCompany', 'middleware' => ['permission:state-delete']]);
+
+	/*
+	|--------------------------------------------------------------------------
+	| Township Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Township Model CRUD
+	|
+	 */
+	Route::match(['get', 'post'], 'townships', ['as' => 'townships.index', 'uses' => 'TownshipController@index', 'middleware' => ['permission:township-list|township-create|township-edit|township-delete']]);
+
+	Route::get('townships/create', ['as' => 'townships.create', 'uses' => 'TownshipController@create', 'middleware' => ['permission:township-create']]);
+	Route::post('townships/create', ['as' => 'townships.store', 'uses' => 'TownshipController@store', 'middleware' => ['permission:township-create']]);
+
+	Route::get('townships/create-by-company/{id}', ['as' => 'townships.store.bycompany', 'uses' => 'TownshipController@storeByCompany', 'middleware' => ['permission:township-create']]);
+
+	Route::get('townships/{id}', ['as' => 'townships.show', 'uses' => 'TownshipController@show']);
+
+	Route::get('townships/{id}/edit', ['as' => 'townships.edit', 'uses' => 'TownshipController@edit', 'middleware' => ['permission:township-edit']]);
+	Route::patch('townships/{id}', ['as' => 'townships.update', 'uses' => 'TownshipController@update', 'middleware' => ['permission:township-edit']]);
+
+	Route::delete('townships/{id}', ['as' => 'townships.destroy', 'uses' => 'TownshipController@destroy', 'middleware' => ['permission:township-delete']]);
+	Route::delete('townships/destroy-by-company/{id}', ['as' => 'townships.destroy.bycompany', 'uses' => 'TownshipController@destroyByCompany', 'middleware' => ['permission:township-delete']]);
 
 	/*
 	|--------------------------------------------------------------------------
@@ -237,13 +316,43 @@ Route::group(['middleware' => ['auth']], function () {
 
 	/*
 	|--------------------------------------------------------------------------
-	| Location Controller
+	| Category Controller
 	|--------------------------------------------------------------------------
 	|
-	| This is the route for Country, States and Township Models CRUD
+	| This is the route for Category Model CRUD
 	|
 	 */
-	Route::get('locations', ['as' => 'locations.index', 'uses' => 'LocationController@index']);
+	Route::get('categories', ['as' => 'categories.index', 'uses' => 'CategoryController@index', 'middleware' => ['permission:category-list|category-create|category-edit|category-delete']]);
+
+	Route::get('categories/create', ['as' => 'categories.create', 'uses' => 'CategoryController@create', 'middleware' => ['permission:category-create']]);
+	Route::post('categories/create', ['as' => 'categories.store', 'uses' => 'CategoryController@store', 'middleware' => ['permission:category-create']]);
+
+	Route::get('categories/{id}', ['as' => 'categories.show', 'uses' => 'CategoryController@show']);
+
+	Route::get('categories/{id}/edit', ['as' => 'categories.edit', 'uses' => 'CategoryController@edit', 'middleware' => ['permission:category-edit']]);
+	Route::patch('categories/{id}', ['as' => 'categories.update', 'uses' => 'CategoryController@update', 'middleware' => ['permission:category-edit']]);
+
+	Route::delete('categories/{id}', ['as' => 'categories.destroy', 'uses' => 'CategoryController@destroy', 'middleware' => ['permission:category-delete']]);
+
+	/*
+	|--------------------------------------------------------------------------
+	| Currency Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Currency Model CRUD
+	|
+	 */
+	Route::get('currencies', ['as' => 'currencies.index', 'uses' => 'CurrencyController@index', 'middleware' => ['permission:currency-list|currency-create|currency-edit|currency-delete']]);
+
+	Route::get('currencies/create', ['as' => 'currencies.create', 'uses' => 'CurrencyController@create', 'middleware' => ['permission:currency-create']]);
+	Route::post('currencies/create', ['as' => 'currencies.store', 'uses' => 'CurrencyController@store', 'middleware' => ['permission:currency-create']]);
+
+	Route::get('currencies/{id}', ['as' => 'currencies.show', 'uses' => 'CurrencyController@show']);
+
+	Route::get('currencies/{id}/edit', ['as' => 'currencies.edit', 'uses' => 'CurrencyController@edit', 'middleware' => ['permission:currency-edit']]);
+	Route::patch('currencies/{id}', ['as' => 'currencies.update', 'uses' => 'CurrencyController@update', 'middleware' => ['permission:currency-edit']]);
+
+	Route::delete('currencies/{id}', ['as' => 'currencies.destroy', 'uses' => 'CurrencyController@destroy', 'middleware' => ['permission:currency-delete']]);
 
 	/*
 	|--------------------------------------------------------------------------
@@ -253,16 +362,17 @@ Route::group(['middleware' => ['auth']], function () {
 	| This is the route for Country, States and Township Models CRUD
 	|
 	 */
-	Route::get('prices', ['as' => 'prices.index', 'uses' => 'PricingController@index', 'middleware' => ['permission:price-list|price-create|price-edit|price-delete']]);
+	Route::get('prices', ['as' => 'prices.index', 'uses' => 'PriceController@index', 'middleware' => ['permission:price-list|price-create|price-edit|price-delete']]);
 
-	Route::post('prices/currency/create', ['as' => 'prices.currency.store', 'uses' => 'PricingController@storeCurrency', 'middleware' => ['permission:price-create']]);
-	Route::post('prices/price/create', ['as' => 'prices.price.store', 'uses' => 'PricingController@storePrice', 'middleware' => ['permission:price-create']]);
+	Route::get('prices/create', ['as' => 'prices.create', 'uses' => 'PriceController@create', 'middleware' => ['permission:price-create']]);
+	Route::post('prices/create', ['as' => 'prices.store', 'uses' => 'PriceController@store ', 'middleware' => ['permission:price-create']]);
 
-	Route::get('prices/ajax/{id}/edit', ['as' => 'prices.ajax.edit', 'uses' => 'PricingController@editAjax', 'middleware' => ['permission:price-edit']]);
-	Route::get('prices/{id}/edit', ['as' => 'prices.edit', 'uses' => 'PricingController@edit', 'middleware' => ['permission:price-edit']]);
-	Route::patch('prices/{id}', ['as' => 'prices.update', 'uses' => 'PricingController@update', 'middleware' => ['permission:price-edit']]);
+	Route::get('prices/{id}', ['as' => 'member-offers.show', 'uses' => 'PriceController@show']);
 
-	Route::delete('prices/{id}', ['as' => 'nrictownships.destroy', 'uses' => 'PricingController@destroy', 'middleware' => ['permission:price-delete']]);
+	Route::get('prices/{id}/edit', ['as' => 'prices.edit', 'uses' => 'PriceController@edit', 'middleware' => ['permission:price-edit']]);
+	Route::patch('prices/{id}', ['as' => 'prices.update', 'uses' => 'PriceController@update', 'middleware' => ['permission:price-edit']]);
+
+	Route::delete('prices/{id}', ['as' => 'prices.destroy', 'uses' => 'PriceController@destroy', 'middleware' => ['permission:price-delete']]);
 
 	/*
 	|--------------------------------------------------------------------------
@@ -385,74 +495,5 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('lotbalances', ['as' => 'lotbalances.search', 'uses' => 'LotBalanceController@search', 'middleware' => ['permission:lotbalance-list|lotbalance-create|lotbalance-edit|lotbalance-delete']]);
 
 	Route::get('lotbalances/{id}', ['as' => 'lotbalances.show', 'uses' => 'LotBalanceController@show']);
-
-	/*
-	|--------------------------------------------------------------------------
-	| Country Controller
-	|--------------------------------------------------------------------------
-	|
-	| This is the route for Country Model CRUD
-	|
-	 */
-	Route::get('countries', ['as' => 'countries.index', 'uses' => 'CountryController@index', 'middleware' => ['permission:country-list|country-create|country-edit|country-delete']]);
-
-	Route::get('countries/create', ['as' => 'countries.create', 'uses' => 'CountryController@create', 'middleware' => ['permission:country-create']]);
-	Route::post('countries/create', ['as' => 'countries.store', 'uses' => 'CountryController@store', 'middleware' => ['permission:country-create']]);
-
-	Route::get('countries/create-by-company/{id}', ['as' => 'countries.store.bycompany', 'uses' => 'CountryController@storeByCompany', 'middleware' => ['permission:country-create']]);
-
-	Route::get('countries/{id}', ['as' => 'countries.show', 'uses' => 'CountryController@show']);
-
-	Route::get('countries/{id}/edit', ['as' => 'countries.edit', 'uses' => 'CountryController@edit', 'middleware' => ['permission:country-edit']]);
-	Route::patch('countries/{id}', ['as' => 'countries.update', 'uses' => 'CountryController@update', 'middleware' => ['permission:country-edit']]);
-
-	Route::delete('countries/{id}', ['as' => 'countries.destroy', 'uses' => 'CountryController@destroy', 'middleware' => ['permission:country-delete']]);
-	Route::delete('countries/destroy-by-company/{id}', ['as' => 'countries.destroy.bycompany', 'uses' => 'CountryController@destroyByCompany', 'middleware' => ['permission:country-delete']]);
-
-	/*
-	|--------------------------------------------------------------------------
-	| State Controller
-	|--------------------------------------------------------------------------
-	|
-	| This is the route for State Model CRUD
-	|
-	 */
-	Route::get('states', ['as' => 'states.index', 'uses' => 'StateController@index', 'middleware' => ['permission:state-list|state-create|state-edit|state-delete']]);
-
-	Route::get('states/create', ['as' => 'states.create', 'uses' => 'StateController@create', 'middleware' => ['permission:state-create']]);
-	Route::post('states/create', ['as' => 'states.store', 'uses' => 'StateController@store', 'middleware' => ['permission:state-create']]);
-
-	Route::get('states/create-by-company/{id}', ['as' => 'states.store.bycompany', 'uses' => 'StateController@storeByCompany', 'middleware' => ['permission:state-create']]);
-
-	Route::get('states/{id}', ['as' => 'states.show', 'uses' => 'StateController@show']);
-
-	Route::get('states/{id}/edit', ['as' => 'states.edit', 'uses' => 'StateController@edit', 'middleware' => ['permission:state-edit']]);
-	Route::patch('states/{id}', ['as' => 'states.update', 'uses' => 'StateController@update', 'middleware' => ['permission:state-edit']]);
-
-	Route::delete('states/{id}', ['as' => 'states.destroy', 'uses' => 'StateController@destroy', 'middleware' => ['permission:state-delete']]);
-	Route::delete('states/destroy-by-company/{id}', ['as' => 'states.destroy.bycompany', 'uses' => 'StateController@destroyByCompany', 'middleware' => ['permission:state-delete']]);
-
-	/*
-	|--------------------------------------------------------------------------
-	| Township Controller
-	|--------------------------------------------------------------------------
-	|
-	| This is the route for Township Model CRUD
-	|
-	 */
-	Route::get('townships', ['as' => 'townships.index', 'uses' => 'TownshipController@index', 'middleware' => ['permission:township-list|township-create|township-edit|township-delete']]);
-
-	Route::get('townships/create', ['as' => 'townships.create', 'uses' => 'TownshipController@create', 'middleware' => ['permission:township-create']]);
-	Route::post('townships/create', ['as' => 'townships.store', 'uses' => 'TownshipController@store', 'middleware' => ['permission:township-create']]);
-
-	Route::get('townships/create-by-company/{id}', ['as' => 'townships.store.bycompany', 'uses' => 'TownshipController@storeByCompany', 'middleware' => ['permission:township-create']]);
-
-	Route::get('townships/{id}', ['as' => 'townships.show', 'uses' => 'TownshipController@show']);
-
-	Route::get('townships/{id}/edit', ['as' => 'townships.edit', 'uses' => 'TownshipController@edit', 'middleware' => ['permission:township-edit']]);
-	Route::patch('townships/{id}', ['as' => 'townships.update', 'uses' => 'TownshipController@update', 'middleware' => ['permission:township-edit']]);
-
-	Route::delete('townships/{id}', ['as' => 'townships.destroy', 'uses' => 'TownshipController@destroy', 'middleware' => ['permission:township-delete']]);
-	Route::delete('townships/destroy-by-company/{id}', ['as' => 'townships.destroy.bycompany', 'uses' => 'TownshipController@destroyByCompany', 'middleware' => ['permission:township-delete']]);
 
 });

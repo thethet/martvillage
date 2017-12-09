@@ -61,6 +61,32 @@
 			</div>
 
 			<div class="panel-body with-table">
+				{!! Form::open(array('route' => 'townships.index','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate')) !!}
+
+					<div class="form-group">
+						<label class="col-sm-7  control-label">&nbsp;</label>
+
+						<div class="col-sm-3">
+							<div class="input-group minimal">
+								<div class="input-group-addon">
+									<i class="entypo-search"></i>
+								</div>
+								{!! Form::select('all_state_id', ['' => 'Select State'] + $states->toArray(), null, ['id'=>'all_state_id', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+							</div>
+						</div>
+
+						<div class="col-sm-2">
+							<div class="input-group minimal">
+								<button type="submit" class="btn btn-blue btn-icon">
+									Search
+									<i class="entypo-search"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				{!! Form::close() !!}
+				<br>
+
 				<table class="table table-bordered responsive">
 					<thead>
 						<tr>
@@ -130,6 +156,32 @@
 				</div>
 
 				<div class="panel-body with-table">
+					{!! Form::open(array('route' => 'townships.index','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate')) !!}
+
+					<div class="form-group">
+						<label class="col-sm-7  control-label">&nbsp;</label>
+
+						<div class="col-sm-3">
+							<div class="input-group minimal">
+								<div class="input-group-addon">
+									<i class="entypo-search"></i>
+								</div>
+								{!! Form::select('state_id', ['' => 'Select State'] + $states->toArray(), null, ['id'=>'state_id', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+							</div>
+						</div>
+
+						<div class="col-sm-2">
+							<div class="input-group minimal">
+								<button type="submit" class="btn btn-blue btn-icon">
+									Search
+									<i class="entypo-search"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				{!! Form::close() !!}
+				<br>
+
 					<table class="table table-bordered responsive">
 						<thead>
 							<tr>

@@ -38,7 +38,7 @@
 
 				<div class="panel-options">
 					@permission('permission-create')
-						<a href="{{ url('permissions/create') }}">
+						<a href="{{ url('permissions/create') }}" title="Create">
 							<i class="entypo-plus-squared"></i>
 							New
 						</a>
@@ -65,19 +65,19 @@
 							<td>{{ $permission->display_name }}</td>
 							<td>{{ $permission->description }}</td>
 							<td>
-								<a href="{{ url('permissions/'. $permission->id) }}" class="btn btn-info btn-sm">
+								<a href="{{ url('permissions/'. $permission->id) }}" class="btn btn-info btn-sm" title="Detail">
 									<i class="entypo-eye"></i>
 								</a>
 
 								@if(Auth::user()->hasRole('administrator'))
 									@permission('permission-edit')
-									<a href="{{ url('permissions/'. $permission->id .'/edit') }}" class="btn btn-success btn-sm">
+									<a href="{{ url('permissions/'. $permission->id .'/edit') }}" class="btn btn-success btn-sm" title="Edit">
 										<i class="entypo-pencil"></i>
 									</a>
 									@endpermission
 
 									@permission('permission-delete')
-									<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $permission->id }}">
+									<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $permission->id }}" title="Delete">
 										<i class="entypo-trash"></i>
 									</a>
 									@endpermission

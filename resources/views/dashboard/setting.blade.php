@@ -64,7 +64,7 @@
 				<a href="{{ url('permissions') }}">
 					<div class="col-sm-3">
 						<div class="tile-stats tile-green">
-							<div class="icon"><i class="entypo-user"></i></div>
+							<div class="icon"><i class="entypo-lock"></i></div>
 							<div class="num">
 								<p>&nbsp;</p>
 								<p>&nbsp;</p>

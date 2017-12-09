@@ -36,7 +36,7 @@
 				</a>
 			</li>
 
-			<li @if(Request::segment(1) == 'nric-codes' || Request::segment(1) == 'nric-townships' || Request::segment(1) == 'permissions' || Request::segment(1) == 'roles' || Request::segment(1) == 'companies' || Request::segment(1) == 'locations' || Request::segment(1) == 'countries' || Request::segment(1) == 'states' || Request::segment(1) == 'townships' || Request::segment(1) == 'prices' || Request::segment(1) == 'member-offers') class="opened active has-sub" @else class="has-sub" @endif>
+			<li @if(Request::segment(1) == 'nric-codes' || Request::segment(1) == 'nric-townships' || Request::segment(1) == 'permissions' || Request::segment(1) == 'roles' || Request::segment(1) == 'companies' || Request::segment(1) == 'locations' || Request::segment(1) == 'countries' || Request::segment(1) == 'states' || Request::segment(1) == 'townships' || Request::segment(1) == 'pricing-setup' || Request::segment(1) == 'categories' || Request::segment(1) == 'currencies' || Request::segment(1) == 'prices' || Request::segment(1) == 'member-offers') class="opened active has-sub" @else class="has-sub" @endif>
 				<a href="{{ url('settings') }}">
 					<i class="entypo-cog"></i>
 					<span class="title">Settings</span>
@@ -63,7 +63,7 @@
 					@permission('permission-list')
 						<li @if(Request::segment(1) == 'permissions') class="active" @endif>
 							<a href="{{ url('/permissions') }}">
-								<i class="entypo-user"></i>
+								<i class="entypo-lock"></i>
 								<span class="title">Permission</span>
 							</a>
 						</li>
@@ -87,51 +87,76 @@
 						</li>
 					@endpermission
 
-					@permission('location-list')
-						<li @if(Request::segment(1) == 'locations' || Request::segment(1) == 'countries' || Request::segment(1) == 'states' || Request::segment(1) == 'townships') class="opened active has-sub" @else class="has-sub" @endif>
-							<a href="{{ url('/locations') }}">
-								<i class="entypo-location"></i>
-								<span class="title">Location</span>
-							</a>
-							<ul>
-								@permission('country-list')
-									<li @if(Request::segment(1) == 'countries') class="active" @endif>
-										<a href="{{ url('countries') }}">
-											<i class="entypo-globe"></i>
-											<span class="title">Country</span>
-										</a>
-									</li>
-								@endpermission
+					<li @if(Request::segment(1) == 'locations' || Request::segment(1) == 'countries' || Request::segment(1) == 'states' || Request::segment(1) == 'townships') class="opened active has-sub" @else class="has-sub" @endif>
+						<a href="{{ url('/locations') }}">
+							<i class="entypo-location"></i>
+							<span class="title">Location</span>
+						</a>
+						<ul>
+							@permission('country-list')
+								<li @if(Request::segment(1) == 'countries') class="active" @endif>
+									<a href="{{ url('countries') }}">
+										<i class="entypo-globe"></i>
+										<span class="title">Country</span>
+									</a>
+								</li>
+							@endpermission
 
-								@permission('state-list')
-									<li @if(Request::segment(1) == 'states') class="active" @endif>
-										<a href="{{ url('states') }}">
-											<i class="entypo-location"></i>
-											<span class="title">State</span>
-										</a>
-									</li>
-								@endpermission
+							@permission('state-list')
+								<li @if(Request::segment(1) == 'states') class="active" @endif>
+									<a href="{{ url('states') }}">
+										<i class="entypo-location"></i>
+										<span class="title">State</span>
+									</a>
+								</li>
+							@endpermission
 
-								@permission('township-list')
-									<li @if(Request::segment(1) == 'townships') class="active" @endif>
-										<a href="{{ url('/townships') }}">
-											<i class="entypo-direction"></i>
-											<span class="title">Township</span>
-										</a>
-									</li>
-								@endpermission
-							</ul>
-						</li>
-					@endpermission
+							@permission('township-list')
+								<li @if(Request::segment(1) == 'townships') class="active" @endif>
+									<a href="{{ url('/townships') }}">
+										<i class="entypo-direction"></i>
+										<span class="title">Township</span>
+									</a>
+								</li>
+							@endpermission
+						</ul>
+					</li>
 
-					@permission('price-list')
-						<li @if(Request::segment(1) == 'prices') class="active" @endif>
-							<a href="{{ url('/prices') }}">
-								<i class="fa fa-money"></i>
-								<span class="title">Price</span>
-							</a>
-						</li>
-					@endpermission
+					<li @if(Request::segment(1) == 'pricing-setup' || Request::segment(1) == 'categories' || Request::segment(1) == 'currencies' || Request::segment(1) == 'prices') class="opened active has-sub" @else class="has-sub" @endif>
+						<a href="{{ url('pricing-setup') }}">
+							<i class="fa fa-money"></i>
+							<span class="title">Pricing Setup</span>
+						</a>
+
+						<ul>
+							@permission('category-list')
+								<li @if(Request::segment(1) == 'categories') class="active" @endif>
+									<a href="{{ url('categories') }}">
+										<i class="fa fa-balance-scale"></i>
+										<span class="title">Category</span>
+									</a>
+								</li>
+							@endpermission
+
+							@permission('currency-list')
+								<li @if(Request::segment(1) == 'currencies') class="active" @endif>
+									<a href="{{ url('currencies') }}">
+										<i class="fa fa-usd"></i>
+										<span class="title">Currency</span>
+									</a>
+								</li>
+							@endpermission
+
+							@permission('price-list')
+								<li @if(Request::segment(1) == 'prices') class="active" @endif>
+									<a href="{{ url('/prices') }}">
+										<i class="fa fa-money"></i>
+										<span class="title">Price</span>
+									</a>
+								</li>
+							@endpermission
+						</ul>
+					</li>
 
 					@permission('member-offer-list')
 						<li @if(Request::segment(1) == 'member-offers') class="active" @endif>

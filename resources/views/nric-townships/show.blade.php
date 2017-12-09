@@ -92,8 +92,9 @@
 								<label class="col-sm-3 control-label"></label>
 
 								<div class="col-sm-5">
-									<a href="{{ route('nric-townships.index') }}" class="btn btn-black">
+									<a href="{{ route('nric-townships.index') }}" class="btn btn-orange btn-icon">
 										Back
+										<i class="entypo-reply"></i>
 									</a>
 								</div>
 							</div>

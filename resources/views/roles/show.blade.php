@@ -21,7 +21,7 @@
 				<a href="{{ url('roles') }}">Role Management</a>
 			</li>
 			<li class="active">
-				<strong>Edit Form</strong>
+				<strong>Detail Form</strong>
 			</li>
 		</ol>
 
@@ -33,7 +33,7 @@
 				<div class="panel panel-primary" data-collapsed="0">
 					<div class="panel-heading">
 						<div class="panel-title">
-							<strong>Edit Form</strong>
+							<strong>Detail Form</strong>
 						</div>
 
 						<div class="panel-options">
@@ -94,8 +94,9 @@
 								<label class="col-sm-3 control-label"></label>
 
 								<div class="col-sm-5">
-									<a href="{{ route('roles.index') }}" class="btn btn-black">
+									<a href="{{ route('roles.index') }}" class="btn btn-orange btn-icon">
 										Back
+										<i class="entypo-reply"></i>
 									</a>
 								</div>
 							</div>

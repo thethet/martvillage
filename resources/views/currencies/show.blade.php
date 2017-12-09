@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('page-title')
-	Member Offer
+	Currency
 @stop
 
 @section('main')
@@ -18,14 +18,17 @@
 				<a href="{{ url('settings') }}">Settings</a>
 			</li>
 			<li>
-				<a href="{{ url('member-offers') }}">Member Offer Management</a>
+				<a href="{{ url('pricing-setup') }}">Pricing Setup</a>
+			</li>
+			<li>
+				<a href="{{ url('currencies') }}">Currency Management</a>
 			</li>
 			<li class="active">
-				<strong>New Create Form</strong>
+				<strong>Detail Form</strong>
 			</li>
 		</ol>
 
-		<h2>Member Offer Management</h2>
+		<h2>Currency Management</h2>
 		<br />
 
 		<div class="row">
@@ -33,7 +36,7 @@
 				<div class="panel panel-primary" data-collapsed="0">
 					<div class="panel-heading">
 						<div class="panel-title">
-							<strong>New Create Form</strong>
+							<strong>Detail Form</strong>
 						</div>
 
 						<div class="panel-options">
@@ -42,16 +45,16 @@
 					</div>
 
 					<div class="panel-body">
-						{!! Form::open(array('route' => 'member-offers.store','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate')) !!}
+						{!! Form::model($currency, ['method' => 'PATCH','route' => ['currencies.update', $currency->id], 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate']) !!}
 
-							<div class="form-group {{ $errors->has('company_id') ? ' has-error' : '' }}">
-								<label class="col-sm-3 control-label">Company Name <span class="text-danger">*</span></label>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Company Name</label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-suitcase"></i></span>
 										@if(Auth::user()->hasRole('administrator'))
-										{!! Form::select('company_id', ['' => 'Select Company'] + $companyList->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off']) !!}
+											{!! Form::select('company_id', ['' => 'Select Company'] + $companies->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off', 'disabled']) !!}
 										@else
 											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
@@ -66,13 +69,13 @@
 								</div>
 							</div>
 
-							<div class="form-group {{ $errors->has('type') ? ' has-error' : '' }}">
-								<label class="col-sm-3 control-label">Offer Type <span class="text-danger">*</span></label>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Currency Type</label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-tag"></i></span>
-										{!! Form::text('type', null, ['placeholder' => 'Offer Type', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+										<span class="input-group-addon"><i class="fa fa-money"></i></span>
+										{!! Form::text('type', null, ['placeholder' => 'Currency Type', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 
 									@if ($errors->has('type'))
@@ -83,18 +86,18 @@
 								</div>
 							</div>
 
-							<div class="form-group {{ $errors->has('rate') ? ' has-error' : '' }}">
-								<label class="col-sm-3 control-label">Offer Rate <span class="text-danger">*</span></label>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Country</label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
-										<span class="input-group-addon">&nbsp;%&nbsp;</span>
-										{!! Form::text('rate', null, ['placeholder' => 'Offer Rate', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+										<span class="input-group-addon"><i class="entypo-globe"></i></span>
+										{!! Form::select('from_location', ['' => 'Select Country'] + $countries->toArray(), null, ['class' => 'form-control', 'id' => 'from_location', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 
-									@if ($errors->has('rate'))
+									@if ($errors->has('from_location'))
 										<span class="validate-has-error">
-											<strong>{{ $errors->first('rate') }}</strong>
+											<strong>{{ $errors->first('from_location') }}</strong>
 										</span>
 									@endif
 								</div>
@@ -104,15 +107,7 @@
 								<label class="col-sm-3 control-label"></label>
 
 								<div class="col-sm-5">
-									<button type="submit" class="btn btn-success btn-icon">
-										Save
-										<i class="entypo-floppy"></i>
-									</button>
-									<button type="reset" class="btn btn-info btn-icon">
-										Reset
-										<i class="entypo-erase"></i>
-									</button>
-									<a href="{{ route('member-offers.index') }}" class="btn btn-orange btn-icon">
+									<a href="{{ route('currencies.index') }}" class="btn btn-gold btn-icon">
 										Back
 										<i class="entypo-reply"></i>
 									</a>
@@ -123,7 +118,6 @@
 				</div>
 			</div>
 		</div>
-
 
 		<!-- Footer -->
 		<footer class="main">

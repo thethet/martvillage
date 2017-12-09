@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('page-title')
-	NRIC Township
+	Currency
 @stop
 
 @section('main')
@@ -16,12 +16,15 @@
 			<li>
 				<a href="{{ url('settings') }}">Settings</a>
 			</li>
+			<li>
+				<a href="{{ url('pricing-setup') }}">Pricing Setup</a>
+			</li>
 			<li class="active">
-				<strong>NRIC Township Management</strong>
+				<strong>Currency Management</strong>
 			</li>
 		</ol>
 
-		<h2>NRIC Township Management</h2>
+		<h2>Currency Management</h2>
 		<br />
 
 		@if ($message = Session::get('success'))
@@ -37,8 +40,8 @@
 				</div>
 
 				<div class="panel-options">
-					@permission('nric-township-create')
-						<a href="{{ url('nric-townships/create') }}" title="Create">
+					@permission('currency-create')
+						<a href="{{ url('currencies/create') }}" title="Create">
 							<i class="entypo-plus-squared"></i>
 							New
 						</a>
@@ -49,65 +52,41 @@
 			</div>
 
 			<div class="panel-body with-table">
-				{!! Form::open(array('route' => 'nric-townships.index','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate')) !!}
-
-					<div class="form-group">
-						<label class="col-sm-7  control-label">&nbsp;</label>
-
-						<div class="col-sm-3">
-							<div class="input-group minimal">
-								<div class="input-group-addon">
-									<i class="entypo-search"></i>
-								</div>
-								{!! Form::select('nric_code_id', ['' => 'Select NRIC Code'] + $nricCodes->toArray(), null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
-							</div>
-						</div>
-
-						<div class="col-sm-2">
-							<div class="input-group minimal">
-								<button type="submit" class="btn btn-blue btn-icon">
-									Search
-									<i class="entypo-search"></i>
-								</button>
-							</div>
-						</div>
-					</div>
-				{!! Form::close() !!}
-				<br>
-
 				<table class="table table-bordered responsive">
 					<thead>
 						<tr>
 							<th width="5%">SNo.</th>
-							<th>Region/State</th>
-							<th>Township Name</th>
-							<th>Short Name</th>
+							<th>Currency Type</th>
+							<th>Country</th>
+							@if(Auth::user()->hasRole('administrator'))
+								<th>Company Name</th>
+							@endif
 							<th width="15%">Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach($townships as $key => $township)
+						@foreach($currencies as $key => $currency)
 						<tr>
 							<td>{{ ++$i }}</td>
+							<td>{{ $currency->type }}</td>
+							<td>{{ $currency->from_location }}</td>
+							@if(Auth::user()->hasRole('administrator'))
+								<td>{{ $companies[$currency->company_id] }}</td>
+							@endif
 							<td>
-								{{ $nricCodes[$township->nric_code_id] }}
-							</td>
-							<td>{{ $township->township }}</td>
-							<td>{{ $township->short_name }}</td>
-							<td>
-								<a href="{{ url('nric-townships/'. $township->id) }}" class="btn btn-info btn-sm" title="Detail">
+								<a href="{{ url('currencies/'. $currency->id) }}" class="btn btn-info btn-sm" title="Detail">
 									<i class="entypo-eye"></i>
 								</a>
 
 								@if(Auth::user()->hasRole('administrator'))
-									@permission('nric-township-edit')
-										<a href="{{ url('nric-townships/'. $township->id .'/edit') }}" class="btn btn-success btn-sm" title="Edit">
+									@permission('currency-edit')
+										<a href="{{ url('currencies/'. $currency->id .'/edit') }}" class="btn btn-success btn-sm" title="Edit">
 											<i class="entypo-pencil"></i>
 										</a>
 									@endpermission
 
-									@permission('nric-township-delete')
-										<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $township->id }}" title="Delete">
+									@permission('currency-delete')
+										<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $currency->id }}" title="Delete">
 											<i class="entypo-trash"></i>
 										</a>
 									@endpermission
@@ -118,7 +97,7 @@
 					</tbody>
 				</table>
 
-				{!! $townships->render() !!}
+				{!! $currencies->render() !!}
 			</div>
 		</div>
 
@@ -147,7 +126,7 @@
 				if (confD) {
 					var id = $(this).attr('id');
 					$.ajax({
-						url: "{!! url('nric-townships/"+ id +"') !!}",
+						url: "{!! url('currencies/"+ id +"') !!}",
 						type: 'DELETE',
 						data: {_token: '{!! csrf_token() !!}'},
 						dataType: 'JSON',

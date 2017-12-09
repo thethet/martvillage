@@ -15,14 +15,22 @@ class NricTownshipController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$townships   = NricTownships::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->paginate(10);
+		$query = NricTownships::where('deleted', 'N');
+
+		if ($request->nric_code_id) {
+			$townships = $query->where('nric_code_id', $request->nric_code_id)->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->paginate(10);
+		} else {
+			$townships = $query->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->paginate(10);
+		}
 		$total       = $townships->total();
 		$perPage     = $townships->perPage();
 		$currentPage = $townships->currentPage();
 		$lastPage    = $townships->lastPage();
 		$lastItem    = $townships->lastItem();
 
-		return view('nric-townships.index', ['townships' => $townships, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem])->with('i', ($request->get('page', 1) - 1) * 10);
+		$nricCodes = NricCodes::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('description', 'nric_code');
+
+		return view('nric-townships.index', ['townships' => $townships, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'nricCodes' => $nricCodes])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
 	/**

@@ -30,14 +30,24 @@ class TownshipController extends Controller {
 
 		$states = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
-		$townships   = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->paginate(10);
+		$query = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N');
+		if ($request->state_id) {
+			$townships = $query->where('state_id', $request->state_id)->orderBy('township_name', 'ASC')->paginate(10);
+		} else {
+			$townships = $query->orderBy('township_name', 'ASC')->paginate(10);
+		}
 		$total       = $townships->total();
 		$perPage     = $townships->perPage();
 		$currentPage = $townships->currentPage();
 		$lastPage    = $townships->lastPage();
 		$lastItem    = $townships->lastItem();
 
-		$allTownships   = Townships::where('deleted', 'N')->orderBy('township_name', 'ASC')->paginate(10, ['*'], 'apage');
+		$query = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N');
+		if ($request->all_state_id) {
+			$allTownships = $query->where('state_id', $request->all_state_id)->orderBy('township_name', 'ASC')->paginate(10, ['*'], 'apage');
+		} else {
+			$allTownships = $query->orderBy('township_name', 'ASC')->paginate(10, ['*'], 'apage');
+		}
 		$allTotal       = $allTownships->total();
 		$allPerPage     = $allTownships->perPage();
 		$allCurrentPage = $allTownships->currentPage();

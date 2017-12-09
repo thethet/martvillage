@@ -289,7 +289,7 @@
 										@if(Auth::user()->hasRole('administrator'))
 										{!! Form::select('company_id', ['' => 'Select Company'] + $companies->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off']) !!}
 										@else
-											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'readonly' => true, 'autocomplete' => 'off']) !!}
+											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
 										@endif
 									</div>
@@ -382,10 +382,17 @@
 								<label class="col-sm-3 control-label"></label>
 
 								<div class="col-sm-5">
-									<button type="submit" class="btn btn-success">Save Changes</button>
-									<button type="reset" class="btn">Reset Previous</button>
-									<a href="{{ route('users.index') }}" class="btn btn-black">
+									<button type="submit" class="btn btn-success btn-icon">
+										Save Changes
+										<i class="entypo-floppy"></i>
+									</button>
+									<button type="reset" class="btn btn-info btn-icon">
+										Reset Previous
+										<i class="entypo-erase"></i>
+									</button>
+									<a href="{{ route('users.index') }}" class="btn btn-orange btn-icon">
 										Back
+										<i class="entypo-reply"></i>
 									</a>
 								</div>
 							</div>

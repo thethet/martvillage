@@ -44,6 +44,7 @@ class Handler extends ExceptionHandler {
 	 */
 	public function render($request, Exception $e) {
 		if ($e instanceof MethodNotAllowedHttpException or $e instanceof ModelNotFoundException or $e instanceof NotFoundHttpException) {
+			dd($e);
 			return response()->view('errors.405', [], 405);
 
 		}
