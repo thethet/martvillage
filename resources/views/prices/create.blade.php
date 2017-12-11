@@ -54,7 +54,7 @@
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-suitcase"></i></span>
 										@if(Auth::user()->hasRole('administrator'))
-											{!! Form::select('company_id', ['' => 'Select Company'] + $companies->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off']) !!}
+											{!! Form::select('company_id', ['' => 'Select Company'] + $companyList->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off']) !!}
 										@else
 											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
@@ -209,7 +209,7 @@
 										Reset
 										<i class="entypo-erase"></i>
 									</button>
-									<a href="{{ route('prices.index') }}" class="btn btn-gold btn-icon">
+									<a href="{{ route('prices.index') }}" class="btn btn-orange btn-icon">
 										Back
 										<i class="entypo-reply"></i>
 									</a>
@@ -238,5 +238,16 @@
 	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
 	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
+
+	<script>
+		$(document).ready(function(){
+			$(window).keydown(function(event){
+				if(event.keyCode == 13) {
+					event.preventDefault();
+					return false;
+				}
+			});
+		});
+	</script>
 @stop
 

@@ -51,18 +51,18 @@ class Lotin extends Model {
 	];
 
 	public function fromCountry() {
-		return $this->belongsTo('App\Countries', 'from_country');
+		return $this->belongsTo('App\Country', 'from_country');
 	}
 
 	public function fromCity() {
-		return $this->belongsTo('App\States', 'from_state');
+		return $this->belongsTo('App\State', 'from_state');
 	}
 
 	public function toCountry() {
-		return $this->belongsTo('App\Countries', 'to_country');
+		return $this->belongsTo('App\Country', 'to_country');
 	}
 
 	public function toCity() {
-		return $this->belongsTo('App\States', 'to_state');
+		return $this->belongsTo('App\State', 'to_state');
 	}
 }

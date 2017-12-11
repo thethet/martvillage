@@ -265,24 +265,24 @@ class PermissionTableSeeder extends Seeder {
 			],
 
 			[
-				'name'         => 'member-offer-list',
-				'display_name' => 'Display Member Offer Listing',
-				'description'  => 'See only Listing Of Member Offer',
+				'name'         => 'membership-list',
+				'display_name' => 'Display Membership Listing',
+				'description'  => 'See only Listing Of Membership',
 			],
 			[
-				'name'         => 'member-offer-create',
-				'display_name' => 'Create Member Offer',
-				'description'  => 'Create Member Offer',
+				'name'         => 'membership-create',
+				'display_name' => 'Create Membership',
+				'description'  => 'Create Membership',
 			],
 			[
-				'name'         => 'member-offer-edit',
-				'display_name' => 'Edit Member Offer',
-				'description'  => 'Edit Member Offer',
+				'name'         => 'membership-edit',
+				'display_name' => 'Edit Membership',
+				'description'  => 'Edit Membership',
 			],
 			[
-				'name'         => 'member-offer-delete',
-				'display_name' => 'Delete Member Offer',
-				'description'  => 'Delete Member Offer',
+				'name'         => 'membership-delete',
+				'display_name' => 'Delete Membership',
+				'description'  => 'Delete Membership',
 			],
 
 			[

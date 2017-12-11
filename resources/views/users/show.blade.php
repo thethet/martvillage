@@ -58,14 +58,14 @@
 								<div class="col-sm-2">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-vcard"></i></span>
-										{!! Form::select('nric_code_id', ['' => 'Code'] + $nricCodes->toArray(), null, ['class' => 'form-control', 'id' => 'nric_code', 'data-allow-clear' => 'true', 'disabled']) !!}
+										{!! Form::select('nric_code_id', ['' => 'Code'] + $nricCodeList->toArray(), null, ['class' => 'form-control', 'id' => 'nric_code', 'data-allow-clear' => 'true', 'disabled']) !!}
 									</div>
 								</div>
 
 								<div class="col-sm-2">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-vcard"></i></span>
-										{!! Form::select('nric_township_id', ['' => 'Township'] + $nricTownships->toArray(), null, ['class' => 'form-control', 'autocomplete' => 'off', 'id' => 'nric_township', 'disabled']) !!}
+										{!! Form::select('nric_township_id', ['' => 'Township'] + $nricTownshipList->toArray(), null, ['class' => 'form-control', 'autocomplete' => 'off', 'id' => 'nric_township', 'disabled']) !!}
 									</div>
 								</div>
 
@@ -159,9 +159,9 @@
 										<span class="input-group-addon"><i class="entypo-flow-tree"></i></span>
 
 										@if (Auth::user()->hasRole('administrator') || Auth::user()->hasRole('owner'))
-											{!! Form::select('role', ['' => 'Select Role'] + $roles->toArray(), $userRole, ['class' => 'form-control', 'disabled']) !!}
+											{!! Form::select('role', ['' => 'Select Role'] + $roleList->toArray(), $userRole, ['class' => 'form-control', 'disabled']) !!}
 										@else
-											{!! Form::select('roles', ['' => 'Select Role'] + $roles->toArray(), $userRole, ['class' => 'form-control', 'disabled']) !!}
+											{!! Form::select('roles', ['' => 'Select Role'] + $roleList->toArray(), $userRole, ['class' => 'form-control', 'disabled']) !!}
 											{!! Form::hidden('role', $userRole) !!}
 										@endif
 									</div>
@@ -254,7 +254,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-globe"></i></span>
-										{!! Form::select('country_id', ['' => 'Select Country'] + $countries->toArray(), null, ['id'=>'country_id', 'class' => 'form-control', 'disabled']) !!}
+										{!! Form::select('country_id', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'country_id', 'class' => 'form-control', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -265,7 +265,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-location"></i></span>
-										{!! Form::select('state_id', ['' => 'Select State/City'] + $states->toArray(), null, ['id'=>'state_id', 'class' => 'form-control', 'disabled']) !!}
+										{!! Form::select('state_id', ['' => 'Select State/City'] + $stateList->toArray(), null, ['id'=>'state_id', 'class' => 'form-control', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -276,7 +276,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-direction"></i></span>
-										{!! Form::select('township_id', ['' => 'Select Township'] + $townships->toArray(), null, ['id'=>'township_id', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+										{!! Form::select('township_id', ['' => 'Select Township'] + $townshipList->toArray(), null, ['id'=>'township_id', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>

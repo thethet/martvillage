@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Companies;
-use App\States;
-use App\Townships;
+use App\Company;
+use App\State;
+use App\Township;
 use Auth;
 use Illuminate\Http\Request;
 use Session;
@@ -16,21 +16,23 @@ class TownshipController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$company     = Companies::find(Auth::user()->company_id);
-		$stateIds    = $company->states;
-		$stateIdList = array();
-		foreach ($stateIds as $stateId) {
-			$stateIdList[] = $stateId->id;
-		}
-		$townshipIds    = $company->townships;
+		$myCompany      = Company::find(Auth::user()->company_id);
+		$stateIdList    = array();
 		$townshipIdList = array();
-		foreach ($townshipIds as $townshipId) {
-			$townshipIdList[] = $townshipId->id;
+		if (count($myCompany) > 0) {
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
+			$townshipIds = $myCompany->township;
+			foreach ($townshipIds as $townshipId) {
+				$townshipIdList[] = $townshipId->id;
+			}
 		}
 
-		$states = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$stateList = State::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
-		$query = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N');
+		$query = Township::whereIn('id', $townshipIdList)->where('deleted', 'N');
 		if ($request->state_id) {
 			$townships = $query->where('state_id', $request->state_id)->orderBy('township_name', 'ASC')->paginate(10);
 		} else {
@@ -42,7 +44,7 @@ class TownshipController extends Controller {
 		$lastPage    = $townships->lastPage();
 		$lastItem    = $townships->lastItem();
 
-		$query = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N');
+		$query = Township::where('deleted', 'N');
 		if ($request->all_state_id) {
 			$allTownships = $query->where('state_id', $request->all_state_id)->orderBy('township_name', 'ASC')->paginate(10, ['*'], 'apage');
 		} else {
@@ -54,7 +56,7 @@ class TownshipController extends Controller {
 		$allLastPage    = $allTownships->lastPage();
 		$allLastItem    = $allTownships->lastItem();
 
-		return view('townships.index', ['townships' => $townships, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'states' => $states, 'allTownships' => $allTownships, 'allTotal' => $allTotal, 'allPerPage' => $allPerPage, 'allCurrentPage' => $allCurrentPage, 'allLastPage' => $allLastPage, 'allLastItem' => $allLastItem, 'stateIdList' => $stateIdList, 'townshipIdList' => $townshipIdList])->with('i', ($request->get('page', 1) - 1) * 10)->with('a', ($request->get('apage', 1) - 1) * 10);
+		return view('townships.index', ['townships' => $townships, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'stateList' => $stateList, 'allTownships' => $allTownships, 'allTotal' => $allTotal, 'allPerPage' => $allPerPage, 'allCurrentPage' => $allCurrentPage, 'allLastPage' => $allLastPage, 'allLastItem' => $allLastItem, 'stateIdList' => $stateIdList, 'townshipIdList' => $townshipIdList])->with('i', ($request->get('page', 1) - 1) * 10)->with('a', ($request->get('apage', 1) - 1) * 10);
 	}
 
 	/**
@@ -63,15 +65,17 @@ class TownshipController extends Controller {
 	 * @return Response
 	 */
 	public function create() {
-		$company     = Companies::find(Auth::user()->company_id);
-		$stateIds    = $company->states;
+		$myCompany   = Company::find(Auth::user()->company_id);
 		$stateIdList = array();
-		foreach ($stateIds as $stateId) {
-			$stateIdList[] = $stateId->id;
+		if (count($myCompany) > 0) {
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
 		}
-		$states = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$stateList = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
-		return view('townships.create', ['states' => $states]);
+		return view('townships.create', ['stateList' => $stateList]);
 	}
 
 	/**
@@ -90,12 +94,12 @@ class TownshipController extends Controller {
 		$data               = $request->all();
 		$data['created_by'] = Auth::user()->id;
 
-		$township = Townships::create($data);
+		$township = Township::create($data);
 
-		$company = Companies::find(Auth::user()->company_id);
-		$company->townships()->attach($township);
+		$myCompany = Company::find(Auth::user()->company_id);
+		$myCompany->township()->attach($township);
 
-		States::find($request->state_id)->increment('total_townships');
+		State::find($request->state_id)->increment('total_townships');
 
 		return redirect()->route('townships.index')
 			->with('success', 'Township created successfully');
@@ -107,10 +111,10 @@ class TownshipController extends Controller {
 	 * @return Response
 	 */
 	public function storeByCompany($id) {
-		$township = Townships::find($id);
+		$township = Township::find($id);
 
-		$company = Companies::find(Auth::user()->company_id);
-		$company->townships()->attach($township);
+		$myCompany = Company::find(Auth::user()->company_id);
+		$myCompany->township()->attach($township);
 
 		return redirect()->route('townships.index')
 			->with('success', 'Township created successfully');
@@ -123,18 +127,20 @@ class TownshipController extends Controller {
 	 * @return Response
 	 */
 	public function show($id) {
-		$company     = Companies::find(Auth::user()->company_id);
-		$stateIds    = $company->states;
+		$myCompany   = Company::find(Auth::user()->company_id);
 		$stateIdList = array();
-		foreach ($stateIds as $stateId) {
-			$stateIdList[] = $stateId->id;
+		if (count($myCompany) > 0) {
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
 		}
 
-		$states = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$stateList = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
-		$township = Townships::find($id);
+		$township = Township::find($id);
 
-		return view('townships.show', ['states' => $states, 'township' => $township]);
+		return view('townships.show', ['stateList' => $stateList, 'township' => $township]);
 	}
 
 	/**
@@ -144,18 +150,20 @@ class TownshipController extends Controller {
 	 * @return Response
 	 */
 	public function edit($id) {
-		$company     = Companies::find(Auth::user()->company_id);
-		$stateIds    = $company->states;
+		$myCompany   = Company::find(Auth::user()->company_id);
 		$stateIdList = array();
-		foreach ($stateIds as $stateId) {
-			$stateIdList[] = $stateId->id;
+		if (count($myCompany) > 0) {
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
 		}
 
-		$states = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$stateList = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
-		$township = Townships::find($id);
+		$township = Township::find($id);
 
-		return view('townships.edit', ['states' => $states, 'township' => $township]);
+		return view('townships.edit', ['stateList' => $stateList, 'township' => $township]);
 	}
 
 	/**
@@ -174,11 +182,11 @@ class TownshipController extends Controller {
 
 		$data               = $request->all();
 		$data['updated_by'] = Auth::user()->id;
-		$township           = Townships::find($id);
+		$township           = Township::find($id);
 		$township->update($data);
 
-		// $company = Companies::find(Auth::user()->company_id);
-		// $company->townships()->attach($township);
+		// $myCompany = Company::find(Auth::user()->company_id);
+		// $myCompany->township()->attach($township);
 
 		return redirect()->route('townships.index')
 			->with('success', 'Township updated successfully');
@@ -191,8 +199,8 @@ class TownshipController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id) {
-		$township = Townships::find($id);
-		States::find($township->state_id)->decrement('total_townships');
+		$township = Township::find($id);
+		State::find($township->state_id)->decrement('total_townships');
 
 		$township->update(['deleted' => 'Y']);
 
@@ -209,8 +217,8 @@ class TownshipController extends Controller {
 	 * @return Response
 	 */
 	public function destroyByCompany($id) {
-		$company = Companies::find(Auth::user()->company_id);
-		$company->townships()->detach($id);
+		$myCompany = Company::find(Auth::user()->company_id);
+		$myCompany->township()->detach($id);
 
 		Session::flash('success', 'Township deleted successfully');
 		$response = array('status' => 'success', 'url' => 'townships');

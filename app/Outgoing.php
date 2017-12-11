@@ -54,18 +54,18 @@ class Outgoing extends Model {
 	}
 
 	public function fromCountry() {
-		return $this->belongsTo('App\Countries', 'from_country');
+		return $this->belongsTo('App\Country', 'from_country');
 	}
 
 	public function fromCity() {
-		return $this->belongsTo('App\States', 'from_city');
+		return $this->belongsTo('App\State', 'from_city');
 	}
 
 	public function toCountry() {
-		return $this->belongsTo('App\Countries', 'to_country');
+		return $this->belongsTo('App\Country', 'to_country');
 	}
 
 	public function toCity() {
-		return $this->belongsTo('App\States', 'to_city');
+		return $this->belongsTo('App\State', 'to_city');
 	}
 }

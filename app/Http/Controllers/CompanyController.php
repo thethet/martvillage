@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Companies;
-use App\Countries;
-use App\States;
-use App\Townships;
+use App\Company;
+use App\Country;
+use App\State;
+use App\Township;
 use Auth;
 use Illuminate\Http\Request;
 use Session;
@@ -18,9 +18,9 @@ class CompanyController extends Controller {
 	 */
 	public function index(Request $request) {
 		if (Auth::user()->hasRole('administrator')) {
-			$companies = Companies::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
+			$companies = Company::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
 		} else {
-			$companies = Companies::where('id', Auth::user()->company_id)->where('deleted', 'N')
+			$companies = Company::where('id', Auth::user()->company_id)->where('deleted', 'N')
 				->orderBy('id', 'DESC')->paginate(10);
 		}
 		$total       = $companies->total();
@@ -29,28 +29,32 @@ class CompanyController extends Controller {
 		$lastPage    = $companies->lastPage();
 		$lastItem    = $companies->lastItem();
 
-		$company       = Companies::find(Auth::user()->company_id);
-		$countryIds    = $company->countries;
-		$countryIdList = array();
-		foreach ($countryIds as $country) {
-			$countryIdList[] = $country->id;
-		}
-		$stateIds    = $company->states;
-		$stateIdList = array();
-		foreach ($stateIds as $stateId) {
-			$stateIdList[] = $stateId->id;
-		}
-		$townshipIds    = $company->townships;
+		$myCompany      = Company::find(Auth::user()->company_id);
+		$countryIdList  = array();
+		$stateIdList    = array();
 		$townshipIdList = array();
-		foreach ($townshipIds as $townshipId) {
-			$townshipIdList[] = $townshipId->id;
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
+
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
+
+			$townshipIds = $myCompany->township;
+			foreach ($townshipIds as $townshipId) {
+				$townshipIdList[] = $townshipId->id;
+			}
 		}
 
-		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$states    = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
-		$townships = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
+		$countryList  = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList    = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$townshipList = Township::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 
-		return view('companies.index', ['companies' => $companies, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'countries' => $countries, 'states' => $states, 'townships' => $townships])->with('i', ($request->get('page', 1) - 1) * 10);
+		return view('companies.index', ['companies' => $companies, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'countryList' => $countryList, 'stateList' => $stateList, 'townshipList' => $townshipList])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
 	/**
@@ -59,28 +63,32 @@ class CompanyController extends Controller {
 	 * @return Response
 	 */
 	public function create() {
-		$company       = Companies::find(Auth::user()->company_id);
-		$countryIds    = $company->countries;
-		$countryIdList = array();
-		foreach ($countryIds as $country) {
-			$countryIdList[] = $country->id;
-		}
-		$stateIds    = $company->states;
-		$stateIdList = array();
-		foreach ($stateIds as $stateId) {
-			$stateIdList[] = $stateId->id;
-		}
-		$townshipIds    = $company->townships;
+		$myCompany      = Company::find(Auth::user()->company_id);
+		$countryIdList  = array();
+		$stateIdList    = array();
 		$townshipIdList = array();
-		foreach ($townshipIds as $townshipId) {
-			$townshipIdList[] = $townshipId->id;
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
+
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
+
+			$townshipIds = $myCompany->township;
+			foreach ($townshipIds as $townshipId) {
+				$townshipIdList[] = $townshipId->id;
+			}
 		}
 
-		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$states    = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
-		$townships = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
+		$countryList  = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList    = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$townshipList = Township::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 
-		return view('companies.create', ['countries' => $countries, 'states' => $states, 'townships' => $townships]);
+		return view('companies.create', ['countryList' => $countryList, 'stateList' => $stateList, 'townshipList' => $townshipList]);
 	}
 
 	/**
@@ -117,7 +125,7 @@ class CompanyController extends Controller {
 		$data['address']    = $address;
 		$data['created_by'] = Auth::user()->id;
 
-		$company = Companies::create($data);
+		Company::create($data);
 
 		return redirect()->route('companies.index')
 			->with('success', 'Company created successfully');
@@ -130,44 +138,32 @@ class CompanyController extends Controller {
 	 * @return Response
 	 */
 	public function show($id) {
-		$company = Companies::find($id);
+		$company = Company::find($id);
 
-		$myCompany     = Companies::find(Auth::user()->company_id);
-		$countryIds    = $myCompany->countries;
-		$countryIdList = array();
-		foreach ($countryIds as $country) {
-			$countryIdList[] = $country->id;
-		}
-		$stateIds    = $myCompany->states;
-		$stateIdList = array();
-		foreach ($stateIds as $stateId) {
-			$stateIdList[] = $stateId->id;
-		}
-		$townshipIds    = $myCompany->townships;
+		$myCompany      = Company::find(Auth::user()->company_id);
+		$countryIdList  = array();
+		$stateIdList    = array();
 		$townshipIdList = array();
-		foreach ($townshipIds as $townshipId) {
-			$townshipIdList[] = $townshipId->id;
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
+			$townshipIds = $myCompany->township;
+			foreach ($townshipIds as $townshipId) {
+				$townshipIdList[] = $townshipId->id;
+			}
 		}
 
-		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$states    = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
-		$townships = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
+		$countryList  = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList    = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$townshipList = Township::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 
-		return view('companies.show', ['company' => $company, 'countries' => $countries, 'states' => $states, 'townships' => $townships]);
-	}
-
-	/**
-	 * Redirect Route Using Ajax.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function editAjax($companyId, Request $request) {
-		$id       = $request->id;
-		$response = array('status' => 'success', 'url' => 'companies/' . $id . '/edit');
-
-		return response()->json($response);
-
+		return view('companies.show', ['company' => $company, 'countryList' => $countryList, 'stateList' => $stateList, 'townshipList' => $townshipList]);
 	}
 
 	/**
@@ -177,30 +173,34 @@ class CompanyController extends Controller {
 	 * @return Response
 	 */
 	public function edit($id) {
-		$company = Companies::find($id);
+		$company = Company::find($id);
 
-		$myCompany     = Companies::find(Auth::user()->company_id);
-		$countryIds    = $myCompany->countries;
-		$countryIdList = array();
-		foreach ($countryIds as $country) {
-			$countryIdList[] = $country->id;
-		}
-		$stateIds    = $myCompany->states;
-		$stateIdList = array();
-		foreach ($stateIds as $stateId) {
-			$stateIdList[] = $stateId->id;
-		}
-		$townshipIds    = $myCompany->townships;
+		$myCompany      = Company::find(Auth::user()->company_id);
+		$countryIdList  = array();
+		$stateIdList    = array();
 		$townshipIdList = array();
-		foreach ($townshipIds as $townshipId) {
-			$townshipIdList[] = $townshipId->id;
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
+
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
+
+			$townshipIds = $myCompany->township;
+			foreach ($townshipIds as $townshipId) {
+				$townshipIdList[] = $townshipId->id;
+			}
 		}
 
-		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$states    = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
-		$townships = Townships::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
+		$countryList  = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList    = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$townshipList = Township::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 
-		return view('companies.edit', ['company' => $company, 'countries' => $countries, 'states' => $states, 'townships' => $townships]);
+		return view('companies.edit', ['company' => $company, 'countryList' => $countryList, 'stateList' => $stateList, 'townshipList' => $townshipList]);
 	}
 
 	/**
@@ -237,7 +237,7 @@ class CompanyController extends Controller {
 			$data['logo'] = $imageName;
 		}
 
-		$company  = Companies::find($id);
+		$company  = Company::find($id);
 		$oldImage = $company->logo;
 		$company->update($data);
 
@@ -268,13 +268,11 @@ class CompanyController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id) {
-		Companies::find($id)->update(['deleted' => 'Y']);
+		Company::find($id)->update(['deleted' => 'Y']);
 		Session::flash('success', 'Company deleted successfully');
 		$response = array('status' => 'success', 'url' => 'companies');
 
 		return response()->json($response);
-
-		// return redirect()->route('companies.index')->with('success', 'Company deleted successfully');
 	}
 
 	/**

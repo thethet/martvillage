@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('page-title')
-	Member Offer
+	Memberships
 @stop
 
 @section('main')
@@ -18,14 +18,14 @@
 				<a href="{{ url('settings') }}">Settings</a>
 			</li>
 			<li>
-				<a href="{{ url('member-offers') }}">Member Offer Management</a>
+				<a href="{{ url('memberships') }}">Memberships Management</a>
 			</li>
 			<li class="active">
 				<strong>Edit Form</strong>
 			</li>
 		</ol>
 
-		<h2>Member Offer Management</h2>
+		<h2>Memberships Management</h2>
 		<br />
 
 		<div class="row">
@@ -42,7 +42,7 @@
 					</div>
 
 					<div class="panel-body">
-						{!! Form::model($offer, ['method' => 'PATCH','route' => ['member-offers.update', $offer->id], 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate', 'enctype' => 'multipart/form-data']) !!}
+						{!! Form::model($offer, ['method' => 'PATCH','route' => ['memberships.update', $offer->id], 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate', 'enctype' => 'multipart/form-data']) !!}
 
 							<div class="form-group {{ $errors->has('company_id') ? ' has-error' : '' }}">
 								<label class="col-sm-3 control-label">Company Name <span class="text-danger">*</span></label>
@@ -112,7 +112,7 @@
 										Reset Previous
 										<i class="entypo-erase"></i>
 									</button>
-									<a href="{{ route('member-offers.index') }}" class="btn btn-orange btn-icon">
+									<a href="{{ route('memberships.index') }}" class="btn btn-orange btn-icon">
 										Back
 										<i class="entypo-reply"></i>
 									</a>
@@ -142,5 +142,16 @@
 	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
 	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
+
+	<script>
+		$(document).ready(function(){
+			$(window).keydown(function(event){
+				if(event.keyCode == 13) {
+					event.preventDefault();
+					return false;
+				}
+			});
+		});
+	</script>
 @stop
 

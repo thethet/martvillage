@@ -1,6 +1,6 @@
 <?php
 
-use App\Countries;
+use App\Country;
 use Illuminate\Database\Seeder;
 
 class CountriesTableSeeder extends Seeder {
@@ -2255,7 +2255,7 @@ class CountriesTableSeeder extends Seeder {
 		];
 
 		foreach ($countries as $key => $value) {
-			Countries::create($value);
+			Country::create($value);
 		}
 	}
 }

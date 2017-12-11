@@ -4,13 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PriceTitles extends Model {
+class Township extends Model {
 	/**
 	 * The database table used by the model.
 	 *
 	 * @var string
 	 */
-	protected $table = 'price_titles';
+	protected $table = 'townships';
 	// public $timestamps = false;
 
 	/**
@@ -19,8 +19,10 @@ class PriceTitles extends Model {
 	 * @var array
 	 */
 	protected $fillable = [
-		'company_id',
-		'title_name',
+		'state_id',
+		'township_name',
+		'description',
+		'code',
 		'deleted',
 		'created_by',
 		'updated_by',

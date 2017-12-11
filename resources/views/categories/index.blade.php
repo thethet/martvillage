@@ -1,3 +1,4 @@
+
 @extends('layouts.layout')
 
 @section('page-title')
@@ -71,7 +72,7 @@
 							<td>{{ $category->name }}</td>
 							<td>{{ $category->unit }}</td>
 							@if(Auth::user()->hasRole('administrator'))
-								<td>{{ $companies[$category->company_id] }}</td>
+								<td>{{ $companyList[$category->company_id] }}</td>
 							@endif
 							<td>
 								<a href="{{ url('categories/'. $category->id) }}" class="btn btn-info btn-sm" title="Detail">

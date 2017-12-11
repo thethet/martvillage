@@ -71,7 +71,7 @@
 								<div class="input-group-addon">
 									<i class="entypo-search"></i>
 								</div>
-								{!! Form::select('all_country_id', ['' => 'Select Country'] + $countries->toArray(), null, ['id'=>'all_country_id', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+								{!! Form::select('all_country_id', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'all_country_id', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
 							</div>
 						</div>
 
@@ -107,7 +107,7 @@
 							<td>{{ $state->state_code }}</td>
 							<td>{{ $state->description }}</td>
 							<td>{{ $state->total_townships }}</td>
-							<td>{{ $countries[$state->country_id] }}</td>
+							<td>{{ $countryList[$state->country_id] }}</td>
 							<td>
 								<a href="{{ url('states/'. $state->id) }}" class="btn btn-info btn-sm" title="Detail">
 									<i class="entypo-eye"></i>
@@ -171,7 +171,7 @@
 								<div class="input-group-addon">
 									<i class="entypo-search"></i>
 								</div>
-								{!! Form::select('country_id', ['' => 'Select Country'] + $countries->toArray(), null, ['id'=>'country_id', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+								{!! Form::select('country_id', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'country_id', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
 							</div>
 						</div>
 
@@ -205,7 +205,7 @@
 								<td>{{ $state->state_name }}</td>
 								<td>{{ $state->state_code }}</td>
 								<td>{{ $state->description }}</td>
-								<td>{{ $countries[$state->country_id] }}</td>
+								<td>{{ $countryList[$state->country_id] }}</td>
 								<td>
 									<a href="{{ url('states/'. $state->id) }}" class="btn btn-info btn-sm" title="Detail">
 										<i class="entypo-eye"></i>

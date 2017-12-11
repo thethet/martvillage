@@ -36,7 +36,7 @@
 				</a>
 			</li>
 
-			<li @if(Request::segment(1) == 'nric-codes' || Request::segment(1) == 'nric-townships' || Request::segment(1) == 'permissions' || Request::segment(1) == 'roles' || Request::segment(1) == 'companies' || Request::segment(1) == 'locations' || Request::segment(1) == 'countries' || Request::segment(1) == 'states' || Request::segment(1) == 'townships' || Request::segment(1) == 'pricing-setup' || Request::segment(1) == 'categories' || Request::segment(1) == 'currencies' || Request::segment(1) == 'prices' || Request::segment(1) == 'member-offers') class="opened active has-sub" @else class="has-sub" @endif>
+			<li @if(Request::segment(1) == 'nric-codes' || Request::segment(1) == 'nric-townships' || Request::segment(1) == 'permissions' || Request::segment(1) == 'roles' || Request::segment(1) == 'companies' || Request::segment(1) == 'locations' || Request::segment(1) == 'countries' || Request::segment(1) == 'states' || Request::segment(1) == 'townships' || Request::segment(1) == 'pricing-setup' || Request::segment(1) == 'categories' || Request::segment(1) == 'currencies' || Request::segment(1) == 'prices' || Request::segment(1) == 'memberships') class="opened active has-sub" @else class="has-sub" @endif>
 				<a href="{{ url('settings') }}">
 					<i class="entypo-cog"></i>
 					<span class="title">Settings</span>
@@ -158,11 +158,11 @@
 						</ul>
 					</li>
 
-					@permission('member-offer-list')
-						<li @if(Request::segment(1) == 'member-offers') class="active" @endif>
-							<a href="{{ url('/member-offers') }}">
+					@permission('membership-list')
+						<li @if(Request::segment(1) == 'memberships') class="active" @endif>
+							<a href="{{ url('/memberships') }}">
 								<i class="entypo-tag"></i>
-								<span class="title">Member Offers</span>
+								<span class="title">Memberships</span>
 							</a>
 						</li>
 					@endpermission

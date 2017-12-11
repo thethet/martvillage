@@ -10,7 +10,7 @@ class CreateTblCurrency extends Migration {
 	 * @return void
 	 */
 	public function up() {
-		Schema::create('currency', function (Blueprint $table) {
+		Schema::create('currencies', function (Blueprint $table) {
 			$table->increments('id');
 			$table->integer('company_id');
 			$table->string('type');
@@ -28,6 +28,6 @@ class CreateTblCurrency extends Migration {
 	 * @return void
 	 */
 	public function down() {
-		Schema::drop('currency');
+		Schema::drop('currencies');
 	}
 }

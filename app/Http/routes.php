@@ -367,7 +367,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('prices/create', ['as' => 'prices.create', 'uses' => 'PriceController@create', 'middleware' => ['permission:price-create']]);
 	Route::post('prices/create', ['as' => 'prices.store', 'uses' => 'PriceController@store ', 'middleware' => ['permission:price-create']]);
 
-	Route::get('prices/{id}', ['as' => 'member-offers.show', 'uses' => 'PriceController@show']);
+	Route::get('prices/{id}', ['as' => 'prices.show', 'uses' => 'PriceController@show']);
 
 	Route::get('prices/{id}/edit', ['as' => 'prices.edit', 'uses' => 'PriceController@edit', 'middleware' => ['permission:price-edit']]);
 	Route::patch('prices/{id}', ['as' => 'prices.update', 'uses' => 'PriceController@update', 'middleware' => ['permission:price-edit']]);
@@ -382,17 +382,17 @@ Route::group(['middleware' => ['auth']], function () {
 	| This is the route for Member Offer Model CRUD
 	|
 	 */
-	Route::get('member-offers', ['as' => 'member-offers.index', 'uses' => 'MemberOfferController@index', 'middleware' => ['permission:member-offer-list|member-offer-create|member-offer-edit|member-offer-delete']]);
+	Route::get('memberships', ['as' => 'memberships.index', 'uses' => 'MembershipController@index', 'middleware' => ['permission:membership-list|membership-create|membership-edit|membership-delete']]);
 
-	Route::get('member-offers/create', ['as' => 'member-offers.create', 'uses' => 'MemberOfferController@create', 'middleware' => ['permission:member-offer-create']]);
-	Route::post('member-offers/create', ['as' => 'member-offers.store', 'uses' => 'MemberOfferController@store', 'middleware' => ['permission:member-offer-create']]);
+	Route::get('memberships/create', ['as' => 'memberships.create', 'uses' => 'MembershipController@create', 'middleware' => ['permission:membership-create']]);
+	Route::post('memberships/create', ['as' => 'memberships.store', 'uses' => 'MembershipController@store', 'middleware' => ['permission:membership-create']]);
 
-	Route::get('member-offers/{id}', ['as' => 'member-offers.show', 'uses' => 'MemberOfferController@show']);
+	Route::get('memberships/{id}', ['as' => 'memberships.show', 'uses' => 'MembershipController@show']);
 
-	Route::get('member-offers/{id}/edit', ['as' => 'member-offers.edit', 'uses' => 'MemberOfferController@edit', 'middleware' => ['permission:member-offer-edit']]);
-	Route::patch('member-offers/{id}', ['as' => 'member-offers.update', 'uses' => 'MemberOfferController@update', 'middleware' => ['permission:member-offer-edit']]);
+	Route::get('memberships/{id}/edit', ['as' => 'memberships.edit', 'uses' => 'MembershipController@edit', 'middleware' => ['permission:membership-edit']]);
+	Route::patch('memberships/{id}', ['as' => 'memberships.update', 'uses' => 'MembershipController@update', 'middleware' => ['permission:membership-edit']]);
 
-	Route::delete('member-offers/{id}', ['as' => 'member-offers.destroy', 'uses' => 'MemberOfferController@destroy', 'middleware' => ['permission:member-offer-delete']]);
+	Route::delete('memberships/{id}', ['as' => 'memberships.destroy', 'uses' => 'MembershipController@destroy', 'middleware' => ['permission:membership-delete']]);
 
 	/*
 	|--------------------------------------------------------------------------

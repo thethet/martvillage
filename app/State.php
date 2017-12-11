@@ -1,14 +1,16 @@
 <?php
+
 namespace App;
+
 use Illuminate\Database\Eloquent\Model;
 
-class Countries extends Model {
+class State extends Model {
 	/**
 	 * The database table used by the model.
 	 *
 	 * @var string
 	 */
-	protected $table = 'countries';
+	protected $table = 'states';
 	// public $timestamps = false;
 
 	/**
@@ -17,16 +19,16 @@ class Countries extends Model {
 	 * @var array
 	 */
 	protected $fillable = [
-		'country_name',
+		'country_id',
+		'state_name',
 		'description',
-		'country_code',
-		'total_cities',
+		'state_code',
 		'deleted',
 		'created_by',
 		'updated_by',
 	];
 
 	public function companies() {
-		return $this->belongsToMany('App\Companies');
+		return $this->belongsToMany('App\Company');
 	}
 }

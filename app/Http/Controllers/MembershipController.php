@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Companies;
+use App\Company;
 use App\MemberOffer;
 use Auth;
 use Illuminate\Http\Request;
 use Session;
 
-class MemberOfferController extends Controller {
+class MembershipController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$companyList = Companies::where('deleted', 'N')->lists('company_name', 'id');
+		$companyList = Company::where('deleted', 'N')->lists('company_name', 'id');
 
 		if (Auth::user()->hasRole('administrator')) {
 			$offers = MemberOffer::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
@@ -28,7 +28,7 @@ class MemberOfferController extends Controller {
 		$lastPage    = $offers->lastPage();
 		$lastItem    = $offers->lastItem();
 
-		return view('member-offers.index', ['offers' => $offers, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'companyList' => $companyList])->with('i', ($request->get('page', 1) - 1) * 10);
+		return view('memberships.index', ['offers' => $offers, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'companyList' => $companyList])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
 	/**
@@ -37,9 +37,9 @@ class MemberOfferController extends Controller {
 	 * @return Response
 	 */
 	public function create() {
-		$companyList = Companies::where('deleted', 'N')->lists('company_name', 'id');
+		$companyList = Company::where('deleted', 'N')->lists('company_name', 'id');
 
-		return view('member-offers.create', ['companyList' => $companyList]);
+		return view('memberships.create', ['companyList' => $companyList]);
 	}
 
 	/**
@@ -57,7 +57,7 @@ class MemberOfferController extends Controller {
 		$data['created_by'] = Auth::user()->id;
 		MemberOffer::create($data);
 
-		return redirect()->route('member-offers.index')
+		return redirect()->route('memberships.index')
 			->with('success', 'Member Offer created successfully');
 	}
 
@@ -68,10 +68,10 @@ class MemberOfferController extends Controller {
 	 * @return Response
 	 */
 	public function show($id) {
-		$companyList = Companies::where('deleted', 'N')->lists('company_name', 'id');
+		$companyList = Company::where('deleted', 'N')->lists('company_name', 'id');
 		$offer       = MemberOffer::find($id);
 
-		return view('member-offers.show', ['offer' => $offer, 'companyList' => $companyList]);
+		return view('memberships.show', ['offer' => $offer, 'companyList' => $companyList]);
 	}
 
 	/**
@@ -81,10 +81,10 @@ class MemberOfferController extends Controller {
 	 * @return Response
 	 */
 	public function edit($id) {
-		$companyList = Companies::where('deleted', 'N')->lists('company_name', 'id');
+		$companyList = Company::where('deleted', 'N')->lists('company_name', 'id');
 		$offer       = MemberOffer::find($id);
 
-		return view('member-offers.edit', ['offer' => $offer, 'companyList' => $companyList]);
+		return view('memberships.edit', ['offer' => $offer, 'companyList' => $companyList]);
 	}
 
 	/**
@@ -104,7 +104,7 @@ class MemberOfferController extends Controller {
 		$offer              = MemberOffer::find($id);
 		$offer->update($data);
 
-		return redirect()->route('member-offers.index')
+		return redirect()->route('memberships.index')
 			->with('success', 'Member Offer updated successfully');
 	}
 
@@ -117,7 +117,7 @@ class MemberOfferController extends Controller {
 	public function destroy($id) {
 		MemberOffer::find($id)->update(['deleted' => 'Y']);
 		Session::flash('success', 'Member Offer deleted successfully');
-		$response = array('status' => 'success', 'url' => 'member-offers');
+		$response = array('status' => 'success', 'url' => 'memberships');
 		return response()->json($response);
 	}
 }

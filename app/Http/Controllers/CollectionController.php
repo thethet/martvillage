@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Companies;
+use App\Company;
 use App\Countries;
 use App\Item;
 use App\Lotin;
@@ -135,7 +135,7 @@ class CollectionController extends Controller {
 	 * @return Response
 	 */
 	public function returnLots(Request $request) {
-		$company = Companies::find(Auth::user()->company_id);
+		$company = Company::find(Auth::user()->company_id);
 		$today   = date('Y-m-d');
 		$start   = date("Y-m-d", strtotime($today . "-0 day"));
 		// dd($start);

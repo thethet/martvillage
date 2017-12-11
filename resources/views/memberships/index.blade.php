@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('page-title')
-	Member Offers
+	Memberships
 @stop
 
 @section('main')
@@ -17,11 +17,11 @@
 				<a href="{{ url('settings') }}">Settings</a>
 			</li>
 			<li class="active">
-				<strong>Member Offers Management</strong>
+				<strong>Memberships Management</strong>
 			</li>
 		</ol>
 
-		<h2>Member Offers Management</h2>
+		<h2>Memberships Management</h2>
 		<br />
 
 		@if ($message = Session::get('success'))
@@ -37,8 +37,8 @@
 				</div>
 
 				<div class="panel-options">
-					@permission('member-offer-create')
-						<a href="{{ url('member-offers/create') }}" title="Create">
+					@permission('membership-create')
+						<a href="{{ url('memberships/create') }}" title="Create">
 							<i class="entypo-plus-squared"></i>
 							New
 						</a>
@@ -73,18 +73,18 @@
 								</td>
 							@endif
 							<td>
-								<a href="{{ url('member-offers/'. $offer->id) }}" class="btn btn-info btn-sm" title="Detail">
+								<a href="{{ url('memberships/'. $offer->id) }}" class="btn btn-info btn-sm" title="Detail">
 									<i class="entypo-eye"></i>
 								</a>
 
 								@if(Auth::user()->hasRole('administrator') || $offer->company_id == Auth::user()->company_id)
-									@permission('member-offer-edit')
-										<a href="{{ url('member-offers/'. $offer->id .'/edit') }}" class="btn btn-success btn-sm" title="Edit">
+									@permission('membership-edit')
+										<a href="{{ url('memberships/'. $offer->id .'/edit') }}" class="btn btn-success btn-sm" title="Edit">
 											<i class="entypo-pencil"></i>
 										</a>
 									@endpermission
 
-									@permission('member-offer-delete')
+									@permission('membership-delete')
 										<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $offer->id }}" title="Delete">
 											<i class="entypo-trash"></i>
 										</a>
@@ -125,7 +125,7 @@
 				if (confD) {
 					var id = $(this).attr('id');
 					$.ajax({
-						url: "{!! url('member-offers/"+ id +"') !!}",
+						url: "{!! url('memberships/"+ id +"') !!}",
 						type: 'DELETE',
 						data: {_token: '{!! csrf_token() !!}'},
 						dataType: 'JSON',

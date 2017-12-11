@@ -59,7 +59,7 @@
 								<div class="input-group-addon">
 									<i class="entypo-search"></i>
 								</div>
-								{!! Form::select('nric_code_id', ['' => 'Select NRIC Code'] + $nricCodes->toArray(), null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
+								{!! Form::select('nric_code_id', ['' => 'Select NRIC Code'] + $nricCodeList->toArray(), null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
 							</div>
 						</div>
 
@@ -90,7 +90,7 @@
 						<tr>
 							<td>{{ ++$i }}</td>
 							<td>
-								{{ $nricCodes[$township->nric_code_id] }}
+								{{ $nricCodeList[$township->nric_code_id] }}
 							</td>
 							<td>{{ $township->township }}</td>
 							<td>{{ $township->short_name }}</td>

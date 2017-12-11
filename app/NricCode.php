@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class NricCodes extends Model {
+class NricCode extends Model {
 	/**
 	 * The database table used by the model.
 	 *

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Companies;
-use App\Countries;
+use App\Company;
+use App\Country;
 use Auth;
 use Illuminate\Http\Request;
 use Session;
@@ -15,14 +15,17 @@ class CountryController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$company       = Companies::find(Auth::user()->company_id);
-		$countryIds    = $company->countries;
+		$myCompany     = Company::find(Auth::user()->company_id);
 		$countryIdList = array();
-		foreach ($countryIds as $country) {
-			$countryIdList[] = $country->id;
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
+
 		}
 
-		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->paginate(10);
+		$countries = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->paginate(10);
 
 		$total       = $countries->total();
 		$perPage     = $countries->perPage();
@@ -30,7 +33,7 @@ class CountryController extends Controller {
 		$lastPage    = $countries->lastPage();
 		$lastItem    = $countries->lastItem();
 
-		$allCountries   = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->paginate(10, ['*'], 'apage');
+		$allCountries   = Country::where('deleted', 'N')->orderBy('country_name', 'ASC')->paginate(10, ['*'], 'apage');
 		$allTotal       = $allCountries->total();
 		$allPerPage     = $allCountries->perPage();
 		$allCurrentPage = $allCountries->currentPage();
@@ -64,10 +67,10 @@ class CountryController extends Controller {
 		$data               = $request->all();
 		$data['created_by'] = Auth::user()->id;
 
-		$country = Countries::create($data);
+		$country = Country::create($data);
 
-		$company = Companies::find(Auth::user()->company_id);
-		$company->countries()->attach($country);
+		$myCompany = Company::find(Auth::user()->company_id);
+		$myCompany->country()->attach($country);
 
 		return redirect()->route('countries.index')
 			->with('success', 'Country created successfully');
@@ -79,10 +82,10 @@ class CountryController extends Controller {
 	 * @return Response
 	 */
 	public function storeByCompany($id) {
-		$country = Countries::find($id);
+		$country = Country::find($id);
 
-		$company = Companies::find(Auth::user()->company_id);
-		$company->countries()->attach($country);
+		$myCompany = Company::find(Auth::user()->company_id);
+		$myCompany->country()->attach($country);
 
 		return redirect()->route('countries.index')
 			->with('success', 'Country created successfully');
@@ -95,7 +98,7 @@ class CountryController extends Controller {
 	 * @return Response
 	 */
 	public function show($id) {
-		$country = Countries::find($id);
+		$country = Country::find($id);
 
 		return view('countries.show', ['country' => $country]);
 	}
@@ -107,7 +110,7 @@ class CountryController extends Controller {
 	 * @return Response
 	 */
 	public function edit($id) {
-		$country = Countries::find($id);
+		$country = Country::find($id);
 
 		return view('countries.edit', ['country' => $country]);
 	}
@@ -127,11 +130,11 @@ class CountryController extends Controller {
 
 		$data               = $request->all();
 		$data['updated_by'] = Auth::user()->id;
-		$country            = Countries::find($id);
+		$country            = Country::find($id);
 		$country->update($data);
 
-		// $company = Companies::find(Auth::user()->company_id);
-		// $company->countries()->attach($country);
+		// $myCompany = Company::find(Auth::user()->company_id);
+		// $myCompany->country()->attach($country);
 
 		return redirect()->route('countries.index')
 			->with('success', 'Country updated successfully');
@@ -144,7 +147,7 @@ class CountryController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id) {
-		$country = Countries::find($id);
+		$country = Country::find($id);
 
 		if ($country->total_cities == 0) {
 			$country->update(['deleted' => 'Y']);
@@ -165,8 +168,8 @@ class CountryController extends Controller {
 	 * @return Response
 	 */
 	public function destroyByCompany($id) {
-		$company = Companies::find(Auth::user()->company_id);
-		$company->countries()->detach($id);
+		$myCompany = Company::find(Auth::user()->company_id);
+		$myCompany->country()->detach($id);
 
 		Session::flash('success', 'Country deleted successfully');
 		$response = array('status' => 'success', 'url' => 'countries');

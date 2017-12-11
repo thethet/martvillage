@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Companies;
-use App\Countries;
+use App\Company;
+use App\Country;
 use App\Member;
-use App\States;
-use App\Townships;
+use App\State;
+use App\Township;
 use App\User;
 use Auth;
 
@@ -27,19 +27,19 @@ class HomeController extends Controller {
 	 */
 	public function index() {
 		if (Auth::user()->hasRole('administrator')) {
-			$companies = Companies::count();
+			$companies = Company::count();
 			$users     = User::count();
 			$members   = Member::count();
-			$countries = Countries::count();
-			$cities    = States::count();
-			$townships = Townships::count();
+			$countries = Country::count();
+			$cities    = State::count();
+			$townships = Township::count();
 		} else {
-			$companies = Companies::count();
+			$companies = Company::count();
 			$users     = User::count();
 			$members   = Member::count();
-			$countries = Countries::count();
-			$cities    = States::count();
-			$townships = Townships::count();
+			$countries = Country::count();
+			$cities    = State::count();
+			$townships = Township::count();
 		}
 
 		return view('dashboard.dashboard', ['companies' => $companies, 'users' => $users, 'members' => $members, 'countries' => $countries, 'cities' => $cities]);

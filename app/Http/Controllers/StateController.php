@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Companies;
-use App\Countries;
-use App\States;
+use App\Company;
+use App\Country;
+use App\State;
 use Auth;
 use Illuminate\Http\Request;
 use Session;
@@ -16,21 +16,24 @@ class StateController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$company       = Companies::find(Auth::user()->company_id);
-		$countryIds    = $company->countries;
+		$myCompany     = Company::find(Auth::user()->company_id);
 		$countryIdList = array();
-		foreach ($countryIds as $country) {
-			$countryIdList[] = $country->id;
-		}
-		$stateIds    = $company->states;
-		$stateIdList = array();
-		foreach ($stateIds as $stateId) {
-			$stateIdList[] = $stateId->id;
-		}
+		$stateIdList   = array();
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
 
-		$countries = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
 
-		$query = States::whereIn('id', $stateIdList)->where('deleted', 'N');
+		}
+		$countryList = Country::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+
+		$query = State::whereIn('id', $stateIdList)->where('deleted', 'N');
 		if ($request->country_id) {
 			$states = $query->where('country_id', $request->country_id)->orderBy('state_name', 'ASC')->paginate(10);
 		} else {
@@ -42,7 +45,7 @@ class StateController extends Controller {
 		$lastPage    = $states->lastPage();
 		$lastItem    = $states->lastItem();
 
-		$allQuery = States::where('deleted', 'N');
+		$allQuery = State::where('deleted', 'N');
 		if ($request->all_country_id) {
 			$allStates = $allQuery->where('country_id', $request->all_country_id)->orderBy('state_name', 'ASC')->paginate(10, ['*'], 'apage');
 		} else {
@@ -55,7 +58,7 @@ class StateController extends Controller {
 		$allLastPage    = $allStates->lastPage();
 		$allLastItem    = $allStates->lastItem();
 
-		return view('states.index', ['states' => $states, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'countries' => $countries, 'allStates' => $allStates, 'allTotal' => $allTotal, 'allPerPage' => $allPerPage, 'allCurrentPage' => $allCurrentPage, 'allLastPage' => $allLastPage, 'allLastItem' => $allLastItem, 'countryIdList' => $countryIdList, 'stateIdList' => $stateIdList])->with('i', ($request->get('page', 1) - 1) * 10)->with('a', ($request->get('apage', 1) - 1) * 10);
+		return view('states.index', ['states' => $states, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'countryList' => $countryList, 'allStates' => $allStates, 'allTotal' => $allTotal, 'allPerPage' => $allPerPage, 'allCurrentPage' => $allCurrentPage, 'allLastPage' => $allLastPage, 'allLastItem' => $allLastItem, 'countryIdList' => $countryIdList, 'stateIdList' => $stateIdList])->with('i', ($request->get('page', 1) - 1) * 10)->with('a', ($request->get('apage', 1) - 1) * 10);
 	}
 
 	/**
@@ -64,15 +67,17 @@ class StateController extends Controller {
 	 * @return Response
 	 */
 	public function create() {
-		$company       = Companies::find(Auth::user()->company_id);
-		$countryIds    = $company->countries;
+		$myCompany     = Company::find(Auth::user()->company_id);
 		$countryIdList = array();
-		foreach ($countryIds as $country) {
-			$countryIdList[] = $country->id;
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
 		}
-		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 
-		return view('states.create', ['countries' => $countries]);
+		return view('states.create', ['countryList' => $countryList]);
 	}
 
 	/**
@@ -91,12 +96,12 @@ class StateController extends Controller {
 		$data               = $request->all();
 		$data['created_by'] = Auth::user()->id;
 
-		$state = States::create($data);
+		$state = State::create($data);
 
-		$company = Companies::find(Auth::user()->company_id);
-		$company->states()->attach($state);
+		$myCompany = Company::find(Auth::user()->company_id);
+		$myCompany->state()->attach($state);
 
-		Countries::find($request->country_id)->increment('total_cities');
+		Country::find($request->country_id)->increment('total_cities');
 
 		return redirect()->route('states.index')
 			->with('success', 'State created successfully');
@@ -108,10 +113,10 @@ class StateController extends Controller {
 	 * @return Response
 	 */
 	public function storeByCompany($id) {
-		$state = States::find($id);
+		$state = State::find($id);
 
-		$company = Companies::find(Auth::user()->company_id);
-		$company->states()->attach($state);
+		$myCompany = Company::find(Auth::user()->company_id);
+		$myCompany->state()->attach($state);
 
 		return redirect()->route('states.index')
 			->with('success', 'State created successfully');
@@ -124,17 +129,19 @@ class StateController extends Controller {
 	 * @return Response
 	 */
 	public function show($id) {
-		$company       = Companies::find(Auth::user()->company_id);
-		$countryIds    = $company->countries;
+		$myCompany     = Company::find(Auth::user()->company_id);
 		$countryIdList = array();
-		foreach ($countryIds as $country) {
-			$countryIdList[] = $country->id;
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
 		}
-		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 
-		$state = States::find($id);
+		$state = State::find($id);
 
-		return view('states.show', ['countries' => $countries, 'state' => $state]);
+		return view('states.show', ['countryList' => $countryList, 'state' => $state]);
 	}
 
 	/**
@@ -144,17 +151,19 @@ class StateController extends Controller {
 	 * @return Response
 	 */
 	public function edit($id) {
-		$company       = Companies::find(Auth::user()->company_id);
-		$countryIds    = $company->countries;
+		$myCompany     = Company::find(Auth::user()->company_id);
 		$countryIdList = array();
-		foreach ($countryIds as $country) {
-			$countryIdList[] = $country->id;
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
 		}
-		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 
-		$state = States::find($id);
+		$state = State::find($id);
 
-		return view('states.edit', ['countries' => $countries, 'state' => $state]);
+		return view('states.edit', ['countryList' => $countryList, 'state' => $state]);
 	}
 
 	/**
@@ -173,11 +182,11 @@ class StateController extends Controller {
 
 		$data               = $request->all();
 		$data['updated_by'] = Auth::user()->id;
-		$state              = States::find($id);
+		$state              = State::find($id);
 		$state->update($data);
 
-		// $company = Companies::find(Auth::user()->company_id);
-		// $company->states()->attach($state);
+		// $myCompany = Company::find(Auth::user()->company_id);
+		// $myCompany->state()->attach($state);
 
 		return redirect()->route('states.index')
 			->with('success', 'State updated successfully');
@@ -190,10 +199,10 @@ class StateController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id) {
-		$state = States::find($id);
+		$state = State::find($id);
 
-		if ($state->total_township != 0) {
-			Countries::find($state->country_id)->decrement('total_cities');
+		if ($state->total_township == 0) {
+			Country::find($state->country_id)->decrement('total_cities');
 			$state->update(['deleted' => 'Y']);
 			Session::flash('success', 'State deleted successfully');
 			$response = array('status' => 'success', 'url' => 'states');
@@ -212,8 +221,8 @@ class StateController extends Controller {
 	 * @return Response
 	 */
 	public function destroyByCompany($id) {
-		$company = Companies::find(Auth::user()->company_id);
-		$company->states()->detach($id);
+		$myCompany = Company::find(Auth::user()->company_id);
+		$myCompany->state()->detach($id);
 
 		Session::flash('success', 'State deleted successfully');
 		$response = array('status' => 'success', 'url' => 'states');

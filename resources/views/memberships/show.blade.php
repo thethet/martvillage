@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('page-title')
-	Member Offer
+	Membership
 @stop
 
 @section('main')
@@ -18,14 +18,14 @@
 				<a href="{{ url('settings') }}">Settings</a>
 			</li>
 			<li>
-				<a href="{{ url('member-offers') }}">Member Offer Management</a>
+				<a href="{{ url('memberships') }}">Memberships Management</a>
 			</li>
 			<li class="active">
-				<strong>New Create Form</strong>
+				<strong>Detial Form</strong>
 			</li>
 		</ol>
 
-		<h2>Member Offer Management</h2>
+		<h2>Memberships Management</h2>
 		<br />
 
 		<div class="row">
@@ -33,7 +33,7 @@
 				<div class="panel panel-primary" data-collapsed="0">
 					<div class="panel-heading">
 						<div class="panel-title">
-							<strong>New Create Form</strong>
+							<strong>Detial Form</strong>
 						</div>
 
 						<div class="panel-options">
@@ -42,61 +42,43 @@
 					</div>
 
 					<div class="panel-body">
-						{!! Form::open(array('route' => 'member-offers.store','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate')) !!}
+						{!! Form::model($offer, ['method' => 'PATCH','route' => ['memberships.update', $offer->id], 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate', 'enctype' => 'multipart/form-data']) !!}
 
-							<div class="form-group {{ $errors->has('company_id') ? ' has-error' : '' }}">
-								<label class="col-sm-3 control-label">Company Name <span class="text-danger">*</span></label>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Company Name</label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-suitcase"></i></span>
 										@if(Auth::user()->hasRole('administrator'))
-										{!! Form::select('company_id', ['' => 'Select Company'] + $companyList->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off']) !!}
+										{!! Form::select('company_id', ['' => 'Select Company'] + $companyList->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off', 'disabled']) !!}
 										@else
 											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
 										@endif
 									</div>
-
-									@if ($errors->has('company_id'))
-										<span class="required">
-											<strong>{{ $errors->first('company_id') }}</strong>
-										</span>
-									@endif
 								</div>
 							</div>
 
-							<div class="form-group {{ $errors->has('type') ? ' has-error' : '' }}">
-								<label class="col-sm-3 control-label">Offer Type <span class="text-danger">*</span></label>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Offer Type</label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-tag"></i></span>
-										{!! Form::text('type', null, ['placeholder' => 'Offer Type', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+										{!! Form::text('type', null, ['placeholder' => 'Offer Type', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
-
-									@if ($errors->has('type'))
-										<span class="validate-has-error">
-											<strong>{{ $errors->first('type') }}</strong>
-										</span>
-									@endif
 								</div>
 							</div>
 
-							<div class="form-group {{ $errors->has('rate') ? ' has-error' : '' }}">
-								<label class="col-sm-3 control-label">Offer Rate <span class="text-danger">*</span></label>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Offer Rate</label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon">&nbsp;%&nbsp;</span>
-										{!! Form::text('rate', null, ['placeholder' => 'Offer Rate', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+										{!! Form::text('rate', null, ['placeholder' => 'Offer Rate', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
-
-									@if ($errors->has('rate'))
-										<span class="validate-has-error">
-											<strong>{{ $errors->first('rate') }}</strong>
-										</span>
-									@endif
 								</div>
 							</div>
 
@@ -104,15 +86,7 @@
 								<label class="col-sm-3 control-label"></label>
 
 								<div class="col-sm-5">
-									<button type="submit" class="btn btn-success btn-icon">
-										Save
-										<i class="entypo-floppy"></i>
-									</button>
-									<button type="reset" class="btn btn-info btn-icon">
-										Reset
-										<i class="entypo-erase"></i>
-									</button>
-									<a href="{{ route('member-offers.index') }}" class="btn btn-orange btn-icon">
+									<a href="{{ route('memberships.index') }}" class="btn btn-orange btn-icon">
 										Back
 										<i class="entypo-reply"></i>
 									</a>

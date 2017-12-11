@@ -1,6 +1,6 @@
 <?php
 
-use App\NricTownships;
+use App\NricTownship;
 use Illuminate\Database\Seeder;
 
 class NricTownshipsTableSeeder extends Seeder {
@@ -3431,7 +3431,7 @@ class NricTownshipsTableSeeder extends Seeder {
 		];
 
 		foreach ($townships as $key => $value) {
-			NricTownships::create($value);
+			NricTownship::create($value);
 		}
 	}
 }

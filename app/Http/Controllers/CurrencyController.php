@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Companies;
-use App\Countries;
+use App\Company;
+use App\Country;
 use App\Currency;
 use Auth;
 use Illuminate\Http\Request;
@@ -15,13 +15,15 @@ class CurrencyController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$company       = Companies::find(Auth::user()->company_id);
-		$countryIds    = $company->countries;
+		$myCompany     = Company::find(Auth::user()->company_id);
 		$countryIdList = array();
-		foreach ($countryIds as $country) {
-			$countryIdList[] = $country->id;
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
 		}
-		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 
 		if (Auth::user()->hasRole('administrator')) {
 			$currencies = Currency::where('deleted', 'N')->paginate(10);
@@ -34,9 +36,9 @@ class CurrencyController extends Controller {
 		$lastPage    = $currencies->lastPage();
 		$lastItem    = $currencies->lastItem();
 
-		$companies = Companies::lists('company_name', 'id');
+		$companyList = Company::lists('company_name', 'id');
 
-		return view('currencies.index', ['currencies' => $currencies, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'countries' => $countries, 'companies' => $companies])->with('i', ($request->get('page', 1) - 1) * 10);
+		return view('currencies.index', ['currencies' => $currencies, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'countryList' => $countryList, 'companyList' => $companyList])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 	/**
 	 * Show the form for creating a new resource.
@@ -44,17 +46,19 @@ class CurrencyController extends Controller {
 	 * @return Response
 	 */
 	public function create() {
-		$companies = Companies::lists('company_name', 'id');
+		$companyList = Company::lists('company_name', 'id');
 
-		$company       = Companies::find(Auth::user()->company_id);
-		$countryIds    = $company->countries;
+		$myCompany     = Company::find(Auth::user()->company_id);
 		$countryIdList = array();
-		foreach ($countryIds as $country) {
-			$countryIdList[] = $country->id;
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
 		}
-		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 
-		return view('currencies.create', ['companies' => $companies, 'countries' => $countries]);
+		return view('currencies.create', ['companyList' => $companyList, 'countryList' => $countryList]);
 	}
 
 	/**
@@ -85,18 +89,20 @@ class CurrencyController extends Controller {
 	 * @return Response
 	 */
 	public function show($id) {
-		$companies = Companies::lists('company_name', 'id');
+		$companyList = Company::lists('company_name', 'id');
 
-		$company       = Companies::find(Auth::user()->company_id);
-		$countryIds    = $company->countries;
+		$myCompany     = Company::find(Auth::user()->company_id);
 		$countryIdList = array();
-		foreach ($countryIds as $country) {
-			$countryIdList[] = $country->id;
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
 		}
-		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$currency  = Currency::find($id);
+		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$currency    = Currency::find($id);
 
-		return view('currencies.show', ['currency' => $currency, 'companies' => $companies, 'countries' => $countries]);
+		return view('currencies.show', ['currency' => $currency, 'companyList' => $companyList, 'countryList' => $countryList]);
 	}
 
 	/**
@@ -106,18 +112,20 @@ class CurrencyController extends Controller {
 	 * @return Response
 	 */
 	public function edit($id) {
-		$companies = Companies::lists('company_name', 'id');
+		$companyList = Company::lists('company_name', 'id');
 
-		$company       = Companies::find(Auth::user()->company_id);
-		$countryIds    = $company->countries;
+		$myCompany     = Company::find(Auth::user()->company_id);
 		$countryIdList = array();
-		foreach ($countryIds as $country) {
-			$countryIdList[] = $country->id;
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
 		}
-		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$currency  = Currency::find($id);
+		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$currency    = Currency::find($id);
 
-		return view('currencies.edit', ['currency' => $currency, 'companies' => $companies, 'countries' => $countries]);
+		return view('currencies.edit', ['currency' => $currency, 'companyList' => $companyList, 'countryList' => $countryList]);
 	}
 
 	/**

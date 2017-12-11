@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Category;
-use App\Companies;
-use App\Countries;
+use App\Company;
+use App\Country;
 use App\Currency;
 use App\Price;
-use App\PriceTitles;
-use App\States;
+use App\PriceTitle;
+use App\State;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -25,11 +25,11 @@ class PriceController extends Controller {
 		if (Auth::user()->hasRole('administrator')) {
 			$currencyTitle  = Currency::where('deleted', 'N')->get();
 			$pricingLists   = Price::where('deleted', 'N')->get();
-			$priceTitleList = PriceTitles::where('deleted', 'N')->get();
+			$priceTitleList = PriceTitle::where('deleted', 'N')->get();
 		} else {
 			$currencyTitle  = Currency::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->get();
 			$pricingLists   = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->get();
-			$priceTitleList = PriceTitles::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->get();
+			$priceTitleList = PriceTitle::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->get();
 		}
 
 		$currencyTitleList = array();
@@ -38,7 +38,7 @@ class PriceController extends Controller {
 		$i                 = 0;
 		$totalCol          = 0;
 		foreach ($currencyTitle as $key => $value) {
-			$company_name                               = Companies::where('id', $value->company_id)->first()->short_code;
+			$company_name                               = Company::where('id', $value->company_id)->first()->short_code;
 			$currencyTitleList[$i]['type']              = $value->type;
 			$currencyTitleList[$i]['country']           = $value->location->country_code;
 			$currencyTitleList[$i]['company_name']      = $company_name;
@@ -51,8 +51,8 @@ class PriceController extends Controller {
 
 			$j = 0;
 			foreach ($states as $key => $state) {
-				$from_state                                     = States::where('id', $state->from_state)->first()->state_code;
-				$to_state                                       = States::where('id', $state->to_state)->first()->state_code;
+				$from_state                                     = State::where('id', $state->from_state)->first()->state_code;
+				$to_state                                       = State::where('id', $state->to_state)->first()->state_code;
 				$stateCode                                      = $from_state . ' - ' . $to_state;
 				$subTitleList[$val->location->country_code][$j] = $stateCode;
 
@@ -74,8 +74,8 @@ class PriceController extends Controller {
 				$states = Price::where('company_id', $val->company_id)->where('deleted', 'N')->where('from_country', $val->from_location)->get();
 
 				foreach ($states as $key => $state) {
-					$from_state = States::where('id', $state->from_state)->first()->state_code;
-					$to_state   = States::where('id', $state->to_state)->first()->state_code;
+					$from_state = State::where('id', $state->from_state)->first()->state_code;
+					$to_state   = State::where('id', $state->to_state)->first()->state_code;
 
 					foreach ($pricingLists as $key => $ptl) {
 
@@ -85,7 +85,6 @@ class PriceController extends Controller {
 						}
 
 						if ($ptl->from_state == $state->from_state && $ptl->to_state == $state->to_state && $title->title_name == $ptl->title_name) {
-							// dd($ptl);
 							$priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state]['id']         = $ptl->id;
 							$priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state]['unit_price'] = $ptl->unit_price;
 						}
@@ -132,23 +131,25 @@ class PriceController extends Controller {
 			$currencyList = Currency::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('type', 'id');
 		}
 
-		$company       = Companies::find(Auth::user()->company_id);
-		$countryIds    = $company->countries;
+		$myCompany     = Company::find(Auth::user()->company_id);
 		$countryIdList = array();
-		foreach ($countryIds as $country) {
-			$countryIdList[] = $country->id;
-		}
-		$stateIds    = $company->states;
-		$stateIdList = array();
-		foreach ($stateIds as $stateId) {
-			$stateIdList[] = $stateId->id;
+		$stateIdList   = array();
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
 		}
 
-		$companies   = Companies::lists('company_name', 'id');
-		$countryList = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$stateList   = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$companyList = Company::lists('company_name', 'id');
+		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList   = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
-		return view('prices.create', ['categoryList' => $categoryList, 'currencyList' => $currencyList, 'companies' => $companies, 'countryList' => $countryList, 'stateList' => $stateList]);
+		return view('prices.create', ['categoryList' => $categoryList, 'currencyList' => $currencyList, 'companyList' => $companyList, 'countryList' => $countryList, 'stateList' => $stateList]);
 	}
 
 	/**
@@ -175,9 +176,9 @@ class PriceController extends Controller {
 		$titleData['company_id'] = $request->company_id;
 		$titleData['title_name'] = $request->title_name;
 		$titleData['created_by'] = Auth::user()->id;
-		$title                   = PriceTitles::where('company_id', $request->company_id)->where('title_name', $request->title_name)->first();
+		$title                   = PriceTitle::where('company_id', $request->company_id)->where('title_name', $request->title_name)->first();
 		if (!$title) {
-			$title = PriceTitles::create($titleData);
+			$title = PriceTitle::create($titleData);
 		}
 
 		$data['title_id'] = $title->id;
@@ -204,23 +205,25 @@ class PriceController extends Controller {
 			$currencyList = Currency::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('type', 'id');
 		}
 
-		$company       = Companies::find(Auth::user()->company_id);
-		$countryIds    = $company->countries;
+		$myCompany     = Company::find(Auth::user()->company_id);
 		$countryIdList = array();
-		foreach ($countryIds as $country) {
-			$countryIdList[] = $country->id;
-		}
-		$stateIds    = $company->states;
-		$stateIdList = array();
-		foreach ($stateIds as $stateId) {
-			$stateIdList[] = $stateId->id;
+		$stateIdList   = array();
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
 		}
 
-		$companies   = Companies::lists('company_name', 'id');
-		$countryList = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$stateList   = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$companyList = Company::lists('company_name', 'id');
+		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList   = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
-		return view('prices.show', ['price' => $price, 'categoryList' => $categoryList, 'currencyList' => $currencyList, 'companies' => $companies, 'countryList' => $countryList, 'stateList' => $stateList]);
+		return view('prices.show', ['price' => $price, 'categoryList' => $categoryList, 'currencyList' => $currencyList, 'companyList' => $companyList, 'countryList' => $countryList, 'stateList' => $stateList]);
 	}
 
 	/**
@@ -240,23 +243,25 @@ class PriceController extends Controller {
 			$currencyList = Currency::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('type', 'id');
 		}
 
-		$company       = Companies::find(Auth::user()->company_id);
-		$countryIds    = $company->countries;
+		$myCompany     = Company::find(Auth::user()->company_id);
 		$countryIdList = array();
-		foreach ($countryIds as $country) {
-			$countryIdList[] = $country->id;
-		}
-		$stateIds    = $company->states;
-		$stateIdList = array();
-		foreach ($stateIds as $stateId) {
-			$stateIdList[] = $stateId->id;
+		$stateIdList   = array();
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
 		}
 
-		$companies   = Companies::lists('company_name', 'id');
-		$countryList = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$stateList   = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$companyList = Company::lists('company_name', 'id');
+		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList   = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
-		return view('prices.edit', ['price' => $price, 'categoryList' => $categoryList, 'currencyList' => $currencyList, 'companies' => $companies, 'countryList' => $countryList, 'stateList' => $stateList]);
+		return view('prices.edit', ['price' => $price, 'categoryList' => $categoryList, 'currencyList' => $currencyList, 'companyList' => $companyList, 'countryList' => $countryList, 'stateList' => $stateList]);
 	}
 
 	/**
@@ -284,11 +289,11 @@ class PriceController extends Controller {
 		$titleData['company_id'] = $request->company_id;
 		$titleData['title_name'] = $request->title_name;
 		$titleData['updated_by'] = Auth::user()->id;
-		$title                   = PriceTitles::where('company_id', $request->company_id)->where('title_name', $request->title_name)->first();
+		$title                   = PriceTitle::where('company_id', $request->company_id)->where('title_name', $request->title_name)->first();
 		if (!$title) {
 			$title->update(['deleted', 'N']);
 
-			$title = PriceTitles::create($titleData);
+			$title = PriceTitle::create($titleData);
 		} else {
 			$title->update($titleData);
 		}

@@ -69,16 +69,16 @@
 						<tr>
 							<td>{{ ++$i }}</td>
 							<td>{{ $currency->type }}</td>
-							<td>{{ $currency->from_location }}</td>
+							<td>{{ $countryList[$currency->from_location] }}</td>
 							@if(Auth::user()->hasRole('administrator'))
-								<td>{{ $companies[$currency->company_id] }}</td>
+								<td>{{ $companyList[$currency->company_id] }}</td>
 							@endif
 							<td>
 								<a href="{{ url('currencies/'. $currency->id) }}" class="btn btn-info btn-sm" title="Detail">
 									<i class="entypo-eye"></i>
 								</a>
 
-								@if(Auth::user()->hasRole('administrator'))
+								@if(Auth::user()->hasRole('administrator') || ($currency->company_id == Auth::user()->company_id))
 									@permission('currency-edit')
 										<a href="{{ url('currencies/'. $currency->id .'/edit') }}" class="btn btn-success btn-sm" title="Edit">
 											<i class="entypo-pencil"></i>

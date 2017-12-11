@@ -1,6 +1,6 @@
 <?php
 
-use App\Companies;
+use App\Company;
 use Illuminate\Database\Seeder;
 
 class CompanyTableSeeder extends Seeder {
@@ -34,7 +34,7 @@ class CompanyTableSeeder extends Seeder {
 		];
 
 		foreach ($company as $key => $value) {
-			Companies::create($value);
+			Company::create($value);
 		}
 	}
 }

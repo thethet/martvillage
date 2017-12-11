@@ -10,7 +10,7 @@ class Currency extends Model {
 	 *
 	 * @var string
 	 */
-	protected $table = 'currency';
+	protected $table = 'currencies';
 	// public $timestamps = false;
 
 	/**
@@ -28,6 +28,6 @@ class Currency extends Model {
 	];
 
 	public function location() {
-		return $this->belongsTo('App\Countries', 'from_location');
+		return $this->belongsTo('App\Country', 'from_location');
 	}
 }

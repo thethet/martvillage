@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
-use App\Companies;
+use App\Company;
 use Auth;
 use Illuminate\Http\Request;
 use Session;
@@ -15,7 +15,7 @@ class CategoryController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$companies   = Companies::lists('company_name', 'id');
+		$companyList = Company::lists('company_name', 'id');
 		$categories  = Category::where('deleted', 'N')->paginate(10);
 		$total       = $categories->total();
 		$perPage     = $categories->perPage();
@@ -23,7 +23,7 @@ class CategoryController extends Controller {
 		$lastPage    = $categories->lastPage();
 		$lastItem    = $categories->lastItem();
 
-		return view('categories.index', ['categories' => $categories, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'companies' => $companies])->with('i', ($request->get('page', 1) - 1) * 10);
+		return view('categories.index', ['categories' => $categories, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'companyList' => $companyList])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
 	/**
@@ -32,9 +32,9 @@ class CategoryController extends Controller {
 	 * @return Response
 	 */
 	public function create() {
-		$companies = Companies::lists('company_name', 'id');
+		$companyList = Company::lists('company_name', 'id');
 
-		return view('categories.create', ['companies' => $companies]);
+		return view('categories.create', ['companyList' => $companyList]);
 	}
 
 	/**
@@ -65,10 +65,10 @@ class CategoryController extends Controller {
 	 * @return Response
 	 */
 	public function show($id) {
-		$companies = Companies::lists('company_name', 'id');
-		$category  = Category::find($id);
+		$companyList = Company::lists('company_name', 'id');
+		$category    = Category::find($id);
 
-		return view('categories.show', ['category' => $category, 'companies' => $companies]);
+		return view('categories.show', ['category' => $category, 'companyList' => $companyList]);
 	}
 
 	/**
@@ -78,10 +78,10 @@ class CategoryController extends Controller {
 	 * @return Response
 	 */
 	public function edit($id) {
-		$companies = Companies::lists('company_name', 'id');
-		$category  = Category::find($id);
+		$companyList = Company::lists('company_name', 'id');
+		$category    = Category::find($id);
 
-		return view('categories.edit', ['category' => $category, 'companies' => $companies]);
+		return view('categories.edit', ['category' => $category, 'companyList' => $companyList]);
 	}
 
 	/**

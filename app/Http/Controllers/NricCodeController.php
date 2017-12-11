@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\NricCodes;
+use App\NricCode;
 use Auth;
 use Illuminate\Http\Request;
 use Session;
@@ -14,7 +14,7 @@ class NricCodeController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$codes       = NricCodes::where('deleted', 'N')->orderBy('nric_code', 'ASC')->paginate(10);
+		$codes       = NricCode::where('deleted', 'N')->orderBy('nric_code', 'ASC')->paginate(10);
 		$total       = $codes->total();
 		$perPage     = $codes->perPage();
 		$currentPage = $codes->currentPage();
@@ -46,7 +46,7 @@ class NricCodeController extends Controller {
 
 		$data               = $request->all();
 		$data['created_by'] = Auth::user()->id;
-		NricCodes::create($data);
+		NricCode::create($data);
 
 		return redirect()->route('nric-codes.index')
 			->with('success', 'NRIC Code created successfully');
@@ -59,7 +59,7 @@ class NricCodeController extends Controller {
 	 * @return Response
 	 */
 	public function show($id) {
-		$code = NricCodes::find($id);
+		$code = NricCode::find($id);
 		return view('nric-codes.show', ['code' => $code]);
 	}
 
@@ -70,7 +70,7 @@ class NricCodeController extends Controller {
 	 * @return Response
 	 */
 	public function edit($id) {
-		$code = NricCodes::find($id);
+		$code = NricCode::find($id);
 		return view('nric-codes.edit', ['code' => $code]);
 	}
 
@@ -85,7 +85,7 @@ class NricCodeController extends Controller {
 			'description' => 'required',
 		]);
 
-		$code               = NricCodes::find($id);
+		$code               = NricCode::find($id);
 		$data               = $request->all();
 		$data['updated_by'] = Auth::user()->id;
 		$code->update($data);
@@ -101,7 +101,7 @@ class NricCodeController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id) {
-		NricCodes::find($id)->update(['deleted' => 'Y']);
+		NricCode::find($id)->update(['deleted' => 'Y']);
 		Session::flash('success', 'NRIC Code deleted successfully');
 		$response = array('status' => 'success', 'url' => 'nric-codes');
 

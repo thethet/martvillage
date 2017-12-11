@@ -70,7 +70,7 @@
 							<td>{{ $user->email }}</td>
 							@if(Auth::user()->hasRole('administrator'))
 								<td>
-									{{ $companyList[$user->company_id] }}
+									{{-- {{ $companyList[$user->company_id] }} --}}
 								</td>
 							@endif
 							<td>

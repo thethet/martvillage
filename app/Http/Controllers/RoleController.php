@@ -41,7 +41,7 @@ class RoleController extends Controller {
 		if (Auth::user()->hasRole('administrator')) {
 			$permission = Permission::get();
 		} else {
-			$permission = Permission::whereNotIn('id', [5, 6, 7, 8, 10, 12, 18, 19, 20, 22, 23, 24])->get();
+			$permission = Permission::whereNotIn('id', [5, 6, 7, 8, 10, 12, 18, 19, 20, 22, 23, 24, 38, 39, 40])->get();
 		}
 		return view('roles.create', ['permission' => $permission]);
 	}
@@ -92,19 +92,6 @@ class RoleController extends Controller {
 		}
 
 		return view('roles.show', ['role' => $role, 'rolePermissions' => $rolePermissions, 'permission' => $permission]);
-	}
-
-	/**
-	 * Redirect Route Using Ajax.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function editAjax($userId, Request $request) {
-		$id       = $request->id;
-		$response = array('status' => 'success', 'url' => 'roles/' . $id . '/edit');
-		return response()->json($response);
-
 	}
 
 	/**

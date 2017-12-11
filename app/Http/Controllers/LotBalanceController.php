@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Companies;
-use App\Countries;
-use App\States;
+use App\Company;
+use App\Country;
+use App\State;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -49,20 +49,22 @@ class LotBalanceController extends Controller {
 			}
 		}
 
-		$company       = Companies::find(Auth::user()->company_id);
-		$countryIds    = $company->countries;
+		$myCompany     = Company::find(Auth::user()->company_id);
 		$countryIdList = array();
-		foreach ($countryIds as $country) {
-			$countryIdList[] = $country->id;
-		}
-		$stateIds    = $company->states;
-		$stateIdList = array();
-		foreach ($stateIds as $stateId) {
-			$stateIdList[] = $stateId->id;
+		$stateIdList   = array();
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->countries;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
+			$stateIds = $myCompany->states;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
 		}
 
-		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$states    = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$countries = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$states    = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
 		return view('lotbalances.index', ['lotinList' => $lotinList, 'countries' => $countries, 'states' => $states]);
 	}
@@ -113,7 +115,7 @@ class LotBalanceController extends Controller {
 			}
 		}
 
-		$company       = Companies::find(Auth::user()->company_id);
+		$company       = Company::find(Auth::user()->company_id);
 		$countryIds    = $company->countries;
 		$countryIdList = array();
 		foreach ($countryIds as $country) {
@@ -125,8 +127,8 @@ class LotBalanceController extends Controller {
 			$stateIdList[] = $stateId->id;
 		}
 
-		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$states    = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$countries = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$states    = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
 		return view('lotbalances.index', ['lotinList' => $lotinList, 'countries' => $countries, 'states' => $states]);
 

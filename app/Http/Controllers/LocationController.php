@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Companies;
-use App\Countries;
-use App\States;
-use App\Townships;
+use App\Company;
+use App\State;
+use App\Township;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -88,23 +87,25 @@ class LocationController extends Controller {
 		$search    = $request->get('search');
 		$countryId = $request->get('countryId');
 
-		$company       = Companies::find(Auth::user()->company_id);
-		$countryIds    = $company->countries;
+		$myCompany     = Company::find(Auth::user()->company_id);
 		$countryIdList = array();
-		foreach ($countryIds as $country) {
-			$countryIdList[] = $country->id;
-		}
+		$stateIdList   = array();
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
 
-		$stateIds    = $company->states;
-		$stateIdList = array();
-		foreach ($stateIds as $stateId) {
-			$stateIdList[] = $stateId->id;
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
 		}
 
 		if ($countryId) {
-			$items = States::select(\DB::raw('id as id, state_name as text'))->whereIn('id', $stateIdList)->where('country_id', $countryId)->where('state_name', 'like', "{$search}%")->orderBy('state_name', 'ASC')->get();
+			$items = State::select(\DB::raw('id as id, state_name as text'))->whereIn('id', $stateIdList)->where('country_id', $countryId)->where('state_name', 'like', "{$search}%")->orderBy('state_name', 'ASC')->get();
 		} else {
-			$items = States::select(\DB::raw('id as id, state_name as text'))->whereIn('id', $stateIdList)->where('state_name', 'like', "{$search}%")->orderBy('state_name', 'ASC')->get();
+			$items = State::select(\DB::raw('id as id, state_name as text'))->whereIn('id', $stateIdList)->where('state_name', 'like', "{$search}%")->orderBy('state_name', 'ASC')->get();
 		}
 
 		$header = array(
@@ -123,17 +124,19 @@ class LocationController extends Controller {
 		$search  = $request->get('search');
 		$stateId = $request->get('stateId');
 
-		$company        = Companies::find(Auth::user()->company_id);
-		$townshipIds    = $company->townships;
+		$myCompany      = Company::find(Auth::user()->company_id);
 		$townshipIdList = array();
-		foreach ($townshipIds as $townshipId) {
-			$townshipIdList[] = $townshipId->id;
+		if (count($myCompany) > 0) {
+			$townshipIds = $myCompany->township;
+			foreach ($townshipIds as $townshipId) {
+				$townshipIdList[] = $townshipId->id;
+			}
 		}
 
 		if ($stateId) {
-			$items = Townships::select(\DB::raw('id as id, township_name as text'))->whereIn('id', $townshipIdList)->where('state_id', $stateId)->where('township_name', 'like', "{$search}%")->orderBy('township_name', 'ASC')->get();
+			$items = Township::select(\DB::raw('id as id, township_name as text'))->whereIn('id', $townshipIdList)->where('state_id', $stateId)->where('township_name', 'like', "{$search}%")->orderBy('township_name', 'ASC')->get();
 		} else {
-			$items = Townships::select(\DB::raw('id as id, township_name as text'))->whereIn('id', $townshipIdList)->where('township_name', 'like', "{$search}%")->orderBy('township_name', 'ASC')->get();
+			$items = Township::select(\DB::raw('id as id, township_name as text'))->whereIn('id', $townshipIdList)->where('township_name', 'like', "{$search}%")->orderBy('township_name', 'ASC')->get();
 		}
 
 		$header = array(

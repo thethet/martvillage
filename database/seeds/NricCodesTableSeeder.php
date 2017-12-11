@@ -1,6 +1,6 @@
 <?php
 
-use App\NricCodes;
+use App\NricCode;
 use Illuminate\Database\Seeder;
 
 class NricCodesTableSeeder extends Seeder {
@@ -141,7 +141,7 @@ class NricCodesTableSeeder extends Seeder {
 		];
 
 		foreach ($codes as $key => $value) {
-			NricCodes::create($value);
+			NricCode::create($value);
 		}
 	}
 }

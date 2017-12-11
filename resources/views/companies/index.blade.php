@@ -73,13 +73,13 @@
 							<td>
 								{{ $company->address }}
 								@if($company->township_id > 0)
-									{{ $townships[$company->township_id] }}
+									{{ $townshipList[$company->township_id] }}
 								@endif
 								@if($company->state_id > 0)
-									, {{ $states[$company->state_id] }}
+									, {{ $stateList[$company->state_id] }}
 								@endif
 								@if($company->country_id > 0)
-									, {{ $countries[$company->country_id] }}
+									, {{ $countryList[$company->country_id] }}
 								@endif
 							</td>
 							<td>{{ $company->expiry_date }}</td>

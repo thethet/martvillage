@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Companies extends Model {
+class Company extends Model {
 	/**
 	 * The database table used by the model.
 	 *
@@ -42,19 +42,19 @@ class Companies extends Model {
 		'updated_by',
 	];
 
-	public function countries() {
-		return $this->belongsToMany('App\Countries', 'companies_countries', 'companies_id', 'countries_id');
+	public function country() {
+		return $this->belongsToMany('App\Country', 'companies_countries', 'companies_id', 'countries_id');
 	}
 
 	// public function getCountryList() {
 	// 	return $this->countries->lists('countries_id');
 	// }
 
-	public function states() {
-		return $this->belongsToMany('App\States', 'companies_states', 'companies_id', 'states_id');
+	public function state() {
+		return $this->belongsToMany('App\State', 'companies_states', 'companies_id', 'states_id');
 	}
 
-	public function townships() {
-		return $this->belongsToMany('App\Townships', 'companies_townships', 'companies_id', 'townships_id');
+	public function township() {
+		return $this->belongsToMany('App\Township', 'companies_townships', 'companies_id', 'townships_id');
 	}
 }
