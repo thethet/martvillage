@@ -69,18 +69,18 @@
 								</div>
 							</div>
 
-							<div class="form-group {{ $errors->has('category') ? ' has-error' : '' }}">
+							<div class="form-group {{ $errors->has('category_id') ? ' has-error' : '' }}">
 								<label class="col-sm-3 control-label">Category <span class="text-danger">*</span></label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="fa fa-balance-scale"></i></span>
-										{!! Form::select('category', ['' => 'Select Category'] + $categoryList->toArray(), null, ['class' => 'form-control', 'id' => 'category', 'autocomplete' => 'off']) !!}
+										{!! Form::select('category_id', ['' => 'Select Category'] + $categoryList->toArray(), null, ['class' => 'form-control', 'id' => 'category', 'autocomplete' => 'off']) !!}
 									</div>
 
-									@if ($errors->has('category'))
+									@if ($errors->has('category_id'))
 										<span class="validate-has-error">
-											<strong>{{ $errors->first('category') }}</strong>
+											<strong>{{ $errors->first('category_id') }}</strong>
 										</span>
 									@endif
 								</div>
@@ -156,7 +156,7 @@
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-location"></i></span>
-										{!! Form::select('from_state', ['' => 'Select State'] + $countryList->toArray(), null, ['class' => 'form-control', 'id' => 'from_state', 'autocomplete' => 'off']) !!}
+										{!! Form::select('from_state', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'form-control', 'id' => 'from_state', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('from_state'))
@@ -186,7 +186,7 @@
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-location"></i></span>
-										{!! Form::select('to_state', ['' => 'Select State'] + $countryList->toArray(), null, ['class' => 'form-control', 'id' => 'to_state', 'autocomplete' => 'off']) !!}
+										{!! Form::select('to_state', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'form-control', 'id' => 'to_state', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('to_state'))
@@ -246,6 +246,52 @@
 					event.preventDefault();
 					return false;
 				}
+			});
+
+			$("#from_country").change(function(event) {
+				// Fetch the preselected item, and add to the control
+				var countryId = $('#from_country').val();
+				var stateSelect = $('#from_state');
+				$.ajax({
+					type: 'GET',
+					url: "{{ url('states/search-state-country') }}",
+					dataType: 'json',
+					delay: 250,
+					data: {
+						search: '',
+						countryId: countryId
+					}
+					,
+				}).then(function (data) {
+					var html = '<option value="">Select State/City</option>';
+					for (var i = 0, len = data.items.length; i < len; ++i) {
+						html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+					}
+					stateSelect.children().remove().end().append(html) ;
+				});
+			});
+
+			$("#to_country").change(function(event) {
+				// Fetch the preselected item, and add to the control
+				var countryId = $('#to_country').val();
+				var stateSelect = $('#to_state');
+				$.ajax({
+					type: 'GET',
+					url: "{{ url('states/search-state-country') }}",
+					dataType: 'json',
+					delay: 250,
+					data: {
+						search: '',
+						countryId: countryId
+					}
+					,
+				}).then(function (data) {
+					var html = '<option value="">Select State/City</option>';
+					for (var i = 0, len = data.items.length; i < len; ++i) {
+						html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+					}
+					stateSelect.children().remove().end().append(html) ;
+				});
 			});
 		});
 	</script>

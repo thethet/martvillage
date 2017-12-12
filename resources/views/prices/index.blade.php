@@ -111,7 +111,7 @@
 																	<i class="entypo-eye"></i>
 																</a>
 
-																@if(Auth::user()->hasRole('administrator'))
+																{{-- @if(Auth::user()->hasRole('administrator')) --}}
 																	@permission('price-edit')
 																		<a href="{{ url('prices/'. $prices[$title['country']][$sub]['id'] .'/edit') }}" class="btn btn-success btn-sm" title="Edit">
 																			<i class="entypo-pencil"></i>
@@ -123,7 +123,7 @@
 																			<i class="entypo-trash"></i>
 																		</a>
 																	@endpermission
-																@endif
+																{{-- @endif --}}
 															@endif
 														@endif
 													@endif
@@ -187,6 +187,7 @@
 	<style>
 		.table-cont {
 			max-width: 100%;
+			width: 100%;
 			overflow: auto;
 		}
 	</style>

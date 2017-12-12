@@ -178,6 +178,15 @@
 				</li>
 			@endpermission
 
+			@permission('member-list')
+				<li @if(Request::segment(1) == 'members') class="active" @endif>
+					<a href="{{ url('/members') }}">
+						<i class="fa fa-user-secret"></i>
+						<span class="title">Members</span>
+					</a>
+				</li>
+			@endpermission
+
 			@permission('lotin-list')
 				<li @if(Request::segment(1) == 'lotins') class="active" @endif>
 					<a href="{{ url('/lotins') }}">
@@ -249,15 +258,6 @@
 					<a href="{{ url('/reports') }}">
 						<i class="entypo-chart-bar"></i>
 						<span class="title">Charts</span>
-					</a>
-				</li>
-			@endpermission
-
-			@permission('member-list')
-				<li @if(Request::segment(1) == 'members') class="active" @endif>
-					<a href="{{ url('/members') }}">
-						<i class="fa fa-user-secret"></i>
-						<span class="title">Members</span>
 					</a>
 				</li>
 			@endpermission

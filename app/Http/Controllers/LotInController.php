@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Companies;
-use App\Countries;
+use App\Company;
+use App\Country;
 use App\Item;
 use App\Lotin;
-use App\NricCodes;
-use App\NricTownships;
+use App\NricCode;
+use App\NricTownship;
 use App\Price;
 use App\Receiver;
 use App\Sender;
-use App\States;
+use App\State;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -33,24 +33,31 @@ class LotInController extends Controller {
 				->where('from_state', Auth::user()->state_id)
 				->where('deleted', 'N')->paginate(10);
 		}
+		$total       = $lotinData->total();
+		$perPage     = $lotinData->perPage();
+		$currentPage = $lotinData->currentPage();
+		$lastPage    = $lotinData->lastPage();
+		$lastItem    = $lotinData->lastItem();
 
-		$sender        = Sender::lists('name', 'id');
-		$senderContact = Sender::lists('contact_no', 'id');
-		$member        = Sender::lists('member_no', 'id');
+		$senderList        = Sender::lists('name', 'id');
+		$senderContactList = Sender::lists('contact_no', 'id');
+		$memberList        = Sender::lists('member_no', 'id');
 
-		$receiver        = Receiver::lists('name', 'id');
-		$receiverContact = Receiver::lists('contact_no', 'id');
+		$receiverList        = Receiver::lists('name', 'id');
+		$receiverContactList = Receiver::lists('contact_no', 'id');
 
-		$countries = Countries::where('deleted', 'N')->orderBy('country_code', 'ASC')->lists('country_code', 'id');
-		$states    = States::where('deleted', 'N')->orderBy('state_code', 'ASC')->lists('state_code', 'id');
+		$countryList = Country::where('deleted', 'N')->orderBy('country_code', 'ASC')->lists('country_code', 'id');
+		$stateList   = State::where('deleted', 'N')->orderBy('state_code', 'ASC')->lists('state_code', 'id');
 
-		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
-		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
+		$nricCodeList     = NricCode::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
+		$nricTownshipList = NricTownship::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
 
 		$receivers     = Receiver::where('company_id', Auth::user()->company_id)->get();
 		$receiverCount = count($receivers);
 
-		return view('lotins.index', ['lotinData' => $lotinData, 'sender' => $sender, 'member' => $member, 'senderContact' => $senderContact, 'receiver' => $receiver, 'receiverContact' => $receiverContact, 'countries' => $countries, 'states' => $states, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships, 'receiverCount' => $receiverCount])->with('i', ($request->get('page', 1) - 1) * 10);
+		$companyList = Company::where('deleted', 'N')->lists('company_name', 'id');
+
+		return view('lotins.index', ['lotinData' => $lotinData, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'senderList' => $senderList, 'memberList' => $memberList, 'senderContactList' => $senderContactList, 'receiverList' => $receiverList, 'receiverContactList' => $receiverContactList, 'countryList' => $countryList, 'stateList' => $stateList, 'nricCodeList' => $nricCodeList, 'nricTownshipList' => $nricTownshipList, 'receiverCount' => $receiverCount, 'companyList' => $companyList])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
 	/**
@@ -60,38 +67,40 @@ class LotInController extends Controller {
 	 */
 	public function create() {
 		if (Auth::user()->hasRole('administrator')) {
-			$priceList       = Price::where('deleted', 'N')->lists('title_name', 'id');
-			$receiveAddress  = Receiver::where('deleted', 'N')->lists('address', 'id');
-			$receiverLastIds = Receiver::select('id')->first();
-			$receiver        = Receiver::get();
+			$priceList          = Price::where('deleted', 'N')->lists('title_name', 'id');
+			$receiveAddressList = Receiver::where('deleted', 'N')->lists('address', 'id');
+			$receiverLastIds    = Receiver::select('id')->first();
+			$receiver           = Receiver::get();
 		} else {
-			$priceList       = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('title_name', 'id');
-			$receiveAddress  = Receiver::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('address', 'id');
-			$receiverLastIds = Receiver::where('company_id', Auth::user()->company_id)->select('id')->first();
-			$receiver        = Receiver::where('company_id', Auth::user()->company_id)->get();
+			$priceList          = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('title_name', 'id');
+			$receiveAddressList = Receiver::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('address', 'id');
+			$receiverLastIds    = Receiver::where('company_id', Auth::user()->company_id)->select('id')->first();
+			$receiver           = Receiver::where('company_id', Auth::user()->company_id)->get();
 		}
 
-		$company       = Companies::find(Auth::user()->company_id);
-		$countryIds    = $company->countries;
+		$myCompany     = Company::find(Auth::user()->company_id);
 		$countryIdList = array();
-		foreach ($countryIds as $country) {
-			$countryIdList[] = $country->id;
-		}
-		$stateIds    = $company->states;
-		$stateIdList = array();
-		foreach ($stateIds as $stateId) {
-			$stateIdList[] = $stateId->id;
-		}
-
-		$countries = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$states    = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
-
-		foreach ($receiveAddress as $key => $value) {
-			$receiveAddress[$key] = $value . " of " . count($receiveAddress);
+		$stateIdList   = array();
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
 		}
 
-		$$nricCodes    = NricCodes::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
-		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
+		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList   = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+
+		foreach ($receiveAddressList as $key => $value) {
+			$receiveAddressList[$key] = $value . " of " . count($receiveAddressList);
+		}
+
+		$nricCodeList     = NricCode::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
+		$nricTownshipList = NricTownship::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
 
 		$lastId = Lotin::where('company_id', Auth::user()->company_id)->where('date', date('Y-m-d'))->count();
 		if ($lastId) {
@@ -116,7 +125,7 @@ class LotInController extends Controller {
 		$receiverCount += 1;
 		$receiverLastNo = $receiverLastId . ' of ' . $receiverCount;
 
-		return view('lotins.create', ['countries' => $countries, 'states' => $states, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships, 'priceList' => $priceList, 'receiveAddress' => $receiveAddress, 'logNo' => $logNo, 'receiverLastNo' => $receiverLastNo, 'receiverLastId' => $receiverLastId]);
+		return view('lotins.create', ['countryList' => $countryList, 'stateList' => $stateList, 'nricCodeList' => $nricCodeList, 'nricTownshipList' => $nricTownshipList, 'priceList' => $priceList, 'receiveAddressList' => $receiveAddressList, 'logNo' => $logNo, 'receiverLastNo' => $receiverLastNo, 'receiverLastId' => $receiverLastId, 'myCompany' => $myCompany]);
 	}
 
 	/**
@@ -126,51 +135,53 @@ class LotInController extends Controller {
 	 */
 	public function store(Request $request) {
 		$messages = array(
-			's_contact_no.required'     => 'The Sender Contact Number  field is required.',
-			'member_no.exists'          => 'Your Member Number is wrong or you are not member.',
-			'sender_name.required'      => 'The Sender Name  field is required.',
-			// 'nric_code_id.required'       => 'The NRIC Code  field is required.',
-			// 'nric_township_id.required'   => 'The NRIC Township  field is required.',
-			// 'nric_no.required'            => 'The NRIC Number  field is required.',
+			's_contact_no.required'       => 'The Sender Contact Number  field is required.',
+			'member_no.exists'            => 'Your Member Number is wrong or you are not member.',
+			'sender_name.required'        => 'The Sender Name  field is required.',
+			'nric_code_id.required'       => 'The NRIC Code  field is required.',
+			'nric_township_id.required'   => 'The NRIC Township  field is required.',
+			'nric_no.required'            => 'The NRIC Number  field is required.',
 
-			'r_contact_no.required'     => 'The Receiver Contact Number  field is required.',
-			'receiver_name.required'    => 'The Receiver Name  field is required.',
-			// 'r_nric_code_id.required'     => 'The NRIC Code  field is required.',
-			// 'r_nric_township_id.required' => 'The NRIC Township  field is required.',
-			// 'r_nric_no.required'          => 'The NRIC Number  field is required.',
+			'r_contact_no.required'       => 'The Receiver Contact Number  field is required.',
+			'receiver_name.required'      => 'The Receiver Name  field is required.',
+			'r_nric_code_id.required'     => 'The NRIC Code  field is required.',
+			'r_nric_township_id.required' => 'The NRIC Township  field is required.',
+			'r_nric_no.required'          => 'The NRIC Number  field is required.',
 
-			'country_id.required'       => 'The From Country  field is required.',
-			'state_id.required'         => 'The From State  field is required.',
+			'country_id.required'         => 'The From Country  field is required.',
+			'state_id.required'           => 'The From State  field is required.',
 
-			'to_country_id.required'    => 'The From Country  field is required.',
-			'to_state_id.required'      => 'The From State  field is required.',
+			'to_country_id.required'      => 'The From Country  field is required.',
+			'to_state_id.required'        => 'The From State  field is required.',
 
-			'lots.*.item_name.required' => 'The Item Name  field is required.',
-			'lots.*.barcode.required'   => 'The Barcode  field is required.',
-			'lots.*.price_id.required'  => 'The Price Category  field is required.',
-			'lots.*.unit.required'      => 'The Unit  field is required.',
-			'lots.*.quantity.required'  => 'The Quantity  field is required.',
-			'lots.*.amount.required'    => 'The Amount  field is required.',
+			'lots.*.item_name.required'   => 'The Item Name  field is required.',
+			'lots.*.barcode.required'     => 'The Barcode  field is required.',
+			'lots.*.price_id.required'    => 'The Price Category  field is required.',
+			'lots.*.unit.required'        => 'The Unit  field is required.',
+			'lots.*.quantity.required'    => 'The Quantity  field is required.',
+			'lots.*.amount.required'      => 'The Amount  field is required.',
 		);
 
 		$this->validate($request, [
-			// 's_contact_no' => 'required|unique:senders,contact_no',
-			// 'member_no'    => 'required|unique:senders,member_no',
-			// 'sender_name'        => 'required',
-			// 'nric_code_id'       => 'required',
-			// 'nric_township_id'   => 'required',
-			// 'nric_no'            => 'required',
+			's_contact_no'       => 'required|unique:senders,contact_no',
+			'member_no'          => 'required|unique:senders,member_no',
+			'sender_name'        => 'required',
+			'nric_code_id'       => 'required',
+			'nric_township_id'   => 'required',
+			'nric_no'            => 'required',
 
-			// 'r_contact_no' => 'required|unique:receivers,contact_no',
-			// 'receiver_name'      => 'required',
-			// 'r_nric_code_id'     => 'required',
-			// 'r_nric_township_id' => 'required',
-			// 'r_nric_no'          => 'required',
+			'r_contact_no'       => 'required|unique:receivers,contact_no',
+			'receiver_name'      => 'required',
+			'r_nric_code_id'     => 'required',
+			'r_nric_township_id' => 'required',
+			'r_nric_no'          => 'required',
 
 			// 'date'               => 'required',
-			// 'country_id'         => 'required',
-			// 'state_id'           => 'required',
-			'payment' => 'required',
+			'country_id'         => 'required',
+			'state_id'           => 'required',
+			'to_country_id'      => 'required',
+			'to_state_id'        => 'required',
+			'payment'            => 'required',
 
 			// 'lots.*.item_name'   => 'required',
 			// 'lots.*.barcode'     => 'required',

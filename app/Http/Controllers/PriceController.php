@@ -163,7 +163,7 @@ class PriceController extends Controller {
 			'category_id'  => 'required',
 			'currency_id'  => 'required',
 			'title_name'   => 'required',
-			'unit_price'   => 'required',
+			'unit_price'   => 'required|numeric',
 			'from_country' => 'required',
 			'from_state'   => 'required',
 			'to_country'   => 'required',

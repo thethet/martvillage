@@ -296,26 +296,6 @@ Route::group(['middleware' => ['auth']], function () {
 
 	/*
 	|--------------------------------------------------------------------------
-	| User Controller
-	|--------------------------------------------------------------------------
-	|
-	| This is the route for User Model CRUD
-	|
-	 */
-	Route::get('users', ['as' => 'users.index', 'uses' => 'UserController@index', 'middleware' => ['permission:user-list|user-create|user-edit|user-delete']]);
-
-	Route::get('users/create', ['as' => 'users.create', 'uses' => 'UserController@create', 'middleware' => ['permission:user-create']]);
-	Route::post('users/create', ['as' => 'users.store', 'uses' => 'UserController@store', 'middleware' => ['permission:user-create']]);
-
-	Route::get('users/{id}', ['as' => 'users.show', 'uses' => 'UserController@show']);
-
-	Route::get('users/{id}/edit', ['as' => 'users.edit', 'uses' => 'UserController@edit', 'middleware' => ['permission:user-edit']]);
-	Route::patch('users/{id}', ['as' => 'users.update', 'uses' => 'UserController@update', 'middleware' => ['permission:user-edit']]);
-
-	Route::delete('users/{id}', ['as' => 'users.destroy', 'uses' => 'UserController@destroy', 'middleware' => ['permission:user-delete']]);
-
-	/*
-	|--------------------------------------------------------------------------
 	| Category Controller
 	|--------------------------------------------------------------------------
 	|
@@ -359,13 +339,23 @@ Route::group(['middleware' => ['auth']], function () {
 	| Pricing Controller
 	|--------------------------------------------------------------------------
 	|
-	| This is the route for Country, States and Township Models CRUD
+	| This is the route for Pricing Models CRUD
+	|
+	 */
+	Route::get('pricing-setup', ['as' => 'pricing-setup.index', 'uses' => 'PricingController@index']);
+
+	/*
+	|--------------------------------------------------------------------------
+	| Price Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Price Models CRUD
 	|
 	 */
 	Route::get('prices', ['as' => 'prices.index', 'uses' => 'PriceController@index', 'middleware' => ['permission:price-list|price-create|price-edit|price-delete']]);
 
 	Route::get('prices/create', ['as' => 'prices.create', 'uses' => 'PriceController@create', 'middleware' => ['permission:price-create']]);
-	Route::post('prices/create', ['as' => 'prices.store', 'uses' => 'PriceController@store ', 'middleware' => ['permission:price-create']]);
+	Route::post('prices/create', ['as' => 'prices.store', 'uses' => 'PriceController@store', 'middleware' => ['permission:price-create']]);
 
 	Route::get('prices/{id}', ['as' => 'prices.show', 'uses' => 'PriceController@show']);
 
@@ -396,6 +386,26 @@ Route::group(['middleware' => ['auth']], function () {
 
 	/*
 	|--------------------------------------------------------------------------
+	| User Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for User Model CRUD
+	|
+	 */
+	Route::get('users', ['as' => 'users.index', 'uses' => 'UserController@index', 'middleware' => ['permission:user-list|user-create|user-edit|user-delete']]);
+
+	Route::get('users/create', ['as' => 'users.create', 'uses' => 'UserController@create', 'middleware' => ['permission:user-create']]);
+	Route::post('users/create', ['as' => 'users.store', 'uses' => 'UserController@store', 'middleware' => ['permission:user-create']]);
+
+	Route::get('users/{id}', ['as' => 'users.show', 'uses' => 'UserController@show']);
+
+	Route::get('users/{id}/edit', ['as' => 'users.edit', 'uses' => 'UserController@edit', 'middleware' => ['permission:user-edit']]);
+	Route::patch('users/{id}', ['as' => 'users.update', 'uses' => 'UserController@update', 'middleware' => ['permission:user-edit']]);
+
+	Route::delete('users/{id}', ['as' => 'users.destroy', 'uses' => 'UserController@destroy', 'middleware' => ['permission:user-delete']]);
+
+	/*
+	|--------------------------------------------------------------------------
 	| Member Controller
 	|--------------------------------------------------------------------------
 	|
@@ -407,7 +417,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('members/create', ['as' => 'members.create', 'uses' => 'MemberController@create', 'middleware' => ['permission:member-create']]);
 	Route::post('members/create', ['as' => 'members.store', 'uses' => 'MemberController@store', 'middleware' => ['permission:member-create']]);
 
-	Route::get('members/ajax/{id}/edit', ['as' => 'members.ajax.edit', 'uses' => 'MemberController@editAjax', 'middleware' => ['permission:member-edit']]);
+	Route::get('members/{id}', ['as' => 'members.show', 'uses' => 'MemberController@show']);
+
 	Route::get('members/{id}/edit', ['as' => 'members.edit', 'uses' => 'MemberController@edit', 'middleware' => ['permission:member-edit']]);
 	Route::patch('members/{id}', ['as' => 'members.update', 'uses' => 'MemberController@update', 'middleware' => ['permission:member-edit']]);
 

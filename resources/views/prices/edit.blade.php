@@ -156,7 +156,7 @@
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-location"></i></span>
-										{!! Form::select('from_state', ['' => 'Select State'] + $countryList->toArray(), null, ['class' => 'form-control', 'id' => 'from_state', 'autocomplete' => 'off']) !!}
+										{!! Form::select('from_state', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'form-control', 'id' => 'from_state', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('from_state'))
@@ -186,7 +186,7 @@
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-location"></i></span>
-										{!! Form::select('to_state', ['' => 'Select State'] + $countryList->toArray(), null, ['class' => 'form-control', 'id' => 'to_state', 'autocomplete' => 'off']) !!}
+										{!! Form::select('to_state', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'form-control', 'id' => 'to_state', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('to_state'))

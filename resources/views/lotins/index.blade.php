@@ -1,101 +1,150 @@
 @extends('layouts.layout')
 
-@section('site-title')
-	<div class="col-md-4 site-icon">
-		<img class="profile-icon" src="{{ asset('assets/img/lot-in.png') }}" alt="Lot-in">
-	</div>
-	<div class="col-md-8 site-header">Lot-in</div>
+@section('page-title')
+	Lotin
 @stop
 
 @section('main')
 	<div class="main-content">
+		@include('layouts.headerbar')
+		<hr />
+
+		<ol class="breadcrumb bc-3" >
+			<li>
+				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
+			</li>
+			<li class="active">
+				<strong>Lotin Management</strong>
+			</li>
+		</ol>
+
+		<h2>Lotin Management</h2>
+		<br />
 
 		@if ($message = Session::get('success'))
-		<div class="alert alert-success">
-			<p>{{ $message }}</p>
-		</div>
+			<div class="alert alert-success">
+				<strong>Well done!</strong> {{ $message }}
+			</div>
 		@endif
 
-		<div class="table-cont">
-			<table class="table table-bordered table-responsive">
-				<tr>
-					<th>No</th>
-					<th>Lot No.</th>
-					<th>Sender Name</th>
-					<th>Sender Contact No.</th>
-					<th>Member No.</th>
-					<th>Reciever Name</th>
-					<th>Receiver Contact No.</th>
-					<th>From - To</th>
-					{{-- <th width="20px">Action</th> --}}
-				</tr>
-				@foreach ($lotinData as $key => $lotin)
-				<tr>
-					<td>{{ ++$i }}</td>
-					<td>{{ $lotin->lot_no }}</td>
+		<div class="panel panel-primary" data-collapsed="0">
+			<div class="panel-heading">
+				<div class="panel-title">
+					Showing {{ $i + 1 }} to @if($currentPage == $lastPage) {{ $lastItem }} @else {{ $i + $perPage }} @endif of {{ $total }} entries
+				</div>
 
-					<td>{{ $sender[$lotin->sender_id] }}</td>
+				<div class="panel-options">
+					@permission('lotin-create')
+						<a href="{{ url('lotins/create') }}">
+							<i class="entypo-plus-squared"></i>
+							New
+						</a>
+						&nbsp;|&nbsp;
+					@endpermission
+					<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+				</div>
+			</div>
 
-					<td>{{ $senderContact[$lotin->sender_id] }}</td>
+			<div class="panel-body with-table">
+				<table class="table table-bordered responsive">
+					<thead>
+						<tr>
+							<th width="5%">SNo.</th>
+							<th>Lot No.</th>
+							<th>Sender Name</th>
+							<th>Sender Contact No.</th>
+							<th>Member No.</th>
+							<th>Reciever Name</th>
+							<th>Receiver Contact No.</th>
+							<th>From - To</th>
+							@if(Auth::user()->hasRole('administrator'))
+							<th>Company Name</th>
+							@endif
+							<th width="15%">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach($lotinData as $key => $lotin)
+						<tr>
+							<td>{{ ++$i }}</td>
+							<td>{{ $lotin->lot_no }}</td>
+							<td>{{ $senderList[$lotin->sender_id] }}</td>
+							<td>{{ $senderContactList[$lotin->sender_id] }}</td>
+							<td>{{ $memberList[$lotin->sender_id] }}</td>
+							<td>{{ $receiverList[$lotin->receiver_id] }}</td>
+							<td>{{ $receiverContactList[$lotin->receiver_id] }}</td>
+							<td>
+								{{ $stateList[$lotin->from_state] }} <=> {{ $stateList[$lotin->to_state] }}
+							</td>
+							@if(Auth::user()->hasRole('administrator'))
+								<td>
+									{{ $companyList[$lotin->company_id] }}
+								</td>
+							@endif
+							<td>
+								<a href="{{ url('lotins/'. $lotin->id) }}" class="btn btn-info btn-sm">
+									<i class="entypo-eye"></i>
+								</a>
 
-					<td>{{ $member[$lotin->sender_id] }}</td>
+								@if(Auth::user()->hasRole('administrator') || $lotin->company_id == Auth::user()->company_id)
+									@permission('lotin-edit')
+									<a href="{{ url('lotins/'. $lotin->id .'/edit') }}" class="btn btn-success btn-sm">
+										<i class="entypo-pencil"></i>
+									</a>
+									@endpermission
 
-					<td>{{ $receiver[$lotin->receiver_id] }}</td>
+									@permission('lotin-delete')
+									<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $lotin->id }}">
+										<i class="entypo-trash"></i>
+									</a>
+									@endpermission
+								@endif
+							</td>
+						</tr>
+						@endforeach
+					</tbody>
+				</table>
 
-					<td>{{ $receiverContact[$lotin->receiver_id] }}</td>
-
-					<td>
-						{{ $states[$lotin->from_state] }} <=> {{ $states[$lotin->to_state] }}
-					</td>
-
-					{{-- <td>
-						{!! Form::checkbox('edit', $lotin->id, null, ['class' => 'editboxes']) !!}
-					</td> --}}
-				</tr>
-				@endforeach
-			</table>
+				{!! $lotinData->render() !!}
+			</div>
 		</div>
-		{!! $lotinData->render() !!}
 
-	</div><!-- .main-content -->
-
-	<div class="footer-menu">
-		<div class="footer-content">
-			<div class="menu-icon">
-				<a href="{{ url('/dashboard') }}">
-					<img src="{{ asset('assets/img/home-icon.jpeg') }}" alt="Go Home">
-					Home
-				</a>
-			</div><!-- .menu-icon -->
-
-			@permission('lotin-create')
-				<div class="menu-icon">
-					<a href="{{ url('lotins/create') }}" id="add-item">
-						<img src="{{ asset('assets/img/new-icon.png') }}" alt="Add">
-						New
-					</a>
-				</div><!-- .menu-icon -->
-			@endpermission
-
-			<div class="menu-icon">
-				<a href="{{ url('dashboard') }}" >
-					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
-					Back
-				</a>
-			</div><!-- .menu-icon -->
-
-		</div>
-	</div><!-- .footer-menu -->
+		<!-- Footer -->
+		<footer class="main">
+			Copyright &copy; 2017 All Rights Reserved. <strong>MSCT Co.Ltd</strong>
+		</footer>
+	</div>
 @stop
 
 @section('my-script')
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/select2/dist/css/select2.css') }}">
-	<script src="{{ asset('plugins/select2/dist/js/select2.js') }}"></script>
-	<script>
-		$(document).ready(function(){});
+	<!-- Imported styles on this page -->
+	<link rel="stylesheet" href="{{ asset('assets/js/datatables/datatables.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2-bootstrap.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2.css') }}">
 
+	<!-- Imported scripts on this page -->
+	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
+	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
+
+	<script>
+		$(document).ready(function(){
+			$(".destroy").on("click", function(event){
+				var confD = confirm('Are you sure to delete?');
+				if (confD) {
+					var id = $(this).attr('id');
+					$.ajax({
+						url: "{!! url('lotins/"+ id +"') !!}",
+						type: 'DELETE',
+						data: {_token: '{!! csrf_token() !!}'},
+						dataType: 'JSON',
+						success: function (data) {
+							window.location.replace(data.url);
+						}
+					});
+				}
+			});
+		});
 	</script>
 @stop
+
