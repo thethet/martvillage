@@ -18,7 +18,7 @@
 				<a href="{{ url('lotins') }}">Lotin Management</a>
 			</li>
 			<li class="active">
-				<strong>New Create Form</strong>
+				<strong>Edit Form</strong>
 			</li>
 		</ol>
 
@@ -30,7 +30,7 @@
 				<div class="panel panel-primary" data-collapsed="0">
 					<div class="panel-heading">
 						<div class="panel-title">
-							<strong>New Create Form</strong>
+							<strong>Edit Form</strong>
 						</div>
 
 						<div class="panel-options">
@@ -39,7 +39,7 @@
 					</div>
 
 					<div class="panel-body">
-						{!! Form::open(array('route' => 'lotins.store','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate')) !!}
+						{!! Form::model($lotinData, ['method' => 'PATCH','route' => ['lotins.update', $lotinData->id], 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate', 'enctype' => 'multipart/form-data']) !!}
 
 							<div class="form-group {{ $errors->has('company_id') ? ' has-error' : '' }}">
 								<label class="col-sm-3 control-label">Company Name <span class="text-danger">*</span></label>
@@ -69,7 +69,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-users"></i></span>
-										{!! Form::text('member_no', null, ['placeholder' => 'Member No', 'class' => 'form-control', 'id' => 'member_no', 'autocomplete' => 'off']) !!}
+										{!! Form::text('member_no', null, ['placeholder' => 'Member No', 'class' => 'form-control', 'id' => 'member_no', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 
 									@if ($errors->has('member_no'))
@@ -146,7 +146,7 @@
 									<div class="col-sm-5">
 										<div class="input-group minimal">
 											<span class="input-group-addon"><i class="entypo-users"></i></span>
-											{!! Form::text('to_state_id_news',  $receiverLastNo, ['placeholder' => 'Address', 'class' => 'form-control', 'id' => 'to-add', 'autocomplete' => 'off', 'readonly']) !!}
+											{!! Form::text('to_state_id_news',  $receiverLastNo, ['placeholder' => 'Address', 'class' => 'form-control', 'id' => 'to-add', 'autocomplete' => 'off', 'disabled']) !!}
 											{!! Form::hidden('to_state_id_new',  $receiverLastId, ['placeholder' => 'Address', 'class' => 'form-control', 'id' => 'to-adds', 'autocomplete' => 'off', 'readonly']) !!}
 										</div>
 									</div>
@@ -236,7 +236,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-calendar"></i></span>
-										{!! Form::text('date', date('Y-m-d'), ['placeholder' => 'Date','class' => 'form-control datepicker', 'id' => 'date', 'data-format' => 'yyyy-mm-dd', 'autocomplete' => 'off']) !!}
+										{!! Form::text('date', date('Y-m-d'), ['placeholder' => 'Date','class' => 'form-control datepicker', 'id' => 'date', 'data-format' => 'yyyy-mm-dd', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 
 									@if ($errors->has('date'))
@@ -253,7 +253,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-map"></i></span>
-										{!! Form::text('lot_no', $logNo, ['placeholder' => 'Lot No', 'class' => 'form-control', 'id' => 'lot_no', 'autocomplete' => 'off', 'readonly']) !!}
+										{!! Form::text('lot_no', null, ['placeholder' => 'Lot No', 'class' => 'form-control', 'id' => 'lot_no', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 
 									@if ($errors->has('lot_no'))
@@ -349,94 +349,52 @@
 											<th>Item's Name</th>
 											<th>Barcode No</th>
 											<th>Type</th>
-											<th>Unit Price</th>
+											<th width="13%">Unit Price</th>
 											<th width="8%">Unit</th>
 											<th width="13%">Quantity</th>
 											<th width="10%">Amount</th>
 										</tr>
 									</thead>
 									<tbody>
-										<?php $j = 0; ?>
-										@for($i = 0; $i < 7; $i++)
-											<tr id="row{{ $j }}">
-												<td>{{ $j+1 }}</td>
+										<?php $j = 7 - count($itemList); $i = 1; ?>
+
+										@foreach($itemList as $item)
+											<tr>
+												<td>{{ $i++ }}</td>
 												<td>
-													{!! Form::text('lots['.$j.'][item_name]', null, ['placeholder' => 'Item Name', 'class' => 'form-control item_name', 'id' => 'itemname-'.$j, 'autocomplete' => 'off']) !!}
-													@if ($errors->has("lots.$j.item_name"))
-														<span class="validate-has-error">
-															<strong>{{ $errors->first("lots.$j.item_name") }}</strong>
-														</span>
-													@endif
+													{{ $item->item_name }}
 												</td>
 
 												<td>
-													{!! Form::text('lots['.$j.'][barcode]', null, ['placeholder' => 'Barcode', 'class' => 'form-control barcode', 'id' => 'barcode-'.$j, 'autocomplete' => 'off']) !!}
-													@if ($errors->has("lots.$j.barcode"))
-														<span class="validate-has-error">
-															<strong>{{ $errors->first("lots.$j.barcode") }}</strong>
-														</span>
-													@endif
+													{{ $item->barcode }}
 												</td>
 
 												<td>
-													{!! Form::select('lots['.$j.'][price_id]',  ['' => 'Select Type'] + $priceList->toArray(), null, ['class' => 'form-control price_id', 'id' => 'priceid-'.$j, 'autocomplete' => 'off']) !!}
-
-													@if ($errors->has("lots.$j.price_id"))
-														<span class="validate-has-error">
-															<strong>{{ $errors->first("lots.$j.price_id") }}</strong>
-														</span>
-													@endif
-													{!! Form::hidden('lots['.$j.'][unit_price]', null, ['placeholder' => 'Unit Price', 'class' => 'form-control unit_price', 'id' => 'unitprice-'.$j, 'autocomplete' => 'off', 'readonly']) !!}
-													{!! Form::hidden('lots['.$j.'][category_id]', null, ['placeholder' => 'Category', 'class' => 'form-control category_id', 'id' => 'category_id-'.$j, 'autocomplete' => 'off', 'readonly']) !!}
-													{!! Form::hidden('lots['.$j.'][currency_id]', null, ['placeholder' => 'Currency', 'class' => 'form-control currency_id', 'id' => 'currency_id-'.$j, 'autocomplete' => 'off', 'readonly']) !!}
+													{{ $priceList[$item->price_id] }}
 												</td>
 
-												<td id="unit-price-{{ $j }}" class="unit-prices">
+												<td  class="unit-prices">
+													{{ number_format($item->unit_price, 2) }} {{ $currencyList[$item->currency_id] }} ({{ $categoryList[$item->category_id] }})
 												</td>
 
-												<td>
-													<div class="col-sm-8" style="padding: 0;">
-														{!! Form::text('lots['.$j.'][unit]', null, ['placeholder' => 'Unit', 'class' => 'form-control unit', 'id' => 'unit-'.$j, 'autocomplete' => 'off', 'readonly']) !!}
-														{{-- {!! Form::text('lots['.$j.'][unit_type]', null, ['placeholder' => 'Unit', 'class' => 'form-control unit-type', 'id' => 'unit-type-'.$j, 'autocomplete' => 'off', 'readonly']) !!} --}}
-													</div>
-													<label class="col-sm-1 control-label" style="padding-left: 3px;">
-														<span id="unit-type-{{ $j }}"></span>
-													</label>
-													@if ($errors->has("lots.$j.unit"))
-														<span class="validate-has-error">
-															<strong>{{ $errors->first("lots.$j.unit") }}</strong>
-														</span>
-													@endif
+												<td class="text-right">
+													{{ $item->unit }}
 												</td>
 
-												<td>
+												<td class="text-right">
 													<div class="input-spinner">
-														<button type="button" class="btn btn-default">-</button>
-															{!! Form::text('lots['.$j.'][quantity]', 1, ['placeholder' => 'Quantity', 'class' => 'form-control quantity size-1', 'id' => 'quantity-'.$j, 'autocomplete' => 'off', 'data-min' => 0, 'data-max' => 99]) !!}
-														<button type="button" class="btn btn-default">+</button>
+														{{ $item->quantity}}
 													</div>
-
-													@if ($errors->has("lots.$j.quantity"))
-														<span class="validate-has-error">
-															<strong>{{ $errors->first("lots.$j.quantity") }}</strong>
-														</span>
-													@endif
 												</td>
 
-												<td>
-													{!! Form::text('lots['.$j.'][amount]', null, ['placeholder' => 'Amount', 'class' => 'form-control amount', 'id' => 'amount-'.$j, 'autocomplete' => 'off', 'readonly']) !!}
-													@if ($errors->has("lots.$j.amount"))
-														<span class="validate-has-error">
-															<strong>{{ $errors->first("lots.$j.amount") }}</strong>
-														</span>
-													@endif
+												<td class="text-right">
+													{{ number_format($item->amount, 2) }}
 												</td>
 											</tr>
-											<?php $j++; ?>
-										@endfor
+										@endforeach
 
 
-										@for($x = 0; $x < 3; $x++)
+										@for($x = 0; $x < $j; $x++)
 										<tr>
 											<td>&nbsp;</td>
 											<td></td>
@@ -451,96 +409,76 @@
 
 										<tr>
 											<td colspan="6" class="text-right"><b>Sub Total</b></td>
+											<td class="text-right"></td>
 											<td class="text-right">
-												{{ Form::hidden('total_amt', null, ['id' => 'subtotal']) }}
-												{{ Form::hidden('item_count', $j, ['id' => 'itm-count']) }}
-											</td>
-											<td class="text-right">
-												<b><span id="sub-text">0.00</span></b>
+												<b>
+													{{ number_format($lotinData->total_amt, 2) }}
+												</b>
 											</td>
 										</tr>
 
 										<tr>
 											<td colspan="6" class="text-right"><b>Member Discount (-)</b></td>
 											<td class="text-right">
-												{{ Form::hidden('member_discount', null, ['id' => 'member_discount']) }}
-												{{ Form::hidden('member_discount_amt', null, ['id' => 'member_discount_amt']) }}
-												<b><span id="member-rate-text">0</span> %</b>
+												<b>
+													{{ $lotinData->member_discount }} %
+												</b>
 											</td>
 											<td class="text-right">
-												<b><span id="member-text">0.00</span></b>
+												<b>
+													{{ number_format($lotinData->member_discount_amt, 2) }}
+												</b>
 											</td>
 										</tr>
 
 										<tr>
 											<td colspan="6" class="text-right">
-												<b>Other Discount (-)</b><br>
-												<label class="control-label col-sm-8">&nbsp;</label>
-												<label class="control-label col-sm-2">
-													{{ Form::radio('other_discount_type', 0, false, ['class' => 'other_discount_type', 'id' => 'otherp']) }} By Percent
-												</label>
-												<label class="control-label col-sm-2">
-													{{ Form::radio('other_discount_type', 1, false, ['class' => 'other_discount_type', 'id' => 'othera']) }} By Amount
-												</label>
+												<b>Other Discount (-)</b>
 											</td>
 											<td class="text-right">
-												<div class="form-group">
-													<label class="col-sm-4 control-label">
-														&nbsp;
-													</label>
-													<div class="col-sm-5" style="padding: 0;">
-														{!! Form::text('other_discount', 0, ['placeholder' => 'Other Discount', 'class' => 'form-control', 'id' => 'other_discount', 'autocomplete' => 'off', 'readonly']) !!}
-
-														@if ($errors->has('other_discount'))
-															<span class="text-danger">
-																<strong>{{ $errors->first('other_discount') }}</strong>
-															</span>
-														@endif
-													</div>
-													<label class="col-sm-1 control-label"><b>%</b></label>
-												 </div>
+												<b>
+													{{ $lotinData->other_discount }} %
+												</b>
 											</td>
 											<td class="text-right">
-												{{ Form::text('other_discount_amt', 0, ['class' => 'form-control', 'id' => 'other_discount_amt', 'autocomplete' => 'off', 'readonly']) }}
-												@if ($errors->has('other_discount_amt'))
-													<span class="text-danger">
-														<strong>{{ $errors->first('other_discount_amt') }}</strong>
-													</span>
-												@endif
+												<b>
+													{{ number_format($lotinData->other_discount_amt, 2) }}
+												</b>
 											</td>
 										</tr>
 
 										<tr>
 											<td colspan="6" class="text-right"><b>GST</b></td>
 											<td class="text-right">
-												{{ Form::hidden('gov_tax', $myCompany->gst_rate, ['id' => 'gst']) }}
-												{{ Form::hidden('gov_tax_amt', 0.00, ['id' => 'gst_amt']) }}
-												<b>{{ $myCompany->gst_rate }} %</b>
+												<b>{{ $lotinData->gov_tax }} %</b>
 											</td>
 											<td class="text-right">
-												<b><span id="gst-text">0.00</span></b>
+												<b>
+													{{ number_format($lotinData->gov_tax_amt, 2) }}
+												</b>
 											</td>
 										</tr>
 
 										<tr>
 											<td colspan="6" class="text-right"><b>Service Charges</b></td>
 											<td class="text-right">
-												{{ Form::hidden('service_charge', $myCompany->service_rate, ['id' => 'service']) }}
-												{{ Form::hidden('service_charge_amt', 0.00, ['id' => 'service_amt']) }}
-												<b>{{ $myCompany->service_rate }} %</b>
+												<b>{{ $lotinData->service_charge }} %</b>
 											</td>
 											<td class="text-right">
-												<b><span id="service-text">0.00</span></b>
+												<b>
+													{{ number_format($lotinData->service_charge_amt, 2) }}
+												</b>
 											</td>
 										</tr>
 
 										<tr>
 											<td colspan="6" class="text-right"><b>Net Balance</b></td>
 											<td class="text-right">
-												{{ Form::hidden('net_amt', null, ['id' => 'net_amt']) }}
 											</td>
 											<td class="text-right">
-												<b><span id="net-text">0.00</span></b>
+												<b>
+													{{ number_format($lotinData->net_amt, 2) }}
+												</b>
 											</td>
 										</tr>
 									</tbody>
@@ -552,11 +490,11 @@
 
 								<div class="col-sm-5">
 									<button type="submit" class="btn btn-success btn-icon">
-										Save
+										Save Changes
 										<i class="entypo-floppy"></i>
 									</button>
 									<button type="reset" class="btn btn-info btn-icon">
-										Reset
+										Reset Previous
 										<i class="entypo-erase"></i>
 									</button>
 									<a href="{{ route('lotins.index') }}" class="btn btn-orange btn-icon">
@@ -951,197 +889,7 @@
 					}
 				});
 			});
-
-
-			$(".price_id").change(function(event) {
-				// Fetch the preselected item, and add to the control
-				var priceId = $(this).val();
-				var classes = this.id.split('-');
-
-				$.ajax({
-					type: 'GET',
-					url: "{{ url('lotins/search-unitprice') }}",
-					dataType: 'json',
-					delay: 250,
-					data: {
-						priceId: priceId
-					}
-					,
-				}).then(function (data) {
-					console.log(data)
-					if(data != null) {
-						$('#unit-' + classes[1]).val(1);
-						$('#unit-' + classes[1]).attr('readonly', false);
-						$('#unit-type-' + classes[1]).text(data.unit);
-						$('#unitprice-' + classes[1]).val(parseFloat(data.unit_price).toFixed(2));
-						$('#category_id-' + classes[1]).val(data.category_id);
-						$('#currency_id-').val(data.currency_id);
-						if(data.unit != '%') {
-							$('#unit-price-' + classes[1]).text((parseFloat(data.unit_price).toFixed(2)) + " " + data.type + "(per " + data.unit  + ")");
-						} else {
-							$('#unit-price-' + classes[1]).text((parseFloat(data.unit_price)) + " " + data.unit);
-						}
-
-						var amount = parseFloat(data.unit_price) * parseFloat($('#quantity-' + classes[1]).val());
-
-						$('#unitprice-' + classes[1]).attr('readonly', true);
-						$('#amount-' + classes[1]).val(parseFloat(amount).toFixed(2));
-						calculateTotal();
-					} else {
-						$('#unit-' + classes[1]).val('');
-						$('#unit-type-' + classes[1]).val('');
-						$('#unitprice-' + classes[1]).val(parseFloat(0).toFixed(2));
-						$('#category_id-' + classes[1]).val(0);
-						$('#currency_id-' + classes[1]).val(0);
-						$('#unit-price-' + classes[1]).text('');
-
-						var amount = parseFloat(0) * parseFloat($('#quantity-' + classes[1]).val());
-
-						$('#unitprice-' + classes[1]).attr('readonly', true);
-						$('#amount-' + classes[1]).val(parseFloat(amount).toFixed(2));
-						calculateTotal();
-					}
-				});
-			});
-
-			$('input[type=radio]').change( function() {
-				if($(this).val() == 0 ) {
-					$('#other_discount').attr('readonly', false);
-					$('#other_discount_amt').attr('readonly', true);
-				} else {
-					$('#other_discount').attr('readonly', true);
-					$('#other_discount_amt').attr('readonly', false);
-				}
-				calculateTotal();
-			});
-
-			$("#other_discount").focusout(function(){
-				calculateTotal();
-			});
-
-			$("#other_discount_amt").focusout(function(){
-				calculateTotal();
-			});
-
-			$('.quantity').keyup(function() {
-				var classes = this.id.split('-');
-				var quantity = parseFloat($(this).val()).toFixed(2);
-
-				var unit = $('#unit-' + classes[1]).val();
-				unit = parseFloat(unit).toFixed(2);
-
-				var unitprice = $('#unitprice-' + classes[1]).val();
-				unitprice = parseFloat(unitprice).toFixed(2);
-
-				var unittype = $('#unit-type-' + classes[1]).val();
-
-				if(unittype != '%') {
-					var amt = quantity * unit * unitprice;
-				} else {
-					var amt = quantity * (unit * unitprice) / 100;
-				}
-				amt = parseFloat(amt).toFixed(2);
-
-				$('#amount-' + classes[1]).val(amt);
-				calculateTotal();
-
-			});
-
-			$('.unit').keyup(function() {
-				var classes = this.id.split('-');
-				var unit = parseFloat($(this).val()).toFixed(2);
-
-				var quantity = $('#quantity-' + classes[1]).val();
-				quantity = parseFloat(quantity).toFixed(2);
-
-				var unitprice = $('#unitprice-' + classes[1]).val();
-				unitprice = parseFloat(unitprice).toFixed(2);
-
-				var unittype = $('#unit-type-' + classes[1]).val();
-
-				if(unittype != '%') {
-					var amt = quantity * unit * unitprice;
-				} else {
-					var amt = quantity * (unit * unitprice) / 100;
-				}
-				amt = parseFloat(amt).toFixed(2);
-				if(isNaN(amt)) {
-					$('#amount-' + classes[1]).val('');
-				} else {
-					$('#amount-' + classes[1]).val(amt);
-				}
-
-				calculateTotal();
-
-			});
 		});
-
-		function calculateTotal() {
-			var subTotal = 0;
-			var netTotal = 0;
-			var member = 0;
-			var other = 0;
-			var gst = 0;
-			var service = 0;
-
-			var count = parseInt($('#itm-count').val());
-
-			for(var n = 0; n < count; n++) {
-				var amount = parseFloat($('#amount-'+n).val());
-				if(isNaN(amount)) {
-					amount = 0;
-				}
-				subTotal = parseFloat(subTotal) + parseFloat(amount);
-			}
-
-			subTotal = parseFloat(subTotal).toFixed(2);
-			$('#subtotal').val(subTotal);
-			$('#sub-text').text(subTotal);
-
-			// Calculate Member Discount
-			var memberRate = $('#member_discount').val();
-			member = parseFloat(subTotal) * parseFloat(memberRate / 100);
-			member = parseFloat(member).toFixed(2);
-			$('#member_discount_amt').val(member);
-			$('#member-text').text(member);
-
-			// Calculate Other Discount
-			var radioValue = $("input[name='other_discount_type']:checked").val();
-			if(radioValue == 0){
-				var otherRate = $('#other_discount').val();
-				other = parseFloat(subTotal) * parseFloat(otherRate / 100);
-				if(isNaN(other)) {
-					other = 0;
-				}
-				other = parseFloat(other);
-			} else {
-				var other = $('#other_discount_amt').val();
-				if(isNaN(other)) {
-					other = 0;
-				}
-				other = parseFloat(other);
-			}
-			$('#other_discount_amt').val(other);
-
-			// Calculate GST Amount
-			var gstRate = $('#gst').val();
-			gst = parseFloat(subTotal) * parseFloat(gstRate / 100);
-			gst = parseFloat(gst).toFixed(2);
-			$('#gst_amt').val(gst);
-			$('#gst-text').text(gst);
-
-			// Calculate ServiceCharge Amount
-			var serviceRate = $('#service').val();
-			service = parseFloat(subTotal) * parseFloat(serviceRate / 100);
-			service = parseFloat(service).toFixed(2);
-			$('#service_amt').val(service);
-			$('#service-text').text(service);
-
-			netTotal = parseFloat(subTotal) + parseFloat(gst) + parseFloat(service) - parseFloat(member) - parseFloat(other);
-			netTotal = parseFloat(netTotal).toFixed(2);
-			$('#net_amt').val(netTotal);
-			$('#net-text').text(netTotal);
-		}
 	</script>
 @stop
 

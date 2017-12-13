@@ -28,6 +28,7 @@ class CreateTblLotins extends Migration {
 			$table->integer('to_state');
 			$table->double('member_discount', 5, 2);
 			$table->double('member_discount_amt', 12, 2);
+			$table->string('other_discount_type');
 			$table->double('other_discount', 5, 2);
 			$table->double('other_discount_amt', 12, 2);
 			$table->double('gov_tax', 5, 2);
@@ -35,6 +36,7 @@ class CreateTblLotins extends Migration {
 			$table->double('service_charge', 5, 2);
 			$table->double('service_charge_amt', 12, 2);
 			$table->double('total_amt', 12, 2);
+			$table->double('net_amt', 12, 2);
 			$table->enum('payment', ['Paid', 'Credit']);
 			$table->integer('total_items');
 			// $table->enum('status', [0, 1, 2, 3, 4]);

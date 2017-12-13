@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Company;
 use App\Country;
+use App\Receiver;
+use App\Sender;
 use App\State;
 use Auth;
 use DB;
@@ -53,20 +56,26 @@ class LotBalanceController extends Controller {
 		$countryIdList = array();
 		$stateIdList   = array();
 		if (count($myCompany) > 0) {
-			$countryIds = $myCompany->countries;
+			$countryIds = $myCompany->country;
 			foreach ($countryIds as $country) {
 				$countryIdList[] = $country->id;
 			}
-			$stateIds = $myCompany->states;
+			$stateIds = $myCompany->state;
 			foreach ($stateIds as $stateId) {
 				$stateIdList[] = $stateId->id;
 			}
 		}
 
-		$countries = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$states    = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$countryList       = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList         = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$senderList        = Sender::lists('name', 'id');
+		$senderContactList = Sender::lists('contact_no', 'id');
 
-		return view('lotbalances.index', ['lotinList' => $lotinList, 'countries' => $countries, 'states' => $states]);
+		$receiverList        = Receiver::lists('name', 'id');
+		$receiverContactList = Receiver::lists('contact_no', 'id');
+		$categoryList        = Category::where('deleted', 'N')->orderBy('id', 'ASC')->lists('unit', 'id');
+
+		return view('lotbalances.index', ['lotinList' => $lotinList, 'countryList' => $countryList, 'stateList' => $stateList, 'senderList' => $senderList, 'senderContactList' => $senderContactList, 'receiverList' => $receiverList, 'receiverContactList' => $receiverContactList, 'categoryList' => $categoryList]);
 	}
 
 	/**

@@ -93,11 +93,11 @@
 									</a>
 									@endpermission
 
-									@permission('lotin-delete')
+									{{-- @permission('lotin-delete')
 									<a href="#" class="btn btn-danger btn-sm destroy" id="{{ $lotin->id }}">
 										<i class="entypo-trash"></i>
 									</a>
-									@endpermission
+									@endpermission --}}
 								@endif
 							</td>
 						</tr>

@@ -15,13 +15,10 @@
 				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
 			</li>
 			<li>
-				<a href="{{ url('settings') }}">Settings</a>
-			</li>
-			<li>
 				<a href="{{ url('trackings') }}">Tracking Management</a>
 			</li>
 			<li class="active">
-				<strong>Result Form</strong>
+				<strong>Search Result Form</strong>
 			</li>
 		</ol>
 
@@ -33,7 +30,7 @@
 				<div class="panel panel-primary" data-collapsed="0">
 					<div class="panel-heading">
 						<div class="panel-title">
-							<strong>Search Form</strong>
+							<strong>Search Result Form</strong>
 						</div>
 
 						<div class="panel-options">
@@ -120,7 +117,7 @@
 								</label>
 
 								<label class="col-sm-4">
-									From: {{ $states[$lotinData->from_state] }}, {{ $countries[$lotinData->from_country] }}
+									From: {{ $stateList[$lotinData->from_state] }}, {{ $countryList[$lotinData->from_country] }}
 								</label>
 							</div>
 
@@ -128,7 +125,7 @@
 								<label class="col-sm-4">
 									NRIC:
 									@if($sender->nric_code_id != 0 && $sender->nric_township_id != 0)
-										{{ $nricCodes[$sender->nric_code_id] }} / {{ $nricTownships[$sender->nric_township_id] }} {{ $sender->nric_no }}
+										{{ $nricCodeList[$sender->nric_code_id] }} / {{ $nricTownshipList[$sender->nric_township_id] }} {{ $sender->nric_no }}
 									@else
 										{{ '-' }}
 									@endif
@@ -137,14 +134,14 @@
 								<label class="col-sm-4">
 									NRIC:
 									@if($receiver->nric_code_id != 0 && $receiver->nric_township_id != 0)
-										{{ $nricCodes[$receiver->nric_code_id] }} / {{ $nricTownships[$receiver->nric_township_id] }} {{ $receiver->nric_no }}
+										{{ $nricCodeList[$receiver->nric_code_id] }} / {{ $nricTownshipList[$receiver->nric_township_id] }} {{ $receiver->nric_no }}
 									@else
 										{{ '-' }}
 									@endif
 								</label>
 
 								<label class="col-sm-4">
-									To: {{ $states[$lotinData->to_state] }}, {{ $countries[$lotinData->to_country] }}
+									To: {{ $stateList[$lotinData->to_state] }}, {{ $countryList[$lotinData->to_country] }}
 								</label>
 							</div>
 

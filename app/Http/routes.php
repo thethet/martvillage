@@ -437,6 +437,13 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('lotins/create', ['as' => 'lotins.create', 'uses' => 'LotInController@create', 'middleware' => ['permission:lotin-create']]);
 	Route::post('lotins/create', ['as' => 'lotins.store', 'uses' => 'LotInController@store', 'middleware' => ['permission:lotin-create']]);
 
+	Route::get('lotins/{id}', ['as' => 'lotins.show', 'uses' => 'LotInController@show']);
+
+	Route::get('lotins/{id}/edit', ['as' => 'lotins.edit', 'uses' => 'LotInController@edit', 'middleware' => ['permission:lotin-edit']]);
+	Route::patch('lotins/{id}', ['as' => 'lotins.update', 'uses' => 'LotInController@update', 'middleware' => ['permission:lotin-edit']]);
+
+	// Route::delete('lotins/{id}', ['as' => 'lotins.destroy', 'uses' => 'LotInController@destroy', 'middleware' => ['permission:lotin-delete']]);
+
 	/*
 	|--------------------------------------------------------------------------
 	| Tracking Controller

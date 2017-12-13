@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Company;
 use App\Country;
+use App\Currency;
 use App\Item;
 use App\Lotin;
 use App\NricCode;
@@ -135,61 +137,38 @@ class LotInController extends Controller {
 	 */
 	public function store(Request $request) {
 		$messages = array(
-			's_contact_no.required'       => 'The Sender Contact Number  field is required.',
-			'member_no.exists'            => 'Your Member Number is wrong or you are not member.',
-			'sender_name.required'        => 'The Sender Name  field is required.',
-			'nric_code_id.required'       => 'The NRIC Code  field is required.',
-			'nric_township_id.required'   => 'The NRIC Township  field is required.',
-			'nric_no.required'            => 'The NRIC Number  field is required.',
+			's_contact_no.required'  => 'The Sender Contact Number  field is required.',
+			'member_no.exists'       => 'Your Member Number is wrong or you are not member.',
+			'sender_name.required'   => 'The Sender Name  field is required.',
 
-			'r_contact_no.required'       => 'The Receiver Contact Number  field is required.',
-			'receiver_name.required'      => 'The Receiver Name  field is required.',
-			'r_nric_code_id.required'     => 'The NRIC Code  field is required.',
-			'r_nric_township_id.required' => 'The NRIC Township  field is required.',
-			'r_nric_no.required'          => 'The NRIC Number  field is required.',
+			'r_contact_no.required'  => 'The Receiver Contact Number  field is required.',
+			'receiver_name.required' => 'The Receiver Name  field is required.',
 
-			'country_id.required'         => 'The From Country  field is required.',
-			'state_id.required'           => 'The From State  field is required.',
+			'from_country.required'  => 'The From Country  field is required.',
+			'from_state.required'    => 'The From State  field is required.',
 
-			'to_country_id.required'      => 'The From Country  field is required.',
-			'to_state_id.required'        => 'The From State  field is required.',
+			'to_country.required'    => 'The To Country  field is required.',
+			'to_state.required'      => 'The To State  field is required.',
 
-			'lots.*.item_name.required'   => 'The Item Name  field is required.',
-			'lots.*.barcode.required'     => 'The Barcode  field is required.',
-			'lots.*.price_id.required'    => 'The Price Category  field is required.',
-			'lots.*.unit.required'        => 'The Unit  field is required.',
-			'lots.*.quantity.required'    => 'The Quantity  field is required.',
-			'lots.*.amount.required'      => 'The Amount  field is required.',
 		);
 
 		$this->validate($request, [
 			's_contact_no'       => 'required|unique:senders,contact_no',
 			'member_no'          => 'required|unique:senders,member_no',
 			'sender_name'        => 'required',
-			'nric_code_id'       => 'required',
-			'nric_township_id'   => 'required',
-			'nric_no'            => 'required',
 
 			'r_contact_no'       => 'required|unique:receivers,contact_no',
 			'receiver_name'      => 'required',
-			'r_nric_code_id'     => 'required',
-			'r_nric_township_id' => 'required',
-			'r_nric_no'          => 'required',
 
-			// 'date'               => 'required',
-			'country_id'         => 'required',
-			'state_id'           => 'required',
-			'to_country_id'      => 'required',
-			'to_state_id'        => 'required',
+			'date'               => 'required',
+			'from_country'       => 'required',
+			'from_state'         => 'required',
+			'to_country'         => 'required',
+			'to_state'           => 'required',
 			'payment'            => 'required',
 
-			// 'lots.*.item_name'   => 'required',
-			// 'lots.*.barcode'     => 'required',
-			// 'lots.*.price_id'    => 'required',
-			// 'lots.*.unit_price'  => 'required',
-			// 'lots.*.unit'        => 'required',
-			// 'lots.*.quantity'    => 'required',
-			// 'lots.*.amount'      => 'required',
+			'other_discount'     => 'numeric',
+			'other_discount_amt' => 'numeric',
 		], $messages);
 
 		$size = count($request->lots);
@@ -254,8 +233,8 @@ class LotInController extends Controller {
 			$receiverData['address']          = ($request->to_state_id_new) ? $request->to_state_id_new : "";
 			// $receiverData['state_id'] = $request->to_state_id;
 
-			$reseiver   = Receiver::create($receiverData);
-			$receiverId = $reseiver->id;
+			$receiver   = Receiver::create($receiverData);
+			$receiverId = $receiver->id;
 		}
 
 		$lotinDatas['company_id']          = $company_id;
@@ -264,19 +243,21 @@ class LotInController extends Controller {
 		$lotinDatas['receiver_id']         = $receiverId;
 		$lotinDatas['lot_no']              = $request->lot_no;
 		$lotinDatas['date']                = $request->date;
-		$lotinDatas['from_country']        = ($request->country_id) ? (int) $request->country_id : "";
-		$lotinDatas['from_state']          = ($request->state_id) ? (int) $request->state_id : "";
-		$lotinDatas['to_country']          = ($request->to_country_id) ? (int) $request->to_country_id : "";
-		$lotinDatas['to_state']            = ($request->to_state_id) ? (int) $request->to_state_id : "";
-		$lotinDatas['member_discount']     = 0;
-		$lotinDatas['member_discount_amt'] = 0;
-		$lotinDatas['other_discount']      = 10;
-		$lotinDatas['other_discount_amt']  = $request->discount;
-		$lotinDatas['gov_tax']             = 7;
-		$lotinDatas['gov_tax_amt']         = $request->gst;
-		$lotinDatas['service_charge']      = 10;
-		$lotinDatas['service_charge_amt']  = $request->service;
-		$lotinDatas['total_amt']           = $request->total;
+		$lotinDatas['from_country']        = ($request->from_country) ? (int) $request->from_country : "";
+		$lotinDatas['from_state']          = ($request->from_state) ? (int) $request->from_state : "";
+		$lotinDatas['to_country']          = ($request->to_country) ? (int) $request->to_country : "";
+		$lotinDatas['to_state']            = ($request->to_state) ? (int) $request->to_state : "";
+		$lotinDatas['member_discount']     = $request->member_discount;
+		$lotinDatas['member_discount_amt'] = $request->member_discount_amt;
+		$lotinDatas['other_discount_type'] = $request->other_discount_type;
+		$lotinDatas['other_discount']      = $request->other_discount;
+		$lotinDatas['other_discount_amt']  = $request->other_discount_amt;
+		$lotinDatas['gov_tax']             = $request->gov_tax;
+		$lotinDatas['gov_tax_amt']         = $request->gov_tax_amt;
+		$lotinDatas['service_charge']      = $request->service_charge;
+		$lotinDatas['service_charge_amt']  = $request->service_charge_amt;
+		$lotinDatas['total_amt']           = $request->total_amt;
+		$lotinDatas['net_amt']             = $request->net_amt;
 		$lotinDatas['payment']             = $request->payment;
 		$lotinDatas['created_by']          = $user_id;
 		$lotinDatas['status']              = 0;
@@ -293,6 +274,7 @@ class LotInController extends Controller {
 				$itemData['barcode']     = $lots[$i]['barcode'];
 				$itemData['price_id']    = $lots[$i]['price_id'];
 				$itemData['category_id'] = $lots[$i]['category_id'];
+				$itemData['currency_id'] = $lots[$i]['currency_id'];
 				$itemData['unit']        = $lots[$i]['unit'];
 				$itemData['unit_price']  = $lots[$i]['unit_price'];
 				$itemData['quantity']    = $lots[$i]['quantity'];
@@ -320,7 +302,60 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function show($id) {
-		//
+		$lotinData = DB::table('lotins as l')
+			->leftJoin('senders as s', 's.id', '=', 'l.sender_id')
+			->leftJoin('receivers as r', 'r.id', '=', 'l.receiver_id')
+			->select('l.*', 's.member_no', 's.contact_no as s_contact_no', 's.name as sender_name', 's.nric_code_id', 's.nric_township_id', 's.nric_no', 'r.contact_no as r_contact_no', 'r.name as receiver_name', 'r.nric_code_id as r_nric_code_id', 'r.nric_township_id as r_nric_township_id', 'r.nric_no as r_nric_no', 'r.address')
+			->where('l.id', $id)
+			->where('l.deleted', 'N')
+			->first();
+
+		$itemList = Item::where('lotin_id', $id)->get();
+
+		$categoryList = Category::where('deleted', 'N')->orderBy('id', 'ASC')->lists('unit', 'id');
+		if (Auth::user()->hasRole('administrator')) {
+			$priceList          = Price::where('deleted', 'N')->lists('title_name', 'id');
+			$receiveAddressList = Receiver::where('deleted', 'N')->lists('address', 'id');
+			$currencyList       = Currency::where('deleted', 'N')->orderBy('id', 'ASC')->lists('type', 'id');
+			$receiver           = Receiver::get();
+		} else {
+			$priceList          = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('title_name', 'id');
+			$currencyList       = Currency::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('id', 'ASC')->lists('type', 'id');
+			$receiveAddressList = Receiver::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('address', 'id');
+			$receiver           = Receiver::where('company_id', Auth::user()->company_id)->get();
+		}
+
+		$myCompany     = Company::find(Auth::user()->company_id);
+		$countryIdList = array();
+		$stateIdList   = array();
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
+		}
+
+		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList   = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+
+		foreach ($receiveAddressList as $key => $value) {
+			$receiveAddressList[$key] = $value . " of " . count($receiveAddressList);
+		}
+
+		$nricCodeList     = NricCode::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
+		$nricTownshipList = NricTownship::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
+
+		$receiverLastId = $lotinData->address;
+
+		$receiverCount = count($receiver);
+		$receiverCount += 1;
+		$receiverLastNo = $receiverLastId . ' of ' . $receiverCount;
+
+		return view('lotins.show', ['lotinData' => $lotinData, 'countryList' => $countryList, 'stateList' => $stateList, 'nricCodeList' => $nricCodeList, 'nricTownshipList' => $nricTownshipList, 'priceList' => $priceList, 'receiveAddressList' => $receiveAddressList, 'receiverLastNo' => $receiverLastNo, 'receiverLastId' => $receiverLastId, 'myCompany' => $myCompany, 'itemList' => $itemList, 'categoryList' => $categoryList, 'currencyList' => $currencyList]);
 	}
 
 	/**
@@ -330,7 +365,60 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function edit($id) {
-		//
+		$lotinData = DB::table('lotins as l')
+			->leftJoin('senders as s', 's.id', '=', 'l.sender_id')
+			->leftJoin('receivers as r', 'r.id', '=', 'l.receiver_id')
+			->select('l.*', 's.member_no', 's.contact_no as s_contact_no', 's.name as sender_name', 's.nric_code_id', 's.nric_township_id', 's.nric_no', 'r.contact_no as r_contact_no', 'r.name as receiver_name', 'r.nric_code_id as r_nric_code_id', 'r.nric_township_id as r_nric_township_id', 'r.nric_no as r_nric_no', 'r.address')
+			->where('l.id', $id)
+			->where('l.deleted', 'N')
+			->first();
+
+		$itemList = Item::where('lotin_id', $id)->get();
+
+		$categoryList = Category::where('deleted', 'N')->orderBy('id', 'ASC')->lists('unit', 'id');
+		if (Auth::user()->hasRole('administrator')) {
+			$priceList          = Price::where('deleted', 'N')->lists('title_name', 'id');
+			$receiveAddressList = Receiver::where('deleted', 'N')->lists('address', 'id');
+			$currencyList       = Currency::where('deleted', 'N')->orderBy('id', 'ASC')->lists('type', 'id');
+			$receiver           = Receiver::get();
+		} else {
+			$priceList          = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('title_name', 'id');
+			$currencyList       = Currency::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('id', 'ASC')->lists('type', 'id');
+			$receiveAddressList = Receiver::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('address', 'id');
+			$receiver           = Receiver::where('company_id', Auth::user()->company_id)->get();
+		}
+
+		$myCompany     = Company::find(Auth::user()->company_id);
+		$countryIdList = array();
+		$stateIdList   = array();
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
+		}
+
+		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList   = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+
+		foreach ($receiveAddressList as $key => $value) {
+			$receiveAddressList[$key] = $value . " of " . count($receiveAddressList);
+		}
+
+		$nricCodeList     = NricCode::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
+		$nricTownshipList = NricTownship::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
+
+		$receiverLastId = $lotinData->address;
+
+		$receiverCount = count($receiver);
+		$receiverCount += 1;
+		$receiverLastNo = $receiverLastId . ' of ' . $receiverCount;
+
+		return view('lotins.edit', ['lotinData' => $lotinData, 'countryList' => $countryList, 'stateList' => $stateList, 'nricCodeList' => $nricCodeList, 'nricTownshipList' => $nricTownshipList, 'priceList' => $priceList, 'receiveAddressList' => $receiveAddressList, 'receiverLastNo' => $receiverLastNo, 'receiverLastId' => $receiverLastId, 'myCompany' => $myCompany, 'itemList' => $itemList, 'categoryList' => $categoryList, 'currencyList' => $currencyList]);
 	}
 
 	/**
@@ -339,8 +427,69 @@ class LotInController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id) {
-		//
+	public function update($id, Request $request) {
+		$messages = array(
+			's_contact_no.required'  => 'The Sender Contact Number  field is required.',
+			'sender_name.required'   => 'The Sender Name  field is required.',
+
+			'r_contact_no.required'  => 'The Receiver Contact Number  field is required.',
+			'receiver_name.required' => 'The Receiver Name  field is required.',
+
+			'from_country.required'  => 'The From Country  field is required.',
+			'from_state.required'    => 'The From State  field is required.',
+
+			'to_country.required'    => 'The To Country  field is required.',
+			'to_state.required'      => 'The To State  field is required.',
+
+		);
+
+		$this->validate($request, [
+			's_contact_no'  => 'required',
+			'sender_name'   => 'required',
+
+			'r_contact_no'  => 'required',
+			'receiver_name' => 'required',
+
+			'from_country'  => 'required',
+			'from_state'    => 'required',
+			'to_country'    => 'required',
+			'to_state'      => 'required',
+			'payment'       => 'required',
+		], $messages);
+
+		$user_id = Auth::user()->id;
+
+		$lotinDatas['from_country'] = ($request->from_country) ? (int) $request->from_country : "";
+		$lotinDatas['from_state']   = ($request->from_state) ? (int) $request->from_state : "";
+		$lotinDatas['to_country']   = ($request->to_country) ? (int) $request->to_country : "";
+		$lotinDatas['to_state']     = ($request->to_state) ? (int) $request->to_state : "";
+		$lotinDatas['payment']      = $request->payment;
+		$lotinDatas['updated_by']   = $user_id;
+		$lotin                      = Lotin::find($id);
+		$lotin->update($lotinDatas);
+
+		$senderData['name']             = $request->sender_name;
+		$senderData['nric_no']          = ($request->nric_no) ? $request->nric_no : "";
+		$senderData['nric_code_id']     = ($request->nric_code_id) ? $request->nric_code_id : 0;
+		$senderData['nric_township_id'] = ($request->nric_township_id) ? $request->nric_township_id : 0;
+		$senderData['contact_no']       = ($request->s_contact_no) ? $request->s_contact_no : "";
+		$senderData['updated_by']       = $user_id;
+		$sender                         = Sender::find($lotin->sender_id);
+		$sender->update($senderData);
+
+		$receiverData['sender_id']        = $sender->id;
+		$receiverData['name']             = $request->receiver_name;
+		$receiverData['nric_no']          = ($request->r_nric_no) ? $request->r_nric_no : "";
+		$receiverData['nric_code_id']     = ($request->r_nric_code_id) ? $request->r_nric_code_id : "";
+		$receiverData['nric_township_id'] = ($request->r_nric_township_id) ? $request->r_nric_township_id : "";
+		$receiverData['contact_no']       = ($request->r_contact_no) ? $request->r_contact_no : "";
+		$receiverData['updated_by']       = $user_id;
+
+		$receiver = Receiver::find($lotin->receiver_id);
+		$receiver->update($receiverData);
+
+		return redirect()->route('lotins.index')
+			->with('success', 'Lotin updated successfully');
 	}
 
 	/**
@@ -454,20 +603,18 @@ class LotInController extends Controller {
 
 		if (Auth::user()->hasRole('administrator')) {
 			$items = DB::table('members as m')
-				->leftJoin('nric_townships as snt', 'snt.id', '=', 'm.nric_township_id')
+				->leftJoin('member_offers as mf', 'mf.id', '=', 'm.member_offers_id')
 				->where('m.member_no', $memberNo)
 				->where('m.deleted', 'N')
-				->select('m.name as s_name', 'm.contact_no as s_contact_no', 'm.nric_no as s_nric_no', 'm.nric_code_id as s_nric_code_id', 'm.nric_township_id as s_nric_tp_id', 'snt.short_name as s_township', 'rnt.short_name as r_township')
+				->select('m.*', 'mf.rate')
 				->first();
 		} else {
-			$items = DB::table('receivers as r')
-				->leftJoin('senders as s', 'm.id', '=', 'r.sender_id')
-				->leftJoin('nric_townships as snt', 'snt.id', '=', 'm.nric_township_id')
-				->leftJoin('nric_townships as rnt', 'rnt.id', '=', 'r.nric_township_id')
+			$items = DB::table('members as m')
+				->leftJoin('member_offers as mf', 'mf.id', '=', 'm.member_offers_id')
+				->where('m.member_no', $memberNo)
 				->where('m.company_id', Auth::user()->company_id)
-				->where('member_no', $memberNo)
-				->where('r.deleted', 'N')
-				->select('r.*', 'm.name as s_name', 'm.contact_no as s_contact_no', 'm.nric_no as s_nric_no', 'm.nric_code_id as s_nric_code_id', 'm.nric_township_id as s_nric_tp_id', 'snt.short_name as s_township', 'rnt.short_name as r_township')
+				->where('m.deleted', 'N')
+				->select('m.*', 'mf.rate')
 				->first();
 		}
 
@@ -485,14 +632,14 @@ class LotInController extends Controller {
 		if (Auth::user()->hasRole('administrator')) {
 			$price = DB::table('prices as p')
 				->leftJoin('categories as c', 'c.id', '=', 'p.category_id')
-				->leftJoin('currency as cr', 'cr.id', '=', 'p.currency_id')
+				->leftJoin('currencies as cr', 'cr.id', '=', 'p.currency_id')
 				->select('p.*', 'c.unit', 'cr.type')
 				->where('p.id', $priceId)
 				->where('p.deleted', 'N')->first();
 		} else {
 			$price = DB::table('prices as p')
 				->leftJoin('categories as c', 'c.id', '=', 'p.category_id')
-				->leftJoin('currency as cr', 'cr.id', '=', 'p.currency_id')
+				->leftJoin('currencies as cr', 'cr.id', '=', 'p.currency_id')
 				->select('p.*', 'c.unit', 'cr.type')
 				->where('p.id', $priceId)
 				->where('p.company_id', Auth::user()->company_id)

@@ -1,326 +1,335 @@
 @extends('layouts.layout')
 
-@section('site-title')
-	<div class="col-md-4 site-icon">
-		<img class="profile-icon" src="{{ asset('assets/img/tracking-icon.png') }}" alt="Tracking">
-	</div>
-	<div class="col-md-8 site-header">Tracking List</div>
+@section('page-title')
+	Tracking
 @stop
 
 @section('main')
 	<div class="main-content">
 
-		@if ($message = Session::get('success'))
-		<div class="alert alert-success">
-			<p>{{ $message }}</p>
-		</div>
-		@endif
+		@include('layouts.headerbar')
+		<hr />
+
+		<ol class="breadcrumb bc-3" >
+			<li>
+				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
+			</li>
+			<li>
+				<a href="{{ url('trackings') }}">Tracking Management</a>
+			</li>
+			<li class="active">
+				<strong>Detail Form</strong>
+			</li>
+		</ol>
+
+		<h2>Tracking Management</h2>
+		<br />
 
 		<div class="row">
-			<div class="col-sm-4">
-				<div class="form-group">
-					<label class="control-label col-sm-5" for="contact">
-						Contact No:
-					</label>
-					<label class="control-label col-sm-7" for="contact">
-						{{ $sender->contact_no }}
-					</label>
-				</div><!-- .form-group -->
+			<div class="col-md-12">
+				<div class="panel panel-primary" data-collapsed="0">
+					<div class="panel-heading">
+						<div class="panel-title">
+							<strong>Detail Form</strong>
+						</div>
 
-				<div class="form-group">
-					<label class="control-label col-sm-5" for="member">
-						Member No:
-					</label>
-					<label class="control-label col-sm-7" for="member">
-						@if($sender->member_no)
-						{{ $sender->member_no }}
-						@else
-						{{ '-' }}
-						@endif
-					</label>
-				</div><!-- .form-group -->
+						<div class="panel-options">
+							<a href="{{ url('trackings') }}"><i class="entypo-cancel"></i></a>
+							&nbsp;|&nbsp;
+							<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+						</div>
+					</div>
 
-				<div class="form-group">
-					<label class="control-label col-sm-5" for="sender">
-						Sender Name:
-					</label>
-					<label class="control-label col-sm-7" for="sender">
-						{{ $sender->name }}
-					</label>
-				</div><!-- .form-group -->
+					<div class="panel-body">
+						{!! Form::open(array('route' => 'trackings.search','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal form-wizard', 'id' => 'rootwizard')) !!}
 
-				<div class="form-group">
-					<label class="control-label col-sm-5" for="nric">
-						NRIC:
-					</label>
+							<?php $status = (int)$lotinData->status; ?>
 
-					<label class="control-label col-sm-7" for="nric">
-						@if($sender->nric_code_id != 0 && $sender->nric_township_id != 0)
-							{{ $nricCodes[$sender->nric_code_id] }} / {{ $nricTownships[$sender->nric_township_id] }} {{ $sender->nric_no }}
-						@else
-							{{ '-' }}
-						@endif
-					</label>
-				</div><!-- .form-group -->
-			</div>
+							<div class="form-group">
+								<label class="col-sm-4">
+									Contact No:
+									@if($sender->contact_no)
+										{{ $sender->contact_no }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
 
-			<div class="col-sm-4">
-				<div class="form-group">
-					<label class="control-label col-sm-5" for="address">
-						To:
-					</label>
-					<label class="control-label col-sm-7" for="address">
-						{{ $receiver->address }} of {{ $receiverCount }}
-					</label>
-				</div><!-- .form-group -->
+								<label class="col-sm-4">
+									To:
+									@if($receiver->address)
+										{{ $receiver->address }} of {{ $receiverCount }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
 
-				<div class="form-group">
-					<label class="control-label col-sm-5" for="contact">
-						Contact No:
-					</label>
-					<label class="control-label col-sm-7" for="contact">
-						{{ $receiver->contact_no }}
-					</label>
-				</div><!-- .form-group -->
+								<label class="col-sm-4">
+									Date: {{ $lotinData->date }}
+								</label>
+							</div>
 
-				<div class="form-group">
-					<label class="control-label col-sm-5" for="receiver">
-						Receiver Name:
-					</label>
-					<label class="control-label col-sm-7" for="receiver">
-						{{ $receiver->name }}
-					</label>
-				</div><!-- .form-group -->
+							<div class="form-group">
+								<label class="col-sm-4">
+									Member No:
+									@if($sender->member_no)
+										{{ $sender->member_no }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
 
-				<div class="form-group">
-					<label class="control-label col-sm-5" for="nric">
-						NRIC:
-					</label>
-					<label class="control-label col-sm-7" for="nric">
-						@if($receiver->nric_code_id != 0 && $receiver->nric_township_id != 0)
-							{{ $nricCodes[$receiver->nric_code_id] }} / {{ $nricTownships[$receiver->nric_township_id] }} {{ $receiver->nric_no }}
-						@else
-							{{ '-' }}
-						@endif
-					</label>
-				</div><!-- .form-group -->
+								<label class="col-sm-4">
+									Contact No:
+									@if($receiver->contact_no)
+										{{ $receiver->contact_no }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
 
-			</div>
+								<label class="col-sm-4">
+									Lot No: {{ $lotinData->lot_no }}
+								</label>
+							</div>
 
-			<div class="col-sm-4">
-				<div class="form-group">
-					<label class="control-label col-sm-3" for="date">
-						Date:
-					</label>
-					<label class="control-label col-sm-7" for="date">
-						{{ $lotinData->date }}
-					</label>
-				</div><!-- .form-group -->
+							<div class="form-group">
+								<label class="col-sm-4">
+									Sender Name:
+									@if($sender->name)
+										{{ $sender->name }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
 
-				<div class="form-group">
-					<label class="control-label col-sm-3" for="lotno">
-						Lot No:
-					</label>
-					<label class="control-label col-sm-7" for="lotno">
-						{{ $lotinData->lot_no }}
-					</label>
-				</div><!-- .form-group -->
+								<label class="col-sm-4">
+									Receiver Name:
+									@if($receiver->name)
+										{{ $receiver->name }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
 
-				<div class="form-group">
-					<label class="control-label col-sm-3" for="from">
-						From:
-					</label>
-					<label class="control-label col-sm-7" for="from">
-						{{ $states[$lotinData->from_state] }}, {{ $countries[$lotinData->from_country] }}
-					</label>
-				</div><!-- .form-group -->
+								<label class="col-sm-4">
+									From: {{ $stateList[$lotinData->from_state] }}, {{ $countryList[$lotinData->from_country] }}
+								</label>
+							</div>
 
-				<div class="form-group">
-					<label class="control-label col-sm-3" for="to">
-						To:
-					</label>
-					<label class="control-label col-sm-7" for="to">
-						{{ $states[$lotinData->to_state] }}, {{ $countries[$lotinData->to_country] }}
-					</label>
-				</div><!-- .form-group -->
+							<div class="form-group">
+								<label class="col-sm-4">
+									NRIC:
+									@if($sender->nric_code_id != 0 && $sender->nric_township_id != 0)
+										{{ $nricCodeList[$sender->nric_code_id] }} / {{ $nricTownshipList[$sender->nric_township_id] }} {{ $sender->nric_no }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
 
-				<div class="form-group">
-					<label class="control-label col-sm-3" for="payment">
-						Payment:
-					</label>
-					<label class="control-label col-sm-7" for="payment">
-						{{ $lotinData->payment }}
-					</label>
-				</div><!-- .form-group -->
+								<label class="col-sm-4">
+									NRIC:
+									@if($receiver->nric_code_id != 0 && $receiver->nric_township_id != 0)
+										{{ $nricCodeList[$receiver->nric_code_id] }} / {{ $nricTownshipList[$receiver->nric_township_id] }} {{ $receiver->nric_no }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
+
+								<label class="col-sm-4">
+									To: {{ $stateList[$lotinData->to_state] }}, {{ $countryList[$lotinData->to_country] }}
+								</label>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-4">&nbsp;</label>
+
+								<label class="col-sm-4">&nbsp;</label>
+
+								<label class="col-sm-4">
+									Payment: {{ $lotinData->payment }}
+								</label>
+							</div>
+
+							<div class="form-group">
+								<table class="table table-bordered responsive">
+									<thead>
+										<tr>
+											<th width="5%">SNo.</th>
+											<th>Item's Name</th>
+											<th>Barcode No</th>
+											<th>Type</th>
+											<th width="13%">Unit Price</th>
+											<th width="8%">Unit</th>
+											<th width="13%">Quantity</th>
+											<th width="10%">Amount</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php $j = 7 - count($itemList); $i = 1; ?>
+
+										@foreach($itemList as $item)
+											<tr>
+												<td>{{ $i++ }}</td>
+												<td>
+													{{ $item->item_name }}
+												</td>
+
+												<td>
+													{{ $item->barcode }}
+												</td>
+
+												<td>
+													{{ $priceList[$item->price_id] }}
+												</td>
+
+												<td  class="unit-prices">
+													{{ number_format($item->unit_price, 2) }} {{ $currencyList[$item->currency_id] }} ({{ $categoryList[$item->category_id] }})
+												</td>
+
+												<td class="text-right">
+													{{ $item->unit }}
+												</td>
+
+												<td class="text-right">
+													<div class="input-spinner">
+														{{ $item->quantity}}
+													</div>
+												</td>
+
+												<td class="text-right">
+													{{ number_format($item->amount, 2) }}
+												</td>
+											</tr>
+										@endforeach
+
+
+										@for($x = 0; $x < $j; $x++)
+										<tr>
+											<td>&nbsp;</td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+										@endfor
+
+										<tr>
+											<td colspan="6" class="text-right"><b>Sub Total</b></td>
+											<td class="text-right"></td>
+											<td class="text-right">
+												<b>
+													{{ number_format($lotinData->total_amt, 2) }}
+												</b>
+											</td>
+										</tr>
+
+										<tr>
+											<td colspan="6" class="text-right"><b>Member Discount (-)</b></td>
+											<td class="text-right">
+												<b>
+													{{ $lotinData->member_discount }} %
+												</b>
+											</td>
+											<td class="text-right">
+												<b>
+													{{ number_format($lotinData->member_discount_amt, 2) }}
+												</b>
+											</td>
+										</tr>
+
+										<tr>
+											<td colspan="6" class="text-right">
+												<b>Other Discount (-)</b>
+											</td>
+											<td class="text-right">
+												<b>
+													{{ $lotinData->other_discount }} %
+												</b>
+											</td>
+											<td class="text-right">
+												<b>
+													{{ number_format($lotinData->other_discount_amt, 2) }}
+												</b>
+											</td>
+										</tr>
+
+										<tr>
+											<td colspan="6" class="text-right"><b>GST</b></td>
+											<td class="text-right">
+												<b>{{ $lotinData->gov_tax }} %</b>
+											</td>
+											<td class="text-right">
+												<b>
+													{{ number_format($lotinData->gov_tax_amt, 2) }}
+												</b>
+											</td>
+										</tr>
+
+										<tr>
+											<td colspan="6" class="text-right"><b>Service Charges</b></td>
+											<td class="text-right">
+												<b>{{ $lotinData->service_charge }} %</b>
+											</td>
+											<td class="text-right">
+												<b>
+													{{ number_format($lotinData->service_charge_amt, 2) }}
+												</b>
+											</td>
+										</tr>
+
+										<tr>
+											<td colspan="6" class="text-right"><b>Net Balance</b></td>
+											<td class="text-right">
+											</td>
+											<td class="text-right">
+												<b>
+													{{ number_format($lotinData->net_amt, 2) }}
+												</b>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-1 control-label"></label>
+
+								<div class="col-sm-5">
+									<a href="{{ route('trackings.index') }}" class="btn btn-black">
+										Back
+									</a>
+								</div>
+							</div>
+						{!! Form::close() !!}
+					</div>
+				</div>
 			</div>
 		</div>
 
-		<br>
-		<br>
-
-		<div class="row">
-			<div class="col-sm-6"></div>
-
-			<div class="col-sm-6">
-				<div class="form-group">
-					<label class="control-label col-sm-12 right" for="payment">
-						Now At - {{ Config::get('myVars.LotinStatus')[$lotinData->status] }}
-					</label>
-				</div><!-- .form-group -->
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="table-cont">
-				<table class="table table-bordered table-responsive">
-					<thead>
-						<tr>
-							<th width="8px">No</th>
-							<th>Item Name</th>
-							<th>Barcode</th>
-							<th>Type</th>
-							<th width="120px">Unit Price</th>
-							<th width="100px">Unit </th>
-							<th width="100px">Quantity</th>
-							<th width="120px">Amount</th>
-						</tr>
-					</thead>
-
-					<tbody>
-						<?php
-						$i = 1;
-						$subTotal = 0;
-						?>
-						@foreach($items as $item)
-						<?php $subTotal += $item->amount; ?>
-						<tr>
-							<td>{{ $i++ }}</td>
-							<td>{{ $item->item_name }}</td>
-							<td>{{ $item->barcode }}</td>
-							<td>{{ $item->category_id }}</td>
-							<td>{{ $item->unit_price }}</td>
-							<td>{{ $item->unit }}</td>
-							<td>{{ $item->quantity }}</td>
-							<td class="right">{{ number_format($item->amount, 2) }}</td>
-						</tr>
-						@endforeach
-
-						<tr>
-							<td>&nbsp;</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-
-						<tr>
-							<td>&nbsp;</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-
-						<tr>
-							<td>&nbsp;</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-					</tbody>
-
-					<tbody class="tbl-cal" style="font-weight: bold;">
-						<tr>
-							<td colspan="6" class="right">Sub Total</td>
-							<td class="right" id="subtotal-0">
-							</td>
-							<td class="right" id="subtotal-1">
-								{{ number_format($subTotal, 2) }}
-							</td>
-						</tr>
-
-						<tr>
-							<td colspan="2">Member Discount (-):</td>
-							<td></td>
-							<td colspan="3" class="right">Other Discount</td>
-							<td class="right" id="discount-0">
-								-10%
-							</td>
-							<td class="right" id="discount-1">
-								{{ number_format($lotinData->other_discount_amt, 2) }}
-							</td>
-						</tr>
-
-						<tr>
-							<td colspan="6" class="right">Service Charge:</td>
-							<td class="right" id="scharge-0">
-								10%
-							</td>
-							<td class="right" id="scharge-1">
-								{{ number_format($lotinData->service_charge_amt, 2) }}
-							</td>
-						</tr>
-						<tr>
-							<td colspan="6" class="right">GST</td>
-							<td class="right" id="gst-0">
-								7%
-							</td>
-							<td class="right" id="gst-1">
-								{{ number_format($lotinData->gov_tax_amt, 2) }}
-							</td>
-						</tr>
-						<tr>
-							<td colspan="6" class="right">Total</td>
-							<td class="right" id="total-10">
-							</td>
-							<td class="right" id="total-1">
-								{{ number_format($lotinData->total_amt, 2) }}
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-
-	</div><!-- .main-content -->
-
-	<div class="footer-menu">
-		<div class="footer-content">
-			<div class="menu-icon">
-				<a href="{{ url('/dashboard') }}">
-					<img src="{{ asset('assets/img/home-icon.jpeg') }}" alt="Go Home">
-					Home
-				</a>
-			</div><!-- .menu-icon -->
-
-
-			<div class="menu-icon">
-				<a href="{{ URL::previous() }}" >
-					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
-					Back
-				</a>
-			</div><!-- .menu-icon -->
-		</div>
-	</div><!-- .footer-menu -->
+		<!-- Footer -->
+		<footer class="main">
+			Copyright &copy; 2017 All Rights Reserved. <strong>MSCT Co.Ltd</strong>
+		</footer>
+	</div>
 @stop
 
 @section('my-script')
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/select2/dist/css/select2.css') }}">
-	<script src="{{ asset('plugins/select2/dist/js/select2.js') }}"></script>
-	<script>
-		$(document).ready(function(){});
-	</script>
+	<!-- Imported styles on this page -->
+	<link rel="stylesheet" href="assets/js/selectboxit/jquery.selectBoxIt.css">
+
+	<!-- Imported scripts on this page -->
+	<script src="assets/js/jquery.bootstrap.wizard.min.js"></script>
+	<script src="assets/js/jquery.validate.min.js"></script>
+	<script src="assets/js/jquery.inputmask.bundle.js"></script>
+	<script src="assets/js/selectboxit/jquery.selectBoxIt.min.js"></script>
+	<script src="assets/js/bootstrap-datepicker.js"></script>
+	<script src="assets/js/bootstrap-switch.min.js"></script>
+	<script src="assets/js/jquery.multi-select.js"></script>
+	<script src="assets/js/neon-chat.js"></script>
+
 @stop
+

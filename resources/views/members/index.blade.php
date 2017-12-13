@@ -51,6 +51,7 @@
 						<tr>
 							<th width="5%">SNo.</th>
 							<th>Name</th>
+							<th>Member No</th>
 							<th>Email</th>
 							<th>Discount Type</th>
 							<th>Contact</th>
@@ -66,6 +67,7 @@
 						<tr>
 							<td>{{ ++$i }}</td>
 							<td>{{ strtoupper($member->name) }}</td>
+							<td>{{ $member->member_no }}</td>
 							<td>{{ $member->email }}</td>
 							<td>{{ $offerList[$member->member_offers_id] }}</td>
 							<td>{{ $member->contact_no }}</td>

@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Countries;
+use App\Category;
+use App\Company;
+use App\Country;
+use App\Currency;
 use App\Item;
 use App\Lotin;
-use App\NricCodes;
-use App\NricTownships;
+use App\NricCode;
+use App\NricTownship;
+use App\Price;
 use App\Receiver;
 use App\Sender;
-use App\States;
+use App\State;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -50,12 +54,28 @@ class TrackingController extends Controller {
 	public function show($id) {
 		$lotinData = Lotin::find($id);
 
-		$sender        = Sender::find($lotinData->sender_id);
-		$receiver      = Receiver::find($lotinData->receiver_id);
-		$countries     = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$states        = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
-		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
-		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
+		$sender   = Sender::find($lotinData->sender_id);
+		$receiver = Receiver::find($lotinData->receiver_id);
+
+		$myCompany     = Company::find(Auth::user()->company_id);
+		$countryIdList = array();
+		$stateIdList   = array();
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
+		}
+
+		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList   = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+
+		$nricCodeList     = NricCode::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
+		$nricTownshipList = NricTownship::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
 
 		if (Auth::user()->hasRole('administrator')) {
 			$receivers = Receiver::get();
@@ -64,9 +84,18 @@ class TrackingController extends Controller {
 		}
 		$receiverCount = count($receivers);
 
-		$items = Item::where('lotin_id', $id)->get();
+		$itemList = Item::where('lotin_id', $id)->get();
 
-		return view('trackings.show', ['lotinData' => $lotinData, 'sender' => $sender, 'receiver' => $receiver, 'countries' => $countries, 'states' => $states, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships, 'receiverCount' => $receiverCount, 'items' => $items]);
+		if (Auth::user()->hasRole('administrator')) {
+			$priceList    = Price::where('deleted', 'N')->lists('title_name', 'id');
+			$currencyList = Currency::where('deleted', 'N')->orderBy('id', 'ASC')->lists('type', 'id');
+		} else {
+			$priceList    = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('title_name', 'id');
+			$currencyList = Currency::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('id', 'ASC')->lists('type', 'id');
+		}
+		$categoryList = Category::where('deleted', 'N')->orderBy('id', 'ASC')->lists('unit', 'id');
+
+		return view('trackings.show', ['lotinData' => $lotinData, 'sender' => $sender, 'receiver' => $receiver, 'countryList' => $countryList, 'stateList' => $stateList, 'nricCodeList' => $nricCodeList, 'nricTownshipList' => $nricTownshipList, 'receiverCount' => $receiverCount, 'itemList' => $itemList, 'priceList' => $priceList, 'categoryList' => $categoryList, 'currencyList' => $currencyList]);
 	}
 
 	/**
@@ -116,10 +145,25 @@ class TrackingController extends Controller {
 				->with('error', 'Your Lot Number does not exist.');
 		}
 
-		$countries     = Countries::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$states        = States::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
-		$nricCodes     = NricCodes::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
-		$nricTownships = NricTownships::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
+		$myCompany     = Company::find(Auth::user()->company_id);
+		$countryIdList = array();
+		$stateIdList   = array();
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
+		}
+
+		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList   = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+
+		$nricCodeList     = NricCode::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
+		$nricTownshipList = NricTownship::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
 
 		if (Auth::user()->hasRole('administrator')) {
 			$receivers = Receiver::get();
@@ -128,6 +172,6 @@ class TrackingController extends Controller {
 		}
 		$receiverCount = count($receivers);
 
-		return view('trackings.search', ['lotinData' => $lotinData, 'sender' => $sender, 'receiver' => $receiver, 'countries' => $countries, 'states' => $states, 'nricCodes' => $nricCodes, 'nricTownships' => $nricTownships, 'receiverCount' => $receiverCount]);
+		return view('trackings.search', ['lotinData' => $lotinData, 'sender' => $sender, 'receiver' => $receiver, 'countryList' => $countryList, 'stateList' => $stateList, 'nricCodeList' => $nricCodeList, 'nricTownshipList' => $nricTownshipList, 'receiverCount' => $receiverCount]);
 	}
 }

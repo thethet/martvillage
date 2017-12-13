@@ -26,6 +26,7 @@ class Item extends Model {
 		'barcode',
 		'price_id',
 		'category_id',
+		'currency_id',
 		'unit',
 		'unit_price',
 		'quantity',

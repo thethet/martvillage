@@ -19,6 +19,7 @@ class CreateTblItems extends Migration {
 			$table->string('barcode');
 			$table->integer('price_id');
 			$table->integer('category_id');
+			$table->integer('currency_id');
 			$table->string('unit');
 			$table->double('unit_price', 12, 2);
 			$table->integer('quantity');

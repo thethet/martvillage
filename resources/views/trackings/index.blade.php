@@ -14,9 +14,6 @@
 			<li>
 				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
 			</li>
-			<li>
-				<a href="{{ url('settings') }}">Settings</a>
-			</li>
 			<li class="active">
 				<strong>Tracking Management</strong>
 			</li>
