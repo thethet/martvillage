@@ -43,8 +43,6 @@
 					<div class="panel-body">
 						{!! Form::open(array('route' => 'trackings.search','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal form-wizard', 'id' => 'rootwizard')) !!}
 
-							<?php $status = (int)$lotinData->status; ?>
-
 							<div class="form-group">
 								<label class="col-sm-4">
 									Contact No:

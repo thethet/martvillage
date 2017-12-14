@@ -39,9 +39,10 @@ Route::group(['middleware' => 'web'], function () {
 	});
 
 	Route::get('send_test_email', function () {
-		$company = App\Companies::find(1);
+		// dd(Config::get('mail'));
+		$company = App\Company::find(1);
 		Mail::send('emails.company-creation-mail', ['company' => $company], function ($message) use ($company) {
-			$message->from('martvillageprj@gmail.com');
+			$message->from('msctpteltd@gmail.com');
 			$message->to('thetthetaye2709@gmail.com', '')->subject('Your company has been created');
 		});
 	});
@@ -460,6 +461,16 @@ Route::group(['middleware' => ['auth']], function () {
 
 	/*
 	|--------------------------------------------------------------------------
+	| LotBalance Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for LotBalance Model CRUD
+	|
+	 */
+	Route::match(['get', 'post'], 'lotbalances', ['as' => 'lotbalances.index', 'uses' => 'LotBalanceController@index', 'middleware' => ['permission:lotbalance-list|lotbalance-create|lotbalance-edit|lotbalance-delete']]);
+
+	/*
+	|--------------------------------------------------------------------------
 	| Outgoing Controller
 	|--------------------------------------------------------------------------
 	|
@@ -472,9 +483,11 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('outgoings/searchbyday', ['as' => 'outgoings.searchbyday', 'uses' => 'OutgoingController@searchByDay', 'middleware' => ['permission:outgoing-list|outgoing-create|outgoing-edit|outgoing-delete']]);
 
+	Route::get('outgoings/create', ['as' => 'outgoings.create', 'uses' => 'OutgoingController@create', 'middleware' => ['permission:lotin-create']]);
 	Route::post('outgoings/create', ['as' => 'outgoings.store', 'uses' => 'OutgoingController@store', 'middleware' => ['permission:outgoing-create']]);
 
-	Route::get('outgoings/ajax/{id}/edit', ['as' => 'outgoings.ajax.edit', 'uses' => 'OutgoingController@editAjax', 'middleware' => ['permission:outgoing-edit']]);
+	Route::get('outgoings/{id}', ['as' => 'outgoings.show', 'uses' => 'OutgoingController@show']);
+
 	Route::get('outgoings/{id}/edit', ['as' => 'outgoings.edit', 'uses' => 'OutgoingController@edit', 'middleware' => ['permission:outgoing-edit']]);
 	Route::patch('outgoings/{id}', ['as' => 'outgoings.update', 'uses' => 'OutgoingController@update', 'middleware' => ['permission:outgoing-edit']]);
 
@@ -491,27 +504,11 @@ Route::group(['middleware' => ['auth']], function () {
 	| This is the route for Incoming Model CRUD
 	|
 	 */
-	Route::get('incomings', ['as' => 'incomings.index', 'uses' => 'IncomingController@index', 'middleware' => ['permission:incoming-list|incoming-create|incoming-edit|incoming-delete']]);
-
-	Route::post('incomings', ['as' => 'incomings.search', 'uses' => 'IncomingController@search', 'middleware' => ['permission:incoming-list|incoming-create|incoming-edit|incoming-delete']]);
+	Route::match(['get', 'post'], 'incomings', ['as' => 'incomings.index', 'uses' => 'IncomingController@index', 'middleware' => ['permission:incoming-list|incoming-create|incoming-edit|incoming-delete']]);
 
 	Route::get('incomings/{id}', ['as' => 'incomings.show', 'uses' => 'IncomingController@show']);
 
 	Route::get('incomings/{id}/edit', ['as' => 'incomings.edit', 'uses' => 'IncomingController@edit', 'middleware' => ['permission:incoming-edit']]);
 	Route::patch('incomings/{id}', ['as' => 'incomings.update', 'uses' => 'IncomingController@update', 'middleware' => ['permission:incoming-edit']]);
-
-	/*
-	|--------------------------------------------------------------------------
-	| LotBalance Controller
-	|--------------------------------------------------------------------------
-	|
-	| This is the route for LotBalance Model CRUD
-	|
-	 */
-	Route::get('lotbalances', ['as' => 'lotbalances.index', 'uses' => 'LotBalanceController@index', 'middleware' => ['permission:lotbalance-list|lotbalance-create|lotbalance-edit|lotbalance-delete']]);
-
-	Route::post('lotbalances', ['as' => 'lotbalances.search', 'uses' => 'LotBalanceController@search', 'middleware' => ['permission:lotbalance-list|lotbalance-create|lotbalance-edit|lotbalance-delete']]);
-
-	Route::get('lotbalances/{id}', ['as' => 'lotbalances.show', 'uses' => 'LotBalanceController@show']);
 
 });

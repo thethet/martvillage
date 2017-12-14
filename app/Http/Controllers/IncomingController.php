@@ -14,24 +14,38 @@ class IncomingController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index() {
-		$arrivalDate = date('Y-m-d');
-		$currentTime = date('H:i A');
+	public function index(Request $request) {
+		if ($request->arrival_date) {
+			$arrivalDate = date('Y-m-d', strtotime($request->arrival_date));
+		} else {
+			$arrivalDate = date('Y-m-d');
+		}
+
+		if ($request->arrival_time) {
+			$currentTime = date('H:i A', strtotime($request->arrival_time));
+		} else {
+			$currentTime = date('H:i A');
+		}
 
 		$query = Outgoing::where('arrival_date', $arrivalDate)
-			->where('arrival_time', '<=', $currentTime)
+		// ->where('arrival_time', '<=', $currentTime)
 			->where('deleted', 'N');
 
 		if (Auth::user()->hasRole('administrator')) {
-			$outgoingList = $query->get();
+			$outgoingList = $query->paginate(10);
 		} elseif (Auth::user()->hasRole('owner')) {
-			$outgoingList = $query->where('company_id', Auth::user()->company_id)->get();
+			$outgoingList = $query->where('company_id', Auth::user()->company_id)->paginate(10);
 		} else {
 			$outgoingList = $query->where('company_id', Auth::user()->company_id)
-				->where('to_city', Auth::user()->state_id)->get();
+				->where('to_city', Auth::user()->state_id)->paginate(10);
 		}
+		$total       = $outgoingList->total();
+		$perPage     = $outgoingList->perPage();
+		$currentPage = $outgoingList->currentPage();
+		$lastPage    = $outgoingList->lastPage();
+		$lastItem    = $outgoingList->lastItem();
 
-		return view('incomings.index', ['outgoingList' => $outgoingList]);
+		return view('incomings.index', ['outgoingList' => $outgoingList, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem])->with('p', ($request->get('page', 1) - 1) * 5);
 	}
 
 	/**

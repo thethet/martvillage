@@ -27,6 +27,42 @@
 			</div>
 		@endif
 
+		{!! Form::open(array('route' => 'lotbalances.index','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate')) !!}
+
+			<div class="form-group">
+				<label class="col-sm-2  control-label">From Location</label>
+
+				<div class="col-sm-3">
+					<div class="input-group minimal">
+						<div class="input-group-addon">
+							<i class="entypo-search"></i>
+						</div>
+						{!! Form::select('from_state', ['' => 'Select From Location'] + $stateList->toArray(), null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
+					</div>
+				</div>
+
+				<label class="col-sm-2  control-label">To Location</label>
+				<div class="col-sm-3">
+					<div class="input-group minimal">
+						<div class="input-group-addon">
+							<i class="entypo-search"></i>
+						</div>
+						{!! Form::select('to_state', ['' => 'Select To Location'] + $stateList->toArray(), null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
+					</div>
+				</div>
+
+				<div class="col-sm-2">
+					<div class="input-group minimal">
+						<button type="submit" class="btn btn-blue btn-icon">
+							Search
+							<i class="entypo-search"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		{!! Form::close() !!}
+		<br />
+
 		@if($lotinList)
 			<?php
 				$today = date("Y-m-d");

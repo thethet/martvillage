@@ -205,20 +205,38 @@
 				</li>
 			@endpermission
 
-			@permission('collection-list')
-				<li @if(Request::segment(1) == 'collections') class="active" @endif>
-					<a href="{{ url('/collections') }}">
-						<i class="fa fa-database"></i>
-						<span class="title">Collections</span>
-					</a>
-				</li>
-			@endpermission
-
 			@permission('lotbalance-list')
 				<li @if(Request::segment(1) == 'lotbalances') class="active" @endif>
 					<a href="{{ url('/lotbalances') }}">
 						<i class="fa fa-shopping-cart"></i>
 						<span class="title">Lot Balance</span>
+					</a>
+				</li>
+			@endpermission
+
+			@permission('outgoing-list')
+				<li @if(Request::segment(1) == 'outgoings') class="active" @endif>
+					<a href="{{ url('/outgoings') }}">
+						<i class="fa fa-shopping-cart"></i>
+						<span class="title">Outgoing</span>
+					</a>
+				</li>
+			@endpermission
+
+			@permission('incoming-list')
+				<li @if(Request::segment(1) == 'incomings') class="active" @endif>
+					<a href="{{ url('/incomings') }}">
+						<i class="fa fa-truck"></i>
+						<span class="title">Incoming</span>
+					</a>
+				</li>
+			@endpermission
+
+			@permission('collection-list')
+				<li @if(Request::segment(1) == 'collections') class="active" @endif>
+					<a href="{{ url('/collections') }}">
+						<i class="fa fa-database"></i>
+						<span class="title">Collections</span>
 					</a>
 				</li>
 			@endpermission
@@ -258,24 +276,6 @@
 					<a href="{{ url('/reports') }}">
 						<i class="entypo-chart-bar"></i>
 						<span class="title">Charts</span>
-					</a>
-				</li>
-			@endpermission
-
-			@permission('outgoing-list')
-				<li @if(Request::segment(1) == 'outgoings') class="active" @endif>
-					<a href="{{ url('/outgoings') }}">
-						<i class="fa fa-shopping-cart"></i>
-						<span class="title">Outgoing</span>
-					</a>
-				</li>
-			@endpermission
-
-			@permission('incoming-list')
-				<li @if(Request::segment(1) == 'incomings') class="active" @endif>
-					<a href="{{ url('/incomings') }}">
-						<i class="fa fa-truck"></i>
-						<span class="title">Incoming</span>
 					</a>
 				</li>
 			@endpermission

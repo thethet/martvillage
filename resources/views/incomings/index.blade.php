@@ -1,161 +1,253 @@
 @extends('layouts.layout')
 
-@section('site-title')
-	<div class="col-md-4 site-icon">
-		<img class="profile-icon" src="{{ asset('assets/img/incoming.png') }}" alt="Incoming">
-	</div>
-	<div class="col-md-8 site-header">Incoming</div>
+@section('page-title')
+	Incoming
 @stop
 
 @section('main')
 	<div class="main-content">
+		@include('layouts.headerbar')
+		<hr />
 
-		@if ($message = Session::get('success'))
-		<div class="alert alert-success">
-			<p>{{ $message }}</p>
-		</div>
-		@endif
+		<ol class="breadcrumb bc-3" >
+			<li>
+				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
+			</li>
+			<li class="active">
+				<strong>Incoming Management</strong>
+			</li>
+		</ol>
 
-		<div class="row">
-			{!! Form::open(array('route' => 'incomings.search','method'=>'POST', 'id' => 'incomings-search-form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data')) !!}
+		<h2>Incoming Management</h2>
+		<br />
+
+		{!! Form::open(array('route' => 'incomings.index','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate')) !!}
+
 			<div class="form-group">
-				<label class="control-label col-sm-2" for="date">
-					<strong>Arrival Date:</strong>
-				</label>
-				<div class="col-sm-2">
-					{!! Form::text('arrival_date', null, array('placeholder' => 'Arrival Date','class' => 'form-control')) !!}
-					@if ($errors->has('arrival_date'))
-						<span class="required">
-							<strong>{{ $errors->first('arrival_date') }}</strong>
-						</span>
-					@endif
+				<label class="col-sm-2  control-label">&nbsp;</label>
+
+				<div class="col-sm-3">
+					&nbsp;
 				</div>
 
-				<label class="control-label col-sm-1" for="date"></label>
-
-				{{-- <label class="control-label col-sm-2" for="time">
-					<strong>Arrival Time:</strong>
-				</label>
-				<div class="col-sm-2">
-					{!! Form::text('arrival_time', null, array('placeholder' => 'Arrival Time','class' => 'form-control', 'id' => 'timepicker')) !!}
-					@if ($errors->has('arrival_time'))
-						<span class="required">
-							<strong>{{ $errors->first('arrival_time') }}</strong>
-						</span>
-					@endif
-				</div> --}}
-				<label class="control-label col-sm-1" for="button"></label>
-				<div class="col-sm-2">
-					<a href="#" id="add" onclick="document.getElementById('incomings-search-form').submit();">
-						<div class="addbtn">
-							<img src="{{ asset('assets/img/Search.png') }}" alt="Search">
-								Search
+				<label class="col-sm-2  control-label">Arrival Date</label>
+				<div class="col-sm-3">
+					<div class="input-group minimal">
+						<div class="input-group-addon">
+							<i class="entypo-search"></i>
 						</div>
-					</a>
+						{!! Form::text('arrival_date', null, ['placeholder' => 'Arrival Date','class' => 'form-control datepicker', 'id' => 'arrival_date', 'data-format' => 'yyyy-mm-dd', 'autocomplete' => 'off']) !!}
+					</div>
 				</div>
-			</div><!-- .form-group -->
 
-			<div class="form-group"></div>
-			{!! Form::close() !!}
-		</div>
+				<div class="col-sm-2">
+					<div class="input-group minimal">
+						<button type="submit" class="btn btn-blue btn-icon">
+							Search
+							<i class="entypo-search"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		{!! Form::close() !!}
+		<br />
 
-		<div class="row">
-			<div class="table-cont">
-				<table class="table table-bordered table-responsive">
+		<div class="panel panel-primary" data-collapsed="0">
+			<div class="panel-heading">
+				<div class="panel-title">
+					Showing {{ $p + 1 }} to @if($currentPage == $lastPage) {{ $lastItem }} @else {{ $p + $perPage }} @endif of {{ $total }} entries
+				</div>
+
+				<div class="panel-options">
+					<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+				</div>
+			</div>
+
+			<div class="panel-body with-table">
+				<table class="table table-bordered responsive">
 					<thead>
 						<tr>
-							<th colspan="11" class="center">Passenger List</th>
-						</tr>
-						<tr>
-							<th width="8px">No</th>
-							{{-- <th width="8px">&nbsp</th> --}}
+							<th width="5%">SNo.</th>
 							<th>Name</th>
-							<th>Phone</th>
-							<th>From City</th>
-							<th>To City</th>
+							<th>Contact No.</th>
+							<th>From Location</th>
+							<th>To Location</th>
 							<th>Weight</th>
 							<th>Carrier</th>
 							<th>Vessel No.</th>
-							<th>Depture Time</th>
+							<th>Depature Time</th>
 							<th>Arrival Time</th>
 							<th>Package List</th>
+							@if(Auth::user()->hasRole('administrator'))
+							<th>Company Name</th>
+							@endif
 						</tr>
 					</thead>
-
 					<tbody>
-						<?php $no = 1; ?>
 						@foreach($outgoingList as $outgoing)
-							<tr>
-								<td>{{ $no++ }}</td>
-								{{-- <td>
-									{!! Form::checkbox('edit', $outgoing->id, null, ['class' => 'editboxes']) !!}
-								</td> --}}
-								<td>{{ $outgoing->passenger_name }}</td>
-								<td>{{ $outgoing->contact_no }}</td>
-								<td>{{ $outgoing->from_city }}</td>
-								<td>{{ $outgoing->to_city }}</td>
-								<td>{{ $outgoing->weight }}</td>
-								<td>{{ $outgoing->carrier_name }}</td>
-								<td>{{ $outgoing->vessel_no }}</td>
-								<td>{{ $outgoing->dept_date }} [ {{ date('H:i A', strtotime($outgoing->dept_time)) }} ]</td>
-								<td>{{ $outgoing->arrival_date }} [ {{ date('H:i A', strtotime($outgoing->arrival_time)) }} ]</td>
-								<td>
-									<a href="{{ url('incomings/'. $outgoing->id) }}">
-										{{ $outgoing->packing_list }}
-									</a>
-								</td>
-							</tr>
+						<tr>
+							<td>{{ ++$p }}</td>
+							<td>{{ $outgoing->passenger_name }}</td>
+							<td>{{ $outgoing->contact_no }}</td>
+							<td>{{ $outgoing->fromCity->state_name }}</td>
+							<td>{{ $outgoing->toCity->state_name }}</td>
+							<td>{{ $outgoing->weight }}</td>
+							<td>{{ $outgoing->carrier_name }}</td>
+							<td>{{ $outgoing->vessel_no }}</td>
+							<td>{{ $outgoing->dept_date }} [ {{ date('g:i A', strtotime($outgoing->dept_time)) }} ]</td>
+							<td>{{ $outgoing->arrival_date }} [ {{ date('g:i A', strtotime($outgoing->arrival_time)) }} ]</td>
+							<td>
+								<a href="{{ url('incomings/'. $outgoing->id) }}" class="btn btn-green btn-icon btn-sm text-white">
+									<b>{{ $outgoing->packing_list }}</b>
+									<i class="entypo-eye"></i>
+								</a>
+							</td>
+							@if(Auth::user()->hasRole('administrator'))
+							<td>
+								{{ $companyList[$outgoing->company_id] }}
+							</td>
+							@endif
+						</tr>
 						@endforeach
 					</tbody>
 				</table>
+
+				{!! $outgoingList->render() !!}
 			</div>
 		</div>
 
-	</div><!-- .main-content -->
-
-	<div class="footer-menu">
-		<div class="footer-content">
-			<div class="menu-icon">
-				<a href="{{ url('/dashboard') }}">
-					<img src="{{ asset('assets/img/home-icon.jpeg') }}" alt="Go Home">
-					Home
-				</a>
-			</div><!-- .menu-icon -->
-
-			<div class="menu-icon">
-				<a href="{{ url('dashboard') }}" >
-					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
-					Back
-				</a>
-			</div><!-- .menu-icon -->
-		</div>
-	</div><!-- .footer-menu -->
+		<!-- Footer -->
+		<footer class="main">
+			Copyright &copy; 2017 All Rights Reserved. <strong>MSCT Co.Ltd</strong>
+		</footer>
+	</div>
 @stop
 
 @section('my-script')
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/select2/dist/css/select2.css') }}">
-	<script src="{{ asset('plugins/select2/dist/js/select2.js') }}"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css"/>
+	<!-- Imported styles on this page -->
+	<link rel="stylesheet" href="{{ asset('assets/js/datatables/datatables.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2-bootstrap.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2.css') }}">
+
+	<!-- Imported scripts on this page -->
+	<script src="{{ asset('assets/js/bootstrap-datepicker.js') }}"></script>
+	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
+	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
+
+	<style>
+		.text-white {
+			color: #fff !important;
+		}
+
+		.text-danger {
+			color: #f00 !important;
+		}
+
+		.text-primary {
+			color: #0275d8 !important;
+		}
+
+		.text-warning {
+			color: #f0ad4e !important;
+		}
+
+		.text-success {
+			color: #5cb85c !important
+		}
+
+		.bg-danger {
+			background: #B22222 !important;
+		}
+
+		.bg-default {
+			background: grey !important;
+		}
+
+		.bg-warning {
+			background-color: #f0ad4e !important;
+		}
+
+		.bg-primary {
+			background-color: #0275d8 !important;
+		}
+
+		td {
+			cursor: pointer;
+		}
+	</style>
 
 	<script>
 		$(document).ready(function(){
-			var date_input=$('input[name="arrival_date"]'); //our date input has the name "date"
-			var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-			date_input.datepicker({
-				format: 'yyyy-mm-dd',
-				container: container,
-				todayHighlight: true,
-				autoclose: true,
+			$(".destroy").on("click", function(event){
+				var confD = confirm('Are you sure to delete?');
+				if (confD) {
+					var id = $(this).attr('id');
+					$.ajax({
+						url: "{!! url('incomings/"+ id +"') !!}",
+						type: 'DELETE',
+						data: {_token: '{!! csrf_token() !!}'},
+						dataType: 'JSON',
+						success: function (data) {
+							window.location.replace(data.url);
+						}
+					});
+				}
 			});
-			// date_input.datepicker('setDate', new Date());
 
-			$('#timepicker').timepicker({
-				minuteStep: 5
+			$("#gopreviousMonth").on("click",function(){
+				var calendarDate = $('#prevMonth').val();
+				var url = "{{ url('incomings/calendar') }}";
+				$.ajax({
+					url: url,
+					type: 'GET',
+					data: {
+						calendarDate: calendarDate,
+						// mode: 'edit'
+					},
+					success: function(data)
+					{
+						window.location.replace(data.url);
+					}
+				});
 			});
+
+
+			$("#gonextMonth").on("click",function(){
+				var calendarDate = $('#nextMonth').val();
+				var url = "{{ url('incomings/calendar') }}";
+				$.ajax({
+					url: url,
+					type: 'GET',
+					data: {
+						calendarDate: calendarDate,
+						// mode: 'edit'
+					},
+					success: function(data)
+					{
+						window.location.replace(data.url);
+					}
+				});
+			});
+
 		});
+
+		function searchByDay(sday) {
+
+			var url = "{{ url('incomings/searchbyday') }}";
+			$.ajax({
+				url: url,
+				type: 'GET',
+				data: {
+					searchDay: sday,
+					// mode: 'edit'
+				},
+				success: function(data)
+				{
+					window.location.replace(data.url);
+				}
+			});
+		}
 	</script>
 @stop
+

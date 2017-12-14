@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('page-title')
-	company
+	Company
 @stop
 
 @section('main')

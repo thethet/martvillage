@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Companies;
-use App\Countries;
+use App\Category;
+use App\Company;
+use App\Country;
 use App\Item;
 use App\Lotin;
 use App\Outgoing;
 use App\Packing;
-use App\States;
+use App\Receiver;
+use App\Sender;
+use App\State;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -47,6 +50,8 @@ class OutgoingController extends Controller {
 			$year  = date('Y', strtotime($searchYMD));
 			$month = date('m', strtotime($searchYMD));
 			$day   = date('d', strtotime($searchYMD));
+
+			Session::flash('theDate', $day);
 		} else {
 			$year  = date('Y', strtotime($currentMonthYear));
 			$month = date('m', strtotime($currentMonthYear));
@@ -61,28 +66,19 @@ class OutgoingController extends Controller {
 		}
 
 		if (Auth::user()->hasRole('administrator')) {
-			$outgoingList = $query->get();
+			$outgoingList = $query->paginate(5);
 
 		} elseif (Auth::user()->hasRole('owner')) {
-			$outgoingList = $query->where('company_id', Auth::user()->company_id)->get();
+			$outgoingList = $query->where('company_id', Auth::user()->company_id)->paginate(5);
 		} else {
 			$outgoingList = $query->where('company_id', Auth::user()->company_id)
-				->where('from_city', Auth::user()->state_id)->get();
+				->where('from_city', Auth::user()->state_id)->paginate(5);
 		}
-		$company       = Companies::find(Auth::user()->company_id);
-		$countryIds    = $company->countries;
-		$countryIdList = array();
-		foreach ($countryIds as $country) {
-			$countryIdList[] = $country->id;
-		}
-		$stateIds    = $company->states;
-		$stateIdList = array();
-		foreach ($stateIds as $stateId) {
-			$stateIdList[] = $stateId->id;
-		}
-
-		$countryList = Countries::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$stateList   = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$total       = $outgoingList->total();
+		$perPage     = $outgoingList->perPage();
+		$currentPage = $outgoingList->currentPage();
+		$lastPage    = $outgoingList->lastPage();
+		$lastItem    = $outgoingList->lastItem();
 
 		$dayHeader = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -115,7 +111,7 @@ class OutgoingController extends Controller {
 		Session::forget('month');
 		Session::forget('searchYMD');
 
-		return view('outgoings.index', ['countryList' => $countryList, 'stateList' => $stateList, 'dayHeader' => $dayHeader, 'currentMonthYear' => $currentMonthYear, 'outgoingList' => $outgoingList, 'outgoingPackingList' => $outgoingPackingList]);
+		return view('outgoings.index', ['dayHeader' => $dayHeader, 'currentMonthYear' => $currentMonthYear, 'outgoingList' => $outgoingList, 'outgoingPackingList' => $outgoingPackingList, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem])->with('p', ($request->get('page', 1) - 1) * 5);
 	}
 
 	/**
@@ -153,7 +149,25 @@ class OutgoingController extends Controller {
 	 * @return Response
 	 */
 	public function create() {
-		//
+		$myCompany     = Company::find(Auth::user()->company_id);
+		$countryIdList = array();
+		$stateIdList   = array();
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
+		}
+
+		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList   = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+
+		return view('outgoings.create', ['companyList' => $companyList, 'countryList' => $countryList, 'stateList' => $stateList]);
 	}
 
 	/**
@@ -173,7 +187,7 @@ class OutgoingController extends Controller {
 			'to_city'        => 'required',
 			'weight'         => 'required',
 			// 'other'          => 'required',
-			'carrier'        => 'required',
+			// 'carrier_name'        => 'required',
 			// 'vessel_no'      => 'required',
 		]);
 
@@ -195,20 +209,27 @@ class OutgoingController extends Controller {
 	 * @return Response
 	 */
 	public function show($id) {
-		//
-	}
+		$outgoing = Outgoing::find($id);
 
-	/**
-	 * Redirect Route Using Ajax.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function editAjax($userId, Request $request) {
-		$id       = $request->id;
-		$response = array('status' => 'success', 'url' => 'outgoings/' . $id . '/edit');
-		return response()->json($response);
+		$myCompany     = Company::find(Auth::user()->company_id);
+		$countryIdList = array();
+		$stateIdList   = array();
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
+		}
 
+		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList   = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+
+		return view('outgoings.show', ['outgoing' => $outgoing, 'companyList' => $companyList, 'countryList' => $countryList, 'stateList' => $stateList]);
 	}
 
 	/**
@@ -218,7 +239,27 @@ class OutgoingController extends Controller {
 	 * @return Response
 	 */
 	public function edit($id) {
-		echo "In Edit";
+		$outgoing = Outgoing::find($id);
+
+		$myCompany     = Company::find(Auth::user()->company_id);
+		$countryIdList = array();
+		$stateIdList   = array();
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
+		}
+
+		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList   = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+
+		return view('outgoings.edit', ['outgoing' => $outgoing, 'companyList' => $companyList, 'countryList' => $countryList, 'stateList' => $stateList]);
 	}
 
 	/**
@@ -227,8 +268,32 @@ class OutgoingController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id) {
-		//
+	public function update($id, Request $request) {
+		$this->validate($request, [
+			'passenger_name' => 'required',
+			'contact_no'     => 'required',
+			'dept_date'      => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
+			'dept_time'      => 'required',
+			'arrival_date'   => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
+			'arrival_time'   => 'required',
+			'from_city'      => 'required',
+			'to_city'        => 'required',
+			'weight'         => 'required',
+			// // 'other'          => 'required',
+			// 'carrier_name'   => 'required',
+			// 'vessel_no'      => 'required',
+		]);
+
+		$data                 = $request->all();
+		$data['dept_time']    = date('H:i A', strtotime($request->dept_time));
+		$data['arrival_time'] = date('H:i A', strtotime($request->arrival_time));
+		$data['updated_by']   = Auth::user()->id;
+
+		$outgoing = Outgoing::find($id);
+		$outgoing->update($data);
+
+		return redirect()->route('outgoings.index')
+			->with('success', 'Passenger updated successfully');
 	}
 
 	/**
@@ -274,7 +339,30 @@ class OutgoingController extends Controller {
 			}
 		}
 
-		return view('outgoings.packing-list', ['outgoing' => $outgoing, 'lotinList' => $lotinList]);
+		$myCompany     = Company::find(Auth::user()->company_id);
+		$countryIdList = array();
+		$stateIdList   = array();
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
+		}
+		$countryList       = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList         = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$senderList        = Sender::lists('name', 'id');
+		$senderContactList = Sender::lists('contact_no', 'id');
+
+		$receiverList        = Receiver::lists('name', 'id');
+		$receiverContactList = Receiver::lists('contact_no', 'id');
+		$categoryList        = Category::where('deleted', 'N')->orderBy('id', 'ASC')->lists('unit', 'id');
+		$categories          = Category::where('deleted', 'N')->orderBy('id', 'ASC')->get();
+
+		return view('outgoings.packing-list', ['outgoing' => $outgoing, 'lotinList' => $lotinList, 'countryList' => $countryList, 'stateList' => $stateList, 'senderList' => $senderList, 'senderContactList' => $senderContactList, 'receiverList' => $receiverList, 'receiverContactList' => $receiverContactList, 'categoryList' => $categoryList, 'categories' => $categories]);
 	}
 
 	/**
