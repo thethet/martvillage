@@ -86,7 +86,7 @@
 									<i class="entypo-eye"></i>
 								</a>
 
-								@if(Auth::user()->hasRole('administrator') || $lotin->company_id == Auth::user()->company_id)
+								@if((Auth::user()->hasRole('administrator') || $lotin->company_id == Auth::user()->company_id) && ($lotin->outgoing_date == '0000-00-00'))
 									@permission('lotin-edit')
 									<a href="{{ url('lotins/'. $lotin->id .'/edit') }}" class="btn btn-success btn-sm">
 										<i class="entypo-pencil"></i>

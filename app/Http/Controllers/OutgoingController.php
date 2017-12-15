@@ -111,7 +111,9 @@ class OutgoingController extends Controller {
 		Session::forget('month');
 		Session::forget('searchYMD');
 
-		return view('outgoings.index', ['dayHeader' => $dayHeader, 'currentMonthYear' => $currentMonthYear, 'outgoingList' => $outgoingList, 'outgoingPackingList' => $outgoingPackingList, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem])->with('p', ($request->get('page', 1) - 1) * 5);
+		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+
+		return view('outgoings.index', ['dayHeader' => $dayHeader, 'currentMonthYear' => $currentMonthYear, 'outgoingList' => $outgoingList, 'outgoingPackingList' => $outgoingPackingList, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'companyList' => $companyList])->with('p', ($request->get('page', 1) - 1) * 5);
 	}
 
 	/**
@@ -272,9 +274,9 @@ class OutgoingController extends Controller {
 		$this->validate($request, [
 			'passenger_name' => 'required',
 			'contact_no'     => 'required',
-			'dept_date'      => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
+			// 'dept_date'      => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
 			'dept_time'      => 'required',
-			'arrival_date'   => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
+			// 'arrival_date'   => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
 			'arrival_time'   => 'required',
 			'from_city'      => 'required',
 			'to_city'        => 'required',
@@ -352,6 +354,7 @@ class OutgoingController extends Controller {
 				$stateIdList[] = $stateId->id;
 			}
 		}
+		$companyList       = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$countryList       = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 		$stateList         = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 		$senderList        = Sender::lists('name', 'id');
@@ -362,7 +365,7 @@ class OutgoingController extends Controller {
 		$categoryList        = Category::where('deleted', 'N')->orderBy('id', 'ASC')->lists('unit', 'id');
 		$categories          = Category::where('deleted', 'N')->orderBy('id', 'ASC')->get();
 
-		return view('outgoings.packing-list', ['outgoing' => $outgoing, 'lotinList' => $lotinList, 'countryList' => $countryList, 'stateList' => $stateList, 'senderList' => $senderList, 'senderContactList' => $senderContactList, 'receiverList' => $receiverList, 'receiverContactList' => $receiverContactList, 'categoryList' => $categoryList, 'categories' => $categories]);
+		return view('outgoings.packing-list', ['outgoing' => $outgoing, 'lotinList' => $lotinList, 'countryList' => $countryList, 'stateList' => $stateList, 'senderList' => $senderList, 'senderContactList' => $senderContactList, 'receiverList' => $receiverList, 'receiverContactList' => $receiverContactList, 'categoryList' => $categoryList, 'categories' => $categories, 'companyList' => $companyList]);
 	}
 
 	/**

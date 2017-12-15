@@ -73,7 +73,10 @@
 									<button type="submit" class="btn btn-success btn-icon">
 										Search <i class="entypo-search"></i>
 									</button>
-									<button type="reset" class="btn">Reset</button>
+									<button type="reset" class="btn btn-info btn-icon">
+										Reset
+										<i class="entypo-erase"></i>
+									</button>
 								</div>
 							</div>
 						{!! Form::close() !!}

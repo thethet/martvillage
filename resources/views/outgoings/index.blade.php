@@ -184,8 +184,9 @@
 							<td>{{ $outgoing->vessel_no }}</td>
 							<td>{{ $outgoing->dept_date }} [ {{ date('g:i A', strtotime($outgoing->dept_time)) }} ]</td>
 							<td>
-								<a href="{{ url('outgoings/'. $outgoing->id .'/packing-list') }}" class="text-primary">
+								<a href="{{ url('outgoings/'. $outgoing->id .'/packing-list') }}" class="btn btn-green btn-icon btn-sm text-white">
 									<b>{{ $outgoing->packing_list }}</b>
+									<i class="entypo-archive"></i>
 								</a>
 							</td>
 							@if(Auth::user()->hasRole('administrator'))
@@ -198,7 +199,7 @@
 									<i class="entypo-eye"></i>
 								</a>
 
-								@if(Auth::user()->hasRole('administrator') || $outgoing->company_id == Auth::user()->company_id)
+								@if((Auth::user()->hasRole('administrator') || $outgoing->company_id == Auth::user()->company_id) && ((date('Y-m-d') == date('Y-m-d', strtotime($outgoing->dept_date))) && (date('g:i A') == date('g:i A', strtotime($outgoing->dept_time)))))
 									@permission('user-edit')
 										<a href="{{ url('outgoings/'. $outgoing->id .'/edit') }}" class="btn btn-success btn-sm" title="Edit">
 											<i class="entypo-pencil"></i>

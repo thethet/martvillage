@@ -34,7 +34,7 @@
 				<div class="col-sm-3">
 					<div class="input-group minimal">
 						<div class="input-group-addon">
-							<i class="entypo-search"></i>
+							<i class="entypo-calendar"></i>
 						</div>
 						{!! Form::text('arrival_date', null, ['placeholder' => 'Arrival Date','class' => 'form-control datepicker', 'id' => 'arrival_date', 'data-format' => 'yyyy-mm-dd', 'autocomplete' => 'off']) !!}
 					</div>
@@ -77,10 +77,10 @@
 							<th>Vessel No.</th>
 							<th>Depature Time</th>
 							<th>Arrival Time</th>
-							<th>Package List</th>
 							@if(Auth::user()->hasRole('administrator'))
 							<th>Company Name</th>
 							@endif
+							<th>Package List</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -95,18 +95,20 @@
 							<td>{{ $outgoing->carrier_name }}</td>
 							<td>{{ $outgoing->vessel_no }}</td>
 							<td>{{ $outgoing->dept_date }} [ {{ date('g:i A', strtotime($outgoing->dept_time)) }} ]</td>
-							<td>{{ $outgoing->arrival_date }} [ {{ date('g:i A', strtotime($outgoing->arrival_time)) }} ]</td>
 							<td>
-								<a href="{{ url('incomings/'. $outgoing->id) }}" class="btn btn-green btn-icon btn-sm text-white">
-									<b>{{ $outgoing->packing_list }}</b>
-									<i class="entypo-eye"></i>
-								</a>
+								{{ $outgoing->arrival_date }} [ {{ date('g:i A', strtotime($outgoing->arrival_time)) }} ]
 							</td>
 							@if(Auth::user()->hasRole('administrator'))
 							<td>
 								{{ $companyList[$outgoing->company_id] }}
 							</td>
 							@endif
+							<td>
+								<a href="{{ url('incomings/'. $outgoing->id) }}" class="btn btn-green btn-icon btn-sm text-white">
+									<b>{{ $outgoing->packing_list }}</b>
+									<i class="entypo-archive"></i>
+								</a>
+							</td>
 						</tr>
 						@endforeach
 					</tbody>

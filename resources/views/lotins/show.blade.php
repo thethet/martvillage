@@ -34,215 +34,121 @@
 						</div>
 
 						<div class="panel-options">
-							<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+							<a href="{{ url('lotins/'. $lotinData->id .'/print-pdf') }}" title="Print"><i class="entypo-print"></i></a>
+							&nbsp;|&nbsp;
+							<a href="{{ url('lotins') }}" title="Close"><i class="entypo-cancel"></i></a>
+							&nbsp;|&nbsp;
+							<a href="#" data-rel="collapse" title="Hide"><i class="entypo-down-open"></i></a>
 						</div>
 					</div>
 
 					<div class="panel-body">
-						{!! Form::model($lotinData, ['method' => 'PATCH','route' => ['lotins.update', $lotinData->id], 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate', 'enctype' => 'multipart/form-data']) !!}
+						{!! Form::model($lotinData, ['method' => 'PATCH','route' => ['lotins.update', $lotinData->id], 'role' => 'form', 'class' => 'form-horizontal validate', 'enctype' => 'multipart/form-data']) !!}
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Company Name <span class="text-danger">*</span></label>
+								<label class="col-sm-4">
+									Contact No:
+									@if($sender->contact_no)
+										{{ $sender->contact_no }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
 
-								<div class="col-sm-5">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-suitcase"></i></span>
-										@if(Auth::user()->hasRole('administrator'))
-											{!! Form::select('company_id', ['' => 'Select Company'] + $companyList->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off', 'disabled']) !!}
-										@else
-											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
-											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
-										@endif
-									</div>
-								</div>
-							</div>
+								<label class="col-sm-4">
+									To:
+									@if($receiver->address)
+										{{ $receiver->address }} of {{ $receiverCount }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
 
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Member No</label>
-
-								<div class="col-sm-5">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-users"></i></span>
-										{!! Form::text('member_no', null, ['placeholder' => 'Member No', 'class' => 'form-control', 'id' => 'member_no', 'autocomplete' => 'off', 'disabled']) !!}
-									</div>
-								</div>
+								<label class="col-sm-4">
+									Date: {{ $lotinData->date }}
+								</label>
 							</div>
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Sender's Contact <span class="text-danger">*</span></label>
+								<label class="col-sm-4">
+									Member No:
+									@if($sender->member_no)
+										{{ $sender->member_no }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
 
-								<div class="col-sm-5">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-mobile"></i></span>
-										{!! Form::text('s_contact_no', null, ['placeholder' => "Sender's Contact", 'class' => 'form-control', 'id' => 's_contact_no', 'autocomplete' => 'off', 'disabled']) !!}
-									</div>
-								</div>
+								<label class="col-sm-4">
+									Contact No:
+									@if($receiver->contact_no)
+										{{ $receiver->contact_no }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
+
+								<label class="col-sm-4">
+									Lot No: {{ $lotinData->lot_no }}
+								</label>
 							</div>
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Sender's Name <span class="text-danger">*</span></label>
+								<label class="col-sm-4">
+									Sender Name:
+									@if($sender->name)
+										{{ $sender->name }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
 
-								<div class="col-sm-5">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-user"></i></span>
-										{!! Form::text('sender_name', null, ['placeholder' => "Sender's Name", 'class' => 'form-control', 'id' => 'sender-name', 'autocomplete' => 'off', 'disabled']) !!}
-									</div>
-								</div>
+								<label class="col-sm-4">
+									Receiver Name:
+									@if($receiver->name)
+										{{ $receiver->name }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
+
+								<label class="col-sm-4">
+									From: {{ $stateList[$lotinData->from_state] }}, {{ $countryList[$lotinData->from_country] }}
+								</label>
 							</div>
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Sender's NRIC Number</label>
+								<label class="col-sm-4">
+									NRIC:
+									@if($sender->nric_code_id != 0 && $sender->nric_township_id != 0)
+										{{ $nricCodeList[$sender->nric_code_id] }} / {{ $nricTownshipList[$sender->nric_township_id] }} {{ $sender->nric_no }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
 
-								<div class="col-sm-2">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-vcard"></i></span>
-										{!! Form::select('nric_code_id', ['' => 'Code'] + $nricCodeList->toArray(), null, ['class' => 'form-control', 'id' => 'nric_code', 'data-allow-clear' => 'true', 'disabled']) !!}
-									</div>
-								</div>
+								<label class="col-sm-4">
+									NRIC:
+									@if($receiver->nric_code_id != 0 && $receiver->nric_township_id != 0)
+										{{ $nricCodeList[$receiver->nric_code_id] }} / {{ $nricTownshipList[$receiver->nric_township_id] }} {{ $receiver->nric_no }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
 
-								<div class="col-sm-2">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-vcard"></i></span>
-										{!! Form::select('nric_township_id', ['' => 'Township'] + $nricTownshipList->toArray(), null, ['class' => 'form-control', 'autocomplete' => 'off', 'id' => 'nric_township', 'disabled']) !!}
-									</div>
-								</div>
-
-								<div class="col-sm-4">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-vcard"></i></span>
-										{!! Form::text('nric_no', null, ['placeholder' => '(N) xxxxxx','class' => 'form-control', 'id' => 'nric_no', 'autocomplete' => 'off', 'disabled']) !!}
-									</div>
-								</div>
+								<label class="col-sm-4">
+									To: {{ $stateList[$lotinData->to_state] }}, {{ $countryList[$lotinData->to_country] }}
+								</label>
 							</div>
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">To <span class="text-danger">*</span></label>
+								<label class="col-sm-4">&nbsp;</label>
 
-								<div id="address-input">
-									<div class="col-sm-5">
-										<div class="input-group minimal">
-											<span class="input-group-addon"><i class="entypo-users"></i></span>
-											{!! Form::text('to_state_id_news',  $receiverLastNo, ['placeholder' => 'Address', 'class' => 'form-control', 'id' => 'to-add', 'autocomplete' => 'off', 'disabled']) !!}
-											{!! Form::hidden('to_state_id_new',  $receiverLastId, ['placeholder' => 'Address', 'class' => 'form-control', 'id' => 'to-adds', 'autocomplete' => 'off', 'readonly']) !!}
-										</div>
-									</div>
-								</div>
-							</div>
+								<label class="col-sm-4">&nbsp;</label>
 
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Receiver's Contact <span class="text-danger">*</span></label>
-
-								<div class="col-sm-5">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-mobile"></i></span>
-										{!! Form::text('r_contact_no', null, ['placeholder' => "Receiver's Contact", 'class' => 'form-control', 'id' => 'r_contact_no', 'autocomplete' => 'off', 'disabled']) !!}
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Receiver's Name <span class="text-danger">*</span></label>
-
-								<div class="col-sm-5">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-user"></i></span>
-										{!! Form::text('receiver_name', null, ['placeholder' => "Receiver's Name", 'class' => 'form-control', 'id' => 'r_name', 'autocomplete' => 'off', 'disabled']) !!}
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Receiver's NRIC Number</label>
-
-								<div class="col-sm-2">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-vcard"></i></span>
-										{!! Form::select('r_nric_code_id', ['' => 'Code'] + $nricCodeList->toArray(), null, ['class' => 'form-control', 'id' => 'r_nric_code', 'data-allow-clear' => 'true', 'disabled']) !!}
-									</div>
-								</div>
-
-								<div class="col-sm-2">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-vcard"></i></span>
-										{!! Form::select('r_nric_township_id', ['' => 'Township'] + $nricTownshipList->toArray(), null, ['class' => 'form-control', 'autocomplete' => 'off', 'id' => 'r_nric_township', 'disabled']) !!}
-									</div>
-								</div>
-
-								<div class="col-sm-4">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-vcard"></i></span>
-										{!! Form::text('r_nric_no', null, ['placeholder' => '(N) xxxxxx','class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Date <span class="text-danger">*</span></label>
-
-								<div class="col-sm-5">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-calendar"></i></span>
-										{!! Form::text('date', date('Y-m-d'), ['placeholder' => 'Date','class' => 'form-control datepicker', 'id' => 'date', 'data-format' => 'yyyy-mm-dd', 'autocomplete' => 'off', 'disabled']) !!}
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Lot No</label>
-
-								<div class="col-sm-5">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-map"></i></span>
-										{!! Form::text('lot_no', null, ['placeholder' => 'Lot No', 'class' => 'form-control', 'id' => 'lot_no', 'autocomplete' => 'off', 'disabled']) !!}
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group {{ ($errors->has('from_country') || $errors->has('from_state')) ? ' has-error' : '' }}">
-								<label class="col-sm-3 control-label">From Location <span class="text-danger">*</span></label>
-
-								<div class="col-sm-4">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-globe"></i></span>
-										{!! Form::select('from_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['class' => 'form-control', 'id' => 'country_id', 'autocomplete' => 'off', 'disabled']) !!}
-									</div>
-								</div>
-
-								<div class="col-sm-4">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-location"></i></span>
-										{!! Form::select('from_state', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'form-control', 'id' => 'state_id', 'autocomplete' => 'off', 'disabled']) !!}
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group {{ ($errors->has('to_country') || $errors->has('to_state')) ? ' has-error' : '' }}">
-								<label class="col-sm-3 control-label">To Location <span class="text-danger">*</span></label>
-
-								<div class="col-sm-4">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-globe"></i></span>
-										{!! Form::select('to_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['class' => 'form-control', 'id' => 'to_country_id', 'autocomplete' => 'off', 'disabled']) !!}
-									</div>
-								</div>
-
-								<div class="col-sm-4">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-location"></i></span>
-										{!! Form::select('to_state', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'form-control', 'id' => 'to_state_id', 'autocomplete' => 'off', 'disabled']) !!}
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group {{ ($errors->has('payment')) ? ' has-error' : '' }}">
-								<label class="col-sm-3 control-label">Payment <span class="text-danger">*</span></label>
-
-								<div class="col-sm-5">
-									<div class="input-group minimal">
-										<span class="input-group-addon">&nbsp;<i class="fa fa-usd"></i>&nbsp;</span>
-										{!! Form::select('payment', ['' => 'Select Payment'] + Config::get('myVars.Payment'), null, ['class' => 'form-control', 'id' => 'payment', 'autocomplete' => 'off', 'disabled']) !!}
-									</div>
-								</div>
+								<label class="col-sm-4">
+									Payment: {{ $lotinData->payment }}
+								</label>
 							</div>
 
 							<div class="form-group">
@@ -393,8 +299,8 @@
 								<label class="col-sm-3 control-label"></label>
 
 								<div class="col-sm-5">
-									<a href="{{ route('lotins.index') }}" class="btn btn-orange btn-icon">
-										Back
+									<a href="{{ url('lotins/'. $lotinData->id . '/edit') }}" class="btn btn-orange btn-icon">
+										Back To Edit
 										<i class="entypo-reply"></i>
 									</a>
 								</div>

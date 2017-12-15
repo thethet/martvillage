@@ -110,7 +110,7 @@
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-calendar"></i></span>
+										<span class="input-group-addon"><i class="fa fa-birthday-cake"></i></span>
 										{!! Form::text('dob', null, ['placeholder' => 'Date of Birth','class' => 'form-control datepicker', 'id' => 'dob', 'data-format' => 'yyyy-mm-dd', 'autocomplete' => 'off']) !!}
 									</div>
 

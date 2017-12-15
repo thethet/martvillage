@@ -1,203 +1,300 @@
 @extends('layouts.layout')
 
-@section('site-title')
-	<div class="col-md-4 site-icon">
-		<img class="profile-icon" src="{{ asset('assets/img/incoming.png') }}" alt="Incoming">
-	</div>
-	<div class="col-md-8 site-header">Incoming</div>
+@section('page-title')
+	Incoming
 @stop
 
 @section('main')
 	<div class="main-content">
 
-		@if ($message = Session::get('success'))
-		<div class="alert alert-success">
-			<p>{{ $message }}</p>
-		</div>
-		@endif
+		@include('layouts.headerbar')
+		<hr />
 
+		<ol class="breadcrumb bc-3" >
+			<li>
+				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
+			</li>
+			<li>
+				<a href="{{ url('incomings') }}">Incoming Management</a>
+			</li>
+			<li class="active">
+				<strong>Package List Form</strong>
+			</li>
+		</ol>
+
+		<h2>Incoming Management</h2>
+		<br />
 
 		<div class="row">
-			<div class="form-horizontal">
-				<div class="form-group">
-					<div class="control-label col-sm-4">
-						Passenger Name:
-					</div>
-					<div class="control-label col-sm-7">
-						{{ $outgoing->passenger_name }}
-					</div>
-				</div><!-- .form-group -->
+			<div class="col-md-12">
+				<div class="panel panel-primary" data-collapsed="0">
+					<div class="panel-heading">
+						<div class="panel-title">
+							<strong>Package List Form</strong>
+						</div>
 
-				<div class="form-group">
-					<div class="col-sm-4">
-						Phone:
+						<div class="panel-options">
+							<a href="{{ url('incomings') }}" title="Close"><i class="entypo-cancel"></i></a>
+							&nbsp;|&nbsp;
+							<a href="#" data-rel="collapse" title="Hide"><i class="entypo-down-open"></i></a>
+						</div>
 					</div>
-					<div class="col-sm-7">
-						{{ $outgoing->contact_no }}
-					</div>
-				</div><!-- .form-group -->
 
-				<div class="form-group">
-					<div class="col-sm-4">
-						From ~ To:
-					</div>
-					<div class="col-sm-7">
-						{{ $outgoing->fromCity->state_name }} ~ {{ $outgoing->toCity->state_name }}
-					</div>
-				</div><!-- .form-group -->
+					<div class="panel-body">
+						{!! Form::open(array('route' => 'outgoings.packinglist.store','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal', 'id' => 'rootwizard')) !!}
+						{!! Form::hidden('outgoing_id', $outgoing->id, ['class' => 'form-control']) !!}
 
-				<div class="form-group">
-					<div class="col-sm-4">
-						Weight:
-					</div>
-					<div class="col-sm-7">
-						{{ $outgoing->weight }} kg
-					</div>
-				</div><!-- .form-group -->
+							<div class="form-group">
+								<label class="col-sm-4">
+									Passenger Name
+								</label>
 
-				<div class="form-group">
-					<div class="col-sm-4">
-						Quantity:
-					</div>
-					<div class="col-sm-7">
-						{{ $outgoing->packing_list }} pcs
-					</div>
-				</div><!-- .form-group -->
-			</div><!-- .form-horizontal -->
+								<label class="col-sm-8">
+									@if($outgoing->passenger_name)
+										{{ $outgoing->passenger_name }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
+							</div>
 
-			<div class="col-sm-12 bdr pad3 mb15">
-				<div class="table-cont mb0">
-					<table class="packing-list-group table table-responsive ">
-						<thead>
+							<div class="form-group">
+								<label class="col-sm-4">
+									Phone
+								</label>
+
+								<label class="col-sm-8">
+									@if($outgoing->contact_no)
+										{{ $outgoing->contact_no }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-4">
+									From ~ To
+								</label>
+
+								<label class="col-sm-8">
+									{{ $outgoing->fromCity->state_name }} ~ {{ $outgoing->toCity->state_name }}
+								</label>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-4">
+									Weight
+								</label>
+
+								<label class="col-sm-8">
+									@if($outgoing->weight)
+										{{ $outgoing->weight }} kg
+									@else
+										{{ '-' }}
+									@endif
+								</label>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-4">
+									Quantity
+								</label>
+
+								<label class="col-sm-8">
+									{{ $outgoing->packing_list }} pcs
+								</label>
+							</div>
+
 							@for($x = 1; $x <= $outgoing->packing_list; $x++)
 								<?php
-									$packItems =DB::table('items as i')
-									->select('i.*', 's.name as sender_name', 'r.name as receiver_name')
-									->leftJoin('lotins as l', 'l.id', '=', 'i.lotin_id')
-									->leftJoin('senders as s', 's.id', '=', 'l.sender_id')
-									->leftJoin('receivers as r', 'r.id', '=', 'l.receiver_id')
-									->where('i.outgoing_id', $outgoing->id)
-									->where('i.packing_id', $x)->get();
+									$packItemList =DB::table('items as i')
+										->select('i.*', 'l.sender_id', 'l.receiver_id', 'l.company_id', 'l.from_state', 'l.to_state')
+										->leftJoin('lotins as l', 'l.id', '=', 'i.lotin_id')
+										->where('i.outgoing_id', $outgoing->id)
+										->where('i.packing_id', $x)->get();
+									$myCategory = array();
 
-									$kgs = App\Item::select(DB::raw('sum(unit) as total_unit'))->where('outgoing_id', $outgoing->id)->where('packing_id', $x)->where('category_id', 1)->get();
-									$totalKgs = $kgs[0]->total_unit;
+									foreach($categories as $category) {
+										$unit = App\Item::select(DB::raw('sum(unit) as total_unit'))->where('outgoing_id', $outgoing->id)->where('packing_id', $x)->where('category_id', $category->id)->first();
 
-									$fts = App\Item::select(DB::raw('sum(unit) as total_unit'))->where('outgoing_id', $outgoing->id)->where('packing_id', $x)->where('category_id', 2)->get();
-									$totalFts = $fts[0]->total_unit;
-
-									$ins = App\Item::select(DB::raw('sum(unit) as total_unit'))->where('outgoing_id', $outgoing->id)->where('packing_id', $x)->where('category_id', 3)->get();
-									$totalIns = $ins[0]->total_unit;
-
-									$docs = App\Item::select(DB::raw('sum(unit) as total_unit'))->where('outgoing_id', $outgoing->id)->where('packing_id', $x)->where('category_id', 4)->get();
-									$totalDocs = $docs[0]->total_unit;
-
+										$myCategory[$category->id] = ($unit->total_unit) ? $unit->total_unit : 0 ;
+									}
+									$k = 1;
 								?>
-								<tr>
-									<td>
-										<div class="packing-header">
-											<h5 class="packing-title mr0">
-												<a data-toggle="collapse" data-parent="#accordion" href="#collapses{{ $x }}" class="collapsed">
-													&nbsp;&nbsp;&nbsp;&nbsp; Package List {{  $x }}
-												</a>
-											</h5>
-										</div>
-									</td>
-									<th width="70px" class="bdr center">
-										<span>{{ $totalKgs }}</span> kg
-									</th>
-									<th width="70px" class="bdr center">
-										<span>{{ $totalFts }}</span> ft<sup>3</sup>
-									</th>
-									<th width="70px" class="bdr center">
-										<span>{{ $totalIns }}</span> Ins
-									</th>
-									<th width="70px" class="bdr center">
-										<span>{{ $totalDocs }}</span> Docs
-									</th>
-								</tr>
-								<tr>
-									<td colspan="5" class="bdr0">
-										<div class="packing-list">
-											<div id="collapses{{ $x }}" class="panel-collapse collapse" >
-												<div class="table-cont">
-													<table class="table table-bordered table-responsive" id="mypackage{{$x }}">
-														<thead>
-															<tr>
-																<th></th>
-																<th>Sender</th>
-																<th>Receiver</th>
-																<th>Barcode</th>
-																<th>Unit(kg/ft<sup>3</sup>)</th>
-																<th>Split</th>
-																<th width="5%"></th>
-															</tr>
-														</thead>
-														<tbody>
-															@foreach($packItems as $pacItem)
-																<tr>
-																	<td></td>
-																	<td>{{ $pacItem->sender_name }}</td>
-																	<td>{{ $pacItem->receiver_name }}</td>
-																	<td>{{ $pacItem->barcode }}</td>
-																	<td>{{ $pacItem->unit }}</td>
-																	<td>0</td>
-																	<td>
-																		@if($pacItem->status == 1)
-																		<a href="{{ url('incomings/'.$pacItem->id.'/edit') }}">
-																			<div class="addbtn">
-																				Arrive
-																			</div>
-																		</a>
-																		@endif
-																	</td>
-																</tr>
-															@endforeach
-														</tbody>
-													</table>
-												</div>
+
+								<div class="col-md-12" style="padding: 0;">
+									<div class="panel panel-primary" data-collapsed="0">
+										<div class="panel-heading">
+											<div class="panel-title text-primary">
+												<b>
+													Package List {{ $x }}
+												</b>
+											</div>
+
+											<div class="panel-options">
+												@foreach($categories as $category)
+													{{ $myCategory[$category->id] }}
+													@if($categoryList[$category->id] == '%')
+														{{ 'Ins' }}
+													@elseif($categoryList[$category->id] == 'ft3')
+														{{ 'ft' }}<sup>3</sup>
+													@else
+														{{ $categoryList[$category->id] }}
+													@endif
+													&nbsp;|&nbsp;
+												@endforeach
+
+												<a href="#" data-rel="collapse" title="Hide"><i class="entypo-down-open"></i></a>
 											</div>
 										</div>
-									</td>
-								</tr>
+
+										<div class="panel-body with-table">
+											<table class="table table-bordered responsive">
+												<thead>
+													<tr>
+														<th width="5%">SNo.</th>
+														<th>Sender Name</th>
+														<th>Sender Contact No.</th>
+														<th>Reciever Name</th>
+														<th>Receiver Contact No.</th>
+														{{-- <th>From - To</th> --}}
+														<th>Barcode</th>
+														<th>Unit(kg/ft<sup>3</sup>)</th>
+														@if(Auth::user()->hasRole('administrator'))
+														<th>Company Name</th>
+														@endif
+														<th>Action</th>
+													</tr>
+												</thead>
+												<tbody>
+													@foreach($packItemList as $item)
+														<tr>
+															<td>{{ $k++ }}</td>
+															<td>{{ $senderList[$item->sender_id] }}</td>
+															<td>{{ $senderContactList[$item->sender_id] }}</td>
+															<td>{{ $receiverList[$item->receiver_id] }}</td>
+															<td>{{ $receiverContactList[$item->receiver_id] }}</td>
+															{{-- <td>
+																{{ $stateList[$lotin->from_state] }} <=> {{ $stateList[$lotin->to_state] }}
+															</td> --}}
+															<td>{{ $item->barcode }}</td>
+															<td>{{ $item->unit }} {{ $categoryList[$item->category_id] }}</td>
+															@if(Auth::user()->hasRole('administrator'))
+																<td>
+																	{{ $companyList[$item->company_id] }}
+																</td>
+															@endif
+															<td>
+																@if($item->status == 1)
+																	<a href="#" class="btn btn-green btn-icon arrive" id="{{ $item->id }}" title="Arrive">
+																		Arrive
+																		<i class="entypo-check"></i>
+																	</a>
+																@endif
+															</td>
+														</tr>
+													@endforeach
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
 							@endfor
-						</thead>
-					</table>
+
+							<div class="form-group">
+								<div class="col-sm-9">
+									<a href="{{ route('incomings.index') }}" class="btn btn-black">
+										Back
+									</a>
+								</div>
+							</div><!-- .form-group -->
+
+						{!! Form::close() !!}
+					</div>
 				</div>
 			</div>
 		</div>
 
-	</div><!-- .main-content -->
-
-	<div class="footer-menu">
-		<div class="footer-content">
-			<div class="menu-icon">
-				<a href="{{ url('/dashboard') }}">
-					<img src="{{ asset('assets/img/home-icon.jpeg') }}" alt="Go Home">
-					Home
-				</a>
-			</div><!-- .menu-icon -->
-
-			<div class="menu-icon">
-				<a href="{{ url('incomings') }}" >
-					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
-					Back
-				</a>
-			</div><!-- .menu-icon -->
-
-		</div>
-	</div><!-- .footer-menu -->
+		<!-- Footer -->
+		<footer class="main">
+			Copyright &copy; 2017 All Rights Reserved. <strong>MSCT Co.Ltd</strong>
+		</footer>
+	</div>
 @stop
 
 @section('my-script')
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/select2/dist/css/select2.css') }}">
-	<script src="{{ asset('plugins/select2/dist/js/select2.js') }}"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css"/>
+	<!-- Imported styles on this page -->
+	<link rel="stylesheet" href="assets/js/selectboxit/jquery.selectBoxIt.css">
+
+	<style>
+		.text-white {
+			color: #fff !important;
+		}
+
+		.text-danger {
+			color: #f00 !important;
+		}
+
+		.text-primary {
+			color: #0275d8 !important;
+		}
+
+		.text-warning {
+			color: #f0ad4e !important;
+		}
+
+		.text-success {
+			color: #5cb85c !important
+		}
+
+		.bg-danger {
+			background: #B22222 !important;
+		}
+
+		.bg-default {
+			background: grey !important;
+		}
+
+		.bg-warning {
+			background-color: #f0ad4e !important;
+		}
+
+		.bg-primary {
+			background-color: #0275d8 !important;
+		}
+
+		td {
+			cursor: pointer;
+		}
+	</style>
+
+	<!-- Imported scripts on this page -->
+	<script src="assets/js/jquery.bootstrap.wizard.min.js"></script>
+	<script src="assets/js/jquery.validate.min.js"></script>
+	<script src="assets/js/jquery.inputmask.bundle.js"></script>
+	<script src="assets/js/selectboxit/jquery.selectBoxIt.min.js"></script>
+	<script src="assets/js/bootstrap-datepicker.js"></script>
+	<script src="assets/js/bootstrap-switch.min.js"></script>
+	<script src="assets/js/jquery.multi-select.js"></script>
+	<script src="assets/js/neon-chat.js"></script>
 
 	<script>
-		$(document).ready(function(){});
+		$(document).ready(function(){
+			$(".arrive").on("click", function(event){
+				alert('hi')
+				var id = $(this).attr('id');
+				$.ajax({
+					url: "{!! url('incomings/"+ id +"') !!}",
+					type: 'PATCH',
+					data: {_token: '{!! csrf_token() !!}'},
+					dataType: 'JSON',
+					success: function (data) {
+						window.location.replace(data.url);
+					}
+				});
+			});
+		});
 	</script>
 @stop
+

@@ -35,7 +35,7 @@
 				<div class="col-sm-3">
 					<div class="input-group minimal">
 						<div class="input-group-addon">
-							<i class="entypo-search"></i>
+							<i class="entypo-location"></i>
 						</div>
 						{!! Form::select('from_state', ['' => 'Select From Location'] + $stateList->toArray(), null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
 					</div>
@@ -45,7 +45,7 @@
 				<div class="col-sm-3">
 					<div class="input-group minimal">
 						<div class="input-group-addon">
-							<i class="entypo-search"></i>
+							<i class="entypo-location"></i>
 						</div>
 						{!! Form::select('to_state', ['' => 'Select To Location'] + $stateList->toArray(), null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
 					</div>
