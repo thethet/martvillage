@@ -512,4 +512,38 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('incomings/{id}/edit', ['as' => 'incomings.edit', 'uses' => 'IncomingController@edit', 'middleware' => ['permission:incoming-edit']]);
 	Route::patch('incomings/{id}', ['as' => 'incomings.update', 'uses' => 'IncomingController@update', 'middleware' => ['permission:incoming-edit']]);
 
+	/*
+	|--------------------------------------------------------------------------
+	| Collection Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Collection Model CRUD
+	|
+	 */
+	Route::get('collections', ['as' => 'collections.index', 'uses' => 'CollectionController@index', 'middleware' => ['permission:collection-list|collection-create|collection-edit|collection-delete']]);
+
+	Route::match(['get', 'post'], 'collections/ready-collect', ['as' => 'collections.ready.collect', 'uses' => 'CollectionController@readyToCollect', 'middleware' => ['permission:collection-list|collection-create|collection-edit|collection-delete']]);
+
+	Route::get('collections/collected/{id}', ['as' => 'collections.collected', 'uses' => 'CollectionController@updateCollectionStatus']);
+
+	Route::get('collections/return', ['as' => 'collections.return', 'uses' => 'CollectionController@returnLots']);
+
+	Route::get('collections/{id}', ['as' => 'collections.show', 'uses' => 'CollectionController@show']);
+
+	/*
+	|--------------------------------------------------------------------------
+	| Report Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Report Model CRUD
+	|
+	 */
+	Route::get('reports', ['as' => 'reports.index', 'uses' => 'ReportController@index', 'middleware' => ['permission:report-list|report-create|report-edit|report-delete']]);
+
+	Route::get('reports/bytrips', ['as' => 'reports.bytrips', 'uses' => 'ReportController@reportByTrips', 'middleware' => ['permission:report-list|report-create|report-edit|report-delete']]);
+	Route::post('reports/bytrips', ['as' => 'reports.bytrips', 'uses' => 'ReportController@reportByTrips', 'middleware' => ['permission:report-list|report-create|report-edit|report-delete']]);
+
+	Route::get('reports/sales', ['as' => 'reports.sales', 'uses' => 'ReportController@salesReport', 'middleware' => ['permission:report-list|report-create|report-edit|report-delete']]);
+	Route::post('reports/sales', ['as' => 'reports.sales', 'uses' => 'ReportController@salesReport', 'middleware' => ['permission:report-list|report-create|report-edit|report-delete']]);
+
 });

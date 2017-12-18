@@ -81,7 +81,7 @@
 			<div class="col-sm-3">
 				<div class="tile-stats tile-purple">
 					<div class="icon"><i class="fa fa-shopping-cart"></i></div>
-					<div class="num" data-start="0" data-end="83" data-duration="1500" data-delay="0">0</div>
+					<div class="num" data-start="0" data-end="{{ $lotins }}" data-duration="1500" data-delay="0">0</div>
 
 					<h3>Today Lot Balance</h3>
 					<p>&nbsp;</p>
@@ -92,7 +92,7 @@
 			<div class="col-sm-3">
 				<div class="tile-stats tile-pink">
 					<div class="icon"><i class="fa fa-truck"></i></div>
-					<div class="num" data-start="0" data-end="83" data-duration="1500" data-delay="0">0</div>
+					<div class="num" data-start="0" data-end="{{ $incomings }}" data-duration="1500" data-delay="0">0</div>
 
 					<h3>Today Incoming</h3>
 					<p>&nbsp;</p>
@@ -103,7 +103,7 @@
 			<div class="col-sm-3">
 				<div class="tile-stats tile-orange">
 					<div class="icon"><i class="fa fa-shopping-cart"></i></div>
-					<div class="num" data-start="0" data-end="1000" data-duration="1500" data-delay="0">0</div>
+					<div class="num" data-start="0" data-end="{{ $outgoings }}" data-duration="1500" data-delay="0">0</div>
 
 					<h3>Today Outgoing</h3>
 					<p>&nbsp;</p>
@@ -116,7 +116,7 @@
 			<div class="col-sm-3">
 				<div class="tile-stats tile-green">
 					<div class="icon"><i class="fa fa-database"></i></div>
-					<div class="num" data-start="0" data-end="203" data-duration="1500" data-delay="0">0</div>
+					<div class="num" data-start="0" data-end="{{ $collections }}" data-duration="1500" data-delay="0">0</div>
 
 					<h3>Today Collections</h3>
 					<p>&nbsp;</p>

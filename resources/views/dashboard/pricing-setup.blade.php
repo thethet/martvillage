@@ -39,6 +39,7 @@
 							<h3>CATEGORY</h3>
 							<p>&nbsp;</p>
 							<p>&nbsp;</p>
+							<p>&nbsp;</p>
 						</div>
 					</div>
 				</a>
@@ -58,6 +59,7 @@
 							<h3>CURRENCY</h3>
 							<p>&nbsp;</p>
 							<p>&nbsp;</p>
+							<p>&nbsp;</p>
 						</div>
 					</div>
 				</a>
@@ -75,6 +77,7 @@
 							</div>
 
 							<h3>PRICE</h3>
+							<p>&nbsp;</p>
 							<p>&nbsp;</p>
 							<p>&nbsp;</p>
 						</div>

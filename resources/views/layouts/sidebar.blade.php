@@ -275,7 +275,7 @@
 				<li @if(Request::segment(1) == 'reports') class="active" @endif>
 					<a href="{{ url('/reports') }}">
 						<i class="entypo-chart-bar"></i>
-						<span class="title">Charts</span>
+						<span class="title">Reports</span>
 					</a>
 				</li>
 			@endpermission

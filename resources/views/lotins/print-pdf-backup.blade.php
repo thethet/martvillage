@@ -7,126 +7,248 @@
 	<meta name="generator" content="Bootply" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 </head>
-<body class="zawgyi">
-	<div class="row zawgyi">
+<body>
+	<div class="row">
+
 		<div class="col-sm-11">
-			<table class="table zawgyi">
+			<table class="table">
 				<tr>
-					<td colspan="2" class="text-center">
-						<h3>{{ $myCompany->company_name }}</h3>
-					</td>
-				</tr>
-
-				<tr>
-					<td>Lotin Date</td>
-
-					<td>{{ $lotinData->date }}</td>
-				</tr>
-
-				<tr>
-					<td>Lot No</td>
-					<td>{{ $lotinData->lot_no }}</td>
-				</tr>
-
-				<tr>
-					<td>Location</td>
-					<td>{{ $stateList[$lotinData->from_state] }} ~ {{ $stateList[$lotinData->to_state] }}</td>
-				</tr>
-
-				<tr>
-					<td>Member No</td>
 					<td>
-						@if($sender->member_no)
-						{{ $sender->member_no }}
-						@else
-						{{ '-' }}
-						@endif
-					</td>
-				</tr>
-
-				<tr>
-					<td>Sender Name</td>
-					<td>
-						@if($sender->name)
-							{{ $sender->name }}
-						@else
-							{{ '-' }}
-						@endif
-					</td>
-				</tr>
-
-				<tr>
-					<td>Contact No</td>
-					<td>
+						Contact No:
 						@if($sender->contact_no)
 						{{ $sender->contact_no }}
 						@else
 						{{ '-' }}
 						@endif
 					</td>
-				</tr>
-
-				<tr>
-					<td>Sender NRIC</td>
 					<td>
-						@if($sender->nric_code_id != 0 && $sender->nric_township_id != 0)
-						{{ $nricCodeList[$sender->nric_code_id] }} / {{ $nricTownshipList[$sender->nric_township_id] }} {{ $sender->nric_no }}
+						To:
+						@if($receiver->address)
+						{{ $receiver->address }} of {{ $receiverCount }}
 						@else
 						{{ '-' }}
 						@endif
 					</td>
-				</tr>
-
-				<tr>
-					<td>Receiver Name</td>
 					<td>
-						@if($receiver->name)
-						{{ $receiver->name }}
-						@else
-						{{ '-' }}
-						@endif
+						Date: {{ $lotinData->date }}
 					</td>
 				</tr>
 
 				<tr>
-					<td>Contact No</td>
 					<td>
+						Member No:
+						@if($sender->member_no)
+						{{ $sender->member_no }}
+						@else
+						{{ '-' }}
+						@endif
+					</td>
+					<td>
+						Contact No:
 						@if($receiver->contact_no)
 						{{ $receiver->contact_no }}
 						@else
 						{{ '-' }}
 						@endif
 					</td>
+					<td>
+						Lot No: {{ $lotinData->lot_no }}
+					</td>
 				</tr>
 
 				<tr>
-					<td>Receiver NRIC</td>
 					<td>
+						Sender Name:
+						@if($sender->name)
+						{{ $sender->name }}
+						@else
+						{{ '-' }}
+						@endif
+					</td>
+					<td>
+						Receiver Name:
+						@if($receiver->name)
+						{{ $receiver->name }}
+						@else
+						{{ '-' }}
+						@endif
+					</td>
+					<td>
+						From: {{ $stateList[$lotinData->from_state] }}, {{ $countryList[$lotinData->from_country] }}
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						NRIC:
+						@if($sender->nric_code_id != 0 && $sender->nric_township_id != 0)
+						{{ $nricCodeList[$sender->nric_code_id] }} / {{ $nricTownshipList[$sender->nric_township_id] }} {{ $sender->nric_no }}
+						@else
+						{{ '-' }}
+						@endif
+					</td>
+					<td>
+						NRIC:
 						@if($receiver->nric_code_id != 0 && $receiver->nric_township_id != 0)
 						{{ $nricCodeList[$receiver->nric_code_id] }} / {{ $nricTownshipList[$receiver->nric_township_id] }} {{ $receiver->nric_no }}
 						@else
 						{{ '-' }}
 						@endif
 					</td>
-				</tr>
-
-				<tr>
-					<td>Payment</td>
 					<td>
-						{{ $lotinData->payment }}
+						To: {{ $stateList[$lotinData->to_state] }}, {{ $countryList[$lotinData->to_country] }}
 					</td>
 				</tr>
 
 				<tr>
-					<td colspan="2" class="tex-center" style="border-bottom: 1px dashed #000;">&nbsp;</td>
-				</tr>
-
-				<tr>
-					<td colspan="2" class="text-center">
-						<h4>Thank You!</h4>
-						{{ date("Y-m-d") }}
+					<td></td>
+					<td></td>
+					<td>
+						Payment: {{ $lotinData->payment }}
 					</td>
 				</tr>
+			</table>
+
+			<table class="table table-bordered responsive">
+				<thead>
+					<tr>
+						<th width="5%">SNo.</th>
+						<th>Item's Name</th>
+						<th>Barcode No</th>
+						<th>Type</th>
+						<th width="13%">Unit Price</th>
+						<th width="8%">Unit</th>
+						<th width="13%">Quantity</th>
+						<th width="10%">Amount</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php $j = 7 - count($itemList); $i = 1; ?>
+
+					@foreach($itemList as $item)
+					<tr>
+						<td>{{ $i++ }}</td>
+						<td>
+							{{ $item->item_name }}
+						</td>
+
+						<td>
+							{{ $item->barcode }}
+						</td>
+
+						<td>
+							{{ $priceList[$item->price_id] }}
+						</td>
+
+						<td  class="unit-prices">
+							{{ number_format($item->unit_price, 2) }} {{ $currencyList[$item->currency_id] }} ({{ $categoryList[$item->category_id] }})
+						</td>
+
+						<td class="text-right">
+							{{ $item->unit }}
+						</td>
+
+						<td class="text-right">
+							<div class="input-spinner">
+								{{ $item->quantity}}
+							</div>
+						</td>
+
+						<td class="text-right">
+							{{ number_format($item->amount, 2) }}
+						</td>
+					</tr>
+					@endforeach
+
+
+					@for($x = 0; $x < $j; $x++)
+					<tr>
+						<td>&nbsp;</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					@endfor
+
+					<tr>
+						<td colspan="6" class="text-right"><b>Sub Total</b></td>
+						<td class="text-right"></td>
+						<td class="text-right">
+							<b>
+								{{ number_format($lotinData->total_amt, 2) }}
+							</b>
+						</td>
+					</tr>
+
+					<tr>
+						<td colspan="6" class="text-right"><b>Member Discount (-)</b></td>
+						<td class="text-right">
+							<b>
+								{{ $lotinData->member_discount }} %
+							</b>
+						</td>
+						<td class="text-right">
+							<b>
+								{{ number_format($lotinData->member_discount_amt, 2) }}
+							</b>
+						</td>
+					</tr>
+
+					<tr>
+						<td colspan="6" class="text-right">
+							<b>Other Discount (-)</b>
+						</td>
+						<td class="text-right">
+							<b>
+								{{ $lotinData->other_discount }} %
+							</b>
+						</td>
+						<td class="text-right">
+							<b>
+								{{ number_format($lotinData->other_discount_amt, 2) }}
+							</b>
+						</td>
+					</tr>
+
+					<tr>
+						<td colspan="6" class="text-right"><b>GST</b></td>
+						<td class="text-right">
+							<b>{{ $lotinData->gov_tax }} %</b>
+						</td>
+						<td class="text-right">
+							<b>
+								{{ number_format($lotinData->gov_tax_amt, 2) }}
+							</b>
+						</td>
+					</tr>
+
+					<tr>
+						<td colspan="6" class="text-right"><b>Service Charges</b></td>
+						<td class="text-right">
+							<b>{{ $lotinData->service_charge }} %</b>
+						</td>
+						<td class="text-right">
+							<b>
+								{{ number_format($lotinData->service_charge_amt, 2) }}
+							</b>
+						</td>
+					</tr>
+
+					<tr>
+						<td colspan="6" class="text-right"><b>Net Balance</b></td>
+						<td class="text-right">
+						</td>
+						<td class="text-right">
+							<b>
+								{{ number_format($lotinData->net_amt, 2) }}
+							</b>
+						</td>
+					</tr>
+				</tbody>
 			</table>
 		</div>
 
@@ -140,7 +262,6 @@
 		}
 		body {
 			margin: 0;
-			margin-top: -20px;
 		}
 
 		b,
@@ -208,6 +329,46 @@
 			color: #333;
 			background-color: #fff;
 		}
+		img {
+			vertical-align: middle;
+		}
+		.img-responsive,
+		.thumbnail > img,
+		.thumbnail a > img,
+		.carousel-inner > .item > img,
+		.carousel-inner > .item > a > img {
+			display: block;
+			max-width: 100%;
+			height: auto;
+		}
+		.img-rounded {
+			border-radius: 3px;
+		}
+		.img-thumbnail {
+			padding: 4px;
+			line-height: 1.42857143;
+			background-color: #fff;
+			border: 1px solid #ededf0;
+			border-radius: 3px;
+			-webkit-transition: all 0.2s ease-in-out;
+			-o-transition: all 0.2s ease-in-out;
+			transition: all 0.2s ease-in-out;
+			display: inline-block;
+			max-width: 100%;
+			height: auto;
+		}
+		.img-circle {
+			border-radius: 50%;
+		}
+		hr {
+			margin-top: 17px;
+			margin-bottom: 17px;
+			border: 0;
+			border-top: 1px solid #eeeeee;
+		}
+		[role="button"] {
+			cursor: pointer;
+		}
 		h1,
 		h2,
 		h3,
@@ -221,7 +382,6 @@
 		.h5,
 		.h6 {
 			font-family: inherit;
-			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 			font-weight: 500;
 			line-height: 1.1;
 			color: #373e4a;
@@ -259,7 +419,6 @@
 		h4,
 		.h4 {
 			font-size: 15px;
-			margin: 0;
 		}
 		h5,
 		.h5 {
@@ -395,8 +554,8 @@
 		.table > thead > tr > td,
 		.table > tbody > tr > td,
 		.table > tfoot > tr > td {
-			padding: 0px;
-			/*line-height: 1.42857143;*/
+			padding: 8px;
+			line-height: 1.42857143;
 			vertical-align: top;
 			/*border-top: 1px solid #333;*/
 		}
@@ -417,6 +576,22 @@
 		}
 		.table .table {
 			background-color: #fff;
+		}
+		.table-bordered {
+			/*border: 1px solid #ebebeb;*/
+			border: 1px solid #333;
+		}
+		.table-bordered > thead > tr > th,
+		.table-bordered > tbody > tr > th,
+		.table-bordered > tfoot > tr > th,
+		.table-bordered > thead > tr > td,
+		.table-bordered > tbody > tr > td,
+		.table-bordered > tfoot > tr > td {
+			border: 1px solid #333;
+		}
+		.table-bordered > thead > tr > th,
+		.table-bordered > thead > tr > td {
+			border-bottom-width: 2px;
 		}
 		table col[class*="col-"] {
 			position: static;
@@ -443,6 +618,13 @@
 		.table > tfoot > tr.active > th {
 			background-color: #f5f5f5;
 		}
+		.table-hover > tbody > tr > td.active:hover,
+		.table-hover > tbody > tr > th.active:hover,
+		.table-hover > tbody > tr.active:hover > td,
+		.table-hover > tbody > tr:hover > .active,
+		.table-hover > tbody > tr.active:hover > th {
+			background-color: #e8e8e8;
+		}
 		.table > thead > tr > td.success,
 		.table > tbody > tr > td.success,
 		.table > tfoot > tr > td.success,
@@ -456,6 +638,13 @@
 		.table > tbody > tr.success > th,
 		.table > tfoot > tr.success > th {
 			background-color: #bdedbc;
+		}
+		.table-hover > tbody > tr > td.success:hover,
+		.table-hover > tbody > tr > th.success:hover,
+		.table-hover > tbody > tr.success:hover > td,
+		.table-hover > tbody > tr:hover > .success,
+		.table-hover > tbody > tr.success:hover > th {
+			background-color: #a9e8a8;
 		}
 		.table > thead > tr > td.info,
 		.table > tbody > tr > td.info,
@@ -471,6 +660,13 @@
 		.table > tfoot > tr.info > th {
 			background-color: #c5e8f7;
 		}
+		.table-hover > tbody > tr > td.info:hover,
+		.table-hover > tbody > tr > th.info:hover,
+		.table-hover > tbody > tr.info:hover > td,
+		.table-hover > tbody > tr:hover > .info,
+		.table-hover > tbody > tr.info:hover > th {
+			background-color: #afdff4;
+		}
 		.table > thead > tr > td.warning,
 		.table > tbody > tr > td.warning,
 		.table > tfoot > tr > td.warning,
@@ -484,6 +680,13 @@
 		.table > tbody > tr.warning > th,
 		.table > tfoot > tr.warning > th {
 			background-color: #ffefa4;
+		}
+		.table-hover > tbody > tr > td.warning:hover,
+		.table-hover > tbody > tr > th.warning:hover,
+		.table-hover > tbody > tr.warning:hover > td,
+		.table-hover > tbody > tr:hover > .warning,
+		.table-hover > tbody > tr.warning:hover > th {
+			background-color: #ffeb8a;
 		}
 		.table > thead > tr > td.danger,
 		.table > tbody > tr > td.danger,
@@ -499,19 +702,16 @@
 		.table > tfoot > tr.danger > th {
 			background-color: #ffc9c9;
 		}
+		.table-hover > tbody > tr > td.danger:hover,
+		.table-hover > tbody > tr > th.danger:hover,
+		.table-hover > tbody > tr.danger:hover > td,
+		.table-hover > tbody > tr:hover > .danger,
+		.table-hover > tbody > tr.danger:hover > th {
+			background-color: #ffafaf;
+		}
 		.table-responsive {
 			overflow-x: auto;
 			min-height: 0.01%;
-		}
-		@font-face {
-			font-family: zawgyi;
-			src: url('{{ asset('assets/fonts/zawgyi.ttf') }}') format('truetype')း
-		}
-		.zawgyi {
-			font-family:zawgyi !important;
-		}
-		b {
-			font-weight: bold;
 		}
 	</style>
 </body>

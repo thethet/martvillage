@@ -770,8 +770,10 @@ class LotInController extends Controller {
 				'priceList'        => $priceList,
 				'categoryList'     => $categoryList,
 				'currencyList'     => $currencyList,
+				'myCompany'        => $myCompany,
 			]
-		);
+		)->setPaper('a6');
+
 		return $pdf->stream('LotinPDF - ' . $lotinData->lot_no . '.pdf');
 
 	}

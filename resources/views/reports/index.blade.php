@@ -1,46 +1,72 @@
 @extends('layouts.layout')
 
-@section('site-title')
-	Cargo Management System
+@section('page-title')
+	Report
 @stop
+
 @section('main')
 	<div class="main-content">
+
+		@include('layouts.headerbar')
+		<hr />
+
+		<ol class="breadcrumb bc-3" >
+			<li>
+				<a href="{{ url('/') }}"><i class="fa fa-home"></i>Home</a>
+			</li>
+			<li class="active">
+
+				<strong>Report Management</strong>
+			</li>
+		</ol>
+
+
 		<div class="row">
-
 			@permission('collection-list')
-			<div class="col-md-2">
 				<a href="{{ url('reports/sales') }}">
-					<div class="card">
-						<img class="profile-icon" src="{{ asset('assets/img/report-icon.png') }}" alt="Main Report">
-						<p>Main Report</p>
+					<div class="col-sm-3">
+						<div class="tile-stats tile-cyan">
+							<div class="icon"><i class="entypo-chart-bar"></i></div>
+							<div class="num">
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+							</div>
+
+							<h3>MAIN REPORT</h3>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+						</div>
 					</div>
 				</a>
-			</div>
 			@endpermission
 
 			@permission('collection-list')
-			<div class="col-md-2">
 				<a href="{{ url('/reports/bytrips') }}">
-					<div class="card">
-						<img class="profile-icon" src="{{ asset('assets/img/report-icon.png') }}" alt="Trip Report">
-						<p>Trip Report</p>
+					<div class="col-sm-3">
+						<div class="tile-stats tile-purple">
+							<div class="icon"><i class="entypo-chart-area"></i></div>
+							<div class="num">
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+							</div>
+
+							<h3>TRIP REPORT</h3>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+						</div>
 					</div>
 				</a>
-			</div>
 			@endpermission
-
 		</div>
-	</div>
 
-	<div class="footer-menu">
-		<div class="footer-content">
-			<div class="menu-icon">
-				<a href="{{ url('/dashboard') }}">
-					<img src="{{ asset('assets/img/home-icon.jpeg') }}" alt="">
-					Home
-				</a>
-			</div>
-		</div>
+		<!-- Footer -->
+		<footer class="main">
+			Copyright &copy; 2017 All Rights Reserved. <strong>MSCT Co.Ltd</strong>
+		</footer>
 	</div>
 @stop
 

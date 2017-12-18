@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Company;
-use App\Countries;
+use App\Country;
 use App\Item;
 use App\Lotin;
-use App\Receiver;
-use App\Sender;
-use App\States;
+use App\State;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -29,38 +27,8 @@ class CollectionController extends Controller {
 	 * @return Response
 	 */
 	public function readyToCollect(Request $request) {
-		$date  = date('Y-m-d');
-		$query = DB::table('lotins as l')
-			->select('l.*', 's.name as sender_name', 's.member_no', 's.contact_no as sender_contact', 'r.name as receiver_name', 'r.contact_no as receiver_contact')
-			->leftJoin('senders as s', 's.id', '=', 'l.sender_id')
-			->leftJoin('receivers as r', 'r.id', '=', 'l.receiver_id')
-			->where('l.status', 2)
-			->where('incoming_date', $date);
-
-		if (Auth::user()->hasRole('administrator')) {
-			$lotins = $query->orderBy('incoming_date', 'ASC')->paginate(10);
-		} elseif (Auth::user()->hasRole('owner')) {
-			$lotins = $query->where('l.company_id', Auth::user()->company_id)
-				->orderBy('incoming_date', 'ASC')->paginate(10);
-		} else {
-			$lotins = $query->where('to_state', Auth::user()->state_id)
-				->where('l.company_id', Auth::user()->company_id)
-				->orderBy('incoming_date', 'ASC')->paginate(10);
-		}
-
-		$countries = Countries::where('deleted', 'N')->orderBy('country_code', 'ASC')->lists('country_code', 'id');
-		$states    = States::where('deleted', 'N')->orderBy('state_code', 'ASC')->lists('state_code', 'id');
-
-		return view('collections.collect', ['lotins' => $lotins, 'countries' => $countries, 'states' => $states])->with('i', ($request->get('page', 1) - 1) * 10);
-	}
-
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function search(Request $request) {
-		$query = DB::table('lotins as l')
+		$incomingDate = date('Y-m-d');
+		$query        = DB::table('lotins as l')
 			->select('l.*', 's.name as sender_name', 's.member_no', 's.contact_no as sender_contact', 'r.name as receiver_name', 'r.contact_no as receiver_contact')
 			->leftJoin('senders as s', 's.id', '=', 'l.sender_id')
 			->leftJoin('receivers as r', 'r.id', '=', 'l.receiver_id')
@@ -68,7 +36,6 @@ class CollectionController extends Controller {
 
 		if ($request->incoming_date) {
 			$incomingDate = date('Y-m-d', strtotime($request->incoming_date));
-			$query        = $query->where('l.incoming_date', $incomingDate);
 		}
 
 		if ($request->date) {
@@ -88,28 +55,30 @@ class CollectionController extends Controller {
 
 		}
 
+		$query = $query->where('l.incoming_date', $incomingDate);
+
 		if (Auth::user()->hasRole('administrator')) {
-			$lotins = $query->orderBy('l.incoming_date', 'ASC')->paginate(10);
+			$lotins = $query->orderBy('incoming_date', 'ASC')->paginate(10);
 		} elseif (Auth::user()->hasRole('owner')) {
 			$lotins = $query->where('l.company_id', Auth::user()->company_id)
-				->orderBy('l.incoming_date', 'ASC')->paginate(10);
+				->orderBy('incoming_date', 'ASC')->paginate(10);
 		} else {
-			$lotins = $query->where('l.to_state', Auth::user()->state_id)
+			$lotins = $query->where('to_state', Auth::user()->state_id)
 				->where('l.company_id', Auth::user()->company_id)
-				->orderBy('l.incoming_date', 'ASC')->paginate(10);
+				->orderBy('incoming_date', 'ASC')->paginate(10);
 		}
+		$total       = $lotins->total();
+		$perPage     = $lotins->perPage();
+		$currentPage = $lotins->currentPage();
+		$lastPage    = $lotins->lastPage();
+		$lastItem    = $lotins->lastItem();
 
-		$countries = Countries::where('deleted', 'N')->orderBy('country_code', 'ASC')->lists('country_code', 'id');
-		$states    = States::where('deleted', 'N')->orderBy('state_code', 'ASC')->lists('state_code', 'id');
+		$companyList = Company::where('deleted', 'N')->lists('company_name', 'id');
+		$countryList = Country::where('deleted', 'N')->orderBy('country_code', 'ASC')->lists('country_code', 'id');
+		$stateList   = State::where('deleted', 'N')->orderBy('state_code', 'ASC')->lists('state_code', 'id');
+		$request->merge(['incoming_date' => $incomingDate]);
 
-		$sender        = Sender::lists('name', 'id');
-		$senderContact = Sender::lists('contact_no', 'id');
-		$member        = Sender::lists('member_no', 'id');
-
-		$receiver        = Receiver::lists('name', 'id');
-		$receiverContact = Receiver::lists('contact_no', 'id');
-
-		return view('collections.collect', ['lotins' => $lotins, 'countries' => $countries, 'states' => $states])->with('i', ($request->get('page', 1) - 1) * 10);
+		return view('collections.collect', ['lotins' => $lotins, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'countryList' => $countryList, 'stateList' => $stateList, 'companyList' => $companyList])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
 	/**
@@ -120,7 +89,7 @@ class CollectionController extends Controller {
 	 */
 	public function updateCollectionStatus($id) {
 		$collectedDate = date('Y-m-d');
-		$lotin         = Lotin::find($id)->update(['status' => 3, 'collection_date' => $collectedDate]);
+		$lotin         = Lotin::find($id)->update(['status' => 3, 'collected_date' => $collectedDate]);
 
 		Item::where('lotin_id', $id)->update(['status' => 3]);
 
@@ -135,10 +104,10 @@ class CollectionController extends Controller {
 	 * @return Response
 	 */
 	public function returnLots(Request $request) {
-		$company = Company::find(Auth::user()->company_id);
-		$today   = date('Y-m-d');
-		$start   = date("Y-m-d", strtotime($today . "-0 day"));
-		// dd($start);
+		$myCompany    = Company::find(Auth::user()->company_id);
+		$returnPeriod = $myCompany->return_period;
+		$today        = date('Y-m-d');
+		$start        = date("Y-m-d", strtotime($today . "-$returnPeriod day"));
 
 		$query = DB::table('lotins as l')
 			->select('l.*', 's.name as sender_name', 's.member_no', 's.contact_no as sender_contact', 'r.name as receiver_name', 'r.contact_no as receiver_contact')
@@ -158,11 +127,17 @@ class CollectionController extends Controller {
 				->where('l.company_id', Auth::user()->company_id)
 				->orderBy('incoming_date', 'ASC')->paginate(10);
 		}
+		$total       = $lotins->total();
+		$perPage     = $lotins->perPage();
+		$currentPage = $lotins->currentPage();
+		$lastPage    = $lotins->lastPage();
+		$lastItem    = $lotins->lastItem();
 
-		$countries = Countries::where('deleted', 'N')->orderBy('country_code', 'ASC')->lists('country_code', 'id');
-		$states    = States::where('deleted', 'N')->orderBy('state_code', 'ASC')->lists('state_code', 'id');
+		$companyList = Company::where('deleted', 'N')->lists('company_name', 'id');
+		$countryList = Country::where('deleted', 'N')->orderBy('country_code', 'ASC')->lists('country_code', 'id');
+		$stateList   = State::where('deleted', 'N')->orderBy('state_code', 'ASC')->lists('state_code', 'id');
 
-		return view('collections.return', ['lotins' => $lotins, 'countries' => $countries, 'states' => $states])->with('i', ($request->get('page', 1) - 1) * 10);
+		return view('collections.return', ['lotins' => $lotins, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'countryList' => $countryList, 'stateList' => $stateList, 'companyList' => $companyList])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
 	/**

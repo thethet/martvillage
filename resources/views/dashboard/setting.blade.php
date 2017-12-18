@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('page-title')
-	Dashboard
+	Setting
 @stop
 
 @section('main')
@@ -16,7 +16,7 @@
 			</li>
 			<li class="active">
 
-				<strong>Dashboard</strong>
+				<strong>Setting</strong>
 			</li>
 		</ol>
 
@@ -34,6 +34,7 @@
 							</div>
 
 							<h3>NRIC CODE</h3>
+							<p>&nbsp;</p>
 							<p>&nbsp;</p>
 							<p>&nbsp;</p>
 						</div>
@@ -55,6 +56,7 @@
 							<h3>NRIC TOWNSHIP</h3>
 							<p>&nbsp;</p>
 							<p>&nbsp;</p>
+							<p>&nbsp;</p>
 						</div>
 					</div>
 				</a>
@@ -72,6 +74,7 @@
 							</div>
 
 							<h3>PERMISSION</h3>
+							<p>&nbsp;</p>
 							<p>&nbsp;</p>
 							<p>&nbsp;</p>
 						</div>
@@ -93,6 +96,7 @@
 							<h3>ROLE</h3>
 							<p>&nbsp;</p>
 							<p>&nbsp;</p>
+							<p>&nbsp;</p>
 						</div>
 					</div>
 				</a>
@@ -110,6 +114,7 @@
 							</div>
 
 							<h3>COMPANY</h3>
+							<p>&nbsp;</p>
 							<p>&nbsp;</p>
 							<p>&nbsp;</p>
 						</div>
@@ -131,6 +136,7 @@
 							<h3>LOCATION</h3>
 							<p>&nbsp;</p>
 							<p>&nbsp;</p>
+							<p>&nbsp;</p>
 						</div>
 					</div>
 				</a>
@@ -150,6 +156,7 @@
 							<h3>PRICES</h3>
 							<p>&nbsp;</p>
 							<p>&nbsp;</p>
+							<p>&nbsp;</p>
 						</div>
 					</div>
 				</a>
@@ -167,6 +174,7 @@
 							</div>
 
 							<h3>MEMBER OFFERS</h3>
+							<p>&nbsp;</p>
 							<p>&nbsp;</p>
 							<p>&nbsp;</p>
 						</div>

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Companies;
+use App\Company;
 use App\Lotin;
-use App\States;
+use App\State;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -31,8 +31,8 @@ class ReportController extends Controller {
 			$deptDate = date('Y-m-d');
 		}
 
-		$query   = DB::table('outgoings')->where('packing_list', '!=', 0)->where('dept_date', $deptDate);
-		$company = Companies::find(Auth::user()->company_id);
+		$query     = DB::table('outgoings')->where('packing_list', '!=', 0)->where('dept_date', $deptDate);
+		$myCompany = Company::find(Auth::user()->company_id);
 
 		if (Auth::user()->hasRole('administrator')) {
 			$outgoings = $query->orderBy('dept_date', 'ASC')->get();
@@ -45,13 +45,13 @@ class ReportController extends Controller {
 				->orderBy('dept_date', 'ASC')->get();
 		}
 
-		$stateIds    = $company->states;
+		$stateIds    = $myCompany->states;
 		$stateIdList = array();
 		foreach ($stateIds as $stateId) {
 			$stateIdList[] = $stateId->id;
 		};
 
-		$stateList = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_code', 'ASC')->lists('state_code', 'id');
+		$stateList = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_code', 'ASC')->lists('state_code', 'id');
 
 		$tripReportLists = array();
 
@@ -69,8 +69,8 @@ class ReportController extends Controller {
 			foreach ($items as $item) {
 				$lotin = Lotin::find($item->lotin_id);
 				$totalIncome += $item->amount;
-				$totalGst += $item->amount * $company->gst_rate / 100;
-				$totalServiceCharges += $item->amount * $company->service_rate / 100;
+				$totalGst += $item->amount * $myCompany->gst_rate / 100;
+				$totalServiceCharges += $item->amount * $myCompany->service_rate / 100;
 				$totalMemberDiscount += $item->amount * $lotin->member_discount / 100;
 				// $totalOtherDiscount += $item->amount * $lotin->other_discount / 100;
 				$totalOtherDiscount += $item->amount * 10 / 100;
@@ -141,13 +141,13 @@ class ReportController extends Controller {
 				->orderBy('from_state', 'ASC')->get();
 		}
 
-		$company     = Companies::find(Auth::user()->company_id);
-		$stateIds    = $company->states;
+		$myCompany   = Company::find(Auth::user()->company_id);
+		$stateIds    = $myCompany->state;
 		$stateIdList = array();
 		foreach ($stateIds as $stateId) {
 			$stateIdList[] = $stateId->id;
 		};
-		$stateList = States::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_code', 'ASC')->lists('state_code', 'id');
+		$stateList = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_code', 'ASC')->lists('state_code', 'id');
 
 		$lotinsByCash   = array();
 		$lotinsByCredit = array();
@@ -156,8 +156,8 @@ class ReportController extends Controller {
 			$salesAmt = $gstAmt = $serviceAmt = $memberDisAmt = $otherDisAmt = $netAmt = $totalDisAmt = $totalSalesAmt = 0;
 
 			$salesAmt      = $byCash->total_amt;
-			$gstAmt        = $byCash->total_amt * $company->gst_rate / 100;
-			$serviceAmt    = $byCash->total_amt * $company->service_rate / 100;
+			$gstAmt        = $byCash->total_amt * $myCompany->gst_rate / 100;
+			$serviceAmt    = $byCash->total_amt * $myCompany->service_rate / 100;
 			$memberDisAmt  = $byCash->total_amt * $byCash->member_discount / 100;
 			$otherDisAmt   = $byCash->total_amt * $byCash->other_discount / 100;
 			$totalSalesAmt = $salesAmt + $gstAmt + $serviceAmt;
@@ -189,8 +189,8 @@ class ReportController extends Controller {
 			$salesAmt = $gstAmt = $serviceAmt = $memberDisAmt = $otherDisAmt = $netAmt = $totalDisAmt = $totalSalesAmt = 0;
 
 			$salesAmt      = $byCredit->total_amt;
-			$gstAmt        = $byCredit->total_amt * $company->gst_rate / 100;
-			$serviceAmt    = $byCredit->total_amt * $company->service_rate / 100;
+			$gstAmt        = $byCredit->total_amt * $myCompany->gst_rate / 100;
+			$serviceAmt    = $byCredit->total_amt * $myCompany->service_rate / 100;
 			$memberDisAmt  = $byCredit->total_amt * $byCredit->member_discount / 100;
 			$otherDisAmt   = $byCredit->total_amt * $byCredit->other_discount / 100;
 			$totalSalesAmt = $salesAmt + $gstAmt + $serviceAmt;

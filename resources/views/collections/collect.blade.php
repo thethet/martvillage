@@ -1,199 +1,209 @@
 @extends('layouts.layout')
 
-@section('site-title')
-	<div class="col-md-4 site-icon">
-		<img class="profile-icon" src="{{ asset('assets/img/incoming.png') }}" alt="Incoming">
-	</div>
-	<div class="col-md-8 site-header">Collection</div>
+@section('page-title')
+	Collection
 @stop
 
 @section('main')
 	<div class="main-content">
+		@include('layouts.headerbar')
+		<hr />
+
+		<ol class="breadcrumb bc-3" >
+			<li>
+				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
+			</li>
+			<li>
+				<a href="{{ url('collections') }}">Collection Management</a>
+			</li>
+			<li class="active">
+				<strong>Item List for Ready to Collect</strong>
+			</li>
+		</ol>
+
+		<h2>Item List for Ready to Collect</h2>
+		<br />
 
 		@if ($message = Session::get('success'))
-		<div class="alert alert-success">
-			<p>{{ $message }}</p>
-		</div>
+			<div class="alert alert-success">
+				<strong>Well done!</strong> {{ $message }}
+			</div>
 		@endif
 
-		<div class="row">
-			{!! Form::open(array('route' => 'collections.ready.search','method'=>'POST', 'id' => 'incomings-search-form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data')) !!}
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="date">
-					<strong>Landed Destination Date:</strong>
-				</label>
-				<div class="col-sm-4">
-					{!! Form::text('incoming_date', null, array('placeholder' => 'Landed Destination Date','class' => 'form-control')) !!}
-					@if ($errors->has('incoming_date'))
-						<span class="required">
-							<strong>{{ $errors->first('incoming_date') }}</strong>
-						</span>
-					@endif
-				</div>
-			</div><!-- .form-group -->
+		{!! Form::open(array('route' => 'collections.ready.collect','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal validate')) !!}
 
 			<div class="form-group">
-				<label class="control-label col-sm-3" for="date">
-					<strong>Delivery Date:</strong>
-				</label>
-				<div class="col-sm-4">
-					{!! Form::text('date', null, array('placeholder' => 'Delivery Date','class' => 'form-control')) !!}
-					@if ($errors->has('date'))
-						<span class="required">
-							<strong>{{ $errors->first('date') }}</strong>
-						</span>
-					@endif
-				</div>
-			</div><!-- .form-group -->
+				<label class="col-sm-2  control-label">Landed Destination Date</label>
 
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="date">
-					<strong>Lot Number:</strong>
-				</label>
-				<div class="col-sm-4">
-					{!! Form::text('lot_no', null, array('placeholder' => 'Lot Number','class' => 'form-control')) !!}
-					@if ($errors->has('lot_no'))
-						<span class="required">
-							<strong>{{ $errors->first('lot_no') }}</strong>
-						</span>
-					@endif
-				</div>
-			</div><!-- .form-group -->
-
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="date">
-					<strong>Receiver Contact No:</strong>
-				</label>
-				<div class="col-sm-4">
-					{!! Form::text('contact_no', null, array('placeholder' => 'Receiver Contact No','class' => 'form-control')) !!}
-					@if ($errors->has('contact_no'))
-						<span class="required">
-							<strong>{{ $errors->first('contact_no') }}</strong>
-						</span>
-					@endif
-				</div>
-			</div><!-- .form-group -->
-
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="button"></label>
-				<div class="col-sm-2">
-					<a href="#" id="add" onclick="document.getElementById('incomings-search-form').submit();">
-						<div class="addbtn">
-							<img src="{{ asset('assets/img/Search.png') }}" alt="Search">
-								Search
+				<div class="col-sm-3">
+					<div class="input-group minimal">
+						<div class="input-group-addon">
+							<i class="entypo-calendar"></i>
 						</div>
-					</a>
+						{!! Form::text('incoming_date', null, ['placeholder' => 'Landed Destination Date','class' => 'form-control datepicker', 'id' => 'incoming_date', 'data-format' => 'yyyy-mm-dd', 'autocomplete' => 'off']) !!}
+					</div>
 				</div>
-			</div><!-- .form-group -->
 
-			<div class="form-group"></div>
-			{!! Form::close() !!}
+				<label class="col-sm-2  control-label">Delivery Date</label>
+				<div class="col-sm-3">
+					<div class="input-group minimal">
+						<div class="input-group-addon">
+							<i class="entypo-calendar"></i>
+						</div>
+						{!! Form::text('date', null, ['placeholder' => 'Delivery Date','class' => 'form-control datepicker', 'id' => 'date', 'data-format' => 'yyyy-mm-dd', 'autocomplete' => 'off']) !!}
+					</div>
+				</div>
+
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-2  control-label">Lot Number</label>
+
+				<div class="col-sm-3">
+					<div class="input-group minimal">
+						<div class="input-group-addon">
+							<i class="entypo-map"></i>
+						</div>
+						{!! Form::text('lot_no', null, ['placeholder' => 'Lot Number','class' => 'form-control', 'autocomplete' => 'off']) !!}
+					</div>
+				</div>
+
+				<label class="col-sm-2  control-label">Receiver Contact No</label>
+				<div class="col-sm-3">
+					<div class="input-group minimal">
+						<div class="input-group-addon">
+							<i class="entypo-location"></i>
+						</div>
+						{!! Form::text('contact_no', null, ['placeholder' => 'Receiver Contact No','class' => 'form-control', 'autocomplete' => 'off']) !!}
+					</div>
+				</div>
+
+				<div class="col-sm-2">
+					<div class="input-group minimal">
+						<button type="submit" class="btn btn-blue btn-icon">
+							Search
+							<i class="entypo-search"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		{!! Form::close() !!}
+		<br />
+
+		<div class="panel panel-primary" data-collapsed="0">
+			<div class="panel-heading">
+				<div class="panel-title">
+					Showing {{ $i + 1 }} to @if($currentPage == $lastPage) {{ $lastItem }} @else {{ $i + $perPage }} @endif of {{ $total }} entries
+				</div>
+
+				<div class="panel-options">
+					@permission('lotin-create')
+						<a href="{{ url('collections') }}">
+							<i class="entypo-cancel"></i>
+						</a>
+						&nbsp;|&nbsp;
+					@endpermission
+					<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+				</div>
+			</div>
+
+			<div class="panel-body with-table">
+				<table class="table table-bordered responsive">
+					<thead>
+						<tr>
+							<th width="5%">SNo.</th>
+							<th>Lot No.</th>
+							<th>Sender Name</th>
+							<th>Sender Contact No.</th>
+							<th>Member No.</th>
+							<th>Reciever Name</th>
+							<th>Receiver Contact No.</th>
+							<th>From - To</th>
+							<th>Delivery Date</th>
+							<th>Landed Date</th>
+							@if(Auth::user()->hasRole('administrator'))
+							<th>Company Name</th>
+							@endif
+							<th width="5%">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach($lotins as $key => $lotin)
+						<tr>
+							<td>{{ ++$i }}</td>
+							<td>{{ $lotin->lot_no }}</td>
+							<td>{{ $lotin->sender_name }}</td>
+							<td>{{ $lotin->sender_contact }}</td>
+							<td>{{ $lotin->member_no }}</td>
+							<td>{{ $lotin->receiver_name }}</td>
+							<td>{{ $lotin->receiver_contact }}</td>
+							<td>
+								{{ $stateList[$lotin->from_state] }} <=> {{ $stateList[$lotin->to_state] }}
+							</td>
+							<td>{{ $lotin->date }}</td>
+							<td>{{ $lotin->incoming_date }}</td>
+							@if(Auth::user()->hasRole('administrator'))
+								<td>
+									{{ $companyList[$lotin->company_id] }}
+								</td>
+							@endif
+							<td>
+								@if($lotin->status == 2)
+									<a href="{{ url('collections/collected/' . $lotin->id) }}" class="btn btn-green btn-icon btn-sm text-white">
+										Pickup<i class="entypo-box"></i>
+									</a>
+								@else
+									Collected
+								@endif
+							</td>
+						</tr>
+						@endforeach
+					</tbody>
+				</table>
+
+				{!! $lotins->render() !!}
+			</div>
 		</div>
 
-		<div class="table-cont">
-			<table class="table table-bordered table-responsive">
-				<tr>
-					<th>No</th>
-					<th>Lot No.</th>
-					<th>Sender Name</th>
-					<th>Sender Contact No.</th>
-					<th>Member No.</th>
-					<th>Reciever Name</th>
-					<th>Receiver Contact No.</th>
-					<th>From - To</th>
-					<th>Delivery Date</th>
-					<th>Landed Date</th>
-					<th>Action</th>
-				</tr>
-				@foreach ($lotins as $key => $lotin)
-				<tr>
-					<td>{{ ++$i }}</td>
-					<td>{{ $lotin->lot_no }}</td>
-
-					<td>{{ $lotin->sender_name }}</td>
-
-					<td>{{ $lotin->sender_contact }}</td>
-
-					<td>{{ $lotin->member_no }}</td>
-
-					<td>{{ $lotin->receiver_name }}</td>
-
-					<td>{{ $lotin->receiver_contact }}</td>
-
-					<td>
-						{{ $states[$lotin->from_state] }} <=> {{ $states[$lotin->to_state] }}
-					</td>
-
-					<td>{{ $lotin->date }}</td>
-
-					<td>{{ $lotin->incoming_date }}</td>
-
-					<td>
-						@if($lotin->status == 2)
-							<a href="{{ url('collections/collected/' . $lotin->id) }}" class="btn">Pickup</a>
-						@else
-							Collected
-						@endif
-					</td>
-				</tr>
-				@endforeach
-			</table>
-		</div>
-		{!! $lotins->render() !!}
-
-	</div><!-- .main-content -->
-
-	<div class="footer-menu">
-		<div class="footer-content">
-			<div class="menu-icon">
-				<a href="{{ url('/dashboard') }}">
-					<img src="{{ asset('assets/img/home-icon.jpeg') }}" alt="Go Home">
-					Home
-				</a>
-			</div><!-- .menu-icon -->
-
-			<div class="menu-icon">
-				<a href="{{ url('collections') }}" >
-					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
-					Back
-				</a>
-			</div><!-- .menu-icon -->
-		</div>
-	</div><!-- .footer-menu -->
+		<!-- Footer -->
+		<footer class="main">
+			Copyright &copy; 2017 All Rights Reserved. <strong>MSCT Co.Ltd</strong>
+		</footer>
+	</div>
 @stop
 
 @section('my-script')
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/select2/dist/css/select2.css') }}">
-	<script src="{{ asset('plugins/select2/dist/js/select2.js') }}"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css"/>
+	<!-- Imported styles on this page -->
+	<link rel="stylesheet" href="{{ asset('assets/js/datatables/datatables.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2-bootstrap.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2.css') }}">
+
+	<!-- Imported scripts on this page -->
+	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+	<script src="{{ asset('assets/js/bootstrap-datepicker.js') }}"></script>
+	<script src="{{ asset('assets/js/bootstrap-timepicker.min.js') }}"></script>
+	<script src="{{ asset('assets/js/daterangepicker/daterangepicker.js') }}"></script>
+	<script src="{{ asset('assets/js/fileinput.js') }}"></script>
+	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
 
 	<script>
 		$(document).ready(function(){
-			var incoming_date=$('input[name="incoming_date"]'); //our date input has the name "date"
-			var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-			incoming_date.datepicker({
-				format: 'yyyy-mm-dd',
-				container: container,
-				todayHighlight: true,
-				autoclose: true,
-			});
-
-			var date_input=$('input[name="date"]'); //our date input has the name "date"
-			date_input.datepicker({
-				format: 'yyyy-mm-dd',
-				container: container,
-				todayHighlight: true,
-				autoclose: true,
-			});
-			// date_input.datepicker('setDate', new Date());
-
-			$('#timepicker').timepicker({
-				minuteStep: 5
+			$(".destroy").on("click", function(event){
+				var confD = confirm('Are you sure to delete?');
+				if (confD) {
+					var id = $(this).attr('id');
+					$.ajax({
+						url: "{!! url('lotins/"+ id +"') !!}",
+						type: 'DELETE',
+						data: {_token: '{!! csrf_token() !!}'},
+						dataType: 'JSON',
+						success: function (data) {
+							window.location.replace(data.url);
+						}
+					});
+				}
 			});
 		});
 	</script>
 @stop
+
