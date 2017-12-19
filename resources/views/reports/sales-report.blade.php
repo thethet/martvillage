@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('page-title')
-	Sales Report
+	Daily Sales Report
 @stop
 
 @section('main')
@@ -17,11 +17,11 @@
 				<a href="{{ url('reports') }}">Report Management</a>
 			</li>
 			<li class="active">
-				<strong>Sales Report</strong>
+				<strong>Daily Sales Report</strong>
 			</li>
 		</ol>
 
-		<h2>Sales Report</h2>
+		<h2>Daily Sales Report</h2>
 		<br />
 
 		@if ($message = Session::get('success'))
@@ -66,8 +66,12 @@
 				</div>
 
 				<div class="panel-options">
+					@if(count($lotinsByCash) > 0)
+						<a href="{{ url('reports/cash-sales/'. $date .'/print-pdf') }}" title="Print"><i class="entypo-print"></i></a>
+						&nbsp;|&nbsp;
+					@endif
 					@permission('lotin-create')
-						<a href="{{ url('collections') }}">
+						<a href="{{ url('reports') }}">
 							<i class="entypo-cancel"></i>
 						</a>
 						&nbsp;|&nbsp;
@@ -137,8 +141,12 @@
 				</div>
 
 				<div class="panel-options">
+					@if(count($lotinsByCredit) > 0)
+						<a href="{{ url('reports/credit-sales/'. $date .'/print-pdf') }}" title="Print"><i class="entypo-print"></i></a>
+						&nbsp;|&nbsp;
+					@endif
 					@permission('lotin-create')
-						<a href="{{ url('collections') }}">
+						<a href="{{ url('reports') }}">
 							<i class="entypo-cancel"></i>
 						</a>
 						&nbsp;|&nbsp;

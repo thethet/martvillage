@@ -14,6 +14,7 @@ use App\Price;
 use App\Receiver;
 use App\Sender;
 use App\State;
+use App\Township;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -717,9 +718,10 @@ class LotInController extends Controller {
 		$sender   = Sender::find($lotinData->sender_id);
 		$receiver = Receiver::find($lotinData->receiver_id);
 
-		$myCompany     = Company::find(Auth::user()->company_id);
-		$countryIdList = array();
-		$stateIdList   = array();
+		$myCompany      = Company::find(Auth::user()->company_id);
+		$countryIdList  = array();
+		$stateIdList    = array();
+		$townshipIdList = array();
 		if (count($myCompany) > 0) {
 			$countryIds = $myCompany->country;
 			foreach ($countryIds as $country) {
@@ -729,10 +731,15 @@ class LotInController extends Controller {
 			foreach ($stateIds as $stateId) {
 				$stateIdList[] = $stateId->id;
 			}
+			$townshipIds = $myCompany->township;
+			foreach ($townshipIds as $townshipId) {
+				$townshipIdList[] = $townshipId->id;
+			}
 		}
-
-		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$stateList   = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$companyList  = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$countryList  = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList    = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$townshipList = Township::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 
 		$nricCodeList     = NricCode::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
 		$nricTownshipList = NricTownship::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
@@ -763,6 +770,7 @@ class LotInController extends Controller {
 				'receiver'         => $receiver,
 				'countryList'      => $countryList,
 				'stateList'        => $stateList,
+				'townshipList'     => $townshipList,
 				'nricCodeList'     => $nricCodeList,
 				'nricTownshipList' => $nricTownshipList,
 				'receiverCount'    => $receiverCount,

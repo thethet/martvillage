@@ -12,9 +12,11 @@ use App\Packing;
 use App\Receiver;
 use App\Sender;
 use App\State;
+use App\Township;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
+use PDF;
 use Session;
 
 class OutgoingController extends Controller {
@@ -419,6 +421,65 @@ class OutgoingController extends Controller {
 
 		return redirect()->route('outgoings.index')
 			->with('success', 'Packe Adding is successfully');
+	}
+
+	public function packingListPDF($id) {
+		$outgoing = Outgoing::find($id);
+
+		$itemList = Item::where('outgoing_id', $id)->get();
+
+		$myCompany      = Company::find(Auth::user()->company_id);
+		$countryIdList  = array();
+		$stateIdList    = array();
+		$townshipIdList = array();
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
+			$townshipIds = $myCompany->township;
+			foreach ($townshipIds as $townshipId) {
+				$townshipIdList[] = $townshipId->id;
+			}
+		}
+		$companyList       = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$countryList       = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList         = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$townshipList      = Township::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
+		$senderList        = Sender::lists('name', 'id');
+		$senderContactList = Sender::lists('contact_no', 'id');
+
+		$receiverList        = Receiver::lists('name', 'id');
+		$receiverContactList = Receiver::lists('contact_no', 'id');
+		$categoryList        = Category::where('deleted', 'N')->orderBy('id', 'ASC')->lists('unit', 'id');
+		$categories          = Category::where('deleted', 'N')->orderBy('id', 'ASC')->get();
+
+		/*return view('outgoings.packing-list', ['outgoing' => $outgoing, 'lotinList' => $lotinList, 'countryList' => $countryList, 'stateList' => $stateList, 'senderList' => $senderList, 'senderContactList' => $senderContactList, 'receiverList' => $receiverList, 'receiverContactList' => $receiverContactList, 'categoryList' => $categoryList, 'categories' => $categories, 'companyList' => $companyList]);*/
+
+		$pdf = PDF::loadView(
+			'outgoings.packing-list-pdf',
+			[
+				'outgoing'            => $outgoing,
+				'itemList'            => $itemList,
+				'countryList'         => $countryList,
+				'stateList'           => $stateList,
+				'townshipList'        => $townshipList,
+				'senderList'          => $senderList,
+				'senderContactList'   => $senderContactList,
+				'receiverList'        => $receiverList,
+				'receiverContactList' => $receiverContactList,
+				'categoryList'        => $categoryList,
+				'categories'          => $categories,
+				'companyList'         => $companyList,
+				'myCompany'           => $myCompany,
+			]
+		)->setPaper('a6');
+
+		return $pdf->stream('Pakage List PDF - ' . $id . '.pdf');
 	}
 
 }

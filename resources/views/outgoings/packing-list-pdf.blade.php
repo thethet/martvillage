@@ -3,9 +3,11 @@
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
 	<meta charset="utf-8">
-	<title>Lotin</title>
+	<title>Packing List </title>
 	<meta name="generator" content="Bootply" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	{{-- <link rel="stylesheet" href="{{ asset('/path/to/your/pdf.css') }}" media="all" /> --}}
+
 	<link rel="stylesheet" href="{{ asset('assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css') }}" media="all" />
 	<link rel="stylesheet" href="{{ asset('assets/css/font-icons/entypo/css/entypo.css') }}" media="all" />
 	<link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css') }}" media="all" />
@@ -14,12 +16,20 @@
 
 	<link rel="stylesheet" href="{{ asset('assets/css/font-icons/font-awesome/css/font-awesome.min.css') }}" media="all" />
 </head>
-<body class="zawgyi" onload="window.print()">
+<body>
+	<script type="text/php">
+		if ( isset($pdf) ) {
+			die;
+			$font = $fontMetrics->getFont("helvetica", "bold");
+			$pdf->page_text(72, 18, "Header: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
+		}
+	</script>
+
 	<div class="row zawgyi">
 		<div class="col-sm-11">
-			<table class="table zawgyi">
+			<table class="table noborder">
 				<tr>
-					<td colspan="2" class="text-center noborder">
+					<td class="text-center noborder">
 						<h3>{{ $myCompany->company_name }}</h3>
 						{{ $myCompany->address }}
 						@if($myCompany->township_id > 0)
@@ -39,37 +49,11 @@
 				</tr>
 
 				<tr>
-					<td class="noborder"><br>Lotin Date</td>
-
-					<td class="noborder"><br>{{ $lotinData->date }}</td>
-				</tr>
-
-				<tr>
-					<td class="noborder">Lot No</td>
-					<td class="noborder">{{ $lotinData->lot_no }}</td>
-				</tr>
-
-				<tr>
-					<td class="noborder">Location</td>
-					<td class="noborder">{{ $stateList[$lotinData->from_state] }} ~ {{ $stateList[$lotinData->to_state] }}</td>
-				</tr>
-
-				<tr>
-					<td class="noborder">Member No</td>
 					<td class="noborder">
-						@if($sender->member_no)
-						{{ $sender->member_no }}
-						@else
-						{{ '-' }}
-						@endif
-					</td>
-				</tr>
-
-				<tr>
-					<td class="noborder">Sender Name</td>
-					<td class="noborder">
-						@if($sender->name)
-							{{ $sender->name }}
+						<br>
+						<strong>Passenger Name: </strong>
+						@if($outgoing->passenger_name)
+							{{ $outgoing->passenger_name }}
 						@else
 							{{ '-' }}
 						@endif
@@ -77,79 +61,83 @@
 				</tr>
 
 				<tr>
-					<td class="noborder">Contact No</td>
 					<td class="noborder">
-						@if($sender->contact_no)
-						{{ $sender->contact_no }}
+						<b>Contact No: </b>
+						@if($outgoing->contact_no)
+							{{ $outgoing->contact_no }}
 						@else
-						{{ '-' }}
+							{{ '-' }}
 						@endif
 					</td>
 				</tr>
 
 				<tr>
-					<td class="noborder">Sender NRIC</td>
 					<td class="noborder">
-						@if($sender->nric_code_id != 0 && $sender->nric_township_id != 0)
-						{{ $nricCodeList[$sender->nric_code_id] }} / {{ $nricTownshipList[$sender->nric_township_id] }} {{ $sender->nric_no }}
+						<b>Location: </b>
+						{{ $outgoing->fromCity->state_name }} ~ {{ $outgoing->toCity->state_name }}
+					</td>
+				</tr>
+
+				<tr>
+					<td class="noborder">
+						<b>Departure Time: </b>
+						{{ $outgoing->dept_date }} [ {{ date('g:i A', strtotime($outgoing->dept_time)) }} ]
+					</td>
+				</tr>
+
+				<tr>
+					<td class="noborder">
+						<b>Vassel No: </b>
+						@if($outgoing->vessel_no)
+							{{ $outgoing->vessel_no }}
 						@else
-						{{ '-' }}
+							{{ '-' }}
 						@endif
 					</td>
 				</tr>
 
-				<tr>
-					<td class="noborder">Receiver Name</td>
-					<td class="noborder">
-						@if($receiver->name)
-						{{ $receiver->name }}
-						@else
-						{{ '-' }}
-						@endif
-					</td>
-				</tr>
+			</table>
 
-				<tr>
-					<td class="noborder">Contact No</td>
-					<td class="noborder">
-						@if($receiver->contact_no)
-						{{ $receiver->contact_no }}
-						@else
-						{{ '-' }}
-						@endif
-					</td>
-				</tr>
-
-				<tr>
-					<td class="noborder">Receiver NRIC</td>
-					<td class="noborder">
-						@if($receiver->nric_code_id != 0 && $receiver->nric_township_id != 0)
-						{{ $nricCodeList[$receiver->nric_code_id] }} / {{ $nricTownshipList[$receiver->nric_township_id] }} {{ $receiver->nric_no }}
-						@else
-						{{ '-' }}
-						@endif
-					</td>
-				</tr>
-
-				<tr>
-					<td class="noborder">Payment</td>
-					<td class="noborder">
-						{{ $lotinData->payment }}
-					</td>
-				</tr>
-
-				<tr>
-					<td colspan="2" class="text-center noborder">
-						********************************
-					</td>
-				</tr>
-
-				<tr>
-					<td colspan="2" class="text-center noborder">
-						<h4>Thank You!</h4>
-						{{ date("Y-m-d") }}
-					</td>
-				</tr>
+			<?php
+				$amount = 0;
+				$totalAmount = 0;
+			?>
+			<table class="table table-bordered responsive zawgyi">
+				<thead>
+					<tr>
+						<th class="zawgyi">Description</th>
+						<th width="5%" class="zawgyi">Unit</th>
+						<th width="5%" class="zawgyi">Qty</th>
+						<th width="15%" class="zawgyi">Price</th>
+						<th width="15%" class="zawgyi">Amount</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach($itemList as $key => $item)
+						<?php
+							$amount = $item->unit * $item->quantity * $item->unit_price;
+							$totalAmount += $amount;
+						?>
+						<tr>
+							<td>{{ $item->item_name }}</td>
+							<td class="text-right">{{ $item->unit }}</td>
+							<td class="text-right">{{ $item->quantity }}</td>
+							<td class="text-right">{{ number_format($item->unit_price, 2) }}</td>
+							<td class="text-right">{{ number_format($amount, 2) }}</td>
+						</tr>
+					@endforeach
+					<tr>
+						<td>&nbsp;</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td colspan="4" class="text-right">TOTAL</td>
+						<td class="text-right">{{ number_format($totalAmount, 2) }}</td>
+					</tr>
+				</tbody>
 			</table>
 		</div>
 
@@ -172,7 +160,7 @@
 
 		td, th {
 			line-height: 1 !important;
-			padding: 3px !important;
+			padding: 5px !important;
 			color: #333;
 		}
 
@@ -204,5 +192,12 @@
 			border-bottom: 3px double #333 !important;
 		}
 	</style>
+
+	<script type="text/php">
+		if ( isset($pdf) ) {
+			$font = $fontMetrics->getFont("helvetica", "bold");
+			$pdf->page_text(72, 18, "Header: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
+		}
+	</script>
 </body>
 </html>

@@ -164,10 +164,10 @@
 							<th>Carrier</th>
 							<th>Vessel No.</th>
 							<th>Depature  Time</th>
-							<th>Package List</th>
 							@if(Auth::user()->hasRole('administrator'))
 							<th>Company Name</th>
 							@endif
+							<th>Package List</th>
 							<th width="15%">Action</th>
 						</tr>
 					</thead>
@@ -183,24 +183,24 @@
 							<td>{{ $outgoing->carrier_name }}</td>
 							<td>{{ $outgoing->vessel_no }}</td>
 							<td>{{ $outgoing->dept_date }} [ {{ date('g:i A', strtotime($outgoing->dept_time)) }} ]</td>
-							<td>
-								<a href="{{ url('outgoings/'. $outgoing->id .'/packing-list') }}" class="btn btn-green btn-icon btn-sm text-white">
-									<b>{{ $outgoing->packing_list }}</b>
-									<i class="entypo-archive"></i>
-								</a>
-							</td>
 							@if(Auth::user()->hasRole('administrator'))
 							<td>
 								{{ $companyList[$outgoing->company_id] }}
 							</td>
 							@endif
 							<td>
+								<a href="{{ url('outgoings/'. $outgoing->id .'/packing-list') }}" class="btn btn-green btn-icon btn-sm text-white">
+									<b>{{ $outgoing->packing_list }}</b>
+									<i class="entypo-archive"></i>
+								</a>
+							</td>
+							<td>
 								<a href="{{ url('outgoings/'. $outgoing->id) }}" class="btn btn-info btn-sm" title="Detail">
 									<i class="entypo-eye"></i>
 								</a>
 
 								@if((Auth::user()->hasRole('administrator') || $outgoing->company_id == Auth::user()->company_id) && ((date('Y-m-d') == date('Y-m-d', strtotime($outgoing->dept_date))) && (date('g:i A') == date('g:i A', strtotime($outgoing->dept_time)))))
-									@permission('user-edit')
+									@permission('outgoing-edit')
 										<a href="{{ url('outgoings/'. $outgoing->id .'/edit') }}" class="btn btn-success btn-sm" title="Edit">
 											<i class="entypo-pencil"></i>
 										</a>
@@ -213,6 +213,13 @@
 											</a>
 										@endpermission
 									@endif --}}
+								@endif
+
+								@if($outgoing->packing_list > 0)
+									<a href="{{ url('outgoings/'. $outgoing->id .'/packing-list/print-pdf') }}" class="btn btn-green btn-icon btn-sm text-white">
+										<b>PDF</b>
+										<i class="entypo-download"></i>
+									</a>
 								@endif
 							</td>
 						</tr>

@@ -497,6 +497,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('outgoings/{id}/packing-list', ['as' => 'outgoings.packing.lsit', 'uses' => 'OutgoingController@packingList', 'middleware' => ['permission:outgoing-list|outgoing-create|outgoing-edit|outgoing-delete']]);
 	Route::post('outgoings/packinglist/create', ['as' => 'outgoings.packinglist.store', 'uses' => 'OutgoingController@packingListStore', 'middleware' => ['permission:outgoing-create']]);
 
+	Route::get('outgoings/{id}/packing-list/print-pdf', ['as' => 'outgoings.packing.lsit.pdf', 'uses' => 'OutgoingController@packingListPDF']);
+
 	/*
 	|--------------------------------------------------------------------------
 	| Incoming Controller
@@ -540,10 +542,12 @@ Route::group(['middleware' => ['auth']], function () {
 	 */
 	Route::get('reports', ['as' => 'reports.index', 'uses' => 'ReportController@index', 'middleware' => ['permission:report-list|report-create|report-edit|report-delete']]);
 
-	Route::get('reports/bytrips', ['as' => 'reports.bytrips', 'uses' => 'ReportController@reportByTrips', 'middleware' => ['permission:report-list|report-create|report-edit|report-delete']]);
-	Route::post('reports/bytrips', ['as' => 'reports.bytrips', 'uses' => 'ReportController@reportByTrips', 'middleware' => ['permission:report-list|report-create|report-edit|report-delete']]);
+	Route::match(['get', 'post'], 'reports/bytrips', ['as' => 'reports.bytrips', 'uses' => 'ReportController@reportByTrips', 'middleware' => ['permission:report-list|report-create|report-edit|report-delete']]);
+	Route::get('reports/sales-bytrips/{date}/print-pdf', ['as' => 'reports.sales.bytrips.pdf', 'uses' => 'ReportController@printPdfForReportByTrips']);
 
-	Route::get('reports/sales', ['as' => 'reports.sales', 'uses' => 'ReportController@salesReport', 'middleware' => ['permission:report-list|report-create|report-edit|report-delete']]);
-	Route::post('reports/sales', ['as' => 'reports.sales', 'uses' => 'ReportController@salesReport', 'middleware' => ['permission:report-list|report-create|report-edit|report-delete']]);
+	Route::match(['get', 'post'], 'reports/sales', ['as' => 'reports.sales', 'uses' => 'ReportController@salesReport', 'middleware' => ['permission:report-list|report-create|report-edit|report-delete']]);
+
+	Route::get('reports/cash-sales/{date}/print-pdf', ['as' => 'reports.sales.cash.pdf', 'uses' => 'ReportController@printPdfForCashSales']);
+	Route::get('reports/credit-sales/{date}/print-pdf', ['as' => 'reports.sales.credit.pdf', 'uses' => 'ReportController@printPdfForCreditSales']);
 
 });

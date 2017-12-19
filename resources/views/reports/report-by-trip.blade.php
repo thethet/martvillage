@@ -1,147 +1,209 @@
 @extends('layouts.layout')
 
-@section('site-title')
-	<div class="col-md-4 site-icon">
-		<img class="profile-icon" src="{{ asset('assets/img/incoming.png') }}" alt="Incoming">
-	</div>
-	<div class="col-md-8 site-header">Income Report By Trip</div>
+@section('page-title')
+	Sales Report By Trip
 @stop
 
 @section('main')
 	<div class="main-content">
+		@include('layouts.headerbar')
+		<hr />
+
+		<ol class="breadcrumb bc-3" >
+			<li>
+				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
+			</li>
+			<li>
+				<a href="{{ url('reports') }}">Report Management</a>
+			</li>
+			<li class="active">
+				<strong>Sales Report By Trip</strong>
+			</li>
+		</ol>
+
+		<h2>Sales Report By Trip</h2>
+		<br />
 
 		@if ($message = Session::get('success'))
-		<div class="alert alert-success">
-			<p>{{ $message }}</p>
-		</div>
+			<div class="alert alert-success">
+				<strong>Well done!</strong> {{ $message }}
+			</div>
 		@endif
 
-		<div class="row">
-			{!! Form::open(array('route' => 'reports.bytrips','method'=>'POST', 'id' => 'incomings-search-form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data')) !!}
+		{!! Form::open(array('route' => 'reports.bytrips','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal validate')) !!}
+
 			<div class="form-group">
-				<label class="control-label col-sm-2" for="date">
-					<strong>Departure Date:</strong>
-				</label>
-				<div class="col-sm-2">
-					@if(Request::has('dept_date'))
-					{!! Form::text('dept_date', null, array('placeholder' => 'Departure Date','class' => 'form-control')) !!}
-					@else
-					{!! Form::text('dept_date', date('Y-m-d'), array('placeholder' => 'Departure Date','class' => 'form-control')) !!}
-					@endif
-					@if ($errors->has('dept_date'))
-						<span class="required">
-							<strong>{{ $errors->first('dept_date') }}</strong>
-						</span>
-					@endif
-				</div>
 
-				<label class="control-label col-sm-1" for="date"></label>
-
-				<label class="control-label col-sm-1" for="button"></label>
-				<div class="col-sm-2">
-					<a href="#" id="add" onclick="document.getElementById('incomings-search-form').submit();">
-						<div class="addbtn">
-							<img src="{{ asset('assets/img/Search.png') }}" alt="Search">
-								Search
+				<label class="col-sm-3 control-label">&nbsp;</label>
+				<label class="col-sm-2 control-label">Departure Date</label>
+				<div class="col-sm-3">
+					<div class="input-group minimal">
+						<div class="input-group-addon">
+							<i class="entypo-calendar"></i>
 						</div>
-					</a>
+						{!! Form::text('dept_date', null, ['placeholder' => 'Departure Date','class' => 'form-control datepicker', 'id' => 'dept_date', 'data-format' => 'yyyy-mm-dd', 'autocomplete' => 'off']) !!}
+					</div>
 				</div>
-			</div><!-- .form-group -->
 
-			<div class="form-group"></div>
-			{!! Form::close() !!}
-		</div>
+
+				<div class="col-sm-2">
+					<div class="input-group minimal">
+						<button type="submit" class="btn btn-blue btn-icon">
+							Search
+							<i class="entypo-search"></i>
+						</button>
+					</div>
+				</div>
+
+				@if(count($tripList) > 0)
+				<div class="col-sm-2">
+					<div class="input-group minimal">
+						<a href="{{ url('reports/sales-bytrips/'. $deptDate .'/print-pdf') }}" title="Print"  class="btn btn-green btn-icon">PDF <i class="entypo-download"></i></a>
+					</div>
+				</div>
+				@endif
+			</div>
+		{!! Form::close() !!}
+		<br />
 
 		@for ($t = 0; $t < count($tripList); $t++)
-			<h5>{{ $tripList[$t] }}</h5>
-			<div class="table-cont">
-				<table class="table table-bordered table-responsive">
-					<tr>
-						<th>No</th>
-						<th>Depture Date</th>
-						<th>Depture Time</th>
-						<th>Vessel No.</th>
-						<th>MAHTATHA</th>
-						<th>Toll Fees</th>
-						<th>FOC</th>
-						<th>Discount</th>
-						<th>Income <br>(Include GST & Service Charge)</th>
-						<th>Net Income <br>(Income - Discount)</th>
-					</tr>
+			<div class="panel panel-primary" data-collapsed="0">
+				<div class="panel-heading">
+					<div class="panel-title">
+						<h5>{{ $tripList[$t] }}</h5>
+					</div>
 
-						@for($rp = 0; $rp < count($tripReportLists[$tripList[$t]]); $rp++)
+					<div class="panel-options">
+						@permission('lotin-create')
+							<a href="{{ url('reports') }}">
+								<i class="entypo-cancel"></i>
+							</a>
+							&nbsp;|&nbsp;
+						@endpermission
+						<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+					</div>
+				</div>
+
+				<div class="panel-body with-table">
+					<table class="table table-bordered responsive">
+						<thead>
 							<tr>
-								<td>{{ $rp + 1 }}</td>
-								<td>
-									{{ $tripReportLists[$tripList[$t]][$rp]->dept_date }}
-								</td>
-								<td>
-									{{ $tripReportLists[$tripList[$t]][$rp]->dept_time }}
-								</td>
-								<td>
-									{{ $tripReportLists[$tripList[$t]][$rp]->vessel_no }}
-								</td>
-								<td>{{ '-' }}</td>
-								<td>{{ '-' }}</td>
-								<td>{{ '-' }}</td>
-								<td style="text-align: right;">
-									{{ number_format($tripReportLists[$tripList[$t]][$rp]->total_discount, 2) }}
-								</td>
-								<td style="text-align: right;">
-									{{ number_format($tripReportLists[$tripList[$t]][$rp]->total_income, 2) }}
-								</td>
-								<td style="text-align: right;">
-									{{ number_format($tripReportLists[$tripList[$t]][$rp]->net_income, 2) }}
-								</td>
+								<th width="5%">SNo.</th>
+								<th>Departure Date</th>
+								<th>Departure Time</th>
+								<th>Vessel No.</th>
+								<th>MAHTATHA</th>
+								<th>Toll Fees</th>
+								<th>FOC</th>
+								<th>Discount</th>
+								<th>Income <br>(Include GST & Service Charge)</th>
+								<th>Net Income <br>(Income - Discount)</th>
 							</tr>
-						@endfor
+						</thead>
+						<tbody>
+							<?php
+								$totalDiscount = $totalIncome = $totalNetSales = 0;
+							?>
+							@for($rp = 0; $rp < count($tripReportLists[$tripList[$t]]); $rp++)
+								<tr>
+									<td>{{ $rp + 1 }}</td>
+									<td>
+										{{ $tripReportLists[$tripList[$t]][$rp]->dept_date }}
+									</td>
+									<td>
+										{{ $tripReportLists[$tripList[$t]][$rp]->dept_time }}
+									</td>
+									<td>
+										{{ $tripReportLists[$tripList[$t]][$rp]->vessel_no }}
+									</td>
+									<td>{{ '-' }}</td>
+									<td>{{ '-' }}</td>
+									<td>{{ '-' }}</td>
+									<td class="text-right">
+										{{ number_format($tripReportLists[$tripList[$t]][$rp]->total_discount, 2) }}
+									</td>
+									<td class="text-right">
+										{{ number_format($tripReportLists[$tripList[$t]][$rp]->total_income, 2) }}
+									</td>
+									<td class="text-right">
+										{{ number_format($tripReportLists[$tripList[$t]][$rp]->net_income, 2) }}
+									</td>
+								</tr>
+								<?php
+									$totalDiscount  += $tripReportLists[$tripList[$t]][$rp]->total_discount;
+									$totalIncome    += $tripReportLists[$tripList[$t]][$rp]->total_income;
+									$totalNetSales  += $tripReportLists[$tripList[$t]][$rp]->net_income;
+								?>
+							@endfor
+							<tr>
+								<td>&nbsp;</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td colspan="4" class="text-right"><b>TOTAL</b></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td class="text-right"><b>{{ number_format($totalDiscount, 2) }}</b></td>
+								<td class="text-right"><b>{{ number_format($totalIncome, 2) }}</b></td>
+								<td class="text-right"><b>{{ number_format($totalNetSales, 2) }}</b></td>
+							</tr>
+						</tbody>
+					</table>
 
-				</table>
+					{{-- {!! $lotins->render() !!} --}}
+				</div>
 			</div>
-			<br><br>
 		@endfor
 
-	</div><!-- .main-content -->
 
-	<div class="footer-menu">
-		<div class="footer-content">
-			<div class="menu-icon">
-				<a href="{{ url('/dashboard') }}">
-					<img src="{{ asset('assets/img/home-icon.jpeg') }}" alt="Go Home">
-					Home
-				</a>
-			</div><!-- .menu-icon -->
-
-			<div class="menu-icon">
-				<a href="{{ url('reports') }}" >
-					<img src="{{ asset('assets/img/go-back.png') }}" alt="Back">
-					Back
-				</a>
-			</div><!-- .menu-icon -->
-		</div>
-	</div><!-- .footer-menu -->
+		<!-- Footer -->
+		<footer class="main">
+			Copyright &copy; 2017 All Rights Reserved. <strong>MSCT Co.Ltd</strong>
+		</footer>
+	</div>
 @stop
 
 @section('my-script')
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/select2/dist/css/select2.css') }}">
-	<script src="{{ asset('plugins/select2/dist/js/select2.js') }}"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css"/>
+	<!-- Imported styles on this page -->
+	<link rel="stylesheet" href="{{ asset('assets/js/datatables/datatables.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2-bootstrap.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2.css') }}">
+
+	<!-- Imported scripts on this page -->
+	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+	<script src="{{ asset('assets/js/bootstrap-datepicker.js') }}"></script>
+	<script src="{{ asset('assets/js/bootstrap-timepicker.min.js') }}"></script>
+	<script src="{{ asset('assets/js/daterangepicker/daterangepicker.js') }}"></script>
+	<script src="{{ asset('assets/js/fileinput.js') }}"></script>
+	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
 
 	<script>
 		$(document).ready(function(){
-			var dept_date=$('input[name="dept_date"]'); //our date input has the name "date"
-			var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-			dept_date.datepicker({
-				format: 'yyyy-mm-dd',
-				container: container,
-				todayHighlight: true,
-				autoclose: true,
+			$(".destroy").on("click", function(event){
+				var confD = confirm('Are you sure to delete?');
+				if (confD) {
+					var id = $(this).attr('id');
+					$.ajax({
+						url: "{!! url('lotins/"+ id +"') !!}",
+						type: 'DELETE',
+						data: {_token: '{!! csrf_token() !!}'},
+						dataType: 'JSON',
+						success: function (data) {
+							window.location.replace(data.url);
+						}
+					});
+				}
 			});
-			// dept_date.datepicker('setDate', new Date());
 		});
 	</script>
 @stop
+
