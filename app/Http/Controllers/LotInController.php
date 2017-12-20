@@ -156,7 +156,7 @@ class LotInController extends Controller {
 
 		$this->validate($request, [
 			's_contact_no'       => 'required|unique:senders,contact_no',
-			'member_no'          => 'required|unique:senders,member_no',
+			// 'member_no'          => 'required|unique:senders,member_no',
 			'sender_name'        => 'required',
 
 			'r_contact_no'       => 'required|unique:receivers,contact_no',

@@ -72,13 +72,13 @@
 							<td>{{ $company->contact_no }}</td>
 							<td>
 								{{ $company->address }}
-								@if($company->township_id > 0)
+								@if($company->township_id > 0 && count($townshipList))
 									{{ $townshipList[$company->township_id] }}
 								@endif
-								@if($company->state_id > 0)
+								@if($company->state_id > 0 && count($stateList))
 									, {{ $stateList[$company->state_id] }}
 								@endif
-								@if($company->country_id > 0)
+								@if($company->country_id > 0 && count($countryList))
 									, {{ $countryList[$company->country_id] }}
 								@endif
 							</td>

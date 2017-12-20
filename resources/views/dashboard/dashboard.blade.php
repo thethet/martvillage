@@ -22,107 +22,181 @@
 
 		<div class="row">
 			<div class="col-sm-3">
-				<div class="tile-stats tile-primary">
-					<div class="icon"><i class="entypo-suitcase"></i></div>
-					<div class="num" data-start="0" data-end="{{ $companies }}" data-duration="1500" data-delay="0">0</div>
+				<a href="{{ url('settings') }}">
+					<div class="tile-stats tile-primary">
+						<div class="icon"><i class="entypo-cog"></i></div>
+						<div class="num">
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+						</div>
 
-					<h3>Registered Companies</h3>
-					<p>&nbsp;</p>
-					<p>&nbsp;</p>
-				</div>
+						<h3>SETTING</h3>
+						<p>&nbsp;</p>
+						<p>&nbsp;</p>
+						<p>&nbsp;</p>
+					</div>
+				</a>
 			</div>
 
-			<div class="col-sm-3">
-				<div class="tile-stats tile-red">
-					<div class="icon"><i class="entypo-users"></i></div>
-					<div class="num" data-start="0" data-end="{{ $users }}" data-duration="1500" data-delay="0">0</div>
+			@permission('user-list')
+				<div class="col-sm-3">
+					<a href="{{ url('/users') }}">
+						<div class="tile-stats tile-red">
+							<div class="icon"><i class="entypo-users"></i></div>
+							<div class="num">
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+							</div>
 
-					<h3>Registered Users</h3>
-					<p>&nbsp;</p>
-					<p>&nbsp;</p>
+							<h3>USERS</h3>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+						</div>
+					</a>
 				</div>
-			</div>
+			@endpermission
 
-			<div class="col-sm-3">
-				<div class="tile-stats tile-aqua">
-					<div class="icon"><i class="fa fa-user-secret"></i></div>
-					<div class="num" data-start="0" data-end="{{ $members }}" data-duration="1500" data-delay="0">0</div>
-
-					<h3>Registered Members</h3>
-					<p>&nbsp;</p>
-					<p>&nbsp;</p>
+			@permission('member-list')
+				<div class="col-sm-3">
+					<a href="{{ url('/members') }}">
+						<div class="tile-stats tile-aqua">
+							<div class="icon"><i class="fa fa-user-secret"></i></div>
+							<div class="num">
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+							</div>
+							<h3>MEMBERS</h3>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+						</div>
+					</a>
 				</div>
-			</div>
+			@endpermission
 
-			<div class="col-sm-3">
-				<div class="tile-stats tile-blue">
-					<div class="icon"><i class="entypo-location"></i></div>
-					<div class="num" data-start="0" data-end="{{ $countries }}" data-duration="1500" data-delay="0">0</div>
+			@permission('lotin-list')
+				<div class="col-sm-3">
+					<a href="{{ url('/lotins') }}">
+						<div class="tile-stats tile-blue">
+							<div class="icon"><i class="fa fa-truck"></i></div>
+							<div class="num">
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+							</div>
 
-					<h3>Registered Countries</h3>
-					<p>&nbsp;</p>
-					<p>&nbsp;</p>
+							<h3>LOTIN</h3>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+						</div>
+					</a>
 				</div>
-			</div>
-		</div>
+			@endpermission
 
-		<div class="row">
-			<div class="col-sm-3">
-				<div class="tile-stats tile-cyan">
-					<div class="icon"><i class="entypo-location"></i></div>
-					<div class="num" data-start="0" data-end="{{ $cities }}" data-duration="1500" data-delay="0">0</div>
+			@permission('lotbalance-list')
+				<div class="col-sm-3">
+					<a href="{{ url('/lotbalances') }}">
+						<div class="tile-stats tile-cyan">
+							<div class="icon"><i class="entypo-map"></i></div>
+							<div class="num">
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+							</div>
 
-					<h3>Registered Cities</h3>
-					<p>&nbsp;</p>
-					<p>&nbsp;</p>
+							<h3>TRACKING</h3>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+						</div>
+					</a>
 				</div>
-			</div>
+			@endpermission
 
-			<div class="col-sm-3">
-				<div class="tile-stats tile-purple">
-					<div class="icon"><i class="fa fa-shopping-cart"></i></div>
-					<div class="num" data-start="0" data-end="{{ $lotins }}" data-duration="1500" data-delay="0">0</div>
+			@permission('outgoing-list')
+				<div class="col-sm-3">
+					<a href="{{ url('/outgoings') }}">
+						<div class="tile-stats tile-purple">
+							<div class="icon"><i class="fa fa-shopping-cart"></i></div>
+							<div class="num">
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+							</div>
 
-					<h3>Today Lot Balance</h3>
-					<p>&nbsp;</p>
-					<p>&nbsp;</p>
+							<h3>OUTGOING</h3>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+						</div>
+					</a>
 				</div>
-			</div>
+			@endpermission
 
-			<div class="col-sm-3">
-				<div class="tile-stats tile-pink">
-					<div class="icon"><i class="fa fa-truck"></i></div>
-					<div class="num" data-start="0" data-end="{{ $incomings }}" data-duration="1500" data-delay="0">0</div>
+			@permission('incoming-list')
+				<div class="col-sm-3">
+					<a href="{{ url('/incomings') }}">
+						<div class="tile-stats tile-pink">
+							<div class="icon"><i class="fa fa-truck"></i></div>
+							<div class="num">
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+							</div>
 
-					<h3>Today Incoming</h3>
-					<p>&nbsp;</p>
-					<p>&nbsp;</p>
+							<h3>INCOMING</h3>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+						</div>
+					</a>
 				</div>
-			</div>
+			@endpermission
 
-			<div class="col-sm-3">
-				<div class="tile-stats tile-orange">
-					<div class="icon"><i class="fa fa-shopping-cart"></i></div>
-					<div class="num" data-start="0" data-end="{{ $outgoings }}" data-duration="1500" data-delay="0">0</div>
+			@permission('collection-list')
+				<div class="col-sm-3">
+					<a href="{{ url('/collections') }}">
+						<div class="tile-stats tile-orange">
+							<div class="icon"><i class="fa fa-database"></i></div>
+							<div class="num">
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+							</div>
 
-					<h3>Today Outgoing</h3>
-					<p>&nbsp;</p>
-					<p>&nbsp;</p>
+							<h3>COLLECTION</h3>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+						</div>
+					</a>
 				</div>
-			</div>
-		</div>
+			@endpermission
 
-		<div class="row">
-			<div class="col-sm-3">
-				<div class="tile-stats tile-green">
-					<div class="icon"><i class="fa fa-database"></i></div>
-					<div class="num" data-start="0" data-end="{{ $collections }}" data-duration="1500" data-delay="0">0</div>
+			@permission('report-list')
+				<div class="col-sm-3">
+					<a href="{{ url('/reports') }}">
+						<div class="tile-stats tile-green">
+							<div class="icon"><i class="entypo-chart-bar"></i></div>
+							<div class="num">
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+							</div>
 
-					<h3>Today Collections</h3>
-					<p>&nbsp;</p>
-					<p>&nbsp;</p>
+							<h3>REPORT</h3>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+						</div>
+					</a>
 				</div>
-			</div>
+			@endpermission
 		</div>
 
 		<!-- Footer -->
