@@ -660,12 +660,13 @@ class LotInController extends Controller {
 		$fromStateId   = $request->get('fromStateId');
 		$toCountryId   = $request->get('toCountryId');
 		$toStateId     = $request->get('toStateId');
+		$companyId     = $request->get('companyId');
 
 		if (Auth::user()->hasRole('administrator')) {
-			$items = Price::select(\DB::raw('id as id, title_name as text'))->where('from_country', $fromCountryId)->where('from_state', $fromStateId)->where('to_country', $toCountryId)->where('to_state', $toStateId)->where('title_name', 'like', "{$search}%")->orderBy('title_name', 'ASC')->get();
+			$items = Price::select(\DB::raw('id as id, title_name as text'))->where('company_id', $companyId)->where('from_country', $fromCountryId)->where('from_state', $fromStateId)->where('to_country', $toCountryId)->where('to_state', $toStateId)->where('title_name', 'like', "{$search}%")->orderBy('title_name', 'ASC')->get();
 
 		} else {
-			$items = Price::select(\DB::raw('id as id, title_name as text'))->where('company_id', Auth::user()->company_id)->where('from_country', $fromCountryId)->where('from_state', $fromStateId)->where('to_country', $toCountryId)->where('to_state', $toStateId)->where('title_name', 'like', "{$search}%")->orderBy('title_name', 'ASC')->get();
+			$items = Price::select(\DB::raw('id as id, title_name as text'))->where('company_id', $companyId)->where('from_country', $fromCountryId)->where('from_state', $fromStateId)->where('to_country', $toCountryId)->where('to_state', $toStateId)->where('title_name', 'like', "{$search}%")->orderBy('title_name', 'ASC')->get();
 
 		}
 

@@ -51,7 +51,7 @@
 											{!! Form::select('company_id', ['' => 'Select Company'] + $companyList->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off']) !!}
 										@else
 											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
-											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
+											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control', 'id' => 'company_id']) !!}
 										@endif
 									</div>
 
@@ -769,6 +769,7 @@
 				var toCountryId = $('#to_country_id').val();
 				var toStateId = $('#to_state_id').val();
 				var stateSelect = $('.price_id');
+				var companyId = $('#company_id').val();
 				$.ajax({
 					type: 'GET',
 					url: "{{ url('lotins/search-price-list') }}",
@@ -779,7 +780,8 @@
 						fromCountryId: fromCountryId,
 						fromStateId: fromStateId,
 						toCountryId: toCountryId,
-						toStateId: toStateId
+						toStateId: toStateId,
+						companyId: companyId
 					}
 					,
 				}).then(function (data) {
@@ -975,7 +977,7 @@
 						$('#unit-type-' + classes[1]).text(data.unit);
 						$('#unitprice-' + classes[1]).val(parseFloat(data.unit_price).toFixed(2));
 						$('#category_id-' + classes[1]).val(data.category_id);
-						$('#currency_id-').val(data.currency_id);
+						$('#currency_id-' + classes[1]).val(data.currency_id);
 						if(data.unit != '%') {
 							$('#unit-price-' + classes[1]).text((parseFloat(data.unit_price).toFixed(2)) + " " + data.type + "(per " + data.unit  + ")");
 						} else {
