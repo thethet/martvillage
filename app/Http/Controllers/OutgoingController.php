@@ -458,8 +458,6 @@ class OutgoingController extends Controller {
 		$categoryList        = Category::where('deleted', 'N')->orderBy('id', 'ASC')->lists('unit', 'id');
 		$categories          = Category::where('deleted', 'N')->orderBy('id', 'ASC')->get();
 
-		/*return view('outgoings.packing-list', ['outgoing' => $outgoing, 'lotinList' => $lotinList, 'countryList' => $countryList, 'stateList' => $stateList, 'senderList' => $senderList, 'senderContactList' => $senderContactList, 'receiverList' => $receiverList, 'receiverContactList' => $receiverContactList, 'categoryList' => $categoryList, 'categories' => $categories, 'companyList' => $companyList]);*/
-
 		$pdf = PDF::loadView(
 			'outgoings.packing-list-pdf',
 			[

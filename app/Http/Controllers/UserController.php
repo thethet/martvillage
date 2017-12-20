@@ -22,7 +22,7 @@ class UserController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$companyList = Company::lists('company_name', 'id');
+		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
 
 		if (Auth::user()->hasRole('administrator')) {
 			$users = User::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
@@ -77,7 +77,7 @@ class UserController extends Controller {
 			}
 		}
 
-		$companyList      = Company::where('deleted', 'N')->lists('company_name', 'id');
+		$companyList      = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$nricCodeList     = NricCode::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
 		$nricTownshipList = NricTownship::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
 
@@ -171,7 +171,7 @@ class UserController extends Controller {
 		$stateList    = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 		$townshipList = Township::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 
-		$companyList      = Company::where('deleted', 'N')->lists('company_name', 'id');
+		$companyList      = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$nricCodeList     = NricCode::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
 		$nricTownshipList = NricTownship::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
 
@@ -222,7 +222,7 @@ class UserController extends Controller {
 		$stateList    = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 		$townshipList = Township::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 
-		$companyList      = Company::where('deleted', 'N')->lists('company_name', 'id');
+		$companyList      = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$nricCodeList     = NricCode::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
 		$nricTownshipList = NricTownship::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
 

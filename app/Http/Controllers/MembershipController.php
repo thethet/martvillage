@@ -15,7 +15,7 @@ class MembershipController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$companyList = Company::where('deleted', 'N')->lists('company_name', 'id');
+		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
 
 		if (Auth::user()->hasRole('administrator')) {
 			$offers = MemberOffer::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
@@ -37,7 +37,7 @@ class MembershipController extends Controller {
 	 * @return Response
 	 */
 	public function create() {
-		$companyList = Company::where('deleted', 'N')->lists('company_name', 'id');
+		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
 
 		return view('memberships.create', ['companyList' => $companyList]);
 	}
@@ -68,7 +68,7 @@ class MembershipController extends Controller {
 	 * @return Response
 	 */
 	public function show($id) {
-		$companyList = Company::where('deleted', 'N')->lists('company_name', 'id');
+		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$offer       = MemberOffer::find($id);
 
 		return view('memberships.show', ['offer' => $offer, 'companyList' => $companyList]);
@@ -81,7 +81,7 @@ class MembershipController extends Controller {
 	 * @return Response
 	 */
 	public function edit($id) {
-		$companyList = Company::where('deleted', 'N')->lists('company_name', 'id');
+		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$offer       = MemberOffer::find($id);
 
 		return view('memberships.edit', ['offer' => $offer, 'companyList' => $companyList]);
