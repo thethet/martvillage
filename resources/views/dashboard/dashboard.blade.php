@@ -21,178 +21,186 @@
 		</ol>
 
 		<div class="row">
-			<div class="col-sm-3">
+			<div class="col-sm-2">
 				<a href="{{ url('settings') }}">
-					<div class="tile-stats tile-primary">
-						<div class="icon"><i class="entypo-cog"></i></div>
-						<div class="num">
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
+					<div class="tile-title tile-primary" style="border-radius: 5px !important;">
+						<div class="icon">
+							<img src="{{ asset('assets/icons/settings.png') }}" alt="">
 						</div>
 
-						<h3>SETTING</h3>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
+						<div class="title">
+							<h3>&nbsp;<br>SETTING</h3>
+							<p>&nbsp;</p>
+						</div>
 					</div>
 				</a>
 			</div>
 
 			@permission('user-list')
-				<div class="col-sm-3">
+				<div class="col-sm-2">
 					<a href="{{ url('/users') }}">
-						<div class="tile-stats tile-red">
-							<div class="icon"><i class="entypo-users"></i></div>
-							<div class="num">
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
+						<div class="tile-title tile-red">
+							<div class="icon">
+								<img src="{{ asset('assets/icons/user.png') }}" alt="">
 							</div>
 
-							<h3>USERS</h3>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
+							<div class="title">
+								<h3>&nbsp;<br>USERS</h3>
+								<p>&nbsp;</p>
+							</div>
 						</div>
 					</a>
 				</div>
 			@endpermission
 
 			@permission('member-list')
-				<div class="col-sm-3">
+				<div class="col-sm-2">
 					<a href="{{ url('/members') }}">
-						<div class="tile-stats tile-aqua">
-							<div class="icon"><i class="fa fa-user-secret"></i></div>
-							<div class="num">
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
+						<div class="tile-title tile-aqua">
+							<div class="icon">
+								<img src="{{ asset('assets/icons/members.png') }}" alt="">
+							</div>
+
+							<div class="title">
+								<h3>&nbsp;<br>MEMBERS</h3>
 								<p>&nbsp;</p>
 							</div>
-							<h3>MEMBERS</h3>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
 						</div>
 					</a>
 				</div>
 			@endpermission
 
 			@permission('lotin-list')
-				<div class="col-sm-3">
+				<div class="col-sm-2">
 					<a href="{{ url('/lotins') }}">
-						<div class="tile-stats tile-blue">
-							<div class="icon"><i class="fa fa-truck"></i></div>
-							<div class="num">
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
+						<div class="tile-title tile-blue">
+							<div class="icon">
+								<img src="{{ asset('assets/icons/lotin.png') }}" alt="">
 							</div>
 
-							<h3>LOTIN</h3>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
+							<div class="title">
+								<h3>&nbsp;<br>LOTIN</h3>
+								<p>&nbsp;</p>
+							</div>
 						</div>
 					</a>
 				</div>
 			@endpermission
 
 			@permission('lotbalance-list')
-				<div class="col-sm-3">
+				<div class="col-sm-2">
 					<a href="{{ url('/lotbalances') }}">
-						<div class="tile-stats tile-cyan">
-							<div class="icon"><i class="entypo-map"></i></div>
-							<div class="num">
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
+						<div class="tile-title tile-cyan">
+							<div class="icon">
+								<img src="{{ asset('assets/icons/lotbalance.png') }}" alt="">
 							</div>
 
-							<h3>TRACKING</h3>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
+							<div class="title">
+								<h3>&nbsp;<br>LOT BALANCE</h3>
+								<p>&nbsp;</p>
+							</div>
+						</div>
+					</a>
+				</div>
+			@endpermission
+
+			@permission('tracking-list')
+				<div class="col-sm-2">
+					<a href="{{ url('/trackings') }}">
+						<div class="tile-title tile-gray">
+							<div class="icon">
+								<img src="{{ asset('assets/icons/tracking.png') }}" alt="">
+							</div>
+
+							<div class="title">
+								<h3>&nbsp;<br>TRACKING</h3>
+								<p>&nbsp;</p>
+							</div>
 						</div>
 					</a>
 				</div>
 			@endpermission
 
 			@permission('outgoing-list')
-				<div class="col-sm-3">
+				<div class="col-sm-2">
 					<a href="{{ url('/outgoings') }}">
-						<div class="tile-stats tile-purple">
-							<div class="icon"><i class="fa fa-shopping-cart"></i></div>
-							<div class="num">
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
+						<div class="tile-title tile-purple">
+							<div class="icon">
+								<img src="{{ asset('assets/icons/outgoing.png') }}" alt="">
 							</div>
 
-							<h3>OUTGOING</h3>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
+							<div class="title">
+								<h3>&nbsp;<br>OUTGOING</h3>
+								<p>&nbsp;</p>
+							</div>
 						</div>
 					</a>
 				</div>
 			@endpermission
 
 			@permission('incoming-list')
-				<div class="col-sm-3">
+				<div class="col-sm-2">
 					<a href="{{ url('/incomings') }}">
-						<div class="tile-stats tile-pink">
-							<div class="icon"><i class="fa fa-truck"></i></div>
-							<div class="num">
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
+						<div class="tile-title tile-pink">
+							<div class="icon">
+								<img src="{{ asset('assets/icons/incoming.png') }}" alt="">
 							</div>
 
-							<h3>INCOMING</h3>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
+							<div class="title">
+								<h3>&nbsp;<br>INCOMING</h3>
+								<p>&nbsp;</p>
+							</div>
 						</div>
 					</a>
 				</div>
 			@endpermission
 
 			@permission('collection-list')
-				<div class="col-sm-3">
+				<div class="col-sm-2">
 					<a href="{{ url('/collections') }}">
-						<div class="tile-stats tile-orange">
-							<div class="icon"><i class="fa fa-database"></i></div>
-							<div class="num">
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
+						<div class="tile-title tile-orange">
+							<div class="icon">
+								<img src="{{ asset('assets/icons/collection.png') }}" alt="">
 							</div>
 
-							<h3>COLLECTION</h3>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
+							<div class="title">
+								<h3>&nbsp;<br>COLLECTIONS</h3>
+								<p>&nbsp;</p>
+							</div>
 						</div>
 					</a>
 				</div>
 			@endpermission
 
-			@permission('report-list')
-				<div class="col-sm-3">
-					<a href="{{ url('/reports') }}">
-						<div class="tile-stats tile-green">
-							<div class="icon"><i class="entypo-chart-bar"></i></div>
-							<div class="num">
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
+			{{-- @permission('message-list')
+				<div class="col-sm-2">
+					<a href="{{ url('/messages') }}">
+						<div class="tile-title tile-brown">
+							<div class="icon">
+								<img src="{{ asset('assets/icons/message.png') }}" alt="">
 							</div>
 
-							<h3>REPORT</h3>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
+							<div class="title">
+								<h3>&nbsp;<br>MESSAGES</h3>
+								<p>&nbsp;</p>
+							</div>
+						</div>
+					</a>
+				</div>
+			@endpermission --}}
+
+			@permission('report-list')
+				<div class="col-sm-2">
+					<a href="{{ url('/reports') }}">
+						<div class="tile-title tile-green">
+							<div class="icon">
+								<img src="{{ asset('assets/icons/report.png') }}" alt="">
+							</div>
+
+							<div class="title">
+								<h3>&nbsp;<br>REPORT</h3>
+								<p>&nbsp;</p>
+							</div>
 						</div>
 					</a>
 				</div>

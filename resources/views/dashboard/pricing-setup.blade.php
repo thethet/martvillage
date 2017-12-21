@@ -27,19 +27,16 @@
 		<div class="row">
 			@permission('category-list')
 				<a href="{{ url('categories') }}">
-					<div class="col-sm-3">
-						<div class="tile-stats tile-cyan">
-							<div class="icon"><i class="fa fa-balance-scale"></i></div>
-							<div class="num">
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
+					<div class="col-sm-2">
+						<div class="tile-title tile-cyan">
+							<div class="icon">
+								<img src="{{ asset('assets/icons/category.png') }}" alt="">
 							</div>
 
-							<h3>CATEGORY</h3>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
+							<div class="title">
+								<h3>&nbsp;<br>CATEGORY</h3>
+								<p>&nbsp;</p>
+							</div>
 						</div>
 					</div>
 				</a>
@@ -47,19 +44,16 @@
 
 			@permission('currency-list')
 				<a href="{{ url('currencies') }}">
-					<div class="col-sm-3">
-						<div class="tile-stats tile-purple">
-							<div class="icon"><i class="fa fa-usd"></i></div>
-							<div class="num">
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
+					<div class="col-sm-2">
+						<div class="tile-title tile-purple">
+							<div class="icon">
+								<img src="{{ asset('assets/icons/currency.png') }}" alt="">
 							</div>
 
-							<h3>CURRENCY</h3>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
+							<div class="title">
+								<h3>&nbsp;<br>CURRENCY</h3>
+								<p>&nbsp;</p>
+							</div>
 						</div>
 					</div>
 				</a>
@@ -67,19 +61,16 @@
 
 			@permission('price-list')
 				<a href="{{ url('prices') }}">
-					<div class="col-sm-3">
-						<div class="tile-stats tile-pink">
-							<div class="icon"><i class="fa fa-money"></i></div>
-							<div class="num">
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
+					<div class="col-sm-2">
+						<div class="tile-title tile-pink">
+							<div class="icon">
+								<img src="{{ asset('assets/icons/price.png') }}" alt="">
 							</div>
 
-							<h3>PRICE</h3>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
+							<div class="title">
+								<h3>&nbsp;<br>PRICE</h3>
+								<p>&nbsp;</p>
+							</div>
 						</div>
 					</div>
 				</a>

@@ -241,14 +241,14 @@
 				</li>
 			@endpermission
 
-			@permission('message-list')
+			{{-- @permission('message-list')
 				<li @if(Request::segment(1) == 'messages') class="active" @endif>
 					<a href="{{ url('/messages') }}">
 						<i class="entypo-mail"></i>
 						<span class="title">Messages</span>
-						{{-- <span class="badge badge-secondary">8</span> --}}
+						<span class="badge badge-secondary">8</span>
 					</a>
-					{{-- <ul>
+					<ul>
 						<li>
 							<a href="mailbox.html">
 								<i class="entypo-inbox"></i>
@@ -267,9 +267,9 @@
 								<span class="title">View Message</span>
 							</a>
 						</li>
-					</ul> --}}
+					</ul>
 				</li>
-			@endpermission
+			@endpermission --}}
 
 			@permission('report-list')
 				<li @if(Request::segment(1) == 'reports') class="active" @endif>
