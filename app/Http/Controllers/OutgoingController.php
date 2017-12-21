@@ -181,13 +181,15 @@ class OutgoingController extends Controller {
 	 */
 	public function store(Request $request) {
 		$this->validate($request, [
-			'passenger_name' => 'required',
-			'contact_no'     => 'required',
-			'dept_date'      => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
+			'passenger_name' => 'required|alpha',
+			'contact_no'     => 'required|phone',
+			'dept_date'      => 'required|after:' . date('Y-m-d', strtotime("-1 day")) . '|date_format:Y-m-d',
 			'dept_time'      => 'required',
 			'arrival_date'   => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
 			'arrival_time'   => 'required',
+			'from_country'   => 'required',
 			'from_city'      => 'required',
+			'to_country'     => 'required',
 			'to_city'        => 'required',
 			'weight'         => 'required',
 			// 'other'          => 'required',
@@ -275,7 +277,7 @@ class OutgoingController extends Controller {
 	public function update($id, Request $request) {
 		$this->validate($request, [
 			'passenger_name' => 'required',
-			'contact_no'     => 'required',
+			'contact_no'     => 'required|phone',
 			// 'dept_date'      => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
 			'dept_time'      => 'required',
 			// 'arrival_date'   => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',

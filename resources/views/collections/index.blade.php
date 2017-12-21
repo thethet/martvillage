@@ -24,19 +24,16 @@
 		<div class="row">
 			@permission('collection-list')
 				<a href="{{ url('/collections/ready-collect') }}">
-					<div class="col-sm-3">
-						<div class="tile-stats tile-cyan">
-							<div class="icon"><i class="fa fa-database"></i></div>
-							<div class="num">
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
+					<div class="col-sm-2">
+						<div class="tile-title tile-cyan">
+							<div class="icon">
+								<img src="{{ asset('assets/icons/collection.png') }}" alt="">
 							</div>
 
-							<h3>READY TO COLLECT</h3>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
+							<div class="title">
+								<h3>READY TO COLLECT</h3>
+								<p>&nbsp;</p>
+							</div>
 						</div>
 					</div>
 				</a>
@@ -44,19 +41,16 @@
 
 			@permission('collection-list')
 				<a href="{{ url('collections/return') }}">
-					<div class="col-sm-3">
-						<div class="tile-stats tile-purple">
-							<div class="icon"><i class="fa fa-database"></i></div>
-							<div class="num">
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
+					<div class="col-sm-2">
+						<div class="tile-title tile-purple">
+							<div class="icon">
+								<img src="{{ asset('assets/icons/returncollect.png') }}" alt="">
 							</div>
 
-							<h3>RETURN TO HEAD OFFICE</h3>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
+							<div class="title">
+								<h3>RETURN TO HEAD OFFICE</h3>
+								<p>&nbsp;</p>
+							</div>
 						</div>
 					</div>
 				</a>

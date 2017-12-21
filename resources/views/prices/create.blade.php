@@ -62,7 +62,7 @@
 									</div>
 
 									@if ($errors->has('company_id'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('company_id') }}</strong>
 										</span>
 									@endif

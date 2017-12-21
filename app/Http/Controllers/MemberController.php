@@ -105,6 +105,8 @@ class MemberController extends Controller {
 			'member_no'      => 'required|unique:members,member_no',
 			'gender'         => 'required',
 			'marital_status' => 'required',
+			'country_id'     => 'required',
+			'state_id'       => 'required',
 		]);
 
 		$data    = $request->all();

@@ -22,41 +22,35 @@
 
 
 		<div class="row">
-			@permission('collection-list')
+			@permission('report-list')
 				<a href="{{ url('reports/sales') }}">
-					<div class="col-sm-3">
-						<div class="tile-stats tile-cyan">
-							<div class="icon"><i class="entypo-chart-bar"></i></div>
-							<div class="num">
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
+					<div class="col-sm-2">
+						<div class="tile-title tile-cyan">
+							<div class="icon">
+								<img src="{{ asset('assets/icons/dailyreport.png') }}" alt="">
 							</div>
 
-							<h3>MAIN REPORT</h3>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
+							<div class="title">
+								<h3>DAILY SALES REPORT</h3>
+								<p>&nbsp;</p>
+							</div>
 						</div>
 					</div>
 				</a>
 			@endpermission
 
-			@permission('collection-list')
+			@permission('report-list')
 				<a href="{{ url('/reports/bytrips') }}">
-					<div class="col-sm-3">
-						<div class="tile-stats tile-purple">
-							<div class="icon"><i class="entypo-chart-area"></i></div>
-							<div class="num">
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
+					<div class="col-sm-2">
+						<div class="tile-title tile-purple">
+							<div class="icon">
+								<img src="{{ asset('assets/icons/tripreport.png') }}" alt="">
 							</div>
 
-							<h3>TRIP REPORT</h3>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
-							<p>&nbsp;</p>
+							<div class="title">
+								<h3>SALES REPORT BY TRIP</h3>
+								<p>&nbsp;</p>
+							</div>
 						</div>
 					</div>
 				</a>

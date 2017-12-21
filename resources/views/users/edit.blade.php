@@ -93,7 +93,7 @@
 									</div>
 
 									@if ($errors->has('dob'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('dob') }}</strong>
 										</span>
 									@endif
@@ -110,7 +110,7 @@
 									</div>
 
 									@if ($errors->has('contact_no'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('contact_no') }}</strong>
 										</span>
 									@endif
@@ -127,7 +127,7 @@
 									</div>
 
 									@if ($errors->has('email'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('email') }}</strong>
 										</span>
 									@endif
@@ -171,7 +171,7 @@
 									</div>
 
 									@if ($errors->has('gender'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('gender') }}</strong>
 										</span>
 									@endif
@@ -188,7 +188,7 @@
 									</div>
 
 									@if ($errors->has('marital_status'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('marital_status') }}</strong>
 										</span>
 									@endif
@@ -211,7 +211,7 @@
 									</div>
 
 									@if ($errors->has('role'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('role') }}</strong>
 										</span>
 									@endif
@@ -239,7 +239,7 @@
 									</div>
 
 									@if ($errors->has('username'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('username') }}</strong>
 										</span>
 									@endif
@@ -256,7 +256,7 @@
 									</div>
 
 									@if ($errors->has('password'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('password') }}</strong>
 										</span>
 									@endif
@@ -273,7 +273,7 @@
 									</div>
 
 									@if ($errors->has('confirm_password'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('confirm_password') }}</strong>
 										</span>
 									@endif
@@ -295,7 +295,7 @@
 									</div>
 
 									@if ($errors->has('company_id'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('company_id') }}</strong>
 										</span>
 									@endif
@@ -337,7 +337,7 @@
 									</div>
 
 									@if ($errors->has('country_id'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('country_id') }}</strong>
 										</span>
 									@endif
@@ -354,7 +354,7 @@
 									</div>
 
 									@if ($errors->has('state_id'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('state_id') }}</strong>
 										</span>
 									@endif
@@ -371,7 +371,7 @@
 									</div>
 
 									@if ($errors->has('township_id'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('township_id') }}</strong>
 										</span>
 									@endif

@@ -139,31 +139,15 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
-		$messages = array(
-			's_contact_no.required'  => 'The Sender Contact Number  field is required.',
-			'member_no.exists'       => 'Your Member Number is wrong or you are not member.',
-			'sender_name.required'   => 'The Sender Name  field is required.',
-
-			'r_contact_no.required'  => 'The Receiver Contact Number  field is required.',
-			'receiver_name.required' => 'The Receiver Name  field is required.',
-
-			'from_country.required'  => 'The From Country  field is required.',
-			'from_state.required'    => 'The From State  field is required.',
-
-			'to_country.required'    => 'The To Country  field is required.',
-			'to_state.required'      => 'The To State  field is required.',
-
-		);
-
 		$this->validate($request, [
-			's_contact_no'       => 'required|unique:senders,contact_no',
+			's_contact_no'       => 'required|phone',
 			// 'member_no'          => 'required|unique:senders,member_no',
-			'sender_name'        => 'required',
+			'sender_name'        => 'required|alpha',
 
-			'r_contact_no'       => 'required|unique:receivers,contact_no',
-			'receiver_name'      => 'required',
+			'r_contact_no'       => 'required|phone',
+			'receiver_name'      => 'required|alpha',
 
-			'date'               => 'required',
+			'date'               => 'required|date|date_format:Y-m-d',
 			'from_country'       => 'required',
 			'from_state'         => 'required',
 			'to_country'         => 'required',
@@ -172,7 +156,7 @@ class LotInController extends Controller {
 
 			'other_discount'     => 'numeric',
 			'other_discount_amt' => 'numeric',
-		], $messages);
+		]);
 
 		$size = count($request->lots);
 
@@ -195,9 +179,9 @@ class LotInController extends Controller {
 
 		if ($senderId == 0) {
 			$this->validate($request, [
-				's_contact_no' => 'required|unique:senders,contact_no',
+				's_contact_no' => 'required|phone|unique:senders,contact_no',
 				'member_no'    => 'exists:members,member_no',
-			], $messages);
+			]);
 
 			$senderData['company_id']       = $company_id;
 			$senderData['name']             = $request->sender_name;
@@ -221,8 +205,8 @@ class LotInController extends Controller {
 
 		if ($receiverId == 0) {
 			$this->validate($request, [
-				'r_contact_no' => 'required|unique:receivers,contact_no',
-			], $messages);
+				'r_contact_no' => 'required|phone|unique:receivers,contact_no',
+			]);
 
 			$receiverData['company_id']       = $company_id;
 			$receiverData['sender_id']        = $senderId;

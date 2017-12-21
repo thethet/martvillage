@@ -71,7 +71,7 @@
 									</div>
 
 									@if ($errors->has('short_code'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('short_code') }}</strong>
 										</span>
 									@endif
@@ -88,7 +88,7 @@
 									</div>
 
 									@if ($errors->has('contact_no'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('contact_no') }}</strong>
 										</span>
 									@endif
@@ -105,7 +105,7 @@
 									</div>
 
 									@if ($errors->has('email'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('email') }}</strong>
 										</span>
 									@endif
@@ -122,7 +122,7 @@
 									</div>
 
 									@if ($errors->has('expiry_date'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('expiry_date') }}</strong>
 										</span>
 									@endif
@@ -165,7 +165,7 @@
 									</div>
 
 									@if ($errors->has('return_period'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('return_period') }}</strong>
 										</span>
 									@endif
@@ -182,7 +182,7 @@
 									</div>
 
 									@if ($errors->has('gst_rate'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('gst_rate') }}</strong>
 										</span>
 									@endif
@@ -199,7 +199,7 @@
 									</div>
 
 									@if ($errors->has('service_rate'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('service_rate') }}</strong>
 										</span>
 									@endif
@@ -241,7 +241,7 @@
 									</div>
 
 									@if ($errors->has('country_id'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('country_id') }}</strong>
 										</span>
 									@endif
@@ -258,7 +258,7 @@
 									</div>
 
 									@if ($errors->has('state_id'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('state_id') }}</strong>
 										</span>
 									@endif
@@ -275,7 +275,7 @@
 									</div>
 
 									@if ($errors->has('township_id'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('township_id') }}</strong>
 										</span>
 									@endif

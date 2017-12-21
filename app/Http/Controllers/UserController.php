@@ -91,8 +91,8 @@ class UserController extends Controller {
 	 */
 	public function store(Request $request) {
 		$this->validate($request, [
-			'name'           => 'required',
-			'contact_no'     => 'required',
+			'name'           => 'required|alpha',
+			'contact_no'     => 'required|phone',
 			'dob'            => 'required|before:' . date('Y-m-d') . '|date_format:Y-m-d',
 			'email'          => 'required|email|unique:users,email',
 			'username'       => 'required|unique:users,username',
@@ -237,8 +237,8 @@ class UserController extends Controller {
 	 */
 	public function update($id, Request $request) {
 		$this->validate($request, [
-			'name'           => 'required',
-			'contact_no'     => 'required',
+			'name'           => 'required|alpha',
+			'contact_no'     => 'required|phone',
 			'dob'            => 'required|before:' . date('Y-m-d') . '|date_format:Y-m-d',
 			// 'email'          => 'required|email|unique:users,email',
 			// 'username'       => 'required|unique:users,username',

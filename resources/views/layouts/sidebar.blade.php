@@ -238,6 +238,22 @@
 						<i class="fa fa-database"></i>
 						<span class="title">Collections</span>
 					</a>
+
+					<ul>
+						<li @if(Request::segment(1) == 'collections') class="active" @endif>
+							<a href="{{ url('/collections') }}">
+								<i class="entypo-archive"></i>
+								<span class="title">Ready To Collect</span>
+							</a>
+						</li>
+
+						<li @if(Request::segment(1) == 'collections') class="active" @endif>
+							<a href="{{ url('/collections') }}">
+								<i class="entypo-database"></i>
+								<span class="title">Return To Head Office</span>
+							</a>
+						</li>
+					</ul>
 				</li>
 			@endpermission
 
@@ -277,6 +293,22 @@
 						<i class="entypo-chart-bar"></i>
 						<span class="title">Reports</span>
 					</a>
+
+					<ul>
+						<li @if(Request::segment(1) == 'reports') class="active" @endif>
+							<a href="{{ url('/reports') }}">
+								<i class="entypo-chart-pie"></i>
+								<span class="title">Daily Sales Report</span>
+							</a>
+						</li>
+
+						<li @if(Request::segment(1) == 'reports') class="active" @endif>
+							<a href="{{ url('/reports') }}">
+								<i class="entypo-chart-line"></i>
+								<span class="title">Sales Report By Trip</span>
+							</a>
+						</li>
+					</ul>
 				</li>
 			@endpermission
 		</ul>

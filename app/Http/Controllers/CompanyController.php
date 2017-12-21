@@ -100,7 +100,7 @@ class CompanyController extends Controller {
 		$this->validate($request, [
 			'company_name'  => 'required',
 			'short_code'    => 'required|unique:companies,short_code',
-			'contact_no'    => 'required',
+			'contact_no'    => 'required|phone',
 			'email'         => 'required|email|unique:companies,email',
 			'expiry_date'   => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
 			'image'         => 'mimes:jpeg,bmp,png',
@@ -213,7 +213,7 @@ class CompanyController extends Controller {
 		$this->validate($request, [
 			'company_name'  => 'required',
 			// 'short_code'   => 'required|unique:companies,short_code',
-			'contact_no'    => 'required',
+			'contact_no'    => 'required|phone',
 			'expiry_date'   => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
 			'image'         => 'mimes:jpeg,bmp,png',
 			'return_period' => 'required|integer',

@@ -1010,8 +1010,10 @@
 				if($(this).val() == 0 ) {
 					$('#other_discount').attr('readonly', false);
 					$('#other_discount_amt').attr('readonly', true);
+					$('#other_discount_amt').val(0);
 				} else {
 					$('#other_discount').attr('readonly', true);
+					$('#other_discount').val(0);
 					$('#other_discount_amt').attr('readonly', false);
 				}
 				calculateTotal();

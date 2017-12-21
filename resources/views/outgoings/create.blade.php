@@ -56,7 +56,7 @@
 									</div>
 
 									@if ($errors->has('company_id'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('company_id') }}</strong>
 										</span>
 									@endif
@@ -73,7 +73,7 @@
 									</div>
 
 									@if ($errors->has('passenger_name'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('passenger_name') }}</strong>
 										</span>
 									@endif
@@ -90,7 +90,7 @@
 									</div>
 
 									@if ($errors->has('contact_no'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('contact_no') }}</strong>
 										</span>
 									@endif
@@ -98,16 +98,16 @@
 							</div>
 
 							<div class="form-group {{ $errors->has('dept_date') ? ' has-error' : '' }}">
-								<label class="col-sm-3 control-label">Depature Date <span class="text-danger">*</span></label>
+								<label class="col-sm-3 control-label">Departure Date <span class="text-danger">*</span></label>
 
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-calendar"></i></span>
-										{!! Form::text('dept_date', null, ['placeholder' => 'Depature Date','class' => 'form-control datepicker', 'id' => 'dept_date', 'data-format' => 'yyyy-mm-dd', 'autocomplete' => 'off']) !!}
+										{!! Form::text('dept_date', null, ['placeholder' => 'Departure Date','class' => 'form-control datepicker', 'id' => 'dept_date', 'data-format' => 'yyyy-mm-dd', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('dept_date'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('dept_date') }}</strong>
 										</span>
 									@endif
@@ -115,17 +115,17 @@
 							</div>
 
 							<div class="form-group {{ $errors->has('dept_time') ? ' has-error' : '' }}">
-								<label class="col-sm-3 control-label">Depature Time</label>
+								<label class="col-sm-3 control-label">Departure Time</label>
 
 								<div class="col-sm-5">
 									<div class="input-group">
-										{!! Form::text('dept_time', null, ['placeholder' => 'Depature Time','class' => 'form-control timepicker', 'id' => 'dept_time', 'data-template' => 'dropdown', 'data-minute-step' => '5', 'autocomplete' => 'off']) !!}
+										{!! Form::text('dept_time', null, ['placeholder' => 'Departure Time','class' => 'form-control timepicker', 'id' => 'dept_time', 'data-template' => 'dropdown', 'data-minute-step' => '5', 'autocomplete' => 'off']) !!}
 										<div class="input-group-addon">
 											<a href="#"><i class="entypo-clock"></i></a>
 										</div>
 									</div>
 									@if ($errors->has('dept_time'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('dept_time') }}</strong>
 										</span>
 									@endif
@@ -142,7 +142,7 @@
 									</div>
 
 									@if ($errors->has('arrival_date'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('arrival_date') }}</strong>
 										</span>
 									@endif
@@ -160,7 +160,7 @@
 										</div>
 									</div>
 									@if ($errors->has('arrival_time'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('arrival_time') }}</strong>
 										</span>
 									@endif
@@ -238,7 +238,7 @@
 									</div>
 
 									@if ($errors->has('weight'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('weight') }}</strong>
 										</span>
 									@endif
@@ -255,7 +255,7 @@
 									</div>
 
 									@if ($errors->has('other'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('other') }}</strong>
 										</span>
 									@endif
@@ -272,7 +272,7 @@
 									</div>
 
 									@if ($errors->has('carrier_name'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('carrier_name') }}</strong>
 										</span>
 									@endif
@@ -289,7 +289,7 @@
 									</div>
 
 									@if ($errors->has('vessel_no'))
-										<span class="required">
+										<span class="validate-has-error">
 											<strong>{{ $errors->first('vessel_no') }}</strong>
 										</span>
 									@endif
