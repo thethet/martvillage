@@ -93,7 +93,11 @@ return [
 
 	'custom'               => [
 		'attribute-name' => [
-			'rule-name' => 'custom-message',
+			'rule-name'     => 'custom-message',
+			's_contact_no'  => "sender's contact number",
+			'sender_name'   => "sender's name",
+			'r_contact_no'  => "receiver's contact number",
+			'receiver_name' => "receiver's name",
 		],
 	],
 

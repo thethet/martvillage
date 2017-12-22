@@ -91,13 +91,14 @@ class UserController extends Controller {
 	 */
 	public function store(Request $request) {
 		$this->validate($request, [
-			'name'           => 'required|alpha',
+			// 'name'           => 'required|regex:/^[\pL\s\-]+$/u',
+			'name'           => 'required|name',
 			'contact_no'     => 'required|phone',
 			'dob'            => 'required|before:' . date('Y-m-d') . '|date_format:Y-m-d',
 			'email'          => 'required|email|unique:users,email',
 			'username'       => 'required|unique:users,username',
 			'password'       => 'required|same:confirm_password',
-			'image'          => 'mimes:jpeg,bmp,png',
+			'image'          => 'mimes:jpeg,jpg,bmp,png',
 			'gender'         => 'required',
 			'marital_status' => 'required',
 			'role'           => 'required',
@@ -236,14 +237,18 @@ class UserController extends Controller {
 	 * @return Response
 	 */
 	public function update($id, Request $request) {
+		// dd(preg_match('~[0-9]~', $request->name));
+		// if (1 === preg_match('~[0-9]~', $request->name)) {
+		// 	#has numbers
+		// }
 		$this->validate($request, [
-			'name'           => 'required|alpha',
+			'name'           => 'required|name',
 			'contact_no'     => 'required|phone',
 			'dob'            => 'required|before:' . date('Y-m-d') . '|date_format:Y-m-d',
 			// 'email'          => 'required|email|unique:users,email',
 			// 'username'       => 'required|unique:users,username',
 			'password'       => 'same:confirm_password',
-			'image'          => 'mimes:jpeg,bmp,png',
+			'image'          => 'mimes:jpeg,jpg,bmp,png',
 			'gender'         => 'required',
 			'marital_status' => 'required',
 			'role'           => 'required',

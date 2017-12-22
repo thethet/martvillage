@@ -142,10 +142,10 @@ class LotInController extends Controller {
 		$this->validate($request, [
 			's_contact_no'       => 'required|phone',
 			// 'member_no'          => 'required|unique:senders,member_no',
-			'sender_name'        => 'required|alpha',
+			'sender_name'        => 'required|name',
 
 			'r_contact_no'       => 'required|phone',
-			'receiver_name'      => 'required|alpha',
+			'receiver_name'      => 'required|name',
 
 			'date'               => 'required|date|date_format:Y-m-d',
 			'from_country'       => 'required',

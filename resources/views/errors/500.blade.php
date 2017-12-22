@@ -15,8 +15,8 @@
 			</div>
 
 			<div class="error-text">
-				<h2>404</h2>
-				<p>Page not found!</p>
+				<h2>500</h2>
+				<p>We're sorry, our service is temporarily unavaliable.</p>
 			</div>
 
 			<hr />
@@ -34,7 +34,6 @@
 				</div>
 
 			</div>
-
 		</div>
 	</div>
 @stop

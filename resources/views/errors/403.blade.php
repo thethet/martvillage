@@ -15,8 +15,8 @@
 			</div>
 
 			<div class="error-text">
-				<h2>404</h2>
-				<p>Page not found!</p>
+				<h2>403</h2>
+				<p>You don't have permission to access!</p>
 			</div>
 
 			<hr />

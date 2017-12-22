@@ -19,6 +19,15 @@ class AppServiceProvider extends ServiceProvider {
 		Validator::replacer('phone', function ($message, $attribute, $rule, $parameters) {
 			return str_replace(':attribute', $attribute, ':attribute is invalid phone number');
 		});
+
+		Validator::extend('name', function ($attribute, $value, $parameters, $validator) {
+			return preg_match('/^([^0-9]*)$/', $value) && strlen($value) >= 10;
+		});
+
+		Validator::replacer('name', function ($message, $attribute, $rule, $parameters) {
+			return str_replace(':attribute', $attribute, ':attribute may only contain letters');
+		});
+
 	}
 
 	/**

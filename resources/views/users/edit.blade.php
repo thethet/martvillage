@@ -134,11 +134,10 @@
 								</div>
 							</div>
 
-							<div class="form-group">
+							<div class="form-group {{ $errors->has('image') ? ' has-error' : '' }}">
 								<label class="col-sm-3 control-label">ID Photo</label>
 
 								<div class="col-sm-5">
-
 									<div class="fileinput fileinput-new" data-provides="fileinput">
 										<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;" data-trigger="fileinput">
 											@if($user->photo == null)
@@ -157,7 +156,11 @@
 											<a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput">Remove</a>
 										</div>
 									</div>
-
+									@if ($errors->has('image'))
+										<span class="validate-has-error">
+											<strong>{{ $errors->first('image') }}</strong>
+										</span>
+									@endif
 								</div>
 							</div>
 

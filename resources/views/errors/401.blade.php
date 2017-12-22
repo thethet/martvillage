@@ -1,32 +1,52 @@
 @extends('layouts.layout')
-@section('my-style')
-	<!-- css files -->
-	<link href="{{ asset('assets/css/style.css') }}" rel="stylesheet" type="text/css" media="all">
-	<!-- //css files -->
 
-	<!-- online-fonts -->
-	<link href="//fonts.googleapis.com/css?family=Ropa+Sans:400,400i&amp;subset=latin-ext" rel="stylesheet">
+@section('page-title')
+	Category
 @stop
 
 @section('main')
-<div class="main-content">
-	<div class="w3-main">
-		<div class="agile-info">
-			<h3>UNAUTHORIZED</h3>
-			<h2>4<img src="{{ asset('assets/img/401.png') }}" alt="image">1</h2>
-			<p>The Page You have requested can't authorized.</p>
 
-			<a href="{{ URL::previous() }}">go back</a>
+	<div class="main-content">
+		<div class="page-error-404">
+
+
+			<div class="error-symbol">
+				<i class="entypo-attention"></i>
+			</div>
+
+			<div class="error-text">
+				<h2>401</h2>
+				<p>The Page You have requested can't authorized!</p>
+			</div>
+
+			<hr />
+
+			<div class="error-text">
+
+				<br />
+				<br />
+
+				<div class="input-group minimal">
+					<a href="{{ url('dashboard') }}" class="btn btn-orange btn-icon">
+						Back
+						<i class="entypo-reply"></i>
+					</a>
+				</div>
+
+			</div>
+
 		</div>
 	</div>
-</div>
 @stop
 
 @section('my-script')
-	<script type="application/x-javascript">
-		addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
-		function hideURLbar(){
-			window.scrollTo(0,1);
-		}
-	</script>
+	<!-- Imported styles on this page -->
+	<link rel="stylesheet" href="{{ asset('assets/js/datatables/datatables.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2-bootstrap.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2.css') }}">
+
+	<!-- Imported scripts on this page -->
+	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
+	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
 @stop

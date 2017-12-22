@@ -98,7 +98,7 @@ class MemberController extends Controller {
 	public function store(Request $request) {
 		$this->validate($request, [
 			'company_id'     => 'required',
-			'name'           => 'required',
+			'name'           => 'required|name',
 			'contact_no'     => 'required|unique:members,contact_no',
 			'dob'            => 'required|before:' . date('Y-m-d') . '|date_format:Y-m-d',
 			'email'          => 'required|email|unique:members,email',
@@ -221,7 +221,7 @@ class MemberController extends Controller {
 	 */
 	public function update($id, Request $request) {
 		$this->validate($request, [
-			'name'           => 'required',
+			'name'           => 'required|name',
 			// 'contact_no'     => 'required|unique:members,contact_no',
 			'dob'            => 'required|before:' . date('Y-m-d') . '|date_format:Y-m-d',
 			// 'email'          => 'required|email|unique:members,email',
