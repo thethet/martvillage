@@ -392,11 +392,10 @@ class OutgoingController extends Controller {
 		$packing                     = Packing::create($packingData);
 		$packingId                   = $packing->id;
 
-		if ($outgoing->packing_id_list) {
-			$outgoing->packing_id_list .= ', ' . $packingId;
-		} else {
-			$outgoing->packing_id_list = $packingId;
-		}
+		$packingIdList   = explode(", ", $outgoing->packing_id_list);
+		$packingIdList[] = $packingId;
+		$packingIds      = implode(", ", $packingIdList);
+		$outgoing->update(['packing_id_list' => $$packingIds]);
 
 		$itemIds = $request->itemIds;
 		$size    = count($itemIds);

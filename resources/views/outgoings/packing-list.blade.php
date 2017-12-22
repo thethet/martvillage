@@ -46,6 +46,20 @@
 
 							<div class="form-group">
 								<label class="col-sm-4">
+									Company Name
+								</label>
+
+								<label class="col-sm-8">
+									@if($outgoing->company_id)
+										{{ $companyList[$outgoing->company_id] }}
+									@else
+										{{ '-' }}
+									@endif
+								</label>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-4">
 									Passenger Name
 								</label>
 
@@ -108,21 +122,22 @@
 
 							@for($x = 1; $x <= $outgoing->packing_list; $x++)
 								<?php
+									$packingIdList = explode(", ", $outgoing->packing_id_list);
 									$packItemList =DB::table('items as i')
 										->select('i.*', 'l.sender_id', 'l.receiver_id', 'l.company_id', 'l.from_state', 'l.to_state')
 										->leftJoin('lotins as l', 'l.id', '=', 'i.lotin_id')
 										->where('i.outgoing_id', $outgoing->id)
-										->where('i.packing_id', $x)->get();
+										->where('i.packing_id', $packingIdList[$x-1])->get();
 									$myCategory = array();
 
 									foreach($categories as $category) {
-										$unit = App\Item::select(DB::raw('sum(unit) as total_unit'))->where('outgoing_id', $outgoing->id)->where('packing_id', $x)->where('category_id', $category->id)->first();
+										$unit = App\Item::select(DB::raw('sum(unit) as total_unit'))->where('outgoing_id', $outgoing->id)->where('packing_id', $packingIdList[$x-1])->where('category_id', $category->id)->first();
 
 										$myCategory[$category->id] = ($unit->total_unit) ? $unit->total_unit : 0 ;
 									}
 								?>
 
-								<div class="col-md-12" style="padding: 0;">
+								<div class="row" style="padding: 0;">
 									<div class="panel panel-primary" data-collapsed="0">
 										<div class="panel-heading">
 											<div class="panel-title text-primary">
@@ -192,7 +207,7 @@
 								</div>
 							@endfor
 
-							<div class="col-md-12" style="padding: 0;">
+							<div class="row" style="padding: 0;">
 								<div class="panel panel-primary" data-collapsed="0">
 									<div class="panel-heading">
 										<div class="panel-title text-primary">

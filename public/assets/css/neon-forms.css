@@ -1134,16 +1134,16 @@ div.datepicker thead tr:first-child th.cw {
 }
 @media (min-width: 767px) {
   .bootstrap-timepicker-widget.modal {
-    width: 200px;
-    margin-left: -100px;
+	width: 200px;
+	margin-left: -100px;
   }
 }
 @media (max-width: 767px) {
   .bootstrap-timepicker {
-    width: 100%;
+	width: 100%;
   }
   .bootstrap-timepicker .dropdown-menu {
-    width: 100%;
+	width: 100%;
   }
 }
 /*!
@@ -1611,28 +1611,28 @@ button.toast-close-button {
 /*Responsive Design*/
 @media all and (max-width: 240px) {
   #toast-container > div {
-    padding: 8px 8px 8px 50px;
-    width: 11em;
+	padding: 8px 8px 8px 50px;
+	width: 11em;
   }
   #toast-container .toast-close-button {
-    right: -0.2em;
-    top: -0.2em;
+	right: -0.2em;
+	top: -0.2em;
   }
 }
 @media all and (min-width: 241px) and (max-width: 480px) {
   #toast-container > div {
-    padding: 8px 8px 8px 50px;
-    width: 18em;
+	padding: 8px 8px 8px 50px;
+	width: 18em;
   }
   #toast-container .toast-close-button {
-    right: -0.2em;
-    top: -0.2em;
+	right: -0.2em;
+	top: -0.2em;
   }
 }
 @media all and (min-width: 481px) and (max-width: 768px) {
   #toast-container > div {
-    padding: 15px 15px 15px 50px;
-    width: 25em;
+	padding: 15px 15px 15px 50px;
+	width: 25em;
   }
 }
 a.text-primary:hover,
@@ -3974,73 +3974,73 @@ hr + .mail-env {
 }
 @media (max-width: 999px) {
   .mail-env .mail-body .mail-table tbody tr td.col-subject a {
-    max-width: 280px;
+	max-width: 280px;
   }
 }
 @media (max-width: 959px) {
   .mail-env .mail-body .mail-header div.mail-title {
-    width: 100%;
-    white-space: normal;
+	width: 100%;
+	white-space: normal;
   }
   .mail-env .mail-body .mail-header .mail-links {
-    float: none;
-    width: 100%;
-    text-align: left;
-    clear: left;
-    padding-top: 10px;
+	float: none;
+	width: 100%;
+	text-align: left;
+	clear: left;
+	padding-top: 10px;
   }
   .mail-env .mail-body .mail-info {
-    display: block;
+	display: block;
   }
   .mail-env .mail-body .mail-info .mail-sender,
   .mail-env .mail-body .mail-info .mail-date {
-    display: block;
-    width: 100%;
+	display: block;
+	width: 100%;
   }
   .mail-env .mail-body .mail-info .mail-sender.mail-sender,
   .mail-env .mail-body .mail-info .mail-date.mail-sender {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ebebeb;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #ebebeb;
   }
   .mail-env .mail-body .mail-info .mail-sender.mail-date,
   .mail-env .mail-body .mail-info .mail-date.mail-date {
-    text-align: left;
-    padding-top: 10px;
-    padding-bottom: 10px;
+	text-align: left;
+	padding-top: 10px;
+	padding-bottom: 10px;
   }
   .mail-env .mail-body .mail-compose .compose-message-editor textarea {
-    height: 300px;
+	height: 300px;
   }
 }
 @media (max-width: 768px) {
   .mail-env .mail-sidebar {
-    width: 30.8%;
+	width: 30.8%;
   }
   .mail-env .mail-body {
-    width: 69.2%;
+	width: 69.2%;
   }
   .mail-env .mail-body .mail-table tbody tr td.col-options {
-    display: none;
+	display: none;
   }
   .mail-env .mail-body .mail-table tbody tr td.col-subject a {
-    max-width: 160px;
+	max-width: 160px;
   }
   .mail-env .mail-body .mail-compose .compose-message-editor textarea {
-    height: 240px;
+	height: 240px;
   }
 }
 @media (max-width: 767px) {
   .mail-env .mail-sidebar,
   .mail-env .mail-body {
-    width: 100%;
-    float: none;
+	width: 100%;
+	float: none;
   }
   .mail-env .mail-body .mail-header .mail-title,
   .mail-env .mail-body .mail-header .mail-search,
   .mail-env .mail-body .mail-header .mail-links {
-    float: none;
-    width: 100%;
+	float: none;
+	width: 100%;
   }
   .mail-env .mail-body .mail-header .mail-title.mail-search,
   .mail-env .mail-body .mail-header .mail-search.mail-search,
@@ -4048,18 +4048,18 @@ hr + .mail-env {
   .mail-env .mail-body .mail-header .mail-title.mail-links,
   .mail-env .mail-body .mail-header .mail-search.mail-links,
   .mail-env .mail-body .mail-header .mail-links.mail-links {
-    margin-top: 20px;
+	margin-top: 20px;
   }
   .mail-env .mail-body .mail-header .mail-links {
-    padding-top: 0;
+	padding-top: 0;
   }
 }
 @media (max-width: 449px) {
   .mail-env .mail-body .mail-table tbody tr td.col-subject a {
-    max-width: 40px;
+	max-width: 40px;
   }
   .mail-env .mail-body .mail-table tbody tr > td.col-name a.star {
-    display: none;
+	display: none;
   }
   .mail-env .mail-body .mail-table > thead > tr > td:last-child,
   .mail-env .mail-body .mail-table > tbody > tr > td:last-child,
@@ -4067,7 +4067,7 @@ hr + .mail-env {
   .mail-env .mail-body .mail-table > thead > tr > th:last-child,
   .mail-env .mail-body .mail-table > tbody > tr > th:last-child,
   .mail-env .mail-body .mail-table > tfoot > tr > th:last-child {
-    padding-right: 10px;
+	padding-right: 10px;
   }
   .mail-env .mail-body .mail-table > thead > tr > td:first-child,
   .mail-env .mail-body .mail-table > tbody > tr > td:first-child,
@@ -4075,7 +4075,7 @@ hr + .mail-env {
   .mail-env .mail-body .mail-table > thead > tr > th:first-child,
   .mail-env .mail-body .mail-table > tbody > tr > th:first-child,
   .mail-env .mail-body .mail-table > tfoot > tr > th:first-child {
-    padding-left: 10px;
+	padding-left: 10px;
   }
 }
 .login-page {
@@ -4683,33 +4683,33 @@ hr + .mail-env {
 }
 @media (max-width: 991px) {
   .login-page .login-header {
-    padding: 20px 0;
+	padding: 20px 0;
   }
   .login-page .login-form {
-    padding-top: 30px;
+	padding-top: 30px;
   }
   .login-page .login-form .form-group.lockscreen-input {
-    margin-top: 0;
+	margin-top: 0;
   }
   .login-page.logging-in .login-header {
-    padding-top: 34px;
-    padding-bottom: 6px;
+	padding-top: 34px;
+	padding-bottom: 6px;
   }
   .login-page.logging-in .login-progressbar-indicator {
-    margin-top: 60px;
+	margin-top: 60px;
   }
   .login-page.logging-in .login-form form,
   .login-page.logging-in .login-form .link {
-    -webkit-transform: translateY(-100px) scale(0.6);
-    -moz-transform: translateY(-100px) scale(0.6);
-    -ms-transform: translateY(-100px) scale(0.6);
-    -o-transform: translateY(-100px) scale(0.6);
-    transform: translateY(-100px) scale(0.6);
+	-webkit-transform: translateY(-100px) scale(0.6);
+	-moz-transform: translateY(-100px) scale(0.6);
+	-ms-transform: translateY(-100px) scale(0.6);
+	-o-transform: translateY(-100px) scale(0.6);
+	transform: translateY(-100px) scale(0.6);
   }
 }
 @media (max-width: 350px) {
   .login-page .login-content {
-    width: 280px;
+	width: 280px;
   }
 }
 .icheck-list {

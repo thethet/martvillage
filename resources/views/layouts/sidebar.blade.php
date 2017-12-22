@@ -241,14 +241,14 @@
 
 					<ul>
 						<li @if(Request::segment(1) == 'collections') class="active" @endif>
-							<a href="{{ url('/collections') }}">
+							<a href="{{ url('/collections/ready-collect') }}">
 								<i class="entypo-archive"></i>
 								<span class="title">Ready To Collect</span>
 							</a>
 						</li>
 
 						<li @if(Request::segment(1) == 'collections') class="active" @endif>
-							<a href="{{ url('/collections') }}">
+							<a href="{{ url('/collections/return') }}">
 								<i class="entypo-database"></i>
 								<span class="title">Return To Head Office</span>
 							</a>
@@ -296,14 +296,14 @@
 
 					<ul>
 						<li @if(Request::segment(1) == 'reports') class="active" @endif>
-							<a href="{{ url('/reports') }}">
+							<a href="{{ url('/reports/sales') }}">
 								<i class="entypo-chart-pie"></i>
 								<span class="title">Daily Sales Report</span>
 							</a>
 						</li>
 
 						<li @if(Request::segment(1) == 'reports') class="active" @endif>
-							<a href="{{ url('/reports') }}">
+							<a href="{{ url('/reports/bytrips') }}">
 								<i class="entypo-chart-line"></i>
 								<span class="title">Sales Report By Trip</span>
 							</a>
