@@ -804,6 +804,31 @@
 								$('#address-list').hide();
 							}
 						});
+
+						var contactNo = $('#s_contact_no').val();
+						var memberNo = $("#member_no").val();
+						$.ajax({
+							type: 'GET',
+							url: "{{ url('receivers/search-address') }}",
+							dataType: 'json',
+							delay: 250,
+							data: {
+								search: '',
+								contactNo: contactNo,
+								memberNo: memberNo
+							}
+							,
+						}).then(function (mydata) {
+							if(mydata != null) {
+								var html = '<option value="">Select Address</option>';
+								for (var i = 0, len = mydata.items.length; i < len; ++i) {
+									html += '<option value="' + mydata.items[i]['id'] + '">' + mydata.items[i]['text'] + '</option>';
+								}
+								$('#address').children().remove().end().append(html);
+								$('#address-list').show();
+								$('#address-input').hide();
+							}
+						});
 					}
 				});
 			});
@@ -849,9 +874,76 @@
 						$('#date').attr('readonly', false);
 						$('#s_contact_no').attr('readonly', false);
 
-						$('#address-list').show();
-						$('#address-input').hide();
+						var contactNo = datas.contact_no;
+						$.ajax({
+							type: 'GET',
+							url: "{{ url('receivers/search-address-member') }}",
+							dataType: 'json',
+							delay: 250,
+							data: {
+								contactNo: contactNo,
+								memberNo: memberNo
+							}
+							,
+						}).then(function (datas) {
+							if(datas != null) {
+								$('#s_contact_no').attr('readonly', true);
+
+								$('#sender-name').val(datas.s_name);
+								$('#sender-name').attr('readonly', true);
+
+								if(datas.s_nric_code_id != 0) {
+									$('#nric_code').val(datas.s_nric_code_id);
+								}
+								if(datas.s_nric_township_id != 0) {
+									$('#nric_township').val(datas.s_nric_township_id);
+								}
+								$('#nric_no').val(datas.s_nric_no);
+								$('#nric_no').attr('readonly', true);
+
+
+								$('#lot_no').attr('readonly', true);
+
+								$('#address').attr('disabled', false);
+								$('#country_id').attr('disabled', false);
+								$('#state_id').attr('disabled', false);
+								$('#date').attr('readonly', false);
+								$('#s_contact_no').attr('readonly', false);
+
+								$('#address-list').show();
+								$('#address-input').hide();
+							} else {
+								$('#address-input').show();
+								$('#address-list').hide();
+							}
+						});
+
+						var contactNo = $('#s_contact_no').val();
+						var memberNo = $("#member_no").val();
+						$.ajax({
+							type: 'GET',
+							url: "{{ url('receivers/search-address') }}",
+							dataType: 'json',
+							delay: 250,
+							data: {
+								search: '',
+								contactNo: contactNo,
+								memberNo: memberNo
+							}
+							,
+						}).then(function (mydata) {
+							if(mydata != null) {
+								var html = '<option value="">Select Address</option>';
+								for (var i = 0, len = mydata.items.length; i < len; ++i) {
+									html += '<option value="' + mydata.items[i]['id'] + '">' + mydata.items[i]['text'] + '</option>';
+								}
+								$('#address').children().remove().end().append(html);
+								$('#address-list').show();
+								$('#address-input').hide();
+							}
+						});
 					} else {
+
 						$('#address-input').show();
 						$('#address-list').hide();
 					}

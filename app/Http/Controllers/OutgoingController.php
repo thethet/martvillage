@@ -181,8 +181,8 @@ class OutgoingController extends Controller {
 	 */
 	public function store(Request $request) {
 		$this->validate($request, [
-			'passenger_name' => 'required|alpha',
-			'contact_no'     => 'required|phone',
+			'passenger_name' => 'required',
+			'contact_no'     => 'required|numeric',
 			'dept_date'      => 'required|after:' . date('Y-m-d', strtotime("-1 day")) . '|date_format:Y-m-d',
 			'dept_time'      => 'required',
 			'arrival_date'   => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
@@ -277,7 +277,7 @@ class OutgoingController extends Controller {
 	public function update($id, Request $request) {
 		$this->validate($request, [
 			'passenger_name' => 'required',
-			'contact_no'     => 'required|phone',
+			'contact_no'     => 'required|numeric',
 			// 'dept_date'      => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
 			'dept_time'      => 'required',
 			// 'arrival_date'   => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
@@ -392,10 +392,13 @@ class OutgoingController extends Controller {
 		$packing                     = Packing::create($packingData);
 		$packingId                   = $packing->id;
 
-		$packingIdList   = explode(", ", $outgoing->packing_id_list);
+		$packingIdList = array();
+		if ($outgoing->packing_id_list != null) {
+			$packingIdList = explode(", ", $outgoing->packing_id_list);
+		}
 		$packingIdList[] = $packingId;
 		$packingIds      = implode(", ", $packingIdList);
-		$outgoing->update(['packing_id_list' => $$packingIds]);
+		$outgoing->update(['packing_id_list' => $packingIds]);
 
 		$itemIds = $request->itemIds;
 		$size    = count($itemIds);

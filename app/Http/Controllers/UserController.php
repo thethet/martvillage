@@ -92,8 +92,8 @@ class UserController extends Controller {
 	public function store(Request $request) {
 		$this->validate($request, [
 			// 'name'           => 'required|regex:/^[\pL\s\-]+$/u',
-			'name'           => 'required|name',
-			'contact_no'     => 'required|phone',
+			'name'           => 'required',
+			'contact_no'     => 'required|numeric',
 			'dob'            => 'required|before:' . date('Y-m-d') . '|date_format:Y-m-d',
 			'email'          => 'required|email|unique:users,email',
 			'username'       => 'required|unique:users,username',
@@ -242,8 +242,8 @@ class UserController extends Controller {
 		// 	#has numbers
 		// }
 		$this->validate($request, [
-			'name'           => 'required|name',
-			'contact_no'     => 'required|phone',
+			'name'           => 'required',
+			'contact_no'     => 'required|numeric',
 			'dob'            => 'required|before:' . date('Y-m-d') . '|date_format:Y-m-d',
 			// 'email'          => 'required|email|unique:users,email',
 			// 'username'       => 'required|unique:users,username',

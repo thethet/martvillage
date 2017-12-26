@@ -386,12 +386,17 @@
 															<strong>{{ $errors->first("lots.$j.price_id") }}</strong>
 														</span>
 													@endif
-													{!! Form::hidden('lots['.$j.'][unit_price]', null, ['placeholder' => 'Unit Price', 'class' => 'form-control unit_price', 'id' => 'unitprice-'.$j, 'autocomplete' => 'off', 'readonly']) !!}
 													{!! Form::hidden('lots['.$j.'][category_id]', null, ['placeholder' => 'Category', 'class' => 'form-control category_id', 'id' => 'category_id-'.$j, 'autocomplete' => 'off', 'readonly']) !!}
 													{!! Form::hidden('lots['.$j.'][currency_id]', null, ['placeholder' => 'Currency', 'class' => 'form-control currency_id', 'id' => 'currency_id-'.$j, 'autocomplete' => 'off', 'readonly']) !!}
 												</td>
 
-												<td id="unit-price-{{ $j }}" class="unit-prices">
+												<td>
+													<div class="col-sm-7" style="padding: 0;">
+														{!! Form::text('lots['.$j.'][unit_price]', null, ['placeholder' => 'Unit Price', 'class' => 'form-control unit_price', 'id' => 'unitprice-'.$j, 'autocomplete' => 'off', 'readonly']) !!}
+													</div>
+													<label class="col-sm-5 control-label" style="padding: 0;padding-top: 7px;">
+														<span id="unit-price-{{ $j }}" class="unit-prices"></span>
+													</div>
 												</td>
 
 												<td>
@@ -868,6 +873,31 @@
 								$('#address-list').hide();
 							}
 						});
+
+						var contactNo = $('#s_contact_no').val();
+						var memberNo = $("#member_no").val();
+						$.ajax({
+							type: 'GET',
+							url: "{{ url('receivers/search-address') }}",
+							dataType: 'json',
+							delay: 250,
+							data: {
+								search: '',
+								contactNo: contactNo,
+								memberNo: memberNo
+							}
+							,
+						}).then(function (mydata) {
+							if(mydata != null) {
+								var html = '<option value="">Select Address</option>';
+								for (var i = 0, len = mydata.items.length; i < len; ++i) {
+									html += '<option value="' + mydata.items[i]['id'] + '">' + mydata.items[i]['text'] + '</option>';
+								}
+								$('#address').children().remove().end().append(html);
+								$('#address-list').show();
+								$('#address-input').hide();
+							}
+						});
 					}
 				});
 			});
@@ -913,9 +943,76 @@
 						$('#date').attr('readonly', false);
 						$('#s_contact_no').attr('readonly', false);
 
-						$('#address-list').show();
-						$('#address-input').hide();
+						var contactNo = datas.contact_no;
+						$.ajax({
+							type: 'GET',
+							url: "{{ url('receivers/search-address-member') }}",
+							dataType: 'json',
+							delay: 250,
+							data: {
+								contactNo: contactNo,
+								memberNo: memberNo
+							}
+							,
+						}).then(function (datas) {
+							if(datas != null) {
+								$('#s_contact_no').attr('readonly', true);
+
+								$('#sender-name').val(datas.s_name);
+								$('#sender-name').attr('readonly', true);
+
+								if(datas.s_nric_code_id != 0) {
+									$('#nric_code').val(datas.s_nric_code_id);
+								}
+								if(datas.s_nric_township_id != 0) {
+									$('#nric_township').val(datas.s_nric_township_id);
+								}
+								$('#nric_no').val(datas.s_nric_no);
+								$('#nric_no').attr('readonly', true);
+
+
+								$('#lot_no').attr('readonly', true);
+
+								$('#address').attr('disabled', false);
+								$('#country_id').attr('disabled', false);
+								$('#state_id').attr('disabled', false);
+								$('#date').attr('readonly', false);
+								$('#s_contact_no').attr('readonly', false);
+
+								$('#address-list').show();
+								$('#address-input').hide();
+							} else {
+								$('#address-input').show();
+								$('#address-list').hide();
+							}
+						});
+
+						var contactNo = $('#s_contact_no').val();
+						var memberNo = $("#member_no").val();
+						$.ajax({
+							type: 'GET',
+							url: "{{ url('receivers/search-address') }}",
+							dataType: 'json',
+							delay: 250,
+							data: {
+								search: '',
+								contactNo: contactNo,
+								memberNo: memberNo
+							}
+							,
+						}).then(function (mydata) {
+							if(mydata != null) {
+								var html = '<option value="">Select Address</option>';
+								for (var i = 0, len = mydata.items.length; i < len; ++i) {
+									html += '<option value="' + mydata.items[i]['id'] + '">' + mydata.items[i]['text'] + '</option>';
+								}
+								$('#address').children().remove().end().append(html);
+								$('#address-list').show();
+								$('#address-input').hide();
+							}
+						});
 					} else {
+
 						$('#address-input').show();
 						$('#address-list').hide();
 					}
@@ -970,23 +1067,29 @@
 					}
 					,
 				}).then(function (data) {
-					console.log(data)
 					if(data != null) {
-						$('#unit-' + classes[1]).val(1);
-						$('#unit-' + classes[1]).attr('readonly', false);
 						$('#unit-type-' + classes[1]).text(data.unit);
 						$('#unitprice-' + classes[1]).val(parseFloat(data.unit_price).toFixed(2));
 						$('#category_id-' + classes[1]).val(data.category_id);
 						$('#currency_id-' + classes[1]).val(data.currency_id);
 						if(data.unit != '%') {
-							$('#unit-price-' + classes[1]).text((parseFloat(data.unit_price).toFixed(2)) + " " + data.type + "(per " + data.unit  + ")");
+							// $('#unit-price-' + classes[1]).text((parseFloat(data.unit_price).toFixed(2)) + " " + data.type + "(per " + data.unit  + ")");
+							$('#unit-' + classes[1]).val(1);
+							$('#unit-' + classes[1]).attr('readonly', false);
+							$('#unit-price-' + classes[1]).text(data.type + "(per " + data.unit  + ")");
+							$('#unitprice-' + classes[1]).attr('readonly', true);
+							var amount = parseFloat(data.unit_price) * parseFloat($('#quantity-' + classes[1]).val());
 						} else {
-							$('#unit-price-' + classes[1]).text((parseFloat(data.unit_price)) + " " + data.unit);
+							$('#unit-' + classes[1]).val(parseFloat(data.unit_price));
+							$('#unit-' + classes[1]).attr('readonly', true);
+							$('#unit-price-' + classes[1]).text(data.type);
+							$('#unitprice-' + classes[1]).val(1);
+							$('#unitprice-' + classes[1]).attr('readonly', false);
+
+							var amount = ((parseFloat(data.unit_price) * parseFloat($('#quantity-' + classes[1]).val())) / 100);
+
 						}
 
-						var amount = parseFloat(data.unit_price) * parseFloat($('#quantity-' + classes[1]).val());
-
-						$('#unitprice-' + classes[1]).attr('readonly', true);
 						$('#amount-' + classes[1]).val(parseFloat(amount).toFixed(2));
 						calculateTotal();
 					} else {
@@ -1037,12 +1140,16 @@
 				var unitprice = $('#unitprice-' + classes[1]).val();
 				unitprice = parseFloat(unitprice).toFixed(2);
 
-				var unittype = $('#unit-type-' + classes[1]).val();
+				var unittype = $('#unit-type-' + classes[1]).text();
 
 				if(unittype != '%') {
 					var amt = quantity * unit * unitprice;
 				} else {
-					var amt = quantity * (unit * unitprice) / 100;
+					console.log("up: "+unitprice);
+					console.log("q: "+quantity);
+					console.log("u: "+unit);
+					var amt = parseFloat((quantity * unitprice * unit / 100));
+					console.log(amt)
 				}
 				amt = parseFloat(amt).toFixed(2);
 
@@ -1061,12 +1168,49 @@
 				var unitprice = $('#unitprice-' + classes[1]).val();
 				unitprice = parseFloat(unitprice).toFixed(2);
 
-				var unittype = $('#unit-type-' + classes[1]).val();
+				var unittype = $('#unit-type-' + classes[1]).text();
+				console.log(unitprice);
 
 				if(unittype != '%') {
 					var amt = quantity * unit * unitprice;
 				} else {
-					var amt = quantity * (unit * unitprice) / 100;
+					console.log("up: "+unitprice);
+					console.log("q: "+quantity);
+					console.log("u: "+unit);
+					var amt = parseFloat((quantity * unitprice * unit / 100));
+					console.log(amt)
+				}
+				amt = parseFloat(amt).toFixed(2);
+				if(isNaN(amt)) {
+					$('#amount-' + classes[1]).val('');
+				} else {
+					$('#amount-' + classes[1]).val(amt);
+				}
+
+				calculateTotal();
+
+			});
+
+			$('.unit_price').keyup(function() {
+				var classes = this.id.split('-');
+				var unitprice = parseFloat($(this).val()).toFixed(2);
+
+				var quantity = $('#quantity-' + classes[1]).val();
+				quantity = parseFloat(quantity).toFixed(2);
+
+				var unit = $('#unit-' + classes[1]).val();
+				unit = parseFloat(unit).toFixed(2);
+
+				var unittype = $('#unit-type-' + classes[1]).text();
+
+				if(unittype != '%') {
+					var amt = quantity * unit * unitprice;
+				} else {
+					console.log("up: "+unitprice);
+					console.log("q: "+quantity);
+					console.log("u: "+unit);
+					var amt = parseFloat((quantity * unitprice * unit / 100));
+					console.log(amt)
 				}
 				amt = parseFloat(amt).toFixed(2);
 				if(isNaN(amt)) {

@@ -140,12 +140,12 @@ class LotInController extends Controller {
 	 */
 	public function store(Request $request) {
 		$this->validate($request, [
-			's_contact_no'       => 'required|phone',
+			's_contact_no'       => 'required|numeric',
 			// 'member_no'          => 'required|unique:senders,member_no',
-			'sender_name'        => 'required|name',
+			'sender_name'        => 'required',
 
-			'r_contact_no'       => 'required|phone',
-			'receiver_name'      => 'required|name',
+			'r_contact_no'       => 'required|numeric',
+			'receiver_name'      => 'required',
 
 			'date'               => 'required|date|date_format:Y-m-d',
 			'from_country'       => 'required',
@@ -179,7 +179,7 @@ class LotInController extends Controller {
 
 		if ($senderId == 0) {
 			$this->validate($request, [
-				's_contact_no' => 'required|phone|unique:senders,contact_no',
+				's_contact_no' => 'required|numeric|unique:senders,contact_no',
 				'member_no'    => 'exists:members,member_no',
 			]);
 
@@ -205,7 +205,7 @@ class LotInController extends Controller {
 
 		if ($receiverId == 0) {
 			$this->validate($request, [
-				'r_contact_no' => 'required|phone|unique:receivers,contact_no',
+				'r_contact_no' => 'required|numeric|unique:receivers,contact_no',
 			]);
 
 			$receiverData['company_id']       = $company_id;
@@ -422,10 +422,10 @@ class LotInController extends Controller {
 		);
 
 		$this->validate($request, [
-			's_contact_no'  => 'required',
+			's_contact_no'  => 'required|numeric',
 			'sender_name'   => 'required',
 
-			'r_contact_no'  => 'required',
+			'r_contact_no'  => 'required|numeric',
 			'receiver_name' => 'required',
 
 			'from_country'  => 'required',
