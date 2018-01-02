@@ -12,7 +12,7 @@
 
 		<ol class="breadcrumb bc-3" >
 			<li>
-				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
+				<a href="{{ url('admin/dashboard') }}"><i class="fa fa-home"></i>Home</a>
 			</li>
 			<li>
 				<a href="{{ url('outgoings') }}">Outgoing Management</a>
@@ -23,6 +23,37 @@
 		</ol>
 
 		<h2>Outgoing Management</h2>
+		<br />
+
+		<form action="#" method="post" role="form" id="packing_form" class="form-horizontal form-groups-bordered validate" >
+
+			<div class="form-group">
+				<label class="col-sm-2  control-label">&nbsp;</label>
+
+				<div class="col-sm-3">
+					&nbsp;
+				</div>
+
+				<label class="col-sm-2  control-label">Barcode</label>
+				<div class="col-sm-3">
+					<div class="input-group minimal">
+						<div class="input-group-addon">
+							<i class="fa fa-barcode"></i>
+						</div>
+						{!! Form::text('barcode', null, ['placeholder' => 'Barcode','class' => 'form-control', 'id' => 'sbarcode', 'autocomplete' => 'off']) !!}
+					</div>
+				</div>
+
+				<div class="col-sm-2">
+					<div class="input-group minimal">
+						<a href="#" class="btn btn-blue btn-icon" onclick="searchBarCode();">
+							Search
+							<i class="entypo-search"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+		</form>
 		<br />
 
 		<div class="row">
@@ -42,7 +73,7 @@
 
 					<div class="panel-body">
 						{!! Form::open(array('route' => 'outgoings.packinglist.store','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal', 'id' => 'rootwizard')) !!}
-						{!! Form::hidden('outgoing_id', $outgoing->id, ['class' => 'form-control']) !!}
+						{!! Form::hidden('outgoing_id', $outgoing->id, ['class' => 'form-control', 'id' => 'outgoing_id']) !!}
 
 							<div class="form-group">
 								<label class="col-sm-4">
@@ -398,7 +429,7 @@
 
 @section('my-script')
 	<!-- Imported styles on this page -->
-	<link rel="stylesheet" href="assets/js/selectboxit/jquery.selectBoxIt.css">
+	<link rel="stylesheet" href="{{ asset('assets/js/selectboxit/jquery.selectBoxIt.css') }}">
 
 	<style>
 		.text-white {
@@ -443,17 +474,24 @@
 	</style>
 
 	<!-- Imported scripts on this page -->
-	<script src="assets/js/jquery.bootstrap.wizard.min.js"></script>
-	<script src="assets/js/jquery.validate.min.js"></script>
-	<script src="assets/js/jquery.inputmask.bundle.js"></script>
-	<script src="assets/js/selectboxit/jquery.selectBoxIt.min.js"></script>
-	<script src="assets/js/bootstrap-datepicker.js"></script>
-	<script src="assets/js/bootstrap-switch.min.js"></script>
-	<script src="assets/js/jquery.multi-select.js"></script>
-	<script src="assets/js/neon-chat.js"></script>
+	<script src="{{ asset('assets/js/jquery.bootstrap.wizard.min.js') }}"></script>
+	<script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
+	<script src="{{ asset('assets/js/jquery.inputmask.bundle.js') }}"></script>
+	<script src="{{ asset('assets/js/selectboxit/jquery.selectBoxIt.min.js') }}"></script>
+	<script src="{{ asset('assets/js/bootstrap-datepicker.js') }}"></script>
+	<script src="{{ asset('assets/js/bootstrap-switch.min.js') }}"></script>
+	<script src="{{ asset('assets/js/jquery.multi-select.js') }}"></script>
+	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
 
 	<script>
 		$(document).ready(function(){
+			$(window).keydown(function(event){
+				if(event.keyCode == 13) {
+					event.preventDefault();
+					return false;
+				}
+			});
+
 			$("#move-pack-right").hide();
 			$('#save-btn').hide();
 
@@ -464,7 +502,6 @@
 				var totalIns  = $('#ins').text();
 
 				$(".move-item-left:checked").each(function(i) {
-					console.log($(this).val())
 					var no       = $(this).val();
 					var sender   = $('#left-sender' + no).val();
 					var scontact   = $('#left-sender-contact' + no).val();
@@ -556,6 +593,8 @@
 					$('#move-item-left' + no).attr("disabled", false);
 
 					icount = icount - 1;
+					$('#icount').val(icount);
+					console.log('count'+icount)
 				});
 
 				$('#kg').text(totalKg);
@@ -569,6 +608,106 @@
 				}
 			});
 		});
+
+		function searchBarCode() {
+			// Fetch the preselected item, and add to the control
+			var barcode = $('#sbarcode').val();
+
+			var totalKg   = $('#kg').text();
+			var totalFt   = $('#ft').text();
+			var totalDocs = $('#docs').text();
+			var totalIns  = $('#ins').text();
+
+			/*$("input:checkbox[class=move-item-left]").each(function () {
+				console.log("Id: " + $(this).attr("id") + " Value: " + $(this).val() + " Checked: " + $(this).is(":checked"));
+			});*/
+
+			$.ajax({
+				type: 'GET',
+				url: "{{ url('outgoings/search-packing-by-barcode') }}",
+				dataType: 'json',
+				delay: 250,
+				data: {
+					lotinIdList: "{{ json_encode($lotinIdList) }}",
+					barcode: barcode
+				}
+				,
+			}).then(function (data) {
+				$('#sbarcode').val('');
+				if(data.items.length > 0) {
+					$("input:checkbox[class=move-item-left]").each(function () {
+						for (var i = 0, len = data.items.length; i < len; ++i) {
+							if($(this).val() == data.items[i]['id']) {
+								$(this).attr("disabled", true);
+
+								var no       = data.items[i]['id'];
+								var sender   = $('#left-sender' + no).val();
+								var scontact = $('#left-sender-contact' + no).val();
+								var receiver = $('#left-receiver' + no).val();
+								var rcontact = $('#left-receiver-contact' + no).val();
+								var barcode  = $('#left-barcode' + no).val();
+								var unit     = $('#left-unit' + no).val();
+								var symbol   = $('#left-symbol' + no).val();
+								var splitNo  = $('#left-split' + no).val();
+								var company  = $('#left-company' + no).val();
+
+								var html = "<tr>";
+
+								var numHtml = "<td><input type='checkbox' name='itemId' value='"  + no + "' id='move-item-right"  + no + "' class='move-item-right'><input type='hidden' name='itemIds[]' value='"  + no + "'></td>";
+
+								var senderHtml = "<td>" + sender + "<input type='hidden' name='senders[]' value='" + sender + "' id='right-sender"  + no + "'></td>";
+
+								var scontactHtml = "<td>" + scontact + "<input type='hidden' name='scontacts[]' value='" + scontact + "' id='right-sender-contact"  + no + "'></td>";
+
+								var receiverHtml = "<td>" + receiver + "<input type='hidden' name='receivers[]' value='" + receiver + "' id='right-receiver"  + no + "'></td>";
+
+								var rcontactHtml = "<td>" + rcontact + "<input type='hidden' name='rcontacts[]' value='" + rcontact + "' id='right-receiver-contact"  + no + "'></td>";
+
+								var barHtml = "<td>" + barcode + "<input type='hidden' name='barcodes[]' value='" + barcode + "' id='right-barcode"  + no + "'></td>";
+
+								var unitHtml = "<td>" + unit + " " + symbol + "<input type='hidden' name='units[]' value='" + unit + "' id='right-unit"  + no + "'><input type='hidden' name='symbols[]' value='" + symbol + "' id='right-symbol"  + no + "'></td>";
+
+								var companyHtml = "";
+								if(company) {
+									var companyHtml = "<td>" + company + "<input type='hidden' name='companys[]' value='" + company + "' id='right-company"  + no + "'></td>";
+								}
+
+								html += numHtml + senderHtml + scontactHtml + receiverHtml + rcontactHtml + barHtml + unitHtml + companyHtml + "</tr>";
+
+
+								if ($('#move-item-right'+data.items[i]['id']).length == 0) {
+									var icount = parseFloat($('#icount').val());
+									if(symbol == 'kg') {
+										totalKg = parseFloat(totalKg) + parseFloat(unit);
+									} else if(symbol == 'ft3') {
+										totalFt = parseFloat(totalFt) + parseFloat(unit);
+									} else if(symbol == 'pcs') {
+										totalDocs = parseFloat(totalDocs) + parseFloat(unit);
+									} else {
+										totalIns = parseFloat(totalIns) + parseFloat(unit);
+									}
+
+									var pno = {{  $outgoing->packing_list + 1 }};
+									$("#mypackage"+pno).append(html);
+									$(this).prop('checked',false);
+									$(this).attr("disabled", true);
+
+									$('#icount').val(icount + 1);
+								}
+							}
+						}
+					});
+
+					$('#kg').text(totalKg);
+					$('#ft').text(totalFt);
+					$('#docs').text(totalDocs);
+					$('#ins').text(totalIns);
+					$("#move-pack-right").show();
+					$('#save-btn').show();
+				}
+
+			});
+		}
 	</script>
 @stop
 

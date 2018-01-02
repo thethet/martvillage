@@ -12,7 +12,7 @@
 
 		<ol class="breadcrumb bc-3" >
 			<li>
-				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
+				<a href="{{ url('admin/dashboard') }}"><i class="fa fa-home"></i>Home</a>
 			</li>
 			<li>
 				<a href="{{ url('settings') }}">Settings</a>
@@ -246,6 +246,136 @@
 					event.preventDefault();
 					return false;
 				}
+			});
+
+			// Fetch the preselected item, and add to the control
+			var countryId = $('#from_country').val();
+			var fromStateId = $('#from_state').val();
+			$.ajax({
+				type: 'GET',
+				url: "{{ url('states/search-state-country') }}",
+				dataType: 'json',
+				delay: 250,
+				data: {
+					search: '',
+					countryId: countryId
+				}
+				,
+			}).then(function (data) {
+				var html = '<option value="">Select State/City</option>';
+				for (var i = 0, len = data.items.length; i < len; ++i) {
+					if(fromStateId == data.items[i]['id']) {
+						html += '<option value="' + data.items[i]['id'] + '" selected>' + data.items[i]['text'] + '</option>';
+					} else {
+						html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+					}
+				}
+				$('#from_state').children().remove().end().append(html);
+			});
+
+			// Fetch the preselected item, and add to the control
+			var countryId = $('#to_country').val();
+			var toStateId = $('#to_state').val();
+			var fromStateId = $('#from_state').val();
+			$.ajax({
+				type: 'GET',
+				url: "{{ url('states/search-state-country') }}",
+				dataType: 'json',
+				delay: 250,
+				data: {
+					search: '',
+					countryId: countryId,
+					fromStateId: fromStateId
+				}
+				,
+			}).then(function (data) {
+				var html = '<option value="">Select State/City</option>';
+				for (var i = 0, len = data.items.length; i < len; ++i) {
+					if(toStateId == data.items[i]['id']) {
+						html += '<option value="' + data.items[i]['id'] + '" selected>' + data.items[i]['text'] + '</option>';
+					} else {
+						html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+					}
+				}
+				$('#to_state').children().remove().end().append(html) ;
+			});
+
+			$("#from_country").change(function(event) {
+				// Fetch the preselected item, and add to the control
+				var countryId = $('#from_country').val();
+				var stateSelect = $('#from_state');
+				$.ajax({
+					type: 'GET',
+					url: "{{ url('states/search-state-country') }}",
+					dataType: 'json',
+					delay: 250,
+					data: {
+						search: '',
+						countryId: countryId
+					}
+					,
+				}).then(function (data) {
+					var html = '<option value="">Select State/City</option>';
+					for (var i = 0, len = data.items.length; i < len; ++i) {
+						html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+					}
+					stateSelect.children().remove().end().append(html) ;
+				});
+				$('#from_state').attr('disabled', false);
+			});
+
+			$("#from_state").change(function(event) {
+				// Fetch the preselected item, and add to the control
+				var countryId = $('#to_country').val();
+				var fromStateId = $('#from_state').val();
+				var stateSelect = $('#to_state');
+				$.ajax({
+					type: 'GET',
+					url: "{{ url('states/search-state-country') }}",
+					dataType: 'json',
+					delay: 250,
+					data: {
+						search: '',
+						countryId: countryId,
+						fromStateId: fromStateId
+					}
+					,
+				}).then(function (data) {
+					var html = '<option value="">Select State/City</option>';
+					for (var i = 0, len = data.items.length; i < len; ++i) {
+						html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+					}
+					stateSelect.children().remove().end().append(html) ;
+				});
+
+				$('#to_country').attr('disabled', false);
+			});
+
+			$("#to_country").change(function(event) {
+				// Fetch the preselected item, and add to the control
+				var countryId = $('#to_country').val();
+				var fromStateId = $('#from_state').val();
+				var stateSelect = $('#to_state');
+				$.ajax({
+					type: 'GET',
+					url: "{{ url('states/search-state-country') }}",
+					dataType: 'json',
+					delay: 250,
+					data: {
+						search: '',
+						countryId: countryId,
+						fromStateId: fromStateId
+					}
+					,
+				}).then(function (data) {
+					var html = '<option value="">Select State/City</option>';
+					for (var i = 0, len = data.items.length; i < len; ++i) {
+						html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+					}
+					stateSelect.children().remove().end().append(html) ;
+				});
+
+				$('#to_state').attr('disabled', false);
 			});
 		});
 	</script>

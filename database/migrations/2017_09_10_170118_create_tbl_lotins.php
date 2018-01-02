@@ -39,6 +39,7 @@ class CreateTblLotins extends Migration {
 			$table->double('net_amt', 12, 2);
 			$table->enum('payment', ['Paid', 'Credit']);
 			$table->integer('total_items');
+			$table->text('remarks')->nullable();
 			// $table->enum('status', [0, 1, 2, 3, 4]);
 			$table->enum('status', [0, 1, 2, 3]);
 			$table->enum('deleted', ['N', 'Y']);

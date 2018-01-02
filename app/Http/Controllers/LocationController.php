@@ -86,6 +86,7 @@ class LocationController extends Controller {
 	public function searchByCountry(Request $request) {
 		$search    = $request->get('search');
 		$countryId = $request->get('countryId');
+		$fromStateId = $request->get('fromStateId');
 
 		$myCompany     = Company::find(Auth::user()->company_id);
 		$countryIdList = array();
@@ -103,9 +104,9 @@ class LocationController extends Controller {
 		}
 
 		if ($countryId) {
-			$items = State::select(\DB::raw('id as id, state_name as text'))->whereIn('id', $stateIdList)->where('country_id', $countryId)->where('state_name', 'like', "{$search}%")->orderBy('state_name', 'ASC')->get();
+			$items = State::select(\DB::raw('id as id, state_name as text'))->whereIn('id', $stateIdList)->where('country_id', $countryId)->where('state_name', 'like', "{$search}%")->where('id', '!=', $fromStateId)->orderBy('state_name', 'ASC')->get();
 		} else {
-			$items = State::select(\DB::raw('id as id, state_name as text'))->whereIn('id', $stateIdList)->where('state_name', 'like', "{$search}%")->orderBy('state_name', 'ASC')->get();
+			$items = State::select(\DB::raw('id as id, state_name as text'))->whereIn('id', $stateIdList)->where('state_name', 'like', "{$search}%")->where('id', '!=', $fromStateId)->orderBy('state_name', 'ASC')->get();
 		}
 
 		$header = array(

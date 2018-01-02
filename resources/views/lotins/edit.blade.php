@@ -12,7 +12,7 @@
 
 		<ol class="breadcrumb bc-3" >
 			<li>
-				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
+				<a href="{{ url('admin/dashboard') }}"><i class="fa fa-home"></i>Home</a>
 			</li>
 			<li>
 				<a href="{{ url('lotins') }}">Lotin Management</a>
@@ -448,7 +448,10 @@
 										</tr>
 
 										<tr>
-											<td colspan="6" class="text-right"><b>GST</b></td>
+											<td colspan="4" rowspan="3" class="text-right">
+												{!! Form::textarea('remarks', null, ['placeholder' => 'Remarks', 'class' => 'form-control', 'id' => 'remarks', 'autocomplete' => 'off', 'rows' => 4]) !!}
+											</td>
+											<td colspan="2" class="text-right"><b>GST</b></td>
 											<td class="text-right">
 												<b>{{ $lotinData->gov_tax }} %</b>
 											</td>
@@ -460,7 +463,7 @@
 										</tr>
 
 										<tr>
-											<td colspan="6" class="text-right"><b>Service Charges</b></td>
+											<td colspan="2" class="text-right"><b>Service Charges</b></td>
 											<td class="text-right">
 												<b>{{ $lotinData->service_charge }} %</b>
 											</td>
@@ -472,7 +475,7 @@
 										</tr>
 
 										<tr>
-											<td colspan="6" class="text-right"><b>Net Balance</b></td>
+											<td colspan="2" class="text-right"><b>Net Balance</b></td>
 											<td class="text-right">
 											</td>
 											<td class="text-right">
@@ -673,11 +676,14 @@
 						stateSelect.children().remove().end().append(html);
 					}
 				});
+				$('#state_id').attr('disabled', false);
 			});
 
-			$("#to_country_id").change(function(event) {
-				// Fetch the preselected item, and add to the control
+			$("#state_id").change(function(event) {
+				$('#to_country_id').attr('disabled', false);
+
 				var countryId = $('#to_country_id').val();
+				var fromStateId = $('#state_id').val();
 				var stateSelect = $('#to_state_id');
 				$.ajax({
 					type: 'GET',
@@ -686,7 +692,8 @@
 					delay: 250,
 					data: {
 						search: '',
-						countryId: countryId
+						countryId: countryId,
+						fromStateId: fromStateId
 					}
 					,
 				}).then(function (data) {
@@ -700,13 +707,44 @@
 				});
 			});
 
+			$("#to_country_id").change(function(event) {
+				// Fetch the preselected item, and add to the control
+				var countryId = $('#to_country_id').val();
+				var fromStateId = $('#state_id').val();
+				var stateSelect = $('#to_state_id');
+				$.ajax({
+					type: 'GET',
+					url: "{{ url('states/search-state-country') }}",
+					dataType: 'json',
+					delay: 250,
+					data: {
+						search: '',
+						countryId: countryId,
+						fromStateId: fromStateId
+					}
+					,
+				}).then(function (data) {
+					if(data != null) {
+						var html = '<option value="">Select State/City</option>';
+						for (var i = 0, len = data.items.length; i < len; ++i) {
+							html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+						}
+						stateSelect.children().remove().end().append(html);
+					}
+				});
+
+				$('#to_state_id').attr('disabled', false);
+			});
+
 			$("#to_state_id").change(function(event) {
+
 				// Fetch the preselected item, and add to the control
 				var fromCountryId = $('#country_id').val();
 				var fromStateId = $('#state_id').val();
 				var toCountryId = $('#to_country_id').val();
 				var toStateId = $('#to_state_id').val();
 				var stateSelect = $('.price_id');
+				var companyId = $('#company_id').val();
 				$.ajax({
 					type: 'GET',
 					url: "{{ url('lotins/search-price-list') }}",
@@ -717,7 +755,8 @@
 						fromCountryId: fromCountryId,
 						fromStateId: fromStateId,
 						toCountryId: toCountryId,
-						toStateId: toStateId
+						toStateId: toStateId,
+						companyId: companyId
 					}
 					,
 				}).then(function (data) {
@@ -729,7 +768,9 @@
 						stateSelect.children().remove().end().append(html);
 					}
 				});
+				$('.price_id').attr('disabled', false);
 			});
+
 
 			$("#member_no").focusout(function(){
 				var memberNo = $("#member_no").val();

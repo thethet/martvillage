@@ -46,6 +46,7 @@ class Lotin extends Model {
 		'net_amt',
 		'payment',
 		'total_items',
+		'remarks',
 		'status',
 		'deleted',
 		'created_by',

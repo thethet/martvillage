@@ -3363,10 +3363,15 @@ input.typeahead {
 .form-wizard > ul > li.current a span {
   background: #c5c5c5;
   background: #fff;
+  /*background: #f00;*/
   color: #525252;
+  /*color: #fff;*/
   -moz-box-shadow: 0px 0px 0px 5px #ebebeb;
   -webkit-box-shadow: 0px 0px 0px 5px #ebebeb;
   box-shadow: 0px 0px 0px 5px #ebebeb;
+  /*-moz-box-shadow: 0px 0px 0px 5px #f009;
+  -webkit-box-shadow: 0px 0px 0px 5px #f009;
+  box-shadow: 0px 0px 0px 5px #f009;*/
 }
 .form-wizard .tab-content {
   margin: 0 52.5px;

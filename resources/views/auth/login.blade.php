@@ -4,7 +4,9 @@
 	<div class="login-container">
 		<div class="login-header login-caret">
 			<div class="login-content">
-				<span class="description">CARGO MANAGEMENT SYSTEM</span>
+				<span class="description">
+					<img src="{{ asset('assets/images/shwe-cargo.png') }}" width="120" alt="" />
+				</span>
 				<p class="description">Dear user, log in to access the admin area!</p>
 			</div>
 		</div>

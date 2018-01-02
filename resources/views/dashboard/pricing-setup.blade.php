@@ -12,7 +12,7 @@
 
 		<ol class="breadcrumb bc-3" >
 			<li>
-				<a href="{{ url('/') }}"><i class="fa fa-home"></i>Home</a>
+				<a href="{{ url('admin/dashboard') }}"><i class="fa fa-home"></i>Home</a>
 			</li>
 			<li>
 				<a href="{{ url('settings') }}">Settings</a>
@@ -85,3 +85,16 @@
 	</div>
 @stop
 
+@section('my-style')
+	<style type="text/css" media="screen">
+		.tile-title .title h3 {
+			padding-top: 5px;
+		}
+		.tile-title .title p {
+			padding-bottom: 5px;
+		}
+		.tile-title .icon img {
+			height: 100px;
+		}
+	</style>
+@stop

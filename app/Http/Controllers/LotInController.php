@@ -139,7 +139,12 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
+		$messages = array(
+			'lots.*.barcode.unique' => 'The barcode has already been taken.',
+		);
+
 		$this->validate($request, [
+			// 'lots.*.barcode'     => 'required|unique:items,barcode',
 			's_contact_no'       => 'required|numeric',
 			// 'member_no'          => 'required|unique:senders,member_no',
 			'sender_name'        => 'required',
@@ -156,7 +161,10 @@ class LotInController extends Controller {
 
 			'other_discount'     => 'numeric',
 			'other_discount_amt' => 'numeric',
-		]);
+
+			'lots.*.barcode'     => 'unique:items,barcode',
+
+		], $messages);
 
 		$size = count($request->lots);
 
@@ -246,6 +254,7 @@ class LotInController extends Controller {
 		$lotinDatas['total_amt']           = $request->total_amt;
 		$lotinDatas['net_amt']             = $request->net_amt;
 		$lotinDatas['payment']             = $request->payment;
+		$lotinDatas['remarks']             = $request->remarks;
 		$lotinDatas['created_by']          = $user_id;
 		$lotinDatas['status']              = 0;
 
@@ -442,6 +451,7 @@ class LotInController extends Controller {
 		$lotinDatas['to_country']   = ($request->to_country) ? (int) $request->to_country : "";
 		$lotinDatas['to_state']     = ($request->to_state) ? (int) $request->to_state : "";
 		$lotinDatas['payment']      = $request->payment;
+		$lotinDatas['remarks']      = $request->remarks;
 		$lotinDatas['updated_by']   = $user_id;
 		$lotin                      = Lotin::find($id);
 		$lotin->update($lotinDatas);

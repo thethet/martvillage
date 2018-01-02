@@ -12,7 +12,7 @@
 
 		<ol class="breadcrumb bc-3" >
 			<li>
-				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
+				<a href="{{ url('admin/dashboard') }}"><i class="fa fa-home"></i>Home</a>
 			</li>
 			<li>
 				<a href="{{ url('lotins') }}">Lotin Management</a>
@@ -352,7 +352,10 @@
 										</tr>
 
 										<tr>
-											<td colspan="6" class="text-right"><b>GST</b></td>
+											<td colspan="4" rowspan="3" class="text-right">
+												{!! Form::textarea('remarks', null, ['placeholder' => 'Remarks', 'class' => 'form-control', 'id' => 'remarks', 'autocomplete' => 'off', 'rows' => 4]) !!}
+											</td>
+											<td colspan="2" class="text-right"><b>GST</b></td>
 											<td class="text-right">
 												<b>{{ $lotinData->gov_tax }} %</b>
 											</td>
@@ -364,7 +367,7 @@
 										</tr>
 
 										<tr>
-											<td colspan="6" class="text-right"><b>Service Charges</b></td>
+											<td colspan="2" class="text-right"><b>Service Charges</b></td>
 											<td class="text-right">
 												<b>{{ $lotinData->service_charge }} %</b>
 											</td>
@@ -376,7 +379,7 @@
 										</tr>
 
 										<tr>
-											<td colspan="6" class="text-right"><b>Net Balance</b></td>
+											<td colspan="2" class="text-right"><b>Net Balance</b></td>
 											<td class="text-right">
 											</td>
 											<td class="text-right">

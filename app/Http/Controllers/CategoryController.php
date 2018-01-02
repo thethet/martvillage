@@ -16,7 +16,7 @@ class CategoryController extends Controller {
 	 */
 	public function index(Request $request) {
 		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
-		$categories  = Categorys::where('deleted', 'N')->paginate(10);
+		$categories  = Category::where('deleted', 'N')->paginate(10);
 		$total       = $categories->total();
 		$perPage     = $categories->perPage();
 		$currentPage = $categories->currentPage();

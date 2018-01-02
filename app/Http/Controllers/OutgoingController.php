@@ -324,7 +324,8 @@ class OutgoingController extends Controller {
 		$start = date("Y-m-d", strtotime($outgoing->dept_date . "-30 day"));
 		$end   = date("Y-m-d", strtotime($outgoing->dept_date));
 
-		$lotinList = array();
+		$lotinList   = array();
+		$lotinIdList = array();
 		for ($k = 0; $k < 31; $k++) {
 			$startDate = date("Y-m-d", strtotime($start . "+" . $k . " day"));
 			$lotin     = DB::table('lotins as l')
@@ -342,6 +343,10 @@ class OutgoingController extends Controller {
 				->orderBy('l.date', 'ASC')->get();
 			if (count($lotin) > 0) {
 				$lotinList[$startDate] = $lotin;
+
+				foreach ($lotin as $lin) {
+					$lotinIdList[] = $lin->id;
+				}
 			}
 		}
 
@@ -369,7 +374,7 @@ class OutgoingController extends Controller {
 		$categoryList        = Category::where('deleted', 'N')->orderBy('id', 'ASC')->lists('unit', 'id');
 		$categories          = Category::where('deleted', 'N')->orderBy('id', 'ASC')->get();
 
-		return view('outgoings.packing-list', ['outgoing' => $outgoing, 'lotinList' => $lotinList, 'countryList' => $countryList, 'stateList' => $stateList, 'senderList' => $senderList, 'senderContactList' => $senderContactList, 'receiverList' => $receiverList, 'receiverContactList' => $receiverContactList, 'categoryList' => $categoryList, 'categories' => $categories, 'companyList' => $companyList]);
+		return view('outgoings.packing-list', ['outgoing' => $outgoing, 'lotinList' => $lotinList, 'countryList' => $countryList, 'stateList' => $stateList, 'senderList' => $senderList, 'senderContactList' => $senderContactList, 'receiverList' => $receiverList, 'receiverContactList' => $receiverContactList, 'categoryList' => $categoryList, 'categories' => $categories, 'companyList' => $companyList, 'lotinIdList' => $lotinIdList]);
 	}
 
 	/**
@@ -482,6 +487,26 @@ class OutgoingController extends Controller {
 		)->setPaper('a6');
 
 		return $pdf->stream('Pakage List PDF - ' . $id . '.pdf');
+	}
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function searchPackingByBarcode(Request $request) {
+		$lotinIdList = $request->get('lotinIdList');
+		$lotinIdList = substr($lotinIdList, 1, -1);
+		$lotinIdList = explode(",", $lotinIdList);
+		$barcode     = $request->get('barcode');
+
+		$items = Item::whereIn('lotin_id', $lotinIdList)->where('barcode', $barcode)->where('status', 0)->get();
+
+		$header = array(
+			'Content-Type' => 'application/json; charset=UTF-8',
+			'charset'      => 'utf-8',
+		);
+		return response()->json(['items' => $items], 200, $header, JSON_UNESCAPED_UNICODE);
 	}
 
 }

@@ -12,7 +12,7 @@
 
 		<ol class="breadcrumb bc-3" >
 			<li>
-				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
+				<a href="{{ url('admin/dashboard') }}"><i class="fa fa-home"></i>Home</a>
 			</li>
 			<li>
 				<a href="{{ url('incomings') }}">Incoming Management</a>
@@ -23,6 +23,37 @@
 		</ol>
 
 		<h2>Incoming Management</h2>
+		<br />
+
+		<form action="#" method="post" role="form" id="packing_form" class="form-horizontal form-groups-bordered validate" >
+
+			<div class="form-group">
+				<label class="col-sm-2  control-label">&nbsp;</label>
+
+				<div class="col-sm-3">
+					&nbsp;
+				</div>
+
+				<label class="col-sm-2  control-label">Barcode</label>
+				<div class="col-sm-3">
+					<div class="input-group minimal">
+						<div class="input-group-addon">
+							<i class="fa fa-barcode"></i>
+						</div>
+						{!! Form::text('barcode', null, ['placeholder' => 'Barcode','class' => 'form-control', 'id' => 'sbarcode', 'autocomplete' => 'off']) !!}
+					</div>
+				</div>
+
+				<div class="col-sm-2">
+					<div class="input-group minimal">
+						<a href="#" class="btn btn-blue btn-icon" onclick="searchArriveListByBarCode();">
+							Search
+							<i class="entypo-search"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+		</form>
 		<br />
 
 		<div class="row">
@@ -226,7 +257,7 @@
 
 @section('my-script')
 	<!-- Imported styles on this page -->
-	<link rel="stylesheet" href="assets/js/selectboxit/jquery.selectBoxIt.css">
+	<link rel="stylesheet" href="{{ asset('assets/js/selectboxit/jquery.selectBoxIt.css') }}">
 
 	<style>
 		.text-white {
@@ -271,14 +302,14 @@
 	</style>
 
 	<!-- Imported scripts on this page -->
-	<script src="assets/js/jquery.bootstrap.wizard.min.js"></script>
-	<script src="assets/js/jquery.validate.min.js"></script>
-	<script src="assets/js/jquery.inputmask.bundle.js"></script>
-	<script src="assets/js/selectboxit/jquery.selectBoxIt.min.js"></script>
-	<script src="assets/js/bootstrap-datepicker.js"></script>
-	<script src="assets/js/bootstrap-switch.min.js"></script>
-	<script src="assets/js/jquery.multi-select.js"></script>
-	<script src="assets/js/neon-chat.js"></script>
+	<script src="{{ asset('assets/js/jquery.bootstrap.wizard.min.js') }}"></script>
+	<script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
+	<script src="{{ asset('assets/js/jquery.inputmask.bundle.js') }}"></script>
+	<script src="{{ asset('assets/js/selectboxit/jquery.selectBoxIt.min.js') }}"></script>
+	<script src="{{ asset('assets/js/bootstrap-datepicker.js') }}"></script>
+	<script src="{{ asset('assets/js/bootstrap-switch.min.js') }}"></script>
+	<script src="{{ asset('assets/js/jquery.multi-select.js') }}"></script>
+	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
 
 	<script>
 		$(document).ready(function(){
@@ -296,6 +327,11 @@
 				});
 			});
 		});
+
+		function searchArriveListByBarCode() {
+			var barcode = $('#sbarcode').val();
+			alert('Barcode: '+barcode)
+		}
 	</script>
 @stop
 

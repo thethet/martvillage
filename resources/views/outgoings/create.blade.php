@@ -12,7 +12,7 @@
 
 		<ol class="breadcrumb bc-3" >
 			<li>
-				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
+				<a href="{{ url('admin/dashboard') }}"><i class="fa fa-home"></i>Home</a>
 			</li>
 			<li>
 				<a href="{{ url('companies') }}">Outgoing Management</a>
@@ -350,10 +350,14 @@
 				}
 			});
 
+			$('#from_city').attr('disabled', true);
+			$('#to_country').attr('disabled', true);
+			$('#to_city').attr('disabled', true);
+
 			$("#from_country").change(function(event) {
 				// Fetch the preselected item, and add to the control
 				var countryId = $('#from_country').val();
-				var stateSelect = $('#state_id');
+				var stateSelect = $('#from_city');
 				$.ajax({
 					type: 'GET',
 					url: "{{ url('states/search-state-country') }}",
@@ -362,6 +366,36 @@
 					data: {
 						search: '',
 						countryId: countryId
+					}
+					,
+				}).then(function (data) {
+					console.log(data.items)
+					var html = '<option value="">Select State/City</option>';
+					for (var i = 0, len = data.items.length; i < len; ++i) {
+						html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+					}
+					stateSelect.children().remove().end().append(html) ;
+				});
+
+				$('#from_city').attr('disabled', false);
+			});
+
+			$("#from_city").change(function(event) {
+				$('#to_country').attr('disabled', false);
+
+				// Fetch the preselected item, and add to the control
+				var countryId = $('#to_country').val();
+				var fromStateId = $('#from_city').val();
+				var stateSelect = $('#to_city');
+				$.ajax({
+					type: 'GET',
+					url: "{{ url('states/search-state-country') }}",
+					dataType: 'json',
+					delay: 250,
+					data: {
+						search: '',
+						countryId: countryId,
+						fromStateId: fromStateId
 					}
 					,
 				}).then(function (data) {
@@ -376,7 +410,8 @@
 			$("#to_country").change(function(event) {
 				// Fetch the preselected item, and add to the control
 				var countryId = $('#to_country').val();
-				var stateSelect = $('#to_state');
+				var fromStateId = $('#from_city').val();
+				var stateSelect = $('#to_city');
 				$.ajax({
 					type: 'GET',
 					url: "{{ url('states/search-state-country') }}",
@@ -384,7 +419,8 @@
 					delay: 250,
 					data: {
 						search: '',
-						countryId: countryId
+						countryId: countryId,
+						fromStateId: fromStateId
 					}
 					,
 				}).then(function (data) {
@@ -394,6 +430,8 @@
 					}
 					stateSelect.children().remove().end().append(html) ;
 				});
+
+				$('#to_city').attr('disabled', false);
 			});
 		});
 	</script>

@@ -20,7 +20,10 @@ Route::group(['middleware' => 'web'], function () {
 	|
 	 */
 	Route::auth();
-	Route::get('/', 'HomeController@index');
+	Route::get('admin', 'Auth\AuthController@getLogin');
+	Route::post('admin/login', 'Auth\AuthController@postLogin');
+	Route::get('admin/logout', 'Auth\AuthController@getLogout');
+	Route::get('/', 'FrontEndController@index');
 
 	Route::get('404', function () {
 		return view('errors.404');
@@ -104,13 +107,23 @@ Route::group(['middleware' => 'web'], function () {
 	Route::get('lotins/search-price-list', ['as' => 'lotins.search.price.list', 'uses' => 'LotInController@searchPriceList']);
 
 	Route::get('members/search-member', ['as' => 'receivers.search.address.member', 'uses' => 'LotInController@searchMember']);
+
+	/*
+	|--------------------------------------------------------------------------
+	| Outgoing Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Outgoing Model CRUD
+	|
+	 */
+	Route::get('outgoings/search-packing-by-barcode', ['as' => 'outgoing.search.packing.barcode', 'uses' => 'OutgoingController@searchPackingByBarcode']);
 });
 
 Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('/home', 'HomeController@index');
 
-	Route::get('/dashboard', 'HomeController@index');
+	Route::get('/admin/dashboard', 'HomeController@index');
 
 	Route::get('settings', function () {
 		return view('dashboard.setting');

@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\User;
+use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
+use Request;
 use Validator;
 
 class AuthController extends Controller {
@@ -27,7 +29,9 @@ class AuthController extends Controller {
 	 *
 	 * @var string
 	 */
-	protected $redirectTo = '/';
+	protected $loginPath           = '/login';
+	protected $redirectTo          = '/admin/dashboard';
+	protected $redirectAfterLogout = '/admin';
 
 	/**
 	 * Create a new authentication controller instance.
@@ -64,5 +68,24 @@ class AuthController extends Controller {
 			'email'    => $data['email'],
 			'password' => bcrypt($data['password']),
 		]);
+	}
+
+	/**
+	 * Show the application login form.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function getLogin() {
+		return view('auth.login');
+	}
+
+	/**
+	 * Log the user out of the application.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function getLogout() {
+		\Auth::logout();
+		return redirect('admin');
 	}
 }

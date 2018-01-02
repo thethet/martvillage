@@ -16,7 +16,7 @@ class CreateTblItems extends Migration {
 			$table->integer('outgoing_id');
 			$table->integer('packing_id');
 			$table->string('item_name');
-			$table->string('barcode');
+			$table->string('barcode')->unique();
 			$table->integer('price_id');
 			$table->integer('category_id');
 			$table->integer('currency_id');

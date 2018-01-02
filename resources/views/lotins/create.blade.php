@@ -12,7 +12,7 @@
 
 		<ol class="breadcrumb bc-3" >
 			<li>
-				<a href="{{ url('dashboard') }}"><i class="fa fa-home"></i>Home</a>
+				<a href="{{ url('admin/dashboard') }}"><i class="fa fa-home"></i>Home</a>
 			</li>
 			<li>
 				<a href="{{ url('lotins') }}">Lotin Management</a>
@@ -370,12 +370,15 @@
 												</td>
 
 												<td>
-													{!! Form::text('lots['.$j.'][barcode]', null, ['placeholder' => 'Barcode', 'class' => 'form-control barcode', 'id' => 'barcode-'.$j, 'autocomplete' => 'off']) !!}
 													@if ($errors->has("lots.$j.barcode"))
+														{!! Form::text('lots['.$j.'][barcode]', null, ['placeholder' => 'Barcode', 'class' => 'form-control barcode has-error', 'id' => 'barcode-'.$j, 'autocomplete' => 'off']) !!}
 														<span class="validate-has-error">
 															<strong>{{ $errors->first("lots.$j.barcode") }}</strong>
 														</span>
+													@else
+														{!! Form::text('lots['.$j.'][barcode]', null, ['placeholder' => 'Barcode', 'class' => 'form-control barcode', 'id' => 'barcode-'.$j, 'autocomplete' => 'off']) !!}
 													@endif
+													{{-- {{dd($errors)}} --}}
 												</td>
 
 												<td>
@@ -516,7 +519,11 @@
 										</tr>
 
 										<tr>
-											<td colspan="6" class="text-right"><b>GST</b></td>
+
+											<td colspan="4" rowspan="3" class="text-right">
+												{!! Form::textarea('remarks', null, ['placeholder' => 'Remarks', 'class' => 'form-control', 'id' => 'remarks', 'autocomplete' => 'off', 'rows' => 4]) !!}
+											</td>
+											<td colspan="2" class="text-right"><b>GST</b></td>
 											<td class="text-right">
 												{{ Form::hidden('gov_tax', $myCompany->gst_rate, ['id' => 'gst']) }}
 												{{ Form::hidden('gov_tax_amt', 0.00, ['id' => 'gst_amt']) }}
@@ -528,7 +535,7 @@
 										</tr>
 
 										<tr>
-											<td colspan="6" class="text-right"><b>Service Charges</b></td>
+											<td colspan="2" class="text-right"><b>Service Charges</b></td>
 											<td class="text-right">
 												{{ Form::hidden('service_charge', $myCompany->service_rate, ['id' => 'service']) }}
 												{{ Form::hidden('service_charge_amt', 0.00, ['id' => 'service_amt']) }}
@@ -540,7 +547,7 @@
 										</tr>
 
 										<tr>
-											<td colspan="6" class="text-right"><b>Net Balance</b></td>
+											<td colspan="2" class="text-right"><b>Net Balance</b></td>
 											<td class="text-right">
 												{{ Form::hidden('net_amt', null, ['id' => 'net_amt']) }}
 											</td>
@@ -583,6 +590,18 @@
 	</div>
 @stop
 
+@section('my-style')
+	<style type="text/css" media="screen">
+		.validate-has-error{
+			color: #cc2424;
+		}
+
+		.has-error {
+			border-color: #ffafbd;
+		}
+	</style>
+@stop
+
 @section('my-script')
 	<!-- Imported styles on this page -->
 	<link rel="stylesheet" href="{{ asset('assets/js/datatables/datatables.css') }}">
@@ -605,6 +624,11 @@
 					return false;
 				}
 			});
+
+			$('.price_id').attr('disabled', true);
+			$('#state_id').attr('disabled', true);
+			$('#to_country_id').attr('disabled', true);
+			$('#to_state_id').attr('disabled', true);
 
 			$('a#back').hide();
 
@@ -740,11 +764,14 @@
 						stateSelect.children().remove().end().append(html);
 					}
 				});
+				$('#state_id').attr('disabled', false);
 			});
 
-			$("#to_country_id").change(function(event) {
-				// Fetch the preselected item, and add to the control
+			$("#state_id").change(function(event) {
+				$('#to_country_id').attr('disabled', false);
+
 				var countryId = $('#to_country_id').val();
+				var fromStateId = $('#state_id').val();
 				var stateSelect = $('#to_state_id');
 				$.ajax({
 					type: 'GET',
@@ -753,7 +780,8 @@
 					delay: 250,
 					data: {
 						search: '',
-						countryId: countryId
+						countryId: countryId,
+						fromStateId: fromStateId
 					}
 					,
 				}).then(function (data) {
@@ -767,7 +795,37 @@
 				});
 			});
 
+			$("#to_country_id").change(function(event) {
+				// Fetch the preselected item, and add to the control
+				var countryId = $('#to_country_id').val();
+				var fromStateId = $('#state_id').val();
+				var stateSelect = $('#to_state_id');
+				$.ajax({
+					type: 'GET',
+					url: "{{ url('states/search-state-country') }}",
+					dataType: 'json',
+					delay: 250,
+					data: {
+						search: '',
+						countryId: countryId,
+						fromStateId: fromStateId
+					}
+					,
+				}).then(function (data) {
+					if(data != null) {
+						var html = '<option value="">Select State/City</option>';
+						for (var i = 0, len = data.items.length; i < len; ++i) {
+							html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+						}
+						stateSelect.children().remove().end().append(html);
+					}
+				});
+
+				$('#to_state_id').attr('disabled', false);
+			});
+
 			$("#to_state_id").change(function(event) {
+
 				// Fetch the preselected item, and add to the control
 				var fromCountryId = $('#country_id').val();
 				var fromStateId = $('#state_id').val();
@@ -798,6 +856,7 @@
 						stateSelect.children().remove().end().append(html);
 					}
 				});
+				$('.price_id').attr('disabled', false);
 			});
 
 			$("#member_no").focusout(function(){
