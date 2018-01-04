@@ -314,7 +314,6 @@
 	<script>
 		$(document).ready(function(){
 			$(".arrive").on("click", function(event){
-				alert('hi')
 				var id = $(this).attr('id');
 				$.ajax({
 					url: "{!! url('incomings/"+ id +"') !!}",
@@ -330,7 +329,15 @@
 
 		function searchArriveListByBarCode() {
 			var barcode = $('#sbarcode').val();
-			alert('Barcode: '+barcode)
+			$.ajax({
+				url: "{!! url('incomings/arrive/"+ barcode +"') !!}",
+				type: 'PATCH',
+				data: {_token: '{!! csrf_token() !!}'},
+				dataType: 'JSON',
+				success: function (data) {
+					window.location.replace(data.url);
+				}
+			});
 		}
 	</script>
 @stop

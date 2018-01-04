@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\User;
-use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Request;
@@ -31,7 +30,7 @@ class AuthController extends Controller {
 	 */
 	protected $loginPath           = '/login';
 	protected $redirectTo          = '/admin/dashboard';
-	protected $redirectAfterLogout = '/admin';
+	protected $redirectAfterLogout = '/';
 
 	/**
 	 * Create a new authentication controller instance.

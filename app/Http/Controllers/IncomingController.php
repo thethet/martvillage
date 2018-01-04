@@ -139,9 +139,9 @@ class IncomingController extends Controller {
 		if ($allLotCount == $arriveLotCount) {
 			Lotin::find($item->lotin_id)->update(['status' => 2, 'incoming_date' => $incomingDate]);
 		}
-		return redirect()->back()->with('success', 'Item is successfully arrive');
+		// return redirect()->back()->with('success', 'Item is successfully arrive');
 
-		$response = array('status' => 'success', 'url' => 'incomings');
+		$response = array('status' => 'success', 'url' => $item->outgoing_id);
 		return response()->json($response);
 	}
 
@@ -153,5 +153,30 @@ class IncomingController extends Controller {
 	 */
 	public function destroy($id) {
 		//
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function updateArriveStatus($barcode) {
+		Item::where('barcode', $barcode)->update(['status' => 2]);
+
+		$item = Item::where('barcode', $barcode)->first();
+
+		$allLotCount = Item::where('lotin_id', $item->lotin_id)->count();
+
+		$arriveLotCount = Item::where('lotin_id', $item->lotin_id)->where('status', 2)->count();
+
+		$incomingDate = date('Y-m-d');
+		if ($allLotCount == $arriveLotCount) {
+			Lotin::find($item->lotin_id)->update(['status' => 2, 'incoming_date' => $incomingDate]);
+		}
+		// return redirect()->back()->with('success', 'Item is successfully arrive');
+
+		$response = array('status' => 'success', 'url' => $item->outgoing_id);
+		return response()->json($response);
 	}
 }

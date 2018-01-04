@@ -526,6 +526,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('incomings/{id}/edit', ['as' => 'incomings.edit', 'uses' => 'IncomingController@edit', 'middleware' => ['permission:incoming-edit']]);
 	Route::patch('incomings/{id}', ['as' => 'incomings.update', 'uses' => 'IncomingController@update', 'middleware' => ['permission:incoming-edit']]);
+	Route::patch('incomings/arrive/{barcode}', ['as' => 'incomings.arrive', 'uses' => 'IncomingController@updateArriveStatus', 'middleware' => ['permission:incoming-edit']]);
 
 	/*
 	|--------------------------------------------------------------------------
