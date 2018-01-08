@@ -11,6 +11,15 @@ use Illuminate\Http\Request;
 
 class LocationController extends Controller {
 	/**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
+	public function __construct() {
+		$this->middleware('auth');
+	}
+
+	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
@@ -84,8 +93,8 @@ class LocationController extends Controller {
 	 * @return Response
 	 */
 	public function searchByCountry(Request $request) {
-		$search    = $request->get('search');
-		$countryId = $request->get('countryId');
+		$search      = $request->get('search');
+		$countryId   = $request->get('countryId');
 		$fromStateId = $request->get('fromStateId');
 
 		$myCompany     = Company::find(Auth::user()->company_id);
