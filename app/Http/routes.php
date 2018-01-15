@@ -23,7 +23,8 @@ Route::group(['middleware' => 'web'], function () {
 	Route::get('admin', 'Auth\AuthController@getLogin');
 	Route::post('admin/login', 'Auth\AuthController@postLogin');
 	Route::get('admin/logout', 'Auth\AuthController@getLogout');
-	Route::get('/', 'FrontEndController@index');
+	Route::get('/', ['as' => 'frontend.index', 'uses' => 'FrontEndController@index']);
+	Route::post('lot-search', ['as' => 'lot-search', 'uses' => 'FrontEndController@search']);
 
 	Route::get('404', function () {
 		return view('errors.404');

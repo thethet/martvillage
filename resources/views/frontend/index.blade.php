@@ -10,7 +10,7 @@
 
 	<meta name="description" content="Citytours - Premium site template for city tours agencies, transfers and tickets.">
 	<meta name="author" content="Ansonika">
-	<title>CITY TOURS - City tours and travel site template by Ansonika</title>
+	<title>Shwe Cargo - Cargo Management System powered by MSCT</title>
 
 	<!-- Favicons-->
 	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
@@ -160,9 +160,10 @@
 			<div class="row">
 				<div class="col-md-3 col-sm-3 col-xs-3">
 					<div id="logo_home">
-						{{-- <h1><a href="index.html" title="SHWE CARGO">SHWE CARGO</a></h1> --}}
-						<img src="{{ asset('assets/front/img/logo.png') }}" alt="SHWE CARGO" width="60px">
-						<span style="color: gold; font-weight: bold; font-size: 18px;">SHWE CARGO</span>
+						<a href="{{ url('/') }}">
+							<img src="{{ asset('assets/front/img/logo.png') }}" alt="SHWE CARGO" width="60px">
+							<span style="color: gold; font-weight: bold; font-size: 18px;">SHWE CARGO</span>
+						</a>
 					</div>
 				</div>
 				<nav class="col-md-9 col-sm-9 col-xs-9">
@@ -176,94 +177,100 @@
 							<li class="submenu">
 								<a href="javascript:void(0);" class="show-submenu">Home <i class="icon-down-open-mini"></i></a>
 								<ul>
-									<li><a href="javascript:void(0);">Revolution slider</a>
+									<li><a href="javascript:void(0);">Menu List 1</a>
 										<ul>
-											<li><a href="{{ url('/') }}">Default slider</a></li>
-											<li><a href="{{ url('/') }}">Advanced slider</a></li>
-											<li><a href="{{ url('/') }}">Youtube Hero</a></li>
-											<li><a href="{{ url('/') }}">Vimeo Hero</a></li>
-											<li><a href="{{ url('/') }}">Youtube 4K</a></li>
-											<li><a href="{{ url('/') }}">Carousel</a></li>
-											<li><a href="{{ url('/') }}">Mailchimp Newsletter</a></li>
-											<li><a href="{{ url('/') }}">Fixed Caption</a></li>
+											@for($x = 1; $x < 9; $x++)
+											<li><a href="{{ url('/') }}">Sub Menu {{ $x }} </a></li>
+											@endfor
 										</ul>
 									</li>
-									<li><a href="{{ url('/') }}">Layer slider</a></li>
-									<li><a href="{{ url('/') }}">With Only tours</a></li>
-									<li><a href="{{ url('/') }}">Single image</a></li>
-									<li><a href="{{ url('/') }}">Header video</a></li>
-									<li><a href="{{ url('/') }}">With search panel</a></li>
-									<li><a href="{{ url('/') }}">With tabs</a></li>
-									<li><a href="{{ url('/') }}">With map</a></li>
-									<li><a href="{{ url('/') }}">With search bar</a></li>
-									<li><a href="{{ url('/') }}">Search bar + Video</a></li>
-									<li><a href="{{ url('/') }}">With Text Rotator</a></li>
-									<li><a href="{{ url('/') }}">With Cookie Bar (EU law)</a></li>
-									<li><a href="{{ url('/') }}">Popup Advertising</a></li>
+
+									@for($x = 2; $x < 13; $x++)
+									<li><a href="{{ url('/') }}">Menu List {{ $x }} </a></li>
+									@endfor
 								</ul>
 							</li>
+
 							<li class="submenu">
-								<a href="javascript:void(0);" class="show-submenu">Tours <i class="icon-down-open-mini"></i></a>
+								<a href="javascript:void(0);" class="show-submenu">Agents <i class="icon-down-open-mini"></i></a>
 								<ul>
-									<li><a href="all_tours_list.html">All tours list</a></li>
-									<li><a href="all_tours_grid.html">All tours grid</a></li>
-									<li><a href="all_tours_map_listing.html">All tours map listing</a></li>
-									<li><a href="single_tour.html">Single tour page</a></li>
-									<li><a href="single_tour_with_gallery.html">Single tour with gallery</a></li>
-									<li><a href="javascript:void(0);">Single tour fixed sidebar</a>
+									@for($x = 1; $x < 6; $x++)
+										<li><a href="{{ url('/') }}">Agent {{ $x }} </a></li>
+									@endfor
+
+									<li><a href="javascript:void(0);">Agent 6</a>
 										<ul>
-											<li><a href="single_tour_fixed_sidebar.html">Single tour fixed sidebar</a></li>
-											<li><a href="single_tour_with_gallery_fixed_sidebar.html">Single tour 2 Fixed Sidebar</a></li>
-											<li><a href="cart_fixed_sidebar.html">Cart Fixed Sidebar</a></li>
-											<li><a href="payment_fixed_sidebar.html">Payment Fixed Sidebar</a></li>
-											<li><a href="confirmation_fixed_sidebar.html">Confirmation Fixed Sidebar</a></li>
+											@for($x = 1; $x < 6; $x++)
+											<li><a href="{{ url('/') }}">Sub Agent {{ $x }} </a></li>
+											@endfor
 										</ul>
 									</li>
-									<li><a href="single_tour_working_booking.php">Single tour working booking</a></li>
-									<li><a href="single_tour_datepicker_v2.html">Date and time picker V2</a></li>
-									<li><a href="cart.html">Single tour cart</a></li>
-									<li><a href="payment.html">Single tour booking</a></li>
+									@for($x = 7; $x < 11; $x++)
+										<li><a href="{{ url('/') }}">Agent {{ $x }} </a></li>
+									@endfor
 								</ul>
 							</li>
-							 <li class="submenu">
-								<a href="javascript:void(0);" class="show-submenu">Hotels <i class="icon-down-open-mini"></i></a><ul>
-									<li><a href="{{ url('/') }}">All hotels list</a></li>
-									<li><a href="{{ url('/') }}">All hotels grid</a></li>
-									<li><a href="{{ url('/') }}">All hotels map listing</a></li>
-									<li><a href="{{ url('/') }}">Single hotel page</a></li>
-									<li><a href="{{ url('/') }}">Single hotel datepicker adv</a></li>
-									<li><a href="{{ url('/') }}">Date and time picker V2</a></li>
-									<li><a href="{{ url('/') }}">Single hotel working booking</a></li>
-									<li><a href="{{ url('/') }}">Single hotel contact working</a></li>
-									<li><a href="{{ url('/') }}">Cart hotel</a></li>
-									<li><a href="{{ url('/') }}">Booking hotel</a></li>
-									<li><a href="{{ url('/') }}">Confirmation hotel</a></li>
-								</ul>
-							</li>
+
 							<li class="submenu">
-								<a href="javascript:void(0);" class="show-submenu">Transfers <i class="icon-down-open-mini"></i></a>
+								<a href="javascript:void(0);" class="show-submenu">Agents <i class="icon-down-open-mini"></i></a>
 								<ul>
-									<li><a href="{{ url('/') }}">All transfers list</a></li>
-									<li><a href="{{ url('/') }}">All transfers grid</a></li>
-									<li><a href="{{ url('/') }}">Single transfer page</a></li>
-									<li><a href="{{ url('/') }}">Date and time picker V2</a></li>
-									<li><a href="{{ url('/') }}">>Cart transfers</a></li>
-									<li><a href="{{ url('/') }}">Booking transfers</a></li>
-									<li><a href="{{ url('/') }}">Confirmation transfers</a></li>
+									@for($x = 1; $x < 6; $x++)
+										<li><a href="{{ url('/') }}">Agent {{ $x }} </a></li>
+									@endfor
+
+									<li><a href="javascript:void(0);">Agent 6</a>
+										<ul>
+											@for($x = 1; $x < 6; $x++)
+											<li><a href="{{ url('/') }}">Sub Agent {{ $x }} </a></li>
+											@endfor
+										</ul>
+									</li>
+									@for($x = 7; $x < 11; $x++)
+										<li><a href="{{ url('/') }}">Agent {{ $x }} </a></li>
+									@endfor
 								</ul>
 							</li>
-							  <li class="submenu">
-								<a href="javascript:void(0);" class="show-submenu">Restaurants <i class="icon-down-open-mini"></i></a>
+
+							<li class="submenu">
+								<a href="javascript:void(0);" class="show-submenu">Agents <i class="icon-down-open-mini"></i></a>
 								<ul>
-									<li><a href="{{ url('/') }}">All restaurants list</a></li>
-									<li><a href="{{ url('/') }}">All restaurants grid</a></li>
-									<li><a href="{{ url('/') }}">All restaurants map listing</a></li>
-									<li><a href="{{ url('/') }}">Single restaurant page</a></li>
-									<li><a href="{{ url('/') }}">Date and time picker V2</a></li>
-									<li><a href="{{ url('/') }}">Booking restaurant</a></li>
-									<li><a href="{{ url('/') }}">Confirmation transfers</a></li>
+									@for($x = 1; $x < 6; $x++)
+										<li><a href="{{ url('/') }}">Agent {{ $x }} </a></li>
+									@endfor
+
+									<li><a href="javascript:void(0);">Agent 6</a>
+										<ul>
+											@for($x = 1; $x < 6; $x++)
+											<li><a href="{{ url('/') }}">Sub Agent {{ $x }} </a></li>
+											@endfor
+										</ul>
+									</li>
+									@for($x = 7; $x < 11; $x++)
+										<li><a href="{{ url('/') }}">Agent {{ $x }} </a></li>
+									@endfor
 								</ul>
 							</li>
+
+							<li class="submenu">
+								<a href="javascript:void(0);" class="show-submenu">Agents <i class="icon-down-open-mini"></i></a>
+								<ul>
+									@for($x = 1; $x < 6; $x++)
+										<li><a href="{{ url('/') }}">Agent {{ $x }} </a></li>
+									@endfor
+
+									<li><a href="javascript:void(0);">Agent 6</a>
+										<ul>
+											@for($x = 1; $x < 6; $x++)
+											<li><a href="{{ url('/') }}">Sub Agent {{ $x }} </a></li>
+											@endfor
+										</ul>
+									</li>
+									@for($x = 7; $x < 11; $x++)
+										<li><a href="{{ url('/') }}">Agent {{ $x }} </a></li>
+									@endfor
+								</ul>
+							</li>
+
 							 <li class="megamenu submenu">
 								<a href="javascript:void(0);" class="show-submenu-mega">Bonus<i class="icon-down-open-mini"></i></a>
 								<div class="menu-wrapper">
@@ -365,25 +372,24 @@
 						</li>
 						<li>
 							<div class="dropdown dropdown-cart">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class=" icon-basket-1"></i>Cart (0) </a>
 								<ul class="dropdown-menu" id="cart_items">
 									<li>
 										<div class="image"><img src="img/thumb_cart_1.jpg" alt="image"></div>
 										<strong>
-										<a href="#">Louvre museum</a>1x $36.00 </strong>
-										<a href="#" class="action"><i class="icon-trash"></i></a>
+										<a href="{{ url('/') }}">Louvre museum</a>1x $36.00 </strong>
+										<a href="{{ url('/') }}" class="action"><i class="icon-trash"></i></a>
 									</li>
 									<li>
 										<div class="image"><img src="img/thumb_cart_2.jpg" alt="image"></div>
 										<strong>
-										<a href="#">Versailles tour</a>2x $36.00 </strong>
-										<a href="#" class="action"><i class="icon-trash"></i></a>
+										<a href="{{ url('/') }}">Versailles tour</a>2x $36.00 </strong>
+										<a href="{{ url('/') }}" class="action"><i class="icon-trash"></i></a>
 									</li>
 									<li>
 										<div class="image"><img src="img/thumb_cart_3.jpg" alt="image"></div>
 										<strong>
-										<a href="#">Versailles tour</a>1x $36.00 </strong>
-										<a href="#" class="action"><i class="icon-trash"></i></a>
+										<a href="{{ url('/') }}">Versailles tour</a>1x $36.00 </strong>
+										<a href="{{ url('/') }}" class="action"><i class="icon-trash"></i></a>
 									</li>
 									<li>
 										<div>Total: <span>$120.00</span></div>
@@ -479,180 +485,45 @@
 		<div class="container margin_60">
 
 			<div class="main_title">
-				<h2>Paris <span>Top</span> Tours</h2>
+				<h2>Top <span>{{ count($companies) }}</span> Agents</h2>
 				<p>Quisque at tortor a libero posuere laoreet vitae sed arcu. Curabitur consequat.</p>
 			</div>
 
 			<div class="row">
 
-				<div class="col-md-4 col-sm-6 wow zoomIn" data-wow-delay="0.1s">
-					<div class="tour_container">
-						<div class="ribbon_3 popular"><span>Popular</span></div>
-						<div class="img_container">
-							<a href="single_tour.html">
-								<img src="{{ asset('assets/front/img/800-533.jpg') }}" class="img-responsive" alt="image">
-								<div class="short_info">
-									<i class="icon_set_1_icon-44"></i>Historic Buildings<span class="price"><sup>$</sup>39</span>
+				@foreach($companies as $company)
+					<div class="col-md-4 col-sm-6 wow zoomIn" data-wow-delay="0.1s">
+						<div class="tour_container">
+							<div class="ribbon_3 popular"><span>Popular</span></div>
+							<div class="img_container">
+								<a href="{{ url('/') }}">
+									<img src="{{ asset('assets/front/img/800-533.jpg') }}" class="img-responsive" alt="image">
+									{{-- <div class="short_info">
+										<i class="icon_set_1_icon-44"></i>Historic Buildings<span class="price"><sup>$</sup>39</span>
+									</div> --}}
+								</a>
+							</div>
+							<div class="tour_title">
+								<h3><strong>{{ $company->company_name }}</strong></h3>
+								<div class="rating">
+									<i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i><small>(75)</small>
 								</div>
-							</a>
-						</div>
-						<div class="tour_title">
-							<h3><strong>Arc Triomphe</strong> tour</h3>
-							<div class="rating">
-								<i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile"></i><small>(75)</small>
-							</div>
-							<!-- end rating -->
-							<div class="wishlist">
-								<a class="tooltip_flip tooltip-effect-1" href="javascript:void(0);">+<span class="tooltip-content-flip"><span class="tooltip-back">Add to wishlist</span></span></a>
-							</div>
-							<!-- End wish list-->
-						</div>
-					</div>
-					<!-- End box tour -->
-				</div>
-				<!-- End col-md-4 -->
-
-				<div class="col-md-4 col-sm-6 wow zoomIn" data-wow-delay="0.2s">
-					<div class="tour_container">
-						<div class="ribbon_3 popular"><span>Popular</span></div>
-						<div class="img_container">
-							<a href="single_tour.html">
-								<img src="{{ asset('assets/front/img/800-533.jpg') }}" width="800" height="533" class="img-responsive" alt="image">
-								<div class="short_info">
-									<i class="icon_set_1_icon-43"></i>Churches<span class="price"><sup>$</sup>45</span>
+								<!-- end rating -->
+								<div class="wishlist">
+									<a class="tooltip_flip tooltip-effect-1" href="javascript:void(0);">+<span class="tooltip-content-flip"><span class="tooltip-back">Add to wishlist</span></span></a>
 								</div>
-							</a>
-						</div>
-						<div class="tour_title">
-							<h3><strong>Notredame</strong> tour</h3>
-							<div class="rating">
-								<i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile"></i><small>(75)</small>
+								<!-- End wish list-->
 							</div>
-							<!-- end rating -->
-							<div class="wishlist">
-								<a class="tooltip_flip tooltip-effect-1" href="javascript:void(0);">+<span class="tooltip-content-flip"><span class="tooltip-back">Add to wishlist</span></span></a>
-							</div>
-							<!-- End wish list-->
 						</div>
+						<!-- End box tour -->
 					</div>
-					<!-- End box tour -->
-				</div>
-				<!-- End col-md-4 -->
-
-				<div class="col-md-4 col-sm-6 wow zoomIn" data-wow-delay="0.3s">
-					<div class="tour_container">
-						<div class="ribbon_3 popular"><span>Popular</span></div>
-						<div class="img_container">
-							<a href="single_tour.html">
-								<img src="{{ asset('assets/front/img/800-533.jpg') }}" width="800" height="533" class="img-responsive" alt="image">
-								<div class="badge_save">Save<strong>30%</strong></div>
-								<div class="short_info">
-									<i class="icon_set_1_icon-44"></i>Historic Buildings<span class="price"><sup>$</sup>48</span>
-								</div>
-							</a>
-						</div>
-						<div class="tour_title">
-							<h3><strong>Versailles</strong> tour</h3>
-							<div class="rating">
-								<i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile"></i><small>(75)</small>
-							</div>
-							<!-- end rating -->
-							<div class="wishlist">
-								<a class="tooltip_flip tooltip-effect-1" href="javascript:void(0);">+<span class="tooltip-content-flip"><span class="tooltip-back">Add to wishlist</span></span></a>
-							</div>
-							<!-- End wish list-->
-						</div>
-					</div>
-					<!-- End box tour -->
-				</div>
-				<!-- End col-md-4 -->
-
-				<div class="col-md-4 col-sm-6 wow zoomIn" data-wow-delay="0.4s">
-					<div class="tour_container">
-						<div class="ribbon_3"><span>Top rated</span></div>
-						<div class="img_container">
-							<a href="single_tour.html">
-								<img src="{{ asset('assets/front/img/800-533.jpg') }}" width="800" height="533" class="img-responsive" alt="image">
-								<div class="badge_save">Save<strong>20%</strong></div>
-								<div class="short_info">
-									<i class="icon_set_1_icon-30"></i>Walking tour<span class="price"><sup>$</sup>36</span>
-								</div>
-							</a>
-						</div>
-						<div class="tour_title">
-							<h3><strong>Pompidue</strong> tour</h3>
-							<div class="rating">
-								<i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile"></i><small>(75)</small>
-							</div>
-							<!-- end rating -->
-							<div class="wishlist">
-								<a class="tooltip_flip tooltip-effect-1" href="javascript:void(0);">+<span class="tooltip-content-flip"><span class="tooltip-back">Add to wishlist</span></span></a>
-							</div>
-							<!-- End wish list-->
-						</div>
-					</div>
-					<!-- End box tour -->
-				</div>
-				<!-- End col-md-4 -->
-
-				<div class="col-md-4 col-sm-6 wow zoomIn" data-wow-delay="0.5s">
-					<div class="tour_container">
-						<div class="ribbon_3"><span>Top rated</span></div>
-						<div class="img_container">
-							<a href="single_tour.html">
-								<img src="{{ asset('assets/front/img/800-533.jpg') }}" width="800" height="533" class="img-responsive" alt="image">
-								<div class="short_info">
-									<i class="icon_set_1_icon-28"></i>Skyline tours<span class="price"><sup>$</sup>42</span>
-								</div>
-							</a>
-						</div>
-						<div class="tour_title">
-							<h3><strong>Tour Eiffel</strong> tour</h3>
-							<div class="rating">
-								<i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile"></i><small>(75)</small>
-							</div>
-							<!-- end rating -->
-							<div class="wishlist">
-								<a class="tooltip_flip tooltip-effect-1" href="javascript:void(0);">+<span class="tooltip-content-flip"><span class="tooltip-back">Add to wishlist</span></span></a>
-							</div>
-							<!-- End wish list-->
-						</div>
-					</div>
-					<!-- End box tour -->
-				</div>
-				<!-- End col-md-4 -->
-
-				<div class="col-md-4 col-sm-6 wow zoomIn" data-wow-delay="0.6s">
-					<div class="tour_container">
-						<div class="ribbon_3"><span>Top rated</span></div>
-						<div class="img_container">
-							<a href="single_tour.html">
-								<img src="{{ asset('assets/front/img/800-533.jpg') }}" width="800" height="533" class="img-responsive" alt="image">
-								<div class="short_info">
-									<i class="icon_set_1_icon-44"></i>Historic Buildings<span class="price"><sup>$</sup>40</span>
-								</div>
-							</a>
-						</div>
-						<div class="tour_title">
-							<h3><strong>Pantheon</strong> tour</h3>
-							<div class="rating">
-								<i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile"></i><small>(75)</small>
-							</div>
-							<!-- end rating -->
-							<div class="wishlist">
-								<a class="tooltip_flip tooltip-effect-1" href="javascript:void(0);">+<span class="tooltip-content-flip"><span class="tooltip-back">Add to wishlist</span></span></a>
-							</div>
-							<!-- End wish list-->
-						</div>
-					</div>
-					<!-- End box tour -->
-				</div>
-				<!-- End col-md-4 -->
+					<!-- End col-md-4 -->
+				@endforeach
 
 			</div>
 			<!-- End row -->
 			<p class="text-center add_bottom_30">
-				<a href="all_tours_list.html" class="btn_1 medium"><i class="icon-eye-7"></i>View all tours (144) </a>
+				<a href="{{ url('/') }}" class="btn_1 medium"><i class="icon-eye-7"></i>View all Agents ({{ count($companies) }}) </a>
 			</p>
 
 			<hr>
@@ -670,49 +541,49 @@
 				<div class="row add_bottom_45">
 					<div class="col-md-4 other_tours">
 						<ul>
-							<li><a href="#"><i class="icon_set_1_icon-3"></i>Tour Eiffel<span class="other_tours_price">$42</span></a>
+							<li><a href="{{ url('/') }}"><i class="icon_set_1_icon-3"></i>Tour Eiffel<span class="other_tours_price">$42</span></a>
 							</li>
-							<li><a href="#"><i class="icon_set_1_icon-30"></i>Shopping tour<span class="other_tours_price">$35</span></a>
+							<li><a href="{{ url('/') }}"><i class="icon_set_1_icon-30"></i>Shopping tour<span class="other_tours_price">$35</span></a>
 							</li>
-							<li><a href="#"><i class="icon_set_1_icon-44"></i>Versailles tour<span class="other_tours_price">$20</span></a>
+							<li><a href="{{ url('/') }}"><i class="icon_set_1_icon-44"></i>Versailles tour<span class="other_tours_price">$20</span></a>
 							</li>
-							<li><a href="#"><i class="icon_set_1_icon-3"></i>Montparnasse skyline<span class="other_tours_price">$26</span></a>
+							<li><a href="{{ url('/') }}"><i class="icon_set_1_icon-3"></i>Montparnasse skyline<span class="other_tours_price">$26</span></a>
 							</li>
-							<li><a href="#"><i class="icon_set_1_icon-44"></i>Pompidue<span class="other_tours_price">$26</span></a>
+							<li><a href="{{ url('/') }}"><i class="icon_set_1_icon-44"></i>Pompidue<span class="other_tours_price">$26</span></a>
 							</li>
-							<li><a href="#"><i class="icon_set_1_icon-3"></i>Senna River tour<span class="other_tours_price">$32</span></a>
-							</li>
-						</ul>
-					</div>
-					<div class="col-md-4 other_tours">
-						<ul>
-							<li><a href="#"><i class="icon_set_1_icon-1"></i>Notredame<span class="other_tours_price">$48</span></a>
-							</li>
-							<li><a href="#"><i class="icon_set_1_icon-4"></i>Lafaiette<span class="other_tours_price">$55</span></a>
-							</li>
-							<li><a href="#"><i class="icon_set_1_icon-30"></i>Trocadero<span class="other_tours_price">$76</span></a>
-							</li>
-							<li><a href="#"><i class="icon_set_1_icon-3"></i>Open Bus tour<span class="other_tours_price">$55</span></a>
-							</li>
-							<li><a href="#"><i class="icon_set_1_icon-30"></i>Louvre museum<span class="other_tours_price">$24</span></a>
-							</li>
-							<li><a href="#"><i class="icon_set_1_icon-3"></i>Madlene Cathedral<span class="other_tours_price">$24</span></a>
+							<li><a href="{{ url('/') }}"><i class="icon_set_1_icon-3"></i>Senna River tour<span class="other_tours_price">$32</span></a>
 							</li>
 						</ul>
 					</div>
 					<div class="col-md-4 other_tours">
 						<ul>
-							<li><a href="#"><i class="icon_set_1_icon-37"></i>Montparnasse<span class="other_tours_price">$36</span></a>
+							<li><a href="{{ url('/') }}"><i class="icon_set_1_icon-1"></i>Notredame<span class="other_tours_price">$48</span></a>
 							</li>
-							<li><a href="#"><i class="icon_set_1_icon-1"></i>D'Orsey museum<span class="other_tours_price">$28</span></a>
+							<li><a href="{{ url('/') }}"><i class="icon_set_1_icon-4"></i>Lafaiette<span class="other_tours_price">$55</span></a>
 							</li>
-							<li><a href="#"><i class="icon_set_1_icon-50"></i>Gioconda Louvre musuem<span class="other_tours_price">$44</span></a>
+							<li><a href="{{ url('/') }}"><i class="icon_set_1_icon-30"></i>Trocadero<span class="other_tours_price">$76</span></a>
 							</li>
-							<li><a href="#"><i class="icon_set_1_icon-44"></i>Tour Eiffel<span class="other_tours_price">$56</span></a>
+							<li><a href="{{ url('/') }}"><i class="icon_set_1_icon-3"></i>Open Bus tour<span class="other_tours_price">$55</span></a>
 							</li>
-							<li><a href="#"><i class="icon_set_1_icon-50"></i>Ladefanse<span class="other_tours_price">$16</span></a>
+							<li><a href="{{ url('/') }}"><i class="icon_set_1_icon-30"></i>Louvre museum<span class="other_tours_price">$24</span></a>
 							</li>
-							<li><a href="#"><i class="icon_set_1_icon-44"></i>Notredame<span class="other_tours_price">$26</span></a>
+							<li><a href="{{ url('/') }}"><i class="icon_set_1_icon-3"></i>Madlene Cathedral<span class="other_tours_price">$24</span></a>
+							</li>
+						</ul>
+					</div>
+					<div class="col-md-4 other_tours">
+						<ul>
+							<li><a href="{{ url('/') }}"><i class="icon_set_1_icon-37"></i>Montparnasse<span class="other_tours_price">$36</span></a>
+							</li>
+							<li><a href="{{ url('/') }}"><i class="icon_set_1_icon-1"></i>D'Orsey museum<span class="other_tours_price">$28</span></a>
+							</li>
+							<li><a href="{{ url('/') }}"><i class="icon_set_1_icon-50"></i>Gioconda Louvre musuem<span class="other_tours_price">$44</span></a>
+							</li>
+							<li><a href="{{ url('/') }}"><i class="icon_set_1_icon-44"></i>Tour Eiffel<span class="other_tours_price">$56</span></a>
+							</li>
+							<li><a href="{{ url('/') }}"><i class="icon_set_1_icon-50"></i>Ladefanse<span class="other_tours_price">$16</span></a>
+							</li>
+							<li><a href="{{ url('/') }}"><i class="icon_set_1_icon-44"></i>Notredame<span class="other_tours_price">$26</span></a>
 							</li>
 						</ul>
 					</div>
@@ -720,16 +591,16 @@
 				<!-- End row -->
 
 				<div class="banner colored">
-					<h4>Discover our Top tours <span>from $34</span></h4>
+					<h4>Discover our Top Agents</h4>
 					<p>
 						Lorem ipsum dolor sit amet, vix erat audiam ei. Cum doctus civibus efficiantur in.
 					</p>
-					<a href="single_tour.html" class="btn_1 white">Read more</a>
+					<a href="{{ url('/') }}" class="btn_1 white">Read more</a>
 				</div>
 				<div class="row">
 					<div class="col-md-3 col-sm-6 text-center">
 						<p>
-							<a href="#"><img src="{{ asset('assets/front/img/800-450.jpg') }}" alt="Pic" class="img-responsive"></a>
+							<a href="{{ url('/') }}"><img src="{{ asset('assets/front/img/800-450.jpg') }}" alt="Pic" class="img-responsive"></a>
 						</p>
 						<h4><span>Sightseen tour</span> booking</h4>
 						<p>
@@ -738,7 +609,7 @@
 					</div>
 					<div class="col-md-3 col-sm-6 text-center">
 						<p>
-							<a href="#"><img src="{{ asset('assets/front/img/800-450.jpg') }}" alt="Pic" class="img-responsive"></a>
+							<a href="{{ url('/') }}"><img src="{{ asset('assets/front/img/800-450.jpg') }}" alt="Pic" class="img-responsive"></a>
 						</p>
 						<h4><span>Transfer</span> booking</h4>
 						<p>
@@ -747,7 +618,7 @@
 					</div>
 					<div class="col-md-3 col-sm-6 text-center">
 						<p>
-							<a href="#"><img src="{{ asset('assets/front/img/800-450.jpg') }}" alt="Pic" class="img-responsive"></a>
+							<a href="{{ url('/') }}"><img src="{{ asset('assets/front/img/800-450.jpg') }}" alt="Pic" class="img-responsive"></a>
 						</p>
 						<h4><span>Tour guide</span> booking</h4>
 						<p>
@@ -756,7 +627,7 @@
 					</div>
 					<div class="col-md-3 col-sm-6 text-center">
 						<p>
-							<a href="#"><img src="{{ asset('assets/front/img/800-450.jpg') }}" alt="Pic" class="img-responsive"></a>
+							<a href="{{ url('/') }}"><img src="{{ asset('assets/front/img/800-450.jpg') }}" alt="Pic" class="img-responsive"></a>
 						</p>
 						<h4><span>Hotel</span> booking</h4>
 						<p>
@@ -801,7 +672,7 @@
 						<p>
 							Lorem ipsum dolor sit amet, vix erat audiam ei. Cum doctus civibus efficiantur in. Nec id tempor imperdiet deterruisset.
 						</p>
-						<a href="about.html" class="btn_1 outline">Read more</a>
+						<a href="{{ url('/') }}" class="btn_1 outline">Read more</a>
 					</div>
 				</div>
 
@@ -812,7 +683,7 @@
 						<p>
 							Lorem ipsum dolor sit amet, vix erat audiam ei. Cum doctus civibus efficiantur in. Nec id tempor imperdiet deterruisset.
 						</p>
-						<a href="about.html" class="btn_1 outline">Read more</a>
+						<a href="{{ url('/') }}" class="btn_1 outline">Read more</a>
 					</div>
 				</div>
 
@@ -823,7 +694,7 @@
 						<p>
 							Lorem ipsum dolor sit amet, vix erat audiam ei. Cum doctus civibus efficiantur in. Nec id tempor imperdiet deterruisset.
 						</p>
-						<a href="about.html" class="btn_1 outline">Read more</a>
+						<a href="{{ url('/') }}" class="btn_1 outline">Read more</a>
 					</div>
 				</div>
 
@@ -837,7 +708,7 @@
 					<img src="{{ asset('assets/front/img/laptop.png') }}" alt="Laptop" class="img-responsive laptop">
 				</div>
 				<div class="col-md-4 col-sm-6">
-					<h3><span>Get started</span> with CityTours</h3>
+					<h3><span>Get started</span> with ShweCargo</h3>
 					<p>
 						Lorem ipsum dolor sit amet, vix erat audiam ei. Cum doctus civibus efficiantur in. Nec id tempor imperdiet deterruisset.
 					</p>
@@ -846,7 +717,7 @@
 						<li><span>2</span>Purchase tickets and options</li>
 						<li><span>3</span>Pick them directly from your office</li>
 					</ul>
-					<a href="all_tour_list.html" class="btn_1">Start now</a>
+					<a href="{{ url('/') }}" class="btn_1">Start now</a>
 				</div>
 			</div>
 			<!-- End row -->
@@ -861,26 +732,26 @@
 			<div class="row">
 				<div class="col-md-4 col-sm-3">
 					<h3>Need help?</h3>
-					<a href="tel://004542344599" id="phone">+45 423 445 99</a>
-					<a href="mailto:help@citytours.com" id="email_footer">help@citytours.com</a>
+					<a href="tel://004542344599" id="phone">+95 9976477180 / +65 94308389</a>
+					<a href="mailto:msctpteltd@gmail.com" id="email_footer">msctpteltd@gmail.com</a>
 				</div>
 				<div class="col-md-3 col-sm-3">
 					<h3>About</h3>
 					<ul>
-						<li><a href="#">About us</a></li>
-						<li><a href="#">FAQ</a></li>
-						<li><a href="#">Login</a></li>
-						<li><a href="#">Register</a></li>
-						 <li><a href="#">Terms and condition</a></li>
+						<li><a href="{{ url('/') }}">About us</a></li>
+						<li><a href="{{ url('/') }}">FAQ</a></li>
+						<li><a href="{{ url('/') }}">Login</a></li>
+						<li><a href="{{ url('/') }}">Register</a></li>
+						 <li><a href="{{ url('/') }}">Terms and condition</a></li>
 					</ul>
 				</div>
 				<div class="col-md-3 col-sm-3">
 					<h3>Discover</h3>
 					<ul>
-						<li><a href="#">Community blog</a></li>
-						<li><a href="#">Tour guide</a></li>
-						<li><a href="#">Wishlist</a></li>
-						 <li><a href="#">Gallery</a></li>
+						<li><a href="{{ url('/') }}">Community blog</a></li>
+						<li><a href="{{ url('/') }}">ShweCargo guide</a></li>
+						<li><a href="{{ url('/') }}">Wishlist</a></li>
+						 <li><a href="{{ url('/') }}">Gallery</a></li>
 					</ul>
 				</div>
 				<div class="col-md-2 col-sm-3">
@@ -907,32 +778,33 @@
 				<div class="col-md-12">
 					<div id="social_footer">
 						<ul>
-							<li><a href="#"><i class="icon-facebook"></i></a></li>
-							<li><a href="#"><i class="icon-twitter"></i></a></li>
-							<li><a href="#"><i class="icon-google"></i></a></li>
-							<li><a href="#"><i class="icon-instagram"></i></a></li>
-							<li><a href="#"><i class="icon-pinterest"></i></a></li>
-							<li><a href="#"><i class="icon-vimeo"></i></a></li>
-							<li><a href="#"><i class="icon-youtube-play"></i></a></li>
-							<li><a href="#"><i class="icon-linkedin"></i></a></li>
+							<li><a href="{{ url('/') }}"><i class="icon-facebook"></i></a></li>
+							<li><a href="{{ url('/') }}"><i class="icon-twitter"></i></a></li>
+							<li><a href="{{ url('/') }}"><i class="icon-google"></i></a></li>
+							<li><a href="{{ url('/') }}"><i class="icon-instagram"></i></a></li>
+							<li><a href="{{ url('/') }}"><i class="icon-pinterest"></i></a></li>
+							<li><a href="{{ url('/') }}"><i class="icon-vimeo"></i></a></li>
+							<li><a href="{{ url('/') }}"><i class="icon-youtube-play"></i></a></li>
+							<li><a href="{{ url('/') }}"><i class="icon-linkedin"></i></a></li>
 						</ul>
-						<p>© Citytours 2015</p>
+						<p>© ShweCargo 2017</p>
 					</div>
 				</div>
 			</div><!-- End row -->
 		</div><!-- End container -->
 	</footer><!-- End footer -->
 
-<div id="toTop"></div><!-- Back to top button -->
+	<div id="toTop"></div><!-- Back to top button -->
 
 	<!-- Search Menu -->
 	<div class="search-overlay-menu">
 		<span class="search-overlay-close"><i class="icon_set_1_icon-77"></i></span>
-		<form role="search" id="searchform" method="get">
+		{!! Form::open(array('route' => 'lot-search','method'=>'POST', 'role' => 'search', 'class' => 'form-horizontal form-groups-bordered validate', 'id' => 'searchform')) !!}
+
 			<input value="" name="q" type="search" placeholder="Search..." />
 			<button type="submit"><i class="icon_set_1_icon-78"></i>
 			</button>
-		</form>
+		{!! Form::close() !!}
 	</div><!-- End Search Menu -->
 
 	<style>

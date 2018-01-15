@@ -317,17 +317,17 @@
 
 @section('my-script')
 	<!-- Imported styles on this page -->
-	<link rel="stylesheet" href="assets/js/selectboxit/jquery.selectBoxIt.css">
+	<link rel="stylesheet" href="{{ asset('assets/js/selectboxit/jquery.selectBoxIt.css') }}">
 
 	<!-- Imported scripts on this page -->
-	<script src="assets/js/jquery.bootstrap.wizard.min.js"></script>
-	<script src="assets/js/jquery.validate.min.js"></script>
-	<script src="assets/js/jquery.inputmask.bundle.js"></script>
-	<script src="assets/js/selectboxit/jquery.selectBoxIt.min.js"></script>
-	<script src="assets/js/bootstrap-datepicker.js"></script>
-	<script src="assets/js/bootstrap-switch.min.js"></script>
-	<script src="assets/js/jquery.multi-select.js"></script>
-	<script src="assets/js/neon-chat.js"></script>
+	<script src="{{ asset('assets/js/jquery.bootstrap.wizard.min.js') }}"></script>
+	<script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
+	<script src="{{ asset('assets/js/jquery.inputmask.bundle.js') }}"></script>
+	<script src="{{ asset('assets/js/selectboxit/jquery.selectBoxIt.min.js') }}"></script>
+	<script src="{{ asset('assets/js/bootstrap-datepicker.js') }}"></script>
+	<script src="{{ asset('assets/js/bootstrap-switch.min.js') }}"></script>
+	<script src="{{ asset('assets/js/jquery.multi-select.js') }}"></script>
+	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
 
 @stop
 

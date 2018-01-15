@@ -163,22 +163,22 @@
 							</div>
 
 							<ul>
-								<li @if($status == 0) class="complete" @endif>
+								<li @if($status == 0) class="completed" @endif>
 									<a href="#tab1" data-toggle="tab">
 										<span>1</span>Sender Office (Start Point)
 									</a>
 								</li>
-								<li @if($status >= 1) class="complete" @elseif($status == 0) class="active" @endif>
+								<li @if($status >= 1) class="completed" @elseif($status == 0) class="active" @endif>
 									<a href="#tab2" data-toggle="tab">
 										<span>2</span>On Boarding
 									</a>
 								</li>
-								<li @if($status >= 2) class="complete" @elseif($status == 1) class="active" @endif>
+								<li @if($status >= 2) class="completed" @elseif($status == 1) class="active" @endif>
 									<a href="#tab3" data-toggle="tab">
 										<span>3</span>Destination Office (Ready Collect)
 									</a>
 								</li>
-								<li @if($status >= 3) class="complete" @elseif($status == 2) class="active" @endif>
+								<li @if($status >= 3) class="completed" @elseif($status == 2) class="active" @endif>
 									<a href="#tab4" data-toggle="tab">
 										<span>4</span>Collected
 									</a>
@@ -220,17 +220,17 @@
 
 @section('my-script')
 	<!-- Imported styles on this page -->
-	<link rel="stylesheet" href="assets/js/selectboxit/jquery.selectBoxIt.css">
+	<link rel="stylesheet" href="{{ asset('assets/js/selectboxit/jquery.selectBoxIt.css') }}">
 
 	<!-- Imported scripts on this page -->
-	<script src="assets/js/jquery.bootstrap.wizard.min.js"></script>
-	<script src="assets/js/jquery.validate.min.js"></script>
-	<script src="assets/js/jquery.inputmask.bundle.js"></script>
-	<script src="assets/js/selectboxit/jquery.selectBoxIt.min.js"></script>
-	<script src="assets/js/bootstrap-datepicker.js"></script>
-	<script src="assets/js/bootstrap-switch.min.js"></script>
-	<script src="assets/js/jquery.multi-select.js"></script>
-	<script src="assets/js/neon-chat.js"></script>
+	<script src="{{ asset('assets/js/jquery.bootstrap.wizard.min.js') }}"></script>
+	<script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
+	<script src="{{ asset('assets/js/jquery.inputmask.bundle.js') }}"></script>
+	<script src="{{ asset('assets/js/selectboxit/jquery.selectBoxIt.min.js') }}"></script>
+	<script src="{{ asset('assets/js/bootstrap-datepicker.js') }}"></script>
+	<script src="{{ asset('assets/js/bootstrap-switch.min.js') }}"></script>
+	<script src="{{ asset('assets/js/jquery.multi-select.js') }}"></script>
+	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
 
 @stop
 
