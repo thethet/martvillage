@@ -625,10 +625,12 @@
 				}
 			});
 
-			$('.price_id').attr('disabled', true);
-			$('#state_id').attr('disabled', true);
-			$('#to_country_id').attr('disabled', true);
-			$('#to_state_id').attr('disabled', true);
+			calculateTotal();
+
+			$('.price_id').attr('readonly', true);
+			$('#state_id').attr('readonly', true);
+			$('#to_country_id').attr('readonly', true);
+			$('#to_state_id').attr('readonly', true);
 
 			$('a#back').hide();
 
@@ -764,11 +766,11 @@
 						stateSelect.children().remove().end().append(html);
 					}
 				});
-				$('#state_id').attr('disabled', false);
+				$('#state_id').attr('readonly', false);
 			});
 
 			$("#state_id").change(function(event) {
-				$('#to_country_id').attr('disabled', false);
+				$('#to_country_id').attr('readonly', false);
 
 				var countryId = $('#to_country_id').val();
 				var fromStateId = $('#state_id').val();
@@ -821,7 +823,7 @@
 					}
 				});
 
-				$('#to_state_id').attr('disabled', false);
+				$('#to_state_id').attr('readonly', false);
 			});
 
 			$("#to_state_id").change(function(event) {
@@ -856,7 +858,7 @@
 						stateSelect.children().remove().end().append(html);
 					}
 				});
-				$('.price_id').attr('disabled', false);
+				$('.price_id').attr('readonly', false);
 			});
 
 			$("#member_no").focusout(function(){

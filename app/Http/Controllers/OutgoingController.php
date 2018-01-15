@@ -77,7 +77,7 @@ class OutgoingController extends Controller {
 		}
 
 		if (Auth::user()->hasRole('administrator')) {
-			$outgoingList = $query->paginate(5);
+			$outgoingList = $query->orderBy('id', 'DESC')->paginate(5);
 
 		} elseif (Auth::user()->hasRole('owner')) {
 			$outgoingList = $query->where('company_id', Auth::user()->company_id)->paginate(5);

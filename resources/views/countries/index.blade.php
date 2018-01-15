@@ -140,6 +140,7 @@
 								<th>Country Name</th>
 								<th>Country Code</th>
 								<th>Description</th>
+								<th>Total State/Cities</th>
 								<th width="15%">Action</th>
 							</tr>
 						</thead>
@@ -150,16 +151,19 @@
 								<td>{{ $country->country_name }}</td>
 								<td>{{ $country->country_code }}</td>
 								<td>{{ $country->description }}</td>
+								<td>{{ $cityCountList[$country->id] }}</td>
 								<td>
 									<a href="{{ url('countries/'. $country->id) }}" class="btn btn-info btn-sm" title="Detail">
 										<i class="entypo-eye"></i>
 									</a>
 
+									@if($cityCountList[$country->id] == 0)
 									@permission('country-delete')
 										<a href="#" class="btn btn-danger btn-sm destroy-by-company" id="{{ $country->id }}" title="Delete">
 											<i class="entypo-trash"></i>
 										</a>
 									@endpermission
+									@endif
 								</td>
 							</tr>
 							@endforeach

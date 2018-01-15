@@ -14,6 +14,7 @@ class CreateTblPriceTitles extends Migration {
 			$table->increments('id');
 			$table->integer('company_id');
 			$table->string('title_name');
+			$table->integer('total_price');
 			$table->enum('deleted', ['N', 'Y']);
 			$table->integer('created_by');
 			$table->integer('updated_by');

@@ -69,7 +69,7 @@ class RoleController extends Controller {
 		]);
 
 		$role               = new Role();
-		$role->company_id   = $request->input('company_id');
+		$role->company_id   = Auth::user()->company_id;
 		$role->name         = $request->input('name');
 		$role->display_name = $request->input('display_name');
 		$role->description  = $request->input('description');
@@ -137,7 +137,7 @@ class RoleController extends Controller {
 		]);
 
 		$role               = Role::find($id);
-		$role->company_id   = $request->input('company_id');
+		$role->company_id   = Auth::user()->company_id;
 		$role->display_name = $request->input('display_name');
 		$role->description  = $request->input('description');
 		$role->save();

@@ -10,7 +10,7 @@
 	<meta name="author" content="">
 	<link rel="icon" href="{{ asset('assets/images/favicon.ico') }}">
 
-	<title>MART VILLAGE</title>
+	<title>SHWECARGO</title>
 
 	<!-- Bootstrap core CSS -->
 	<link href="{{ asset('assets/css/bootstrap.css') }}" rel="stylesheet">

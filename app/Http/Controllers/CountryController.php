@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use App\Country;
+use App\State;
 use Auth;
 use Illuminate\Http\Request;
 use Session;
@@ -26,15 +27,26 @@ class CountryController extends Controller {
 	public function index(Request $request) {
 		$myCompany     = Company::find(Auth::user()->company_id);
 		$countryIdList = array();
+		$stateIdList   = array();
 		if (count($myCompany) > 0) {
 			$countryIds = $myCompany->country;
 			foreach ($countryIds as $country) {
 				$countryIdList[] = $country->id;
 			}
 
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
+
 		}
 
-		$countries = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->paginate(10);
+		$countries     = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->paginate(10);
+		$cityCountList = array();
+		foreach ($countries as $country) {
+			$cityCount                   = State::whereIn('id', $stateIdList)->where('country_id', $country->id)->where('deleted', 'N')->groupBy('country_id')->count();
+			$cityCountList[$country->id] = $cityCount;
+		}
 
 		$total       = $countries->total();
 		$perPage     = $countries->perPage();
@@ -49,7 +61,7 @@ class CountryController extends Controller {
 		$allLastPage    = $allCountries->lastPage();
 		$allLastItem    = $allCountries->lastItem();
 
-		return view('countries.index', ['countries' => $countries, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'allCountries' => $allCountries, 'allTotal' => $allTotal, 'allPerPage' => $allPerPage, 'allCurrentPage' => $allCurrentPage, 'allLastPage' => $allLastPage, 'allLastItem' => $allLastItem, 'countryIdList' => $countryIdList])->with('i', ($request->get('page', 1) - 1) * 10)->with('a', ($request->get('apage', 1) - 1) * 10);
+		return view('countries.index', ['countries' => $countries, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'allCountries' => $allCountries, 'allTotal' => $allTotal, 'allPerPage' => $allPerPage, 'allCurrentPage' => $allCurrentPage, 'allLastPage' => $allLastPage, 'allLastItem' => $allLastItem, 'countryIdList' => $countryIdList, 'cityCountList' => $cityCountList])->with('i', ($request->get('page', 1) - 1) * 10)->with('a', ($request->get('apage', 1) - 1) * 10);
 	}
 
 	/**

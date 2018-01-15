@@ -69,7 +69,11 @@
 							<td>{{ strtoupper($member->name) }}</td>
 							<td>{{ $member->member_no }}</td>
 							<td>{{ $member->email }}</td>
-							<td>{{ $offerList[$member->member_offers_id] }}</td>
+							<td>
+								@if($member->member_offers_id > 0)
+									{{ $offerList[$member->member_offers_id] }}
+								@endif
+							</td>
 							<td>{{ $member->contact_no }}</td>
 							<td>{{ $member->address }}</td>
 							@if(Auth::user()->hasRole('administrator'))

@@ -187,11 +187,22 @@ class PriceController extends Controller {
 		$titleData['created_by'] = Auth::user()->id;
 		$title                   = PriceTitle::where('company_id', $request->company_id)->where('title_name', $request->title_name)->first();
 		if (!$title) {
-			$title = PriceTitle::create($titleData);
+			$titleData['total_price'] = 1;
+			$title                    = PriceTitle::create($titleData);
+		} else {
+			$title->increment('total_cities');
 		}
 
-		$data['title_id'] = $title->id;
-		Price::create($data);
+		$price = Price::where('company_id', $request->company_id)->where('title_name', $request->title_name)
+			->where('from_country', $request->from_country)->where('from_state', $request->from_state)
+			->where('to_country', $request->to_country)->where('to_state', $request->to_state)
+			->first();
+		if (!$price) {
+			$data['title_id'] = $title->id;
+			$price            = Price::create($data);
+		} else {
+			$price->update($data);
+		}
 
 		return redirect()->route('prices.index')
 			->with('success', 'Price created successfully');
@@ -323,7 +334,16 @@ class PriceController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id) {
-		Price::find($id)->update(['deleted' => 'Y']);
+		$price = Price::find($id);
+		$price->update(['deleted' => 'Y']);
+
+		$priceTitle = PriceTitle::find($price->title_id);
+
+		if ($priceTitle->total_price == 0) {
+			$priceTitle->update(['deleted' => 'Y']);
+		} else {
+			$priceTitle->decrement('total_price');
+		}
 
 		Session::flash('success', 'Price deleted successfully');
 		$response = array('status' => 'success', 'url' => 'prices');

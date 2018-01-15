@@ -4,7 +4,16 @@
 			<!-- logo -->
 			<div class="logo">
 				<a href="{{ url("admin/dashboard") }}">
-					<img src="{{ asset('assets/images/shwe-cargo.png') }}" width="120" alt="" />
+					@if(Auth::user()->company_id)
+						<?php
+							$companyLogo = App\Company::where('id', Auth::user()->company_id)->pluck('logo');
+						?>
+						@if($companyLogo[0])
+							<img src="{{ asset('uploads/logos/' . $companyLogo[0]) }}" width="120" alt="" />
+						@else
+							<img src="{{ asset('assets/images/shwe-cargo.png') }}" width="120" alt="" />
+						@endif
+					@endif
 				</a>
 			</div>
 

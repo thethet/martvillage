@@ -10,7 +10,7 @@
 
 	<link rel="icon" href="{{ asset('assets/images/favicon.ico') }}">
 
-	<title>CARGO | @yield('page-title')</title>
+	<title>SHWECARGO | @yield('page-title')</title>
 
 	<link rel="stylesheet" href="{{ asset('assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('assets/css/font-icons/entypo/css/entypo.css') }}">
@@ -50,26 +50,26 @@
 	</div>
 
 
-		<!-- Bottom scripts (common) -->
-		<script src="{{ asset('assets/js/gsap/TweenMax.min.js') }}"></script>
-		<script src="{{ asset('assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js') }}"></script>
-		<script src="{{ asset('assets/js/bootstrap.js') }}"></script>
-		<script src="{{ asset('assets/js/joinable.js') }}"></script>
-		<script src="{{ asset('assets/js/resizeable.js') }}"></script>
-		<script src="{{ asset('assets/js/neon-api.js') }}"></script>
+	<!-- Bottom scripts (common) -->
+	<script src="{{ asset('assets/js/gsap/TweenMax.min.js') }}"></script>
+	<script src="{{ asset('assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js') }}"></script>
+	<script src="{{ asset('assets/js/bootstrap.js') }}"></script>
+	<script src="{{ asset('assets/js/joinable.js') }}"></script>
+	<script src="{{ asset('assets/js/resizeable.js') }}"></script>
+	<script src="{{ asset('assets/js/neon-api.js') }}"></script>
 
 
-		<!-- Imported scripts on this page -->
-		<script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
-		<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
+	<!-- Imported scripts on this page -->
+	<script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
+	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
 
 
-		<!-- JavaScripts initializations and stuff -->
-		<script src="{{ asset('assets/js/neon-custom.js') }}"></script>
+	<!-- JavaScripts initializations and stuff -->
+	<script src="{{ asset('assets/js/neon-custom.js') }}"></script>
 
 
-		<!-- Demo Settings -->
-		<script src="{{ asset('assets/js/neon-demo.js') }}"></script>
-		@yield('my-script')
-	</body>
-	</html>
+	<!-- Demo Settings -->
+	<script src="{{ asset('assets/js/neon-demo.js') }}"></script>
+	@yield('my-script')
+</body>
+</html>

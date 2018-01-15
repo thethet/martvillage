@@ -21,6 +21,7 @@ class PriceTitle extends Model {
 	protected $fillable = [
 		'company_id',
 		'title_name',
+		'total_price',
 		'deleted',
 		'created_by',
 		'updated_by',

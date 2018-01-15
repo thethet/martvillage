@@ -194,6 +194,7 @@
 								<th>State/City Name</th>
 								<th>State/City Code</th>
 								<th>Description</th>
+								<th>Total Townships</th>
 								<th>Country</th>
 								<th width="15%">Action</th>
 							</tr>
@@ -205,17 +206,22 @@
 								<td>{{ $state->state_name }}</td>
 								<td>{{ $state->state_code }}</td>
 								<td>{{ $state->description }}</td>
+								<td>
+									{{ $twnCountList[$state->id] }}
+								</td>
 								<td>{{ $countryList[$state->country_id] }}</td>
 								<td>
 									<a href="{{ url('states/'. $state->id) }}" class="btn btn-info btn-sm" title="Detail">
 										<i class="entypo-eye"></i>
 									</a>
 
-									@permission('state-delete')
-										<a href="#" class="btn btn-danger btn-sm destroy-by-company" id="{{ $state->id }}" title="Delete">
-											<i class="entypo-trash"></i>
-										</a>
-									@endpermission
+									@if($twnCountList[$state->id] == 0)
+										@permission('state-delete')
+											<a href="#" class="btn btn-danger btn-sm destroy-by-company" id="{{ $state->id }}" title="Delete">
+												<i class="entypo-trash"></i>
+											</a>
+										@endpermission
+									@endif
 								</td>
 							</tr>
 							@endforeach

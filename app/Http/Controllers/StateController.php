@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Company;
 use App\Country;
 use App\State;
+use App\Township;
 use Auth;
 use Illuminate\Http\Request;
 use Session;
@@ -25,9 +26,10 @@ class StateController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$myCompany     = Company::find(Auth::user()->company_id);
-		$countryIdList = array();
-		$stateIdList   = array();
+		$myCompany      = Company::find(Auth::user()->company_id);
+		$countryIdList  = array();
+		$stateIdList    = array();
+		$townshipIdList = array();
 		if (count($myCompany) > 0) {
 			$countryIds = $myCompany->country;
 			foreach ($countryIds as $country) {
@@ -39,6 +41,11 @@ class StateController extends Controller {
 				$stateIdList[] = $stateId->id;
 			}
 
+			$townshipIds = $myCompany->township;
+			foreach ($townshipIds as $townshipId) {
+				$townshipIdList[] = $townshipId->id;
+			}
+
 		}
 		$countryList = Country::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 
@@ -48,6 +55,13 @@ class StateController extends Controller {
 		} else {
 			$states = $query->orderBy('state_name', 'ASC')->paginate(10);
 		}
+
+		$twnCountList = array();
+		foreach ($states as $state) {
+			$twnCount                 = Township::whereIn('id', $townshipIdList)->where('state_id', $state->id)->where('deleted', 'N')->groupBy('state_id')->count();
+			$twnCountList[$state->id] = $twnCount;
+		}
+
 		$total       = $states->total();
 		$perPage     = $states->perPage();
 		$currentPage = $states->currentPage();
@@ -67,7 +81,7 @@ class StateController extends Controller {
 		$allLastPage    = $allStates->lastPage();
 		$allLastItem    = $allStates->lastItem();
 
-		return view('states.index', ['states' => $states, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'countryList' => $countryList, 'allStates' => $allStates, 'allTotal' => $allTotal, 'allPerPage' => $allPerPage, 'allCurrentPage' => $allCurrentPage, 'allLastPage' => $allLastPage, 'allLastItem' => $allLastItem, 'countryIdList' => $countryIdList, 'stateIdList' => $stateIdList])->with('i', ($request->get('page', 1) - 1) * 10)->with('a', ($request->get('apage', 1) - 1) * 10);
+		return view('states.index', ['states' => $states, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'countryList' => $countryList, 'allStates' => $allStates, 'allTotal' => $allTotal, 'allPerPage' => $allPerPage, 'allCurrentPage' => $allCurrentPage, 'allLastPage' => $allLastPage, 'allLastItem' => $allLastItem, 'countryIdList' => $countryIdList, 'stateIdList' => $stateIdList, 'twnCountList' => $twnCountList])->with('i', ($request->get('page', 1) - 1) * 10)->with('a', ($request->get('apage', 1) - 1) * 10);
 	}
 
 	/**

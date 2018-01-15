@@ -153,6 +153,8 @@ class LotInController extends Controller {
 		);
 
 		$this->validate($request, [
+			// 'lots.*.item_name'   => 'required',
+
 			// 'lots.*.barcode'     => 'required|unique:items,barcode',
 			's_contact_no'       => 'required|numeric',
 			// 'member_no'          => 'required|unique:senders,member_no',

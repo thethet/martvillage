@@ -350,9 +350,9 @@
 				}
 			});
 
-			$('#from_city').attr('disabled', true);
-			$('#to_country').attr('disabled', true);
-			$('#to_city').attr('disabled', true);
+			$('#from_city').attr('readonly', true);
+			$('#to_country').attr('readonly', true);
+			$('#to_city').attr('readonly', true);
 
 			$("#from_country").change(function(event) {
 				// Fetch the preselected item, and add to the control
@@ -377,11 +377,11 @@
 					stateSelect.children().remove().end().append(html) ;
 				});
 
-				$('#from_city').attr('disabled', false);
+				$('#from_city').attr('readonly', false);
 			});
 
 			$("#from_city").change(function(event) {
-				$('#to_country').attr('disabled', false);
+				$('#to_country').attr('readonly', false);
 
 				// Fetch the preselected item, and add to the control
 				var countryId = $('#to_country').val();
@@ -431,7 +431,7 @@
 					stateSelect.children().remove().end().append(html) ;
 				});
 
-				$('#to_city').attr('disabled', false);
+				$('#to_city').attr('readonly', false);
 			});
 		});
 	</script>
