@@ -68,7 +68,7 @@ class LotInController extends Controller {
 		$receivers     = Receiver::where('company_id', Auth::user()->company_id)->get();
 		$receiverCount = count($receivers);
 
-		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$companyList = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 
 		return view('lotins.index', ['lotinData' => $lotinData, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'senderList' => $senderList, 'memberList' => $memberList, 'senderContactList' => $senderContactList, 'receiverList' => $receiverList, 'receiverContactList' => $receiverContactList, 'countryList' => $countryList, 'stateList' => $stateList, 'nricCodeList' => $nricCodeList, 'nricTownshipList' => $nricTownshipList, 'receiverCount' => $receiverCount, 'companyList' => $companyList])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
@@ -105,7 +105,7 @@ class LotInController extends Controller {
 			}
 		}
 
-		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$companyList = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 		$stateList   = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 

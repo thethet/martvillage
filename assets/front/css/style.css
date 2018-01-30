@@ -2946,6 +2946,13 @@ ul.list_order li span {
 	position: relative;
 	overflow: hidden;
 	border: 1px solid #fff;
+	height: 240px;
+}
+
+.img_container img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
 }
 
 .tour_container .tour_title {

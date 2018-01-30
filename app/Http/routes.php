@@ -26,6 +26,15 @@ Route::group(['middleware' => 'web'], function () {
 	Route::get('/', ['as' => 'frontend.index', 'uses' => 'FrontEndController@index']);
 	Route::post('lot-search', ['as' => 'lot-search', 'uses' => 'FrontEndController@search']);
 
+	Route::get('/agent-list', ['as' => 'frontend.agent.list', 'uses' => 'FrontEndController@agentList']);
+	Route::get('/agent-list/{id}', ['as' => 'frontend.agent.detail', 'uses' => 'FrontEndController@agentDetail']);
+
+	Route::get('contact-us', ['as' => 'frontend.contact-us', 'uses' => 'FrontEndController@showContactUs']);
+	Route::post('contact-us/mail-sending', ['as' => 'frontend.contact-us.mail-sending', 'uses' => 'FrontEndController@contactMailSending']);
+
+	Route::get('about-us', ['as' => 'frontend.about-us', 'uses' => 'FrontEndController@showAboutUs']);
+	Route::get('how-to-use', ['as' => 'frontend.how-to-use', 'uses' => 'FrontEndController@showHowToUse']);
+
 	Route::get('404', function () {
 		return view('errors.404');
 	});

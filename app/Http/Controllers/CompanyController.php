@@ -303,12 +303,12 @@ class CompanyController extends Controller {
 		}
 	}
 
-/**
- * File Destroy
- *
- * @param ConsultantRequest $request
- * @return static
- */
+	/**
+	 * File Destroy
+	 *
+	 * @param ConsultantRequest $request
+	 * @return static
+	 */
 	public function destroyFile($file) {
 		$fileName = 'uploads/logos/' . $file;
 		if (file_exists($fileName)) {

@@ -154,7 +154,7 @@ class PriceController extends Controller {
 			}
 		}
 
-		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$companyList = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 		$stateList   = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
@@ -239,7 +239,7 @@ class PriceController extends Controller {
 			}
 		}
 
-		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$companyList = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 		$stateList   = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 

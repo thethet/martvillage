@@ -45,7 +45,7 @@ class CurrencyController extends Controller {
 		$lastPage    = $currencies->lastPage();
 		$lastItem    = $currencies->lastItem();
 
-		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$companyList = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 
 		return view('currencies.index', ['currencies' => $currencies, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'countryList' => $countryList, 'companyList' => $companyList])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
@@ -98,7 +98,7 @@ class CurrencyController extends Controller {
 	 * @return Response
 	 */
 	public function show($id) {
-		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$companyList = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 
 		$myCompany     = Company::find(Auth::user()->company_id);
 		$countryIdList = array();

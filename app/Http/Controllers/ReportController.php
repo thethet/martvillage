@@ -74,7 +74,7 @@ class ReportController extends Controller {
 				$townshipIdList[] = $townshipId->id;
 			}
 		}
-		$companyList  = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$companyList  = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$countryList  = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 		$stateList    = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 		$townshipList = Township::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
@@ -185,7 +185,7 @@ class ReportController extends Controller {
 				$townshipIdList[] = $townshipId->id;
 			}
 		}
-		$companyList  = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$companyList  = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$countryList  = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 		$stateList    = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 		$townshipList = Township::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
@@ -354,7 +354,7 @@ class ReportController extends Controller {
 				$townshipIdList[] = $townshipId->id;
 			}
 		}
-		$companyList  = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$companyList  = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$countryList  = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 		$stateList    = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 		$townshipList = Township::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
@@ -445,7 +445,7 @@ class ReportController extends Controller {
 				$townshipIdList[] = $townshipId->id;
 			}
 		}
-		$companyList  = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$companyList  = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$countryList  = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 		$stateList    = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 		$townshipList = Township::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
@@ -537,7 +537,7 @@ class ReportController extends Controller {
 				$townshipIdList[] = $townshipId->id;
 			}
 		}
-		$companyList  = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$companyList  = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$countryList  = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 		$stateList    = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 		$townshipList = Township::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');

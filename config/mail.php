@@ -55,7 +55,7 @@ return [
 	|
 	 */
 
-	'from'       => ['address' => 'msctpteltd@gmail.com', 'name' => 'Cargo Management System'],
+	'from'       => ['address' => null, 'name' => null],
 
 	/*
 	|--------------------------------------------------------------------------

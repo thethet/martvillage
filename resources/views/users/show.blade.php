@@ -218,7 +218,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-suitcase"></i></span>
-										{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'disabled']) !!}
+										{!! Form::text('company_name', $companyList[$user->company_id], ['class' => 'form-control', 'disabled']) !!}
 									</div>
 								</div>
 							</div>

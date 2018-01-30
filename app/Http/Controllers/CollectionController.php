@@ -82,7 +82,7 @@ class CollectionController extends Controller {
 		$lastPage    = $lotins->lastPage();
 		$lastItem    = $lotins->lastItem();
 
-		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$companyList = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$countryList = Country::where('deleted', 'N')->orderBy('country_code', 'ASC')->lists('country_code', 'id');
 		$stateList   = State::where('deleted', 'N')->orderBy('state_code', 'ASC')->lists('state_code', 'id');
 		$request->merge(['incoming_date' => $incomingDate]);
@@ -142,7 +142,7 @@ class CollectionController extends Controller {
 		$lastPage    = $lotins->lastPage();
 		$lastItem    = $lotins->lastItem();
 
-		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$companyList = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$countryList = Country::where('deleted', 'N')->orderBy('country_code', 'ASC')->lists('country_code', 'id');
 		$stateList   = State::where('deleted', 'N')->orderBy('state_code', 'ASC')->lists('state_code', 'id');
 

@@ -63,7 +63,7 @@
 					<br />
 
 					<div class="input-group minimal">
-						<a href="{{ url('admin/dashboard') }}" class="btn btn-orange btn-icon">
+						<a href="{{ url('/') }}" class="btn btn-orange btn-icon">
 							Back
 							<i class="entypo-reply"></i>
 						</a>

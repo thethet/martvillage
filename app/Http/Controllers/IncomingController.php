@@ -60,7 +60,7 @@ class IncomingController extends Controller {
 		$lastPage    = $outgoingList->lastPage();
 		$lastItem    = $outgoingList->lastItem();
 
-		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$companyList = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 
 		return view('incomings.index', ['outgoingList' => $outgoingList, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'companyList' => $companyList])->with('p', ($request->get('page', 1) - 1) * 5);
 	}
@@ -105,7 +105,7 @@ class IncomingController extends Controller {
 				$stateIdList[] = $stateId->id;
 			}
 		}
-		$companyList       = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$companyList       = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$countryList       = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 		$stateList         = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 		$senderList        = Sender::lists('name', 'id');

@@ -104,14 +104,16 @@
 									</tr>
 								</thead>
 								<tbody>
+									<?php $i = 1; ?>
 									@foreach($lotins as $lotin)
 										<?php
 										$items = App\Item::where('lotin_id', $lotin->id)->where('status', 0)->get();
 										$j = 1;
 										?>
 										@foreach($items as $item)
+
 											<tr>
-												<td>{{ $j++ }}</td>
+												<td>{{ $i++ }}</td>
 												<td>{{ $lotin->lot_no }}</td>
 												<td>{{ $senderList[$lotin->sender_id] }}</td>
 												<td>{{ $senderContactList[$lotin->sender_id] }}</td>

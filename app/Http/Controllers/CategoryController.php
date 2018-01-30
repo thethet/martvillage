@@ -24,7 +24,7 @@ class CategoryController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$companyList = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$categories  = Category::where('deleted', 'N')->paginate(10);
 		$total       = $categories->total();
 		$perPage     = $categories->perPage();
@@ -74,7 +74,7 @@ class CategoryController extends Controller {
 	 * @return Response
 	 */
 	public function show($id) {
-		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$companyList = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$category    = Category::find($id);
 
 		return view('categories.show', ['category' => $category, 'companyList' => $companyList]);
