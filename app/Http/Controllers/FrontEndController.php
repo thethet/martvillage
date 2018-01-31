@@ -42,16 +42,16 @@ class FrontEndController extends Controller {
 			return redirect()->route('frontend.index');
 		}
 
-		$countryList = Country::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$stateList   = State::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$countryList = Country::orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList   = State::orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
-		$nricCodeList     = NricCode::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
-		$nricTownshipList = NricTownship::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
+		$nricCodeList     = NricCode::orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
+		$nricTownshipList = NricTownship::orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
 
 		$receivers     = Receiver::get();
 		$receiverCount = count($receivers);
 
-		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->get();
+		$companyList = Company::orderBy('company_name', 'ASC')->get();
 
 		return view('frontend.search', ['lotinData' => $lotinData, 'sender' => $sender, 'receiver' => $receiver, 'countryList' => $countryList, 'stateList' => $stateList, 'nricCodeList' => $nricCodeList, 'nricTownshipList' => $nricTownshipList, 'receiverCount' => $receiverCount, 'companyList' => $companyList]);
 	}

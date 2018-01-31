@@ -632,6 +632,25 @@
 			$('#to_country_id').attr('readonly', true);
 			$('#to_state_id').attr('readonly', true);
 
+			$("#company_id").change(function(){
+				var companyId = $(this).val();
+
+				$.ajax({
+					type: 'GET',
+					url: "{{ url('lotins/search-last-receiver') }}",
+					dataType: 'json',
+					delay: 250,
+					data: {
+						companyId: companyId,
+					}
+					,
+				}).then(function (datas) {
+					if(datas != null) {
+						$('#to-add').val(datas);
+					}
+				});
+			});
+
 			$('a#back').hide();
 
 			$("a#noadd").bind('click', function () {

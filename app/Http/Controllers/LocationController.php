@@ -113,9 +113,9 @@ class LocationController extends Controller {
 		}
 
 		if ($countryId) {
-			$items = State::select(\DB::raw('id as id, state_name as text'))->whereIn('id', $stateIdList)->where('country_id', $countryId)->where('state_name', 'like', "{$search}%")->where('id', '!=', $fromStateId)->orderBy('state_name', 'ASC')->get();
+			$items = State::select(\DB::raw('id as id, state_name as text'))->whereIn('id', $stateIdList)->where('country_id', $countryId)->where('state_name', 'like', "{$search}%")->where('id', '!=', $fromStateId)->orderBy('state_name', 'ASC')->where('deleted', 'N')->get();
 		} else {
-			$items = State::select(\DB::raw('id as id, state_name as text'))->whereIn('id', $stateIdList)->where('state_name', 'like', "{$search}%")->where('id', '!=', $fromStateId)->orderBy('state_name', 'ASC')->get();
+			$items = State::select(\DB::raw('id as id, state_name as text'))->whereIn('id', $stateIdList)->where('state_name', 'like', "{$search}%")->where('id', '!=', $fromStateId)->orderBy('state_name', 'ASC')->where('deleted', 'N')->get();
 		}
 
 		$header = array(
@@ -144,9 +144,9 @@ class LocationController extends Controller {
 		}
 
 		if ($stateId) {
-			$items = Township::select(\DB::raw('id as id, township_name as text'))->whereIn('id', $townshipIdList)->where('state_id', $stateId)->where('township_name', 'like', "{$search}%")->orderBy('township_name', 'ASC')->get();
+			$items = Township::select(\DB::raw('id as id, township_name as text'))->whereIn('id', $townshipIdList)->where('state_id', $stateId)->where('township_name', 'like', "{$search}%")->orderBy('township_name', 'ASC')->where('deleted', 'N')->get();
 		} else {
-			$items = Township::select(\DB::raw('id as id, township_name as text'))->whereIn('id', $townshipIdList)->where('township_name', 'like', "{$search}%")->orderBy('township_name', 'ASC')->get();
+			$items = Township::select(\DB::raw('id as id, township_name as text'))->whereIn('id', $townshipIdList)->where('township_name', 'like', "{$search}%")->orderBy('township_name', 'ASC')->where('deleted', 'N')->get();
 		}
 
 		$header = array(

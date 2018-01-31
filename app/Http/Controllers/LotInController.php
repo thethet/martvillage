@@ -37,14 +37,14 @@ class LotInController extends Controller {
 	 */
 	public function index(Request $request) {
 		if (Auth::user()->hasRole('administrator')) {
-			$lotinData = Lotin::where('deleted', 'N')->paginate(10);
+			$lotinData = Lotin::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
 		} elseif (Auth::user()->hasRole('owner')) {
 			$lotinData = Lotin::where('company_id', Auth::user()->company_id)
-				->where('deleted', 'N')->paginate(10);
+				->where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
 		} else {
 			$lotinData = Lotin::where('company_id', Auth::user()->company_id)
 				->where('from_state', Auth::user()->state_id)
-				->where('deleted', 'N')->paginate(10);
+				->where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
 		}
 		$total       = $lotinData->total();
 		$perPage     = $lotinData->perPage();
@@ -59,11 +59,11 @@ class LotInController extends Controller {
 		$receiverList        = Receiver::lists('name', 'id');
 		$receiverContactList = Receiver::lists('contact_no', 'id');
 
-		$countryList = Country::where('deleted', 'N')->orderBy('country_code', 'ASC')->lists('country_code', 'id');
-		$stateList   = State::where('deleted', 'N')->orderBy('state_code', 'ASC')->lists('state_code', 'id');
+		$countryList = Country::orderBy('country_code', 'ASC')->lists('country_code', 'id');
+		$stateList   = State::orderBy('state_code', 'ASC')->lists('state_code', 'id');
 
-		$nricCodeList     = NricCode::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
-		$nricTownshipList = NricTownship::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
+		$nricCodeList     = NricCode::orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
+		$nricTownshipList = NricTownship::orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
 
 		$receivers     = Receiver::where('company_id', Auth::user()->company_id)->get();
 		$receiverCount = count($receivers);
@@ -105,7 +105,7 @@ class LotInController extends Controller {
 			}
 		}
 
-		$companyList = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 		$stateList   = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
@@ -137,7 +137,7 @@ class LotInController extends Controller {
 		// $receiver      = Receiver::where('company_id', Auth::user()->company_id)->get();
 		$receiverCount = count($receiver);
 		$receiverCount += 1;
-		$receiverLastNo = $receiverLastId . ' of ' . $receiverCount;
+		$receiverLastNo = $receiverCount . ' of ' . $receiverCount;
 
 		return view('lotins.create', ['countryList' => $countryList, 'stateList' => $stateList, 'nricCodeList' => $nricCodeList, 'nricTownshipList' => $nricTownshipList, 'priceList' => $priceList, 'receiveAddressList' => $receiveAddressList, 'logNo' => $logNo, 'receiverLastNo' => $receiverLastNo, 'receiverLastId' => $receiverLastId, 'myCompany' => $myCompany, 'companyList' => $companyList]);
 	}
@@ -180,7 +180,7 @@ class LotInController extends Controller {
 		$size = count($request->lots);
 
 		$user_id    = Auth::user()->id;
-		$company_id = Auth::user()->company_id;
+		$company_id = $request->company_id;
 
 		$senderId = 0;
 		if ($request->s_contact_no || $request->member_no) {
@@ -328,11 +328,11 @@ class LotInController extends Controller {
 			}
 		}
 
-		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$stateList   = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$countryList = Country::whereIn('id', $countryIdList)->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList   = State::whereIn('id', $stateIdList)->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
-		$nricCodeList     = NricCode::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
-		$nricTownshipList = NricTownship::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
+		$nricCodeList     = NricCode::orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
+		$nricTownshipList = NricTownship::orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
 
 		if (Auth::user()->hasRole('administrator')) {
 			$receivers = Receiver::get();
@@ -344,13 +344,13 @@ class LotInController extends Controller {
 		$itemList = Item::where('lotin_id', $id)->get();
 
 		if (Auth::user()->hasRole('administrator')) {
-			$priceList    = Price::where('deleted', 'N')->lists('title_name', 'id');
-			$currencyList = Currency::where('deleted', 'N')->orderBy('id', 'ASC')->lists('type', 'id');
+			$priceList    = Price::lists('title_name', 'id');
+			$currencyList = Currency::orderBy('id', 'ASC')->lists('type', 'id');
 		} else {
-			$priceList    = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('title_name', 'id');
-			$currencyList = Currency::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('id', 'ASC')->lists('type', 'id');
+			$priceList    = Price::where('company_id', Auth::user()->company_id)->lists('title_name', 'id');
+			$currencyList = Currency::where('company_id', Auth::user()->company_id)->orderBy('id', 'ASC')->lists('type', 'id');
 		}
-		$categoryList = Category::where('deleted', 'N')->orderBy('id', 'ASC')->lists('unit', 'id');
+		$categoryList = Category::orderBy('id', 'ASC')->lists('unit', 'id');
 
 		return view('lotins.show', ['lotinData' => $lotinData, 'sender' => $sender, 'receiver' => $receiver, 'countryList' => $countryList, 'stateList' => $stateList, 'nricCodeList' => $nricCodeList, 'nricTownshipList' => $nricTownshipList, 'receiverCount' => $receiverCount, 'itemList' => $itemList, 'priceList' => $priceList, 'categoryList' => $categoryList, 'currencyList' => $currencyList]);
 	}
@@ -372,15 +372,15 @@ class LotInController extends Controller {
 
 		$itemList = Item::where('lotin_id', $id)->get();
 
-		$categoryList = Category::where('deleted', 'N')->orderBy('id', 'ASC')->lists('unit', 'id');
+		$categoryList = Category::orderBy('id', 'ASC')->lists('unit', 'id');
 		if (Auth::user()->hasRole('administrator')) {
-			$priceList          = Price::where('deleted', 'N')->lists('title_name', 'id');
+			$priceList          = Price::lists('title_name', 'id');
+			$currencyList       = Currency::orderBy('id', 'ASC')->lists('type', 'id');
 			$receiveAddressList = Receiver::where('deleted', 'N')->lists('address', 'id');
-			$currencyList       = Currency::where('deleted', 'N')->orderBy('id', 'ASC')->lists('type', 'id');
 			$receiver           = Receiver::get();
 		} else {
-			$priceList          = Price::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('title_name', 'id');
-			$currencyList       = Currency::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->orderBy('id', 'ASC')->lists('type', 'id');
+			$priceList          = Price::where('company_id', Auth::user()->company_id)->lists('title_name', 'id');
+			$currencyList       = Currency::where('company_id', Auth::user()->company_id)->orderBy('id', 'ASC')->lists('type', 'id');
 			$receiveAddressList = Receiver::where('company_id', Auth::user()->company_id)->where('deleted', 'N')->lists('address', 'id');
 			$receiver           = Receiver::where('company_id', Auth::user()->company_id)->get();
 		}
@@ -668,10 +668,10 @@ class LotInController extends Controller {
 		$companyId     = $request->get('companyId');
 
 		if (Auth::user()->hasRole('administrator')) {
-			$items = Price::select(\DB::raw('id as id, title_name as text'))->where('company_id', $companyId)->where('from_country', $fromCountryId)->where('from_state', $fromStateId)->where('to_country', $toCountryId)->where('to_state', $toStateId)->where('title_name', 'like', "{$search}%")->orderBy('title_name', 'ASC')->get();
+			$items = Price::select(\DB::raw('id as id, title_name as text'))->where('company_id', $companyId)->where('from_country', $fromCountryId)->where('from_state', $fromStateId)->where('to_country', $toCountryId)->where('to_state', $toStateId)->where('title_name', 'like', "{$search}%")->where('deleted', 'N')->orderBy('title_name', 'ASC')->get();
 
 		} else {
-			$items = Price::select(\DB::raw('id as id, title_name as text'))->where('company_id', $companyId)->where('from_country', $fromCountryId)->where('from_state', $fromStateId)->where('to_country', $toCountryId)->where('to_state', $toStateId)->where('title_name', 'like', "{$search}%")->orderBy('title_name', 'ASC')->get();
+			$items = Price::select(\DB::raw('id as id, title_name as text'))->where('company_id', $companyId)->where('from_country', $fromCountryId)->where('from_state', $fromStateId)->where('to_country', $toCountryId)->where('to_state', $toStateId)->where('title_name', 'like', "{$search}%")->where('deleted', 'N')->orderBy('title_name', 'ASC')->get();
 
 		}
 
@@ -711,6 +711,28 @@ class LotInController extends Controller {
 		);
 
 		return json_encode($receiver, JSON_UNESCAPED_UNICODE);
+	}
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function searchLastReceiverNo(Request $request) {
+		$companyId = $request->get('companyId');
+
+		$receiver = Receiver::where('company_id', $companyId)->get();
+
+		$receiverCount = count($receiver);
+		$receiverCount += 1;
+		$receiverLastNo = $receiverCount . ' of ' . $receiverCount;
+
+		$header = array(
+			'Content-Type' => 'application/json; charset=UTF-8',
+			'charset'      => 'utf-8',
+		);
+
+		return json_encode($receiverLastNo, JSON_UNESCAPED_UNICODE);
 	}
 
 	/*

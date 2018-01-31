@@ -241,8 +241,8 @@ class OutgoingController extends Controller {
 		}
 
 		$companyList = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
-		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$stateList   = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$countryList = Country::whereIn('id', $countryIdList)->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList   = State::whereIn('id', $stateIdList)->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
 		return view('outgoings.show', ['outgoing' => $outgoing, 'companyList' => $companyList, 'countryList' => $countryList, 'stateList' => $stateList]);
 	}
@@ -335,26 +335,29 @@ class OutgoingController extends Controller {
 
 		$lotinList   = array();
 		$lotinIdList = array();
-		for ($k = 0; $k < 31; $k++) {
-			$startDate = date("Y-m-d", strtotime($start . "+" . $k . " day"));
-			$lotin     = DB::table('lotins as l')
-				->select('l.*', 's.name as sender_name', 'r.name as receiver_name')
-				->leftJoin('senders as s', 's.id', '=', 'l.sender_id')
-				->leftJoin('receivers as r', 'r.id', '=', 'l.receiver_id')
-				->where('l.status', '0')
-				->where('l.deleted', 'N')
-				->where('l.company_id', $outgoing->company_id)
-				->where('l.date', $startDate)
-				->where('l.from_country', $outgoing->from_country)
-				->where('l.from_state', $outgoing->from_city)
-				->where('l.to_country', $outgoing->to_country)
-				->where('l.to_state', $outgoing->to_city)
-				->orderBy('l.date', 'ASC')->get();
-			if (count($lotin) > 0) {
-				$lotinList[$startDate] = $lotin;
 
-				foreach ($lotin as $lin) {
-					$lotinIdList[] = $lin->id;
+		if ($outgoing->dept_date > date("Y-m-d")) {
+			for ($k = 0; $k < 31; $k++) {
+				$startDate = date("Y-m-d", strtotime($start . "+" . $k . " day"));
+				$lotin     = DB::table('lotins as l')
+					->select('l.*', 's.name as sender_name', 'r.name as receiver_name')
+					->leftJoin('senders as s', 's.id', '=', 'l.sender_id')
+					->leftJoin('receivers as r', 'r.id', '=', 'l.receiver_id')
+					->where('l.status', '0')
+					->where('l.deleted', 'N')
+					->where('l.company_id', $outgoing->company_id)
+					->where('l.date', $startDate)
+					->where('l.from_country', $outgoing->from_country)
+					->where('l.from_state', $outgoing->from_city)
+					->where('l.to_country', $outgoing->to_country)
+					->where('l.to_state', $outgoing->to_city)
+					->orderBy('l.date', 'ASC')->get();
+				if (count($lotin) > 0) {
+					$lotinList[$startDate] = $lotin;
+
+					foreach ($lotin as $lin) {
+						$lotinIdList[] = $lin->id;
+					}
 				}
 			}
 		}
@@ -372,7 +375,7 @@ class OutgoingController extends Controller {
 				$stateIdList[] = $stateId->id;
 			}
 		}
-		$companyList       = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$companyList       = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$countryList       = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 		$stateList         = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 		$senderList        = Sender::lists('name', 'id');

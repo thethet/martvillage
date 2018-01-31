@@ -59,9 +59,9 @@ class CompanyController extends Controller {
 			}
 		}
 
-		$countryList  = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$stateList    = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
-		$townshipList = Township::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
+		$countryList  = Country::whereIn('id', $countryIdList)->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList    = State::whereIn('id', $stateIdList)->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$townshipList = Township::whereIn('id', $townshipIdList)->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 
 		return view('companies.index', ['companies' => $companies, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'countryList' => $countryList, 'stateList' => $stateList, 'townshipList' => $townshipList])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
@@ -168,9 +168,9 @@ class CompanyController extends Controller {
 			}
 		}
 
-		$countryList  = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
-		$stateList    = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
-		$townshipList = Township::whereIn('id', $townshipIdList)->where('deleted', 'N')->orderBy('township_name', 'ASC')->lists('township_name', 'id');
+		$countryList  = Country::whereIn('id', $countryIdList)->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$stateList    = State::whereIn('id', $stateIdList)->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$townshipList = Township::whereIn('id', $townshipIdList)->orderBy('township_name', 'ASC')->lists('township_name', 'id');
 
 		return view('companies.show', ['company' => $company, 'countryList' => $countryList, 'stateList' => $stateList, 'townshipList' => $townshipList]);
 	}

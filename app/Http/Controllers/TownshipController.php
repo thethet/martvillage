@@ -39,9 +39,9 @@ class TownshipController extends Controller {
 			}
 		}
 
-		$stateList = State::where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$stateList = State::orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
-		$query = Township::whereIn('id', $townshipIdList)->where('deleted', 'N');
+		$query = Township::whereIn('id', $townshipIdList);
 		if ($request->state_id) {
 			$townships = $query->where('state_id', $request->state_id)->orderBy('township_name', 'ASC')->paginate(10);
 		} else {
@@ -145,7 +145,7 @@ class TownshipController extends Controller {
 			}
 		}
 
-		$stateList = State::whereIn('id', $stateIdList)->where('deleted', 'N')->orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$stateList = State::whereIn('id', $stateIdList)->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
 		$township = Township::find($id);
 

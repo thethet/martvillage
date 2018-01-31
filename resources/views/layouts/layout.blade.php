@@ -10,7 +10,7 @@
 
 	<link rel="icon" href="{{ asset('assets/images/favicon.ico') }}">
 
-	<title>SHWECARGO | @yield('page-title')</title>
+	<title>Shwe Cargo - @yield('page-title')</title>
 
 	<link rel="stylesheet" href="{{ asset('assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('assets/css/font-icons/entypo/css/entypo.css') }}">

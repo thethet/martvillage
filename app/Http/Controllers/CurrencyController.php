@@ -32,7 +32,7 @@ class CurrencyController extends Controller {
 				$countryIdList[] = $country->id;
 			}
 		}
-		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$countryList = Country::whereIn('id', $countryIdList)->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 
 		if (Auth::user()->hasRole('administrator')) {
 			$currencies = Currency::where('deleted', 'N')->paginate(10);
@@ -108,7 +108,7 @@ class CurrencyController extends Controller {
 				$countryIdList[] = $country->id;
 			}
 		}
-		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$countryList = Country::whereIn('id', $countryIdList)->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 		$currency    = Currency::find($id);
 
 		return view('currencies.show', ['currency' => $currency, 'companyList' => $companyList, 'countryList' => $countryList]);

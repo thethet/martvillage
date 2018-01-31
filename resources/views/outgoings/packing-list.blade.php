@@ -150,6 +150,27 @@
 									{{ $outgoing->packing_list }} pcs
 								</label>
 							</div>
+							<br>
+
+							<div class="form-group" id="unpack-code">
+								<div class="col-sm-6">
+									<div class="input-group minimal">
+										<div class="input-group-addon">
+											<i class="fa fa-barcode"></i>
+										</div>
+										{!! Form::text('barcode', null, ['placeholder' => 'Barcode','class' => 'form-control', 'id' => 'unpack-barcode', 'autocomplete' => 'off']) !!}
+									</div>
+								</div>
+
+								<div class="col-sm-2">
+									<div class="input-group minimal">
+										<a href="#" class="btn btn-blue btn-icon" onclick="unpackByBarCode();">
+											Un-Pack
+											<i class="entypo-forward"></i>
+										</a>
+									</div>
+								</div>
+							</div>
 
 							@for($x = 1; $x <= $outgoing->packing_list; $x++)
 								<?php
@@ -248,14 +269,18 @@
 										</div>
 
 										<div class="panel-options">
-											<span id="kg">0</span> kg
-											&nbsp;|&nbsp;
-											<span id="ft">0</span> ft<sup>3</sup>
-											&nbsp;|&nbsp;
-											<span id="ins">0</span> Ins
-											&nbsp;|&nbsp;
-											<span id="docs">0</span> Docs
-											&nbsp;|&nbsp;
+
+											@foreach($categories as $category)
+												@if($categoryList[$category->id] == '%')
+													<span id="ins">0</span> {{ 'Ins' }}
+												@elseif($categoryList[$category->id] == 'ft3')
+													<span id="ft">0</span> {{ 'ft' }}<sup>3</sup>
+												@else
+													<span id="{{ $categoryList[$category->id] }}">0</span> {{ $categoryList[$category->id] }}
+												@endif
+												&nbsp;|&nbsp;
+											@endforeach
+
 											<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
 										</div>
 									</div>
@@ -493,6 +518,7 @@
 			});
 
 			$("#move-pack-right").hide();
+			$("#unpack-code").hide();
 			$('#save-btn').hide();
 
 			$("#move-pack-left").on("click",function(){
@@ -500,6 +526,7 @@
 				var totalFt   = $('#ft').text();
 				var totalDocs = $('#docs').text();
 				var totalIns  = $('#ins').text();
+				var totalPcs = $('#pcs').text();
 
 				$(".move-item-left:checked").each(function(i) {
 					var no       = $(this).val();
@@ -517,8 +544,10 @@
 						totalKg = parseFloat(totalKg) + parseFloat(unit);
 					} else if(symbol == 'ft3') {
 						totalFt = parseFloat(totalFt) + parseFloat(unit);
-					} else if(symbol == 'pcs') {
+					} else if(symbol == 'docs') {
 						totalDocs = parseFloat(totalDocs) + parseFloat(unit);
+					} else if(symbol == 'pcs') {
+						totalPcs = parseFloat(totalPcs) + parseFloat(unit);
 					} else {
 						totalIns = parseFloat(totalIns) + parseFloat(unit);
 					}
@@ -559,7 +588,9 @@
 				$('#ft').text(totalFt);
 				$('#docs').text(totalDocs);
 				$('#ins').text(totalIns);
+				$('#pcs').text(totalPcs);
 				$("#move-pack-right").show();
+				$("#unpack-code").show();
 				$('#save-btn').show();
 			});
 
@@ -568,6 +599,7 @@
 				var totalFt = $('#ft').text();
 				var totalDocs = $('#docs').text();
 				var totalIns = $('#ins').text();
+				var totalPcs = $('#pcs').text();
 
 				var icount = parseFloat($('#icount').val());
 
@@ -582,8 +614,10 @@
 						totalKg = parseFloat(totalKg) - parseFloat(unit);
 					} else if(symbol == 'ft3') {
 						totalFt = parseFloat(totalFt) - parseFloat(unit);
-					} else if(symbol == 'pcs') {
+					} else if(symbol == 'docs') {
 						totalDocs = parseFloat(totalDocs) - parseFloat(unit);
+					} else if(symbol == 'pcs') {
+						totalPcs = parseFloat(totalPcs) - parseFloat(unit);
 					} else {
 						totalIns = parseFloat(totalIns) - parseFloat(unit);
 					}
@@ -594,16 +628,17 @@
 
 					icount = icount - 1;
 					$('#icount').val(icount);
-					console.log('count'+icount)
 				});
 
 				$('#kg').text(totalKg);
 				$('#ft').text(totalFt);
 				$('#docs').text(totalDocs);
 				$('#ins').text(totalIns);
+				$('#pcs').text(totalPcs);
 
 				if(icount == 0) {
 					$("#move-pack-right").hide();
+					$("#unpack-code").hide();
 					$('#save-btn').hide();
 				}
 			});
@@ -617,6 +652,7 @@
 			var totalFt   = $('#ft').text();
 			var totalDocs = $('#docs').text();
 			var totalIns  = $('#ins').text();
+			var totalPcs = $('#pcs').text();
 
 			/*$("input:checkbox[class=move-item-left]").each(function () {
 				console.log("Id: " + $(this).attr("id") + " Value: " + $(this).val() + " Checked: " + $(this).is(":checked"));
@@ -681,8 +717,10 @@
 										totalKg = parseFloat(totalKg) + parseFloat(unit);
 									} else if(symbol == 'ft3') {
 										totalFt = parseFloat(totalFt) + parseFloat(unit);
-									} else if(symbol == 'pcs') {
+									} else if(symbol == 'docs') {
 										totalDocs = parseFloat(totalDocs) + parseFloat(unit);
+									} else if(symbol == 'pcs') {
+										totalPcs = parseFloat(totalPcs) + parseFloat(unit);
 									} else {
 										totalIns = parseFloat(totalIns) + parseFloat(unit);
 									}
@@ -702,11 +740,76 @@
 					$('#ft').text(totalFt);
 					$('#docs').text(totalDocs);
 					$('#ins').text(totalIns);
+					$('#pcs').text(totalPcs);
+
 					$("#move-pack-right").show();
+					$("#unpack-code").show();
 					$('#save-btn').show();
 				}
 
 			});
+		}
+
+		function unpackByBarCode() {
+			var unpackBarcode = $('#unpack-barcode').val();
+
+			var totalKg   = $('#kg').text();
+			var totalFt   = $('#ft').text();
+			var totalDocs = $('#docs').text();
+			var totalIns  = $('#ins').text();
+			var totalPcs = $('#pcs').text();
+
+
+
+			console.log('unpackByBarCode: ' + unpackBarcode)
+
+			var icount = parseFloat($('#icount').val());
+			$("input:checkbox[class=move-item-right]").each(function () {
+				var no = $(this).val();
+				var barcode = $('#right-barcode' + no).val();
+
+				console.log('BarCode: ' + barcode)
+
+				if(unpackBarcode == barcode) {
+					var barcode = $('#right-barcode' + no).val();
+					var unit = $('#right-unit' + no).val();
+					var symbol = $('#right-symbol' + no).val();
+					var splitNo = $('#right-split' + no).val();
+
+					if(symbol == 'kg') {
+						totalKg = parseFloat(totalKg) - parseFloat(unit);
+					} else if(symbol == 'ft3') {
+						totalFt = parseFloat(totalFt) - parseFloat(unit);
+					} else if(symbol == 'docs') {
+						totalDocs = parseFloat(totalDocs) - parseFloat(unit);
+					} else if(symbol == 'pcs') {
+						totalPcs = parseFloat(totalPcs) - parseFloat(unit);
+					} else {
+						totalIns = parseFloat(totalIns) - parseFloat(unit);
+					}
+
+					$(this).closest("tr").remove();
+
+					$('#move-item-left' + no).attr("disabled", false);
+
+					icount = icount - 1;
+					$('#icount').val(icount);
+				}
+
+
+			});
+			$('#unpack-barcode').val('');
+			$('#kg').text(totalKg);
+			$('#ft').text(totalFt);
+			$('#docs').text(totalDocs);
+			$('#ins').text(totalIns);
+			$('#pcs').text(totalPcs);
+
+			if(icount == 0) {
+				$("#move-pack-right").hide();
+				$("#unpack-code").hide();
+				$('#save-btn').hide();
+			}
 		}
 	</script>
 @stop

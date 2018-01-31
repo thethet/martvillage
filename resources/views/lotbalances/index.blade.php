@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('page-title')
-	lotbalance
+	Lot Balance
 @stop
 
 @section('main')
@@ -14,11 +14,11 @@
 				<a href="{{ url('admin/dashboard') }}"><i class="fa fa-home"></i>Home</a>
 			</li>
 			<li class="active">
-				<strong>lotbalance Management</strong>
+				<strong>Lot Balance Management</strong>
 			</li>
 		</ol>
 
-		<h2>lotbalance Management</h2>
+		<h2>Lot Balance Management</h2>
 		<br />
 
 		@if ($message = Session::get('success'))

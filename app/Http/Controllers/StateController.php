@@ -47,7 +47,7 @@ class StateController extends Controller {
 			}
 
 		}
-		$countryList = Country::where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$countryList = Country::orderBy('country_name', 'ASC')->lists('country_name', 'id');
 
 		$query = State::whereIn('id', $stateIdList)->where('deleted', 'N');
 		if ($request->country_id) {
@@ -58,7 +58,7 @@ class StateController extends Controller {
 
 		$twnCountList = array();
 		foreach ($states as $state) {
-			$twnCount                 = Township::whereIn('id', $townshipIdList)->where('state_id', $state->id)->where('deleted', 'N')->groupBy('state_id')->count();
+			$twnCount                 = Township::whereIn('id', $townshipIdList)->where('state_id', $state->id)->groupBy('state_id')->count();
 			$twnCountList[$state->id] = $twnCount;
 		}
 
@@ -160,7 +160,7 @@ class StateController extends Controller {
 				$countryIdList[] = $country->id;
 			}
 		}
-		$countryList = Country::whereIn('id', $countryIdList)->where('deleted', 'N')->orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$countryList = Country::whereIn('id', $countryIdList)->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 
 		$state = State::find($id);
 

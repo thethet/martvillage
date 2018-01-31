@@ -83,8 +83,8 @@ class CollectionController extends Controller {
 		$lastItem    = $lotins->lastItem();
 
 		$companyList = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
-		$countryList = Country::where('deleted', 'N')->orderBy('country_code', 'ASC')->lists('country_code', 'id');
-		$stateList   = State::where('deleted', 'N')->orderBy('state_code', 'ASC')->lists('state_code', 'id');
+		$countryList = Country::orderBy('country_code', 'ASC')->lists('country_code', 'id');
+		$stateList   = State::orderBy('state_code', 'ASC')->lists('state_code', 'id');
 		$request->merge(['incoming_date' => $incomingDate]);
 
 		return view('collections.collect', ['lotins' => $lotins, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'countryList' => $countryList, 'stateList' => $stateList, 'companyList' => $companyList])->with('i', ($request->get('page', 1) - 1) * 10);
@@ -143,8 +143,8 @@ class CollectionController extends Controller {
 		$lastItem    = $lotins->lastItem();
 
 		$companyList = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
-		$countryList = Country::where('deleted', 'N')->orderBy('country_code', 'ASC')->lists('country_code', 'id');
-		$stateList   = State::where('deleted', 'N')->orderBy('state_code', 'ASC')->lists('state_code', 'id');
+		$countryList = Country::orderBy('country_code', 'ASC')->lists('country_code', 'id');
+		$stateList   = State::orderBy('state_code', 'ASC')->lists('state_code', 'id');
 
 		return view('collections.return', ['lotins' => $lotins, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'countryList' => $countryList, 'stateList' => $stateList, 'companyList' => $companyList])->with('i', ($request->get('page', 1) - 1) * 10);
 	}

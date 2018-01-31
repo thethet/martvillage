@@ -37,7 +37,7 @@ class NricTownshipController extends Controller {
 		$lastPage    = $townships->lastPage();
 		$lastItem    = $townships->lastItem();
 
-		$nricCodeList = NricCode::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('description', 'nric_code');
+		$nricCodeList = NricCode::orderBy('nric_code', 'ASC')->lists('description', 'nric_code');
 
 		return view('nric-townships.index', ['townships' => $townships, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'nricCodeList' => $nricCodeList])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
@@ -94,7 +94,7 @@ class NricTownshipController extends Controller {
 	 * @return Response
 	 */
 	public function edit($id) {
-		$nricCodeList = NricCode::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'nric_code');
+		$nricCodeList = NricCode::orderBy('nric_code', 'ASC')->lists('nric_code', 'nric_code');
 
 		$nricTownship = NricTownship::find($id);
 		return view('nric-townships.edit', ['nricTownship' => $nricTownship, 'nricCodeList' => $nricCodeList]);
