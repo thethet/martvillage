@@ -9,7 +9,7 @@
 					<div class="box_style_1">
 						<div class="post nopadding">
 
-							<img src="{{ asset('assets/front/slider1.png') }}" alt="..." style="height: 400px; width: 100%; object-fit: contain; border: 2px solid #f8f8f8; padding: 2px;">
+							<img src="{{ asset('assets/front/about-us.png') }}" alt="..." style="height: 400px; width: 100%; object-fit: contain; border: 2px solid #f8f8f8; padding: 2px;">
 
 							<blockquote class="styled" style="border-left: none;">
 								<h2 class="text-center">{{ strtoupper('about us') }}</h2>
