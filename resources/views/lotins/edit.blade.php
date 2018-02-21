@@ -544,6 +544,67 @@
 				}
 			});
 
+			// Fetch the preselected item, and add to the control
+			var companyId = $('#company_id').val();
+			var countryId = $('#country_id').val();
+			var stateId = $('#state_id').val();
+			$.ajax({
+				type: 'GET',
+				url: "{{ url('states/search-state-country') }}",
+				dataType: 'json',
+				delay: 250,
+				data: {
+					search: '',
+					companyId: companyId,
+					countryId: countryId
+				}
+				,
+			}).then(function (data) {
+				if(data != null) {
+					var html = '<option value="">Select State/City</option>';
+					for (var i = 0, len = data.items.length; i < len; ++i) {
+						if(stateId == data.items[i]['id']) {
+							html += '<option value="' + data.items[i]['id'] + '" selected>' + data.items[i]['text'] + '</option>';
+						} else {
+							html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+						}
+					}
+					$('#state_id').children().remove().end().append(html);
+				}
+			});
+
+			var companyId = $('#company_id').val();
+			var countryId = $('#to_country_id').val();
+			var fromStateId = $('#state_id').val();
+			var toStateId = $('#to_state_id').val();
+			$.ajax({
+				type: 'GET',
+				url: "{{ url('states/search-state-country') }}",
+				dataType: 'json',
+				delay: 250,
+				data: {
+					search: '',
+					companyId: companyId,
+					countryId: countryId,
+					fromStateId: fromStateId
+				}
+				,
+			}).then(function (data) {
+				if(data != null) {
+					var html = '<option value="">Select State/City</option>';
+					for (var i = 0, len = data.items.length; i < len; ++i) {
+						if(toStateId == data.items[i]['id']) {
+							html += '<option value="' + data.items[i]['id'] + '" selected>' + data.items[i]['text'] + '</option>';
+						} else {
+							html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+						}
+					}
+					$('#to_state_id').children().remove().end().append(html);
+				}
+			});
+
+
+
 			$('a#back').hide();
 
 			$("a#noadd").bind('click', function () {
@@ -657,6 +718,7 @@
 
 			$("#country_id").change(function(event) {
 				// Fetch the preselected item, and add to the control
+				var companyId = $('#company_id').val();
 				var countryId = $('#country_id').val();
 				var stateSelect = $('#state_id');
 				$.ajax({
@@ -666,6 +728,7 @@
 					delay: 250,
 					data: {
 						search: '',
+						companyId: companyId,
 						countryId: countryId
 					}
 					,
@@ -684,6 +747,7 @@
 			$("#state_id").change(function(event) {
 				$('#to_country_id').attr('disabled', false);
 
+				var companyId = $('#company_id').val();
 				var countryId = $('#to_country_id').val();
 				var fromStateId = $('#state_id').val();
 				var stateSelect = $('#to_state_id');
@@ -694,6 +758,7 @@
 					delay: 250,
 					data: {
 						search: '',
+						companyId: companyId,
 						countryId: countryId,
 						fromStateId: fromStateId
 					}
@@ -711,6 +776,7 @@
 
 			$("#to_country_id").change(function(event) {
 				// Fetch the preselected item, and add to the control
+				var companyId = $('#company_id').val();
 				var countryId = $('#to_country_id').val();
 				var fromStateId = $('#state_id').val();
 				var stateSelect = $('#to_state_id');
@@ -721,6 +787,7 @@
 					delay: 250,
 					data: {
 						search: '',
+						companyId: companyId,
 						countryId: countryId,
 						fromStateId: fromStateId
 					}

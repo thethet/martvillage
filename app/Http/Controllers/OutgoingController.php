@@ -44,8 +44,8 @@ class OutgoingController extends Controller {
 
 			$previousMonth = date('F Y', strtotime('-1 month', strtotime($currentMonthYear)));
 			$nextMonth     = date('F Y', strtotime('+1 month', strtotime($currentMonthYear)));
-		}else {
-			if($request->currentMonthYear) {
+		} else {
+			if ($request->currentMonthYear) {
 				$currentMonthYear = $request->currentMonthYear;
 			} else {
 				$currentMonthYear = date('F Y');
@@ -70,7 +70,7 @@ class OutgoingController extends Controller {
 		} else {
 			$year  = date('Y', strtotime($currentMonthYear));
 			$month = date('m', strtotime($currentMonthYear));
-			$day   = date('d', strtotime($currentMonthYear));
+			$day   = date('d');
 		}
 
 		$query = Outgoing::where('deleted', 'N')
@@ -81,8 +81,8 @@ class OutgoingController extends Controller {
 			$query = $query->whereDay('dept_date', '=', $day);
 		}
 
-		if(Session::has('theDate')) {
-			$day = Session::get('theDate');
+		if (Session::has('theDate')) {
+			$day   = Session::get('theDate');
 			$query = $query->whereDay('dept_date', '=', $day);
 		}
 

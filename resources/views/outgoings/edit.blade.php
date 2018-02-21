@@ -51,7 +51,7 @@
 										{!! Form::select('company_id', ['' => 'Select Company'] + $companyList->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off']) !!}
 										@else
 											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
-											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
+											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control', 'id' => 'company_id']) !!}
 										@endif
 									</div>
 
@@ -351,6 +351,7 @@
 			});
 
 			// Fetch the preselected item, and add to the control
+			var companyId = $('#company_id').val();
 			var countryId = $('#from_country').val();
 			var fromStateId = $('#from_city').val();
 			$.ajax({
@@ -360,6 +361,7 @@
 				delay: 250,
 				data: {
 					search: '',
+					companyId: companyId,
 					countryId: countryId
 				}
 				,
@@ -377,6 +379,7 @@
 			});
 
 			// Fetch the preselected item, and add to the control
+			var companyId = $('#company_id').val();
 			var countryId = $('#to_country').val();
 			var fromStateId = $('#from_city').val();
 			var toStateId = $('#to_city').val();
@@ -387,6 +390,7 @@
 				delay: 250,
 				data: {
 					search: '',
+					companyId: companyId,
 					countryId: countryId,
 					fromStateId: fromStateId
 				}
@@ -407,6 +411,7 @@
 
 			$("#from_country").change(function(event) {
 				// Fetch the preselected item, and add to the control
+				var companyId = $('#company_id').val();
 				var countryId = $('#from_country').val();
 				var stateSelect = $('#from_city');
 				$.ajax({
@@ -416,6 +421,7 @@
 					delay: 250,
 					data: {
 						search: '',
+						companyId: companyId,
 						countryId: countryId
 					}
 					,
@@ -435,6 +441,7 @@
 				$('#to_country').attr('disabled', false);
 
 				// Fetch the preselected item, and add to the control
+				var companyId = $('#company_id').val();
 				var countryId = $('#to_country').val();
 				var fromStateId = $('#from_city').val();
 				var stateSelect = $('#to_city');
@@ -445,6 +452,7 @@
 					delay: 250,
 					data: {
 						search: '',
+						companyId: companyId,
 						countryId: countryId,
 						fromStateId: fromStateId
 					}
@@ -460,6 +468,7 @@
 
 			$("#to_country").change(function(event) {
 				// Fetch the preselected item, and add to the control
+				var companyId = $('#company_id').val();
 				var countryId = $('#to_country').val();
 				var fromStateId = $('#from_city').val();
 				var stateSelect = $('#to_city');
@@ -470,6 +479,7 @@
 					delay: 250,
 					data: {
 						search: '',
+						companyId: companyId,
 						countryId: countryId,
 						fromStateId: fromStateId
 					}

@@ -57,7 +57,7 @@
 											{!! Form::select('company_id', ['' => 'Select Company'] + $companyList->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off', 'disabled']) !!}
 										@else
 											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
-											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
+											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control', 'id' => 'company_id']) !!}
 										@endif
 									</div>
 
@@ -152,6 +152,31 @@
 					event.preventDefault();
 					return false;
 				}
+			});
+
+			// Fetch the preselected item, and add to the control
+			var companyId = $('#company_id').val();
+			var fromCountryId = $('#from_location').val();
+			$.ajax({
+				type: 'GET',
+				url: "{{ url('countries/search-by-company') }}",
+				dataType: 'json',
+				delay: 250,
+				data: {
+					search: '',
+					companyId: companyId
+				}
+				,
+			}).then(function (data) {
+				var html = '<option value="">Select Country</option>';
+				for (var i = 0, len = data.items.length; i < len; ++i) {
+					if(fromCountryId == data.items[i]['id']) {
+						html += '<option value="' + data.items[i]['id'] + '" selected>' + data.items[i]['text'] + '</option>';
+					} else {
+						html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+					}
+				}
+				$('#from_location').children().remove().end().append(html) ;
 			});
 		});
 	</script>

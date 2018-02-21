@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Company;
+use App\Country;
 use App\State;
 use App\Township;
-use Auth;
 use DB;
 use Illuminate\Http\Request;
 
@@ -92,12 +92,40 @@ class LocationController extends Controller {
 	 *
 	 * @return Response
 	 */
+	public function searchCountryByCompany(Request $request) {
+		$search    = $request->get('search');
+		$companyId = $request->get('companyId');
+
+		$myCompany     = Company::find($companyId);
+		$countryIdList = array();
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
+		}
+
+		$items = Country::select(\DB::raw('id as id, country_name as text'))->whereIn('id', $countryIdList)->where('country_name', 'like', "{$search}%")->orderBy('country_name', 'ASC')->where('deleted', 'N')->get();
+
+		$header = array(
+			'Content-Type' => 'application/json; charset=UTF-8',
+			'charset'      => 'utf-8',
+		);
+		return response()->json(['items' => $items], 200, $header, JSON_UNESCAPED_UNICODE);
+	}
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
 	public function searchByCountry(Request $request) {
 		$search      = $request->get('search');
 		$countryId   = $request->get('countryId');
 		$fromStateId = $request->get('fromStateId');
+		$companyId   = $request->get('companyId');
 
-		$myCompany     = Company::find(Auth::user()->company_id);
+		$myCompany     = Company::find($companyId);
 		$countryIdList = array();
 		$stateIdList   = array();
 		if (count($myCompany) > 0) {
@@ -131,10 +159,11 @@ class LocationController extends Controller {
 	 * @return Response
 	 */
 	public function searchByState(Request $request) {
-		$search  = $request->get('search');
-		$stateId = $request->get('stateId');
+		$search    = $request->get('search');
+		$stateId   = $request->get('stateId');
+		$companyId = $request->get('companyId');
 
-		$myCompany      = Company::find(Auth::user()->company_id);
+		$myCompany      = Company::find($companyId);
 		$townshipIdList = array();
 		if (count($myCompany) > 0) {
 			$townshipIds = $myCompany->township;

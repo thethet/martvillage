@@ -57,13 +57,73 @@
 											{!! Form::select('company_id', ['' => 'Select Company'] + $companyList->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off']) !!}
 										@else
 											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
-											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
+											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control', 'id' => 'company_id']) !!}
 										@endif
 									</div>
 
 									@if ($errors->has('company_id'))
 										<span class="validate-has-error">
 											<strong>{{ $errors->first('company_id') }}</strong>
+										</span>
+									@endif
+								</div>
+							</div>
+
+							<div class="form-group {{ $errors->has('from_country') ? ' has-error' : '' }}">
+								<label class="col-sm-3 control-label">From Location <span class="text-danger">*</span></label>
+
+								<div class="col-sm-4">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-globe"></i></span>
+										{!! Form::select('from_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['class' => 'form-control', 'id' => 'from_country', 'autocomplete' => 'off']) !!}
+									</div>
+
+									@if ($errors->has('from_country'))
+										<span class="validate-has-error">
+											<strong>{{ $errors->first('from_country') }}</strong>
+										</span>
+									@endif
+								</div>
+
+								<div class="col-sm-4">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-location"></i></span>
+										{!! Form::select('from_state', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'form-control', 'id' => 'from_state', 'autocomplete' => 'off']) !!}
+									</div>
+
+									@if ($errors->has('from_state'))
+										<span class="validate-has-error">
+											<strong>{{ $errors->first('from_state') }}</strong>
+										</span>
+									@endif
+								</div>
+							</div>
+
+							<div class="form-group {{ $errors->has('to_country') ? ' has-error' : '' }}">
+								<label class="col-sm-3 control-label">To Location <span class="text-danger">*</span></label>
+
+								<div class="col-sm-4">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-globe"></i></span>
+										{!! Form::select('to_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['class' => 'form-control', 'id' => 'to_country', 'autocomplete' => 'off']) !!}
+									</div>
+
+									@if ($errors->has('to_country'))
+										<span class="validate-has-error">
+											<strong>{{ $errors->first('to_country') }}</strong>
+										</span>
+									@endif
+								</div>
+
+								<div class="col-sm-4">
+									<div class="input-group minimal">
+										<span class="input-group-addon"><i class="entypo-location"></i></span>
+										{!! Form::select('to_state', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'form-control', 'id' => 'to_state', 'autocomplete' => 'off']) !!}
+									</div>
+
+									@if ($errors->has('to_state'))
+										<span class="validate-has-error">
+											<strong>{{ $errors->first('to_state') }}</strong>
 										</span>
 									@endif
 								</div>
@@ -137,66 +197,6 @@
 								</div>
 							</div>
 
-							<div class="form-group {{ $errors->has('from_country') ? ' has-error' : '' }}">
-								<label class="col-sm-3 control-label">From Location <span class="text-danger">*</span></label>
-
-								<div class="col-sm-4">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-globe"></i></span>
-										{!! Form::select('from_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['class' => 'form-control', 'id' => 'from_country', 'autocomplete' => 'off']) !!}
-									</div>
-
-									@if ($errors->has('from_country'))
-										<span class="validate-has-error">
-											<strong>{{ $errors->first('from_country') }}</strong>
-										</span>
-									@endif
-								</div>
-
-								<div class="col-sm-4">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-location"></i></span>
-										{!! Form::select('from_state', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'form-control', 'id' => 'from_state', 'autocomplete' => 'off']) !!}
-									</div>
-
-									@if ($errors->has('from_state'))
-										<span class="validate-has-error">
-											<strong>{{ $errors->first('from_state') }}</strong>
-										</span>
-									@endif
-								</div>
-							</div>
-
-							<div class="form-group {{ $errors->has('to_country') ? ' has-error' : '' }}">
-								<label class="col-sm-3 control-label">To Location <span class="text-danger">*</span></label>
-
-								<div class="col-sm-4">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-globe"></i></span>
-										{!! Form::select('to_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['class' => 'form-control', 'id' => 'to_country', 'autocomplete' => 'off']) !!}
-									</div>
-
-									@if ($errors->has('to_country'))
-										<span class="validate-has-error">
-											<strong>{{ $errors->first('to_country') }}</strong>
-										</span>
-									@endif
-								</div>
-
-								<div class="col-sm-4">
-									<div class="input-group minimal">
-										<span class="input-group-addon"><i class="entypo-location"></i></span>
-										{!! Form::select('to_state', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'form-control', 'id' => 'to_state', 'autocomplete' => 'off']) !!}
-									</div>
-
-									@if ($errors->has('to_state'))
-										<span class="validate-has-error">
-											<strong>{{ $errors->first('to_state') }}</strong>
-										</span>
-									@endif
-								</div>
-							</div>
-
 							<div class="form-group">
 								<label class="col-sm-3 control-label"></label>
 
@@ -247,8 +247,34 @@
 					return false;
 				}
 			});
+			// Fetch the preselected item, and add to the control
+			var companyId = $('#company_id').val();
+			var fromCountryId = $('#from_country').val();
+			$.ajax({
+				type: 'GET',
+				url: "{{ url('countries/search-by-company') }}",
+				dataType: 'json',
+				delay: 250,
+				data: {
+					search: '',
+					companyId: companyId
+				}
+				,
+			}).then(function (data) {
+				var html = '<option value="">Select Country</option>';
+				for (var i = 0, len = data.items.length; i < len; ++i) {
+					if(fromCountryId == data.items[i]['id']) {
+						html += '<option value="' + data.items[i]['id'] + '" selected>' + data.items[i]['text'] + '</option>';
+					} else {
+						html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+					}
+				}
+				$('#from_country').children().remove().end().append(html) ;
+			});
+
 
 			// Fetch the preselected item, and add to the control
+			var companyId = $('#company_id').val();
 			var countryId = $('#from_country').val();
 			var fromStateId = $('#from_state').val();
 			$.ajax({
@@ -258,6 +284,7 @@
 				delay: 250,
 				data: {
 					search: '',
+					companyId: companyId,
 					countryId: countryId
 				}
 				,
@@ -274,6 +301,7 @@
 			});
 
 			// Fetch the preselected item, and add to the control
+			var companyId = $('#company_id').val();
 			var countryId = $('#to_country').val();
 			var toStateId = $('#to_state').val();
 			var fromStateId = $('#from_state').val();
@@ -284,6 +312,7 @@
 				delay: 250,
 				data: {
 					search: '',
+					companyId: companyId,
 					countryId: countryId,
 					fromStateId: fromStateId
 				}
@@ -300,8 +329,32 @@
 				$('#to_state').children().remove().end().append(html) ;
 			});
 
+			var currencyId = $('#currency_id').val();
+			$.ajax({
+				type: 'GET',
+				url: "{{ url('currencies/search-by-from-country') }}",
+				dataType: 'json',
+				delay: 250,
+				data: {
+					search: '',
+					countryId: countryId,
+				}
+				,
+			}).then(function (data) {
+				var html = '<option value="">Select Currency</option>';
+				for (var i = 0, len = data.items.length; i < len; ++i) {
+					if(currencyId == data.items[i]['id']) {
+						html += '<option value="' + data.items[i]['id'] + '" selected>' + data.items[i]['text'] + '</option>';
+					} else {
+						html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+					}
+				}
+				$('#currency_id').children().remove().end().append(html) ;
+			});
+
 			$("#from_country").change(function(event) {
 				// Fetch the preselected item, and add to the control
+				var companyId = $('#company_id').val();
 				var countryId = $('#from_country').val();
 				var stateSelect = $('#from_state');
 				$.ajax({
@@ -311,6 +364,7 @@
 					delay: 250,
 					data: {
 						search: '',
+						companyId: companyId,
 						countryId: countryId
 					}
 					,
@@ -326,6 +380,7 @@
 
 			$("#from_state").change(function(event) {
 				// Fetch the preselected item, and add to the control
+				var companyId = $('#company_id').val();
 				var countryId = $('#to_country').val();
 				var fromStateId = $('#from_state').val();
 				var stateSelect = $('#to_state');
@@ -336,6 +391,7 @@
 					delay: 250,
 					data: {
 						search: '',
+						companyId: companyId,
 						countryId: countryId,
 						fromStateId: fromStateId
 					}
@@ -353,6 +409,7 @@
 
 			$("#to_country").change(function(event) {
 				// Fetch the preselected item, and add to the control
+				var companyId = $('#company_id').val();
 				var countryId = $('#to_country').val();
 				var fromStateId = $('#from_state').val();
 				var stateSelect = $('#to_state');
@@ -363,6 +420,7 @@
 					delay: 250,
 					data: {
 						search: '',
+						companyId: companyId,
 						countryId: countryId,
 						fromStateId: fromStateId
 					}

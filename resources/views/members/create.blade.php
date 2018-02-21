@@ -51,7 +51,7 @@
 										{!! Form::select('company_id', ['' => 'Select Company'] + $companyList->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off']) !!}
 										@else
 											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
-											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
+											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control', 'id' => 'company_id']) !!}
 										@endif
 									</div>
 
@@ -373,6 +373,7 @@
 
 			$("#country_id").change(function(event) {
 				// Fetch the preselected item, and add to the control
+				var companyId = $('#company_id').val();
 				var countryId = $('#country_id').val();
 				var stateSelect = $('#state_id');
 				$.ajax({
@@ -382,6 +383,7 @@
 					delay: 250,
 					data: {
 						search: '',
+						companyId: companyId,
 						countryId: countryId
 					}
 					,
@@ -396,6 +398,7 @@
 
 			$("#state_id").change(function(event) {
 				// Fetch the preselected item, and add to the control
+				var companyId = $('#company_id').val();
 				var stateId = $('#state_id').val();
 				var townshipSelect = $('#township_id');
 				$.ajax({
@@ -405,6 +408,7 @@
 					delay: 250,
 					data: {
 						search: '',
+						companyId: companyId,
 						stateId: stateId
 					}
 					,

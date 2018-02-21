@@ -284,7 +284,7 @@
 										{!! Form::select('company_id', ['' => 'Select Company'] + $companyList->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off']) !!}
 										@else
 											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
-											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
+											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control', 'id' => 'company_id']) !!}
 										@endif
 									</div>
 
@@ -426,6 +426,9 @@
 				}
 			});
 
+			$('#state_id').attr('disabled', true);
+			$('#township_id').attr('disabled', true);
+
 			$("#email").keyup(function(event) {
 				var email = $("#email").val();
 				$("#username").val(email);
@@ -459,8 +462,33 @@
 				});
 			});
 
+			$("#company_id").change(function(event) {
+				// Fetch the preselected item, and add to the control
+				var companyId = $('#company_id').val();
+				var countrySelect = $('#country_id');
+				$.ajax({
+					type: 'GET',
+					url: "{{ url('countries/search-by-company') }}",
+					dataType: 'json',
+					delay: 250,
+					data: {
+						search: '',
+						companyId: companyId
+					}
+					,
+				}).then(function (data) {
+					var html = '<option value="">Select Country</option>';
+					for (var i = 0, len = data.items.length; i < len; ++i) {
+						html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+					}
+					countrySelect.children().remove().end().append(html) ;
+				});
+			});
+
+
 			$("#country_id").change(function(event) {
 				// Fetch the preselected item, and add to the control
+				var companyId = $('#company_id').val();
 				var countryId = $('#country_id').val();
 				var stateSelect = $('#state_id');
 				$.ajax({
@@ -470,7 +498,8 @@
 					delay: 250,
 					data: {
 						search: '',
-						countryId: countryId
+						companyId: companyId,
+						countryId: countryId,
 					}
 					,
 				}).then(function (data) {
@@ -480,10 +509,12 @@
 					}
 					stateSelect.children().remove().end().append(html) ;
 				});
+				$('#state_id').attr('disabled', false);
 			});
 
 			$("#state_id").change(function(event) {
 				// Fetch the preselected item, and add to the control
+				var companyId = $('#company_id').val();
 				var stateId = $('#state_id').val();
 				var townshipSelect = $('#township_id');
 				$.ajax({
@@ -493,7 +524,8 @@
 					delay: 250,
 					data: {
 						search: '',
-						stateId: stateId
+						companyId: companyId,
+						stateId: stateId,
 					}
 					,
 				}).then(function (data) {
@@ -503,6 +535,7 @@
 					}
 					townshipSelect.children().remove().end().append(html) ;
 				});
+				$('#township_id').attr('disabled', false);
 			});
 
 		});

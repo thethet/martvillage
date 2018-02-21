@@ -39,7 +39,8 @@ class TownshipController extends Controller {
 			}
 		}
 
-		$stateList = State::orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$stateList   = State::orderBy('state_name', 'ASC')->lists('state_name', 'id');
+		$myStateList = State::whereIn('id', $stateIdList)->orderBy('state_name', 'ASC')->lists('state_name', 'id');
 
 		$query = Township::whereIn('id', $townshipIdList);
 		if ($request->state_id) {
@@ -53,11 +54,15 @@ class TownshipController extends Controller {
 		$lastPage    = $townships->lastPage();
 		$lastItem    = $townships->lastItem();
 
-		$query = Township::where('deleted', 'N');
+		$allQuery = Township::where('deleted', 'N');
+		if (!Auth::user()->hasRole('administrator')) {
+			$allQuery = $allQuery->whereIn('state_id', $stateIdList);
+		}
+
 		if ($request->all_state_id) {
-			$allTownships = $query->where('state_id', $request->all_state_id)->orderBy('township_name', 'ASC')->paginate(10, ['*'], 'apage');
+			$allTownships = $allQuery->where('state_id', $request->all_state_id)->orderBy('township_name', 'ASC')->paginate(10, ['*'], 'apage');
 		} else {
-			$allTownships = $query->orderBy('township_name', 'ASC')->paginate(10, ['*'], 'apage');
+			$allTownships = $allQuery->orderBy('township_name', 'ASC')->paginate(10, ['*'], 'apage');
 		}
 		$allTotal       = $allTownships->total();
 		$allPerPage     = $allTownships->perPage();
@@ -65,7 +70,7 @@ class TownshipController extends Controller {
 		$allLastPage    = $allTownships->lastPage();
 		$allLastItem    = $allTownships->lastItem();
 
-		return view('townships.index', ['townships' => $townships, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'stateList' => $stateList, 'allTownships' => $allTownships, 'allTotal' => $allTotal, 'allPerPage' => $allPerPage, 'allCurrentPage' => $allCurrentPage, 'allLastPage' => $allLastPage, 'allLastItem' => $allLastItem, 'stateIdList' => $stateIdList, 'townshipIdList' => $townshipIdList])->with('i', ($request->get('page', 1) - 1) * 10)->with('a', ($request->get('apage', 1) - 1) * 10);
+		return view('townships.index', ['townships' => $townships, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'stateList' => $stateList, 'myStateList' => $myStateList, 'allTownships' => $allTownships, 'allTotal' => $allTotal, 'allPerPage' => $allPerPage, 'allCurrentPage' => $allCurrentPage, 'allLastPage' => $allLastPage, 'allLastItem' => $allLastItem, 'stateIdList' => $stateIdList, 'townshipIdList' => $townshipIdList])->with('i', ($request->get('page', 1) - 1) * 10)->with('a', ($request->get('apage', 1) - 1) * 10);
 	}
 
 	/**

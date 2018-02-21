@@ -171,7 +171,7 @@
 								<div class="input-group-addon">
 									<i class="entypo-search"></i>
 								</div>
-								{!! Form::select('country_id', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'country_id', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+								{!! Form::select('country_id', ['' => 'Select Country'] + $myCountryList->toArray(), null, ['id'=>'country_id', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
 							</div>
 						</div>
 

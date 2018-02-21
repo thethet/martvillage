@@ -172,4 +172,22 @@ class CurrencyController extends Controller {
 
 		return response()->json($response);
 	}
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function searchByFromCountry(Request $request) {
+		$search    = $request->get('search');
+		$countryId = $request->get('countryId');
+
+		$items = Currency::select(\DB::raw('id as id, type as text'))->where('id', $countryId)->where('type', 'like', "{$search}%")->orderBy('type', 'ASC')->where('deleted', 'N')->get();
+
+		$header = array(
+			'Content-Type' => 'application/json; charset=UTF-8',
+			'charset'      => 'utf-8',
+		);
+		return response()->json(['items' => $items], 200, $header, JSON_UNESCAPED_UNICODE);
+	}
 }

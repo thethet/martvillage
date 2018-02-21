@@ -764,6 +764,7 @@
 
 			$("#country_id").change(function(event) {
 				// Fetch the preselected item, and add to the control
+				var companyId = $('#company_id').val();
 				var countryId = $('#country_id').val();
 				var stateSelect = $('#state_id');
 				$.ajax({
@@ -773,6 +774,7 @@
 					delay: 250,
 					data: {
 						search: '',
+						companyId: companyId,
 						countryId: countryId
 					}
 					,
@@ -791,6 +793,7 @@
 			$("#state_id").change(function(event) {
 				$('#to_country_id').attr('readonly', false);
 
+				var companyId = $('#company_id').val();
 				var countryId = $('#to_country_id').val();
 				var fromStateId = $('#state_id').val();
 				var stateSelect = $('#to_state_id');
@@ -801,6 +804,7 @@
 					delay: 250,
 					data: {
 						search: '',
+						companyId: companyId,
 						countryId: countryId,
 						fromStateId: fromStateId
 					}
@@ -818,6 +822,7 @@
 
 			$("#to_country_id").change(function(event) {
 				// Fetch the preselected item, and add to the control
+				var companyId = $('#company_id').val();
 				var countryId = $('#to_country_id').val();
 				var fromStateId = $('#state_id').val();
 				var stateSelect = $('#to_state_id');
@@ -828,6 +833,7 @@
 					delay: 250,
 					data: {
 						search: '',
+						companyId: companyId,
 						countryId: countryId,
 						fromStateId: fromStateId
 					}
@@ -852,7 +858,7 @@
 				var fromStateId = $('#state_id').val();
 				var toCountryId = $('#to_country_id').val();
 				var toStateId = $('#to_state_id').val();
-				var stateSelect = $('.price_id');
+				var priceSelect = $('.price_id');
 				var companyId = $('#company_id').val();
 				$.ajax({
 					type: 'GET',
@@ -874,7 +880,7 @@
 						for (var i = 0, len = data.items.length; i < len; ++i) {
 							html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
 						}
-						stateSelect.children().remove().end().append(html);
+						priceSelect.children().remove().end().append(html);
 					}
 				});
 				$('.price_id').attr('readonly', false);

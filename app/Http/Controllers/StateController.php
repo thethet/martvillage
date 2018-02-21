@@ -47,7 +47,8 @@ class StateController extends Controller {
 			}
 
 		}
-		$countryList = Country::orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$countryList   = Country::orderBy('country_name', 'ASC')->lists('country_name', 'id');
+		$myCountryList = Country::whereIn('id', $countryIdList)->orderBy('country_name', 'ASC')->lists('country_name', 'id');
 
 		$query = State::whereIn('id', $stateIdList)->where('deleted', 'N');
 		if ($request->country_id) {
@@ -69,6 +70,10 @@ class StateController extends Controller {
 		$lastItem    = $states->lastItem();
 
 		$allQuery = State::where('deleted', 'N');
+		if (!Auth::user()->hasRole('administrator')) {
+			$allQuery = $allQuery->whereIn('country_id', $countryIdList);
+		}
+
 		if ($request->all_country_id) {
 			$allStates = $allQuery->where('country_id', $request->all_country_id)->orderBy('state_name', 'ASC')->paginate(10, ['*'], 'apage');
 		} else {
@@ -81,7 +86,7 @@ class StateController extends Controller {
 		$allLastPage    = $allStates->lastPage();
 		$allLastItem    = $allStates->lastItem();
 
-		return view('states.index', ['states' => $states, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'countryList' => $countryList, 'allStates' => $allStates, 'allTotal' => $allTotal, 'allPerPage' => $allPerPage, 'allCurrentPage' => $allCurrentPage, 'allLastPage' => $allLastPage, 'allLastItem' => $allLastItem, 'countryIdList' => $countryIdList, 'stateIdList' => $stateIdList, 'twnCountList' => $twnCountList])->with('i', ($request->get('page', 1) - 1) * 10)->with('a', ($request->get('apage', 1) - 1) * 10);
+		return view('states.index', ['states' => $states, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'countryList' => $countryList, 'myCountryList' => $myCountryList, 'allStates' => $allStates, 'allTotal' => $allTotal, 'allPerPage' => $allPerPage, 'allCurrentPage' => $allCurrentPage, 'allLastPage' => $allLastPage, 'allLastItem' => $allLastItem, 'countryIdList' => $countryIdList, 'stateIdList' => $stateIdList, 'twnCountList' => $twnCountList])->with('i', ($request->get('page', 1) - 1) * 10)->with('a', ($request->get('apage', 1) - 1) * 10);
 	}
 
 	/**

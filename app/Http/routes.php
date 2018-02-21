@@ -84,9 +84,21 @@ Route::group(['middleware' => 'web'], function () {
 	| This is the route for Country, States and Township Models CRUD
 	|
 	 */
+	Route::get('countries/search-by-company', ['as' => 'states.search.country', 'uses' => 'LocationController@searchCountryByCompany']);
+
 	Route::get('states/search-state-country', ['as' => 'states.search.statecountry', 'uses' => 'LocationController@searchByCountry']);
 
 	Route::get('townships/search-township-state', ['as' => 'townships.search.townshipstate', 'uses' => 'LocationController@searchByState']);
+
+	/*
+	|--------------------------------------------------------------------------
+	| Currency Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Currency Model CRUD
+	|
+	 */
+	Route::get('currencies/search-by-from-country', ['as' => 'currencies.search.by.country', 'uses' => 'CurrencyController@searchByFromCountry']);
 
 	/*
 	|--------------------------------------------------------------------------

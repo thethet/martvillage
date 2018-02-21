@@ -51,7 +51,7 @@
 										{!! Form::select('company_id', ['' => 'Select Company'] + $companyList->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off']) !!}
 										@else
 											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
-											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
+											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control', 'id' => 'company_id']) !!}
 										@endif
 									</div>
 
@@ -348,6 +348,63 @@
 				}
 			});
 
+			// Fetch the preselected item, and add to the control
+			var companyId = $('#company_id').val();
+			var countryId = $('#country_id').val();
+			var stateId = $('#state_id').val();
+			$.ajax({
+				type: 'GET',
+				url: "{{ url('states/search-state-country') }}",
+				dataType: 'json',
+				delay: 250,
+				data: {
+					search: '',
+					companyId: companyId,
+					countryId: countryId
+				}
+				,
+			}).then(function (data) {
+				var html = '<option value="">Select State/City</option>';
+				for (var i = 0, len = data.items.length; i < len; ++i) {
+					if(stateId == data.items[i]['id']) {
+						html += '<option value="' + data.items[i]['id'] + '" selected>' + data.items[i]['text'] + '</option>';
+					} else {
+						html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+					}
+				}
+				$('#state_id').children().remove().end().append(html) ;
+			});
+
+
+			// Fetch the preselected item, and add to the control
+			var companyId = $('#company_id').val();
+			var stateId = $('#state_id').val();
+			var townshipId= $('#township_id');
+			$.ajax({
+				type: 'GET',
+				url: "{{ url('townships/search-township-state') }}",
+				dataType: 'json',
+				delay: 250,
+				data: {
+					search: '',
+					companyId: companyId,
+					stateId: stateId
+				}
+				,
+			}).then(function (data) {
+				var html = '<option value="">Select Township</option>';
+				for (var i = 0, len = data.items.length; i < len; ++i) {
+					if(townshipId == data.items[i]['id']) {
+						html += '<option value="' + data.items[i]['id'] + '" selected>' + data.items[i]['text'] + '</option>';
+					} else {
+						html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+					}
+				}
+				$('#township_id').children().remove().end().append(html) ;
+			});
+
+
+
 			$("#nric_code").change(function(event) {
 				// Fetch the preselected item, and add to the control
 				var nricCodeId = $('#nric_code').val();
@@ -373,6 +430,7 @@
 
 			$("#country_id").change(function(event) {
 				// Fetch the preselected item, and add to the control
+				var companyId = $('#company_id').val();
 				var countryId = $('#country_id').val();
 				var stateSelect = $('#state_id');
 				$.ajax({
@@ -382,6 +440,7 @@
 					delay: 250,
 					data: {
 						search: '',
+						companyId: companyId,
 						countryId: countryId
 					}
 					,
@@ -396,6 +455,7 @@
 
 			$("#state_id").change(function(event) {
 				// Fetch the preselected item, and add to the control
+				var companyId = $('#company_id').val();
 				var stateId = $('#state_id').val();
 				var townshipSelect = $('#township_id');
 				$.ajax({
@@ -405,6 +465,7 @@
 					delay: 250,
 					data: {
 						search: '',
+						companyId: companyId,
 						stateId: stateId
 					}
 					,
