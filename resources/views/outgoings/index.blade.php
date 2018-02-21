@@ -57,7 +57,9 @@
 									</div>
 
 									<div class="icon-el col-md-6 col-sm-4">
-										<b>{{ $currentMonthYear }}</b>
+										<a href="#" id="gocurrentMonth" class="text-white">
+											<b>{{ $currentMonthYear }}</b>
+										</a>
 									</div>
 									<div class="icon-el col-md-3 col-sm-4">
 										<a href="#" id="gonextMonth" class="text-white">
@@ -66,6 +68,7 @@
 									</div>
 									{!! Form::hidden('prev_month', $previousMonth, ['class' => 'form-control', 'id' => 'prevMonth']) !!}
 									{!! Form::hidden('next_month', $nextMonth, ['class' => 'form-control', 'id' => 'nextMonth']) !!}
+									{!! Form::hidden('current_month', $currentMonthYear, ['class' => 'form-control', 'id' => 'currentMonth']) !!}
 								</th>
 							</tr>
 							<tr>
@@ -227,7 +230,8 @@
 					</tbody>
 				</table>
 
-				{!! $outgoingList->render() !!}
+				{{-- {!! $outgoingList->render() !!} --}}
+				{!! $outgoingList->appends(['currentMonthYear' => $currentMonthYear])->links() !!}
 			</div>
 		</div>
 
@@ -343,6 +347,23 @@
 					}
 				});
 			});
+
+			$("#gocurrentMonth").on("click",function(){
+				var calendarDate = $('#currentMonth').val();
+				var url = "{{ url('outgoings/calendar') }}";
+				$.ajax({
+					url: url,
+					type: 'GET',
+					data: {
+						calendarDate: calendarDate,
+						// mode: 'edit'
+					},
+					success: function(data)
+					{
+						window.location.replace(data.url);
+					}
+				});
+			});gocurrentMonth
 
 		});
 

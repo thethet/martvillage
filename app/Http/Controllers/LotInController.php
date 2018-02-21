@@ -15,6 +15,7 @@ use App\Receiver;
 use App\Sender;
 use App\State;
 use App\Township;
+use App\User;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -36,16 +37,32 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		if (Auth::user()->hasRole('administrator')) {
-			$lotinData = Lotin::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
-		} elseif (Auth::user()->hasRole('owner')) {
-			$lotinData = Lotin::where('company_id', Auth::user()->company_id)
-				->where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
+		if ($request->date) {
+			$date = date('Y-m-d', strtotime($request->date));
 		} else {
-			$lotinData = Lotin::where('company_id', Auth::user()->company_id)
-				->where('from_state', Auth::user()->state_id)
-				->where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
+			$date = date('Y-m-d');
 		}
+
+		if (Auth::user()->hasRole('administrator')) {
+			$query = Lotin::where('date', $date);
+		} elseif (Auth::user()->hasRole('owner')) {
+			$query = Lotin::where('company_id', Auth::user()->company_id)
+				->where('date', $date);
+		} else {
+			$query = Lotin::where('company_id', Auth::user()->company_id)
+				->where('from_state', Auth::user()->state_id)
+				->where('date', $date);
+		}
+
+		if ($request->from_state) {
+			$query = $query->where('from_state', $request->from_state);
+		}
+		if ($request->to_state) {
+			$query = $query->where('to_state', $request->to_state);
+		}
+
+		$lotinData = $query->where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
+
 		$total       = $lotinData->total();
 		$perPage     = $lotinData->perPage();
 		$currentPage = $lotinData->currentPage();
@@ -69,8 +86,9 @@ class LotInController extends Controller {
 		$receiverCount = count($receivers);
 
 		$companyList = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
+		$userList    = User::lists('name', 'id');
 
-		return view('lotins.index', ['lotinData' => $lotinData, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'senderList' => $senderList, 'memberList' => $memberList, 'senderContactList' => $senderContactList, 'receiverList' => $receiverList, 'receiverContactList' => $receiverContactList, 'countryList' => $countryList, 'stateList' => $stateList, 'nricCodeList' => $nricCodeList, 'nricTownshipList' => $nricTownshipList, 'receiverCount' => $receiverCount, 'companyList' => $companyList])->with('i', ($request->get('page', 1) - 1) * 10);
+		return view('lotins.index', ['lotinData' => $lotinData, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'senderList' => $senderList, 'memberList' => $memberList, 'senderContactList' => $senderContactList, 'receiverList' => $receiverList, 'receiverContactList' => $receiverContactList, 'countryList' => $countryList, 'stateList' => $stateList, 'nricCodeList' => $nricCodeList, 'nricTownshipList' => $nricTownshipList, 'receiverCount' => $receiverCount, 'companyList' => $companyList, 'userList' => $userList, 'date' => $date])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
 	/**

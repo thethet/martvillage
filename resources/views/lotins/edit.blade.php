@@ -370,11 +370,13 @@
 												</td>
 
 												<td>
-													{{ $priceList[$item->price_id] }}
+													@if($item->price_id > 0)
+														{{ $priceList[$item->price_id] }}
+													@endif
 												</td>
 
 												<td  class="unit-prices">
-													{{ number_format($item->unit_price, 2) }} {{ $currencyList[$item->currency_id] }} ({{ $categoryList[$item->category_id] }})
+													{{ number_format($item->unit_price, 2) }} @if($item->currency_id > 0) {{ $currencyList[$item->currency_id] }} @endif @if($item->category_id > 0) ({{ $categoryList[$item->category_id] }}) @endif
 												</td>
 
 												<td class="text-right">

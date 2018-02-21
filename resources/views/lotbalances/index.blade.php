@@ -73,69 +73,73 @@
 					$startDate = date("Y-m-d", strtotime($start . "+" . $k . " day"));
 				?>
 				@if(array_key_exists($startDate, $lotinList))
-					<?php $lotins = $lotinList[$startDate]; ?>
-					<div class="panel panel-primary" data-collapsed="0">
-						<div class="panel-heading">
-							<div class="panel-title">
-								{{ date('d M Y', strtotime($startDate)) }}
+					<?php $lotins = $lotinList[$startDate]['data']; ?>
+					@if($lotinList[$startDate]['count'] > 0)
+						<div class="panel panel-primary" data-collapsed="0">
+							<div class="panel-heading">
+								<div class="panel-title">
+									{{ date('d M Y', strtotime($startDate)) }}
+								</div>
+
+								<div class="panel-options">
+									<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+								</div>
 							</div>
 
-							<div class="panel-options">
-								<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-							</div>
-						</div>
+							<div class="panel-body with-table">
+								<table class="table table-bordered responsive">
+									<thead>
+										<tr>
+											<th width="5%">SNo.</th>
+											<th>Lot No.</th>
+											<th>Sender Name</th>
+											<th>Sender Contact No.</th>
+											<th>Reciever Name</th>
+											<th>Receiver Contact No.</th>
+											<th>From - To</th>
+											<th>Barcode</th>
+											<th>Unit(kg/ft<sup>3</sup>)</th>
+											@if(Auth::user()->hasRole('administrator'))
+											<th>Company Name</th>
+											@endif
+										</tr>
+									</thead>
+									<tbody>
+										<?php $i = 1; ?>
+										@foreach($lotins as $lotin)
+											<?php
+											$items = App\Item::where('lotin_id', $lotin->id)->where('status', 0)->get();
+											$j = 1;
+											?>
+											@foreach($items as $item)
 
-						<div class="panel-body with-table">
-							<table class="table table-bordered responsive">
-								<thead>
-									<tr>
-										<th width="5%">SNo.</th>
-										<th>Lot No.</th>
-										<th>Sender Name</th>
-										<th>Sender Contact No.</th>
-										<th>Reciever Name</th>
-										<th>Receiver Contact No.</th>
-										<th>From - To</th>
-										<th>Barcode</th>
-										<th>Unit(kg/ft<sup>3</sup>)</th>
-										@if(Auth::user()->hasRole('administrator'))
-										<th>Company Name</th>
-										@endif
-									</tr>
-								</thead>
-								<tbody>
-									<?php $i = 1; ?>
-									@foreach($lotins as $lotin)
-										<?php
-										$items = App\Item::where('lotin_id', $lotin->id)->where('status', 0)->get();
-										$j = 1;
-										?>
-										@foreach($items as $item)
-
-											<tr>
-												<td>{{ $i++ }}</td>
-												<td>{{ $lotin->lot_no }}</td>
-												<td>{{ $senderList[$lotin->sender_id] }}</td>
-												<td>{{ $senderContactList[$lotin->sender_id] }}</td>
-												<td>{{ $receiverList[$lotin->receiver_id] }}</td>
-												<td>{{ $receiverContactList[$lotin->receiver_id] }}</td>
-												<td>
-													{{ $stateList[$lotin->from_state] }} <=> {{ $stateList[$lotin->to_state] }}
-												</td>
-												<td>{{ $item->barcode }}</td>
-												<td>{{ $item->unit }} {{ $categoryList[$item->category_id] }}</td>
-												@if(Auth::user()->hasRole('administrator'))
+												<tr>
+													<td>{{ $i++ }}</td>
+													<td>{{ $lotin->lot_no }}</td>
+													<td>{{ $senderList[$lotin->sender_id] }}</td>
+													<td>{{ $senderContactList[$lotin->sender_id] }}</td>
+													<td>{{ $receiverList[$lotin->receiver_id] }}</td>
+													<td>{{ $receiverContactList[$lotin->receiver_id] }}</td>
 													<td>
-														{{ $companyList[$lotin->company_id] }}
+														{{ $stateList[$lotin->from_state] }} <=> {{ $stateList[$lotin->to_state] }}
 													</td>
-												@endif
-											</tr>
+													<td>{{ $item->barcode }}</td>
+													<td>
+														{{ $item->unit }} @if($item->category_id > 0) {{ $categoryList[$item->category_id] }} @endif
+													</td>
+													@if(Auth::user()->hasRole('administrator'))
+														<td>
+															{{ $companyList[$lotin->company_id] }}
+														</td>
+													@endif
+												</tr>
+											@endforeach
 										@endforeach
-									@endforeach
-								</tbody>
-							</table>
+									</tbody>
+								</table>
+							</div>
 						</div>
-					</div>
+					@endif
 				@endif
 			@endfor
 		@endif

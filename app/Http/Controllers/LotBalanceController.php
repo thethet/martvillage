@@ -33,6 +33,12 @@ class LotBalanceController extends Controller {
 		$start = date("Y-m-d", strtotime($today . "-30 day"));
 		$end   = date("Y-m-d", strtotime($today));
 
+		$itemCountList = DB::table('lotins as l')
+			->leftJoin('items as i', 'i.lotin_id', '=', 'l.id')
+			->where('i.status', 0)
+			->groupBy('l.id')
+			->lists(DB::raw("count(i.id) as count"), 'l.id');
+
 		$lotinList = array();
 		for ($k = 0; $k < 31; $k++) {
 			$startDate = date("Y-m-d", strtotime($start . "+" . $k . " day"));
@@ -65,7 +71,14 @@ class LotBalanceController extends Controller {
 					->orderBy('l.date', 'ASC')->get();
 			}
 			if (count($lotin) > 0) {
-				$lotinList[$startDate] = $lotin;
+				$count = 0;
+				foreach ($lotin as $lot) {
+					if (array_key_exists($lot->id, $itemCountList)) {
+						$count += $itemCountList[$lot->id];
+					}
+				}
+				$lotinList[$startDate]['data']  = $lotin;
+				$lotinList[$startDate]['count'] = $count;
 			}
 		}
 
@@ -93,7 +106,7 @@ class LotBalanceController extends Controller {
 		$receiverContactList = Receiver::lists('contact_no', 'id');
 		$categoryList        = Category::orderBy('id', 'ASC')->lists('unit', 'id');
 
-		return view('lotbalances.index', ['lotinList' => $lotinList, 'countryList' => $countryList, 'stateList' => $stateList, 'senderList' => $senderList, 'senderContactList' => $senderContactList, 'receiverList' => $receiverList, 'receiverContactList' => $receiverContactList, 'categoryList' => $categoryList, 'companyList' => $companyList]);
+		return view('lotbalances.index', ['lotinList' => $lotinList, 'countryList' => $countryList, 'stateList' => $stateList, 'senderList' => $senderList, 'senderContactList' => $senderContactList, 'receiverList' => $receiverList, 'receiverContactList' => $receiverContactList, 'categoryList' => $categoryList, 'companyList' => $companyList, 'itemCountList' => $itemCountList]);
 	}
 
 	/**

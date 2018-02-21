@@ -458,7 +458,7 @@ Route::group(['middleware' => ['auth']], function () {
 	| This is the route for Lot-in Model CRUD
 	|
 	 */
-	Route::get('lotins', ['as' => 'lotins.index', 'uses' => 'LotInController@index', 'middleware' => ['permission:lotin-list|lotin-create|lotin-edit|lotin-delete']]);
+	Route::match(['get', 'post'], 'lotins', ['as' => 'lotins.index', 'uses' => 'LotInController@index', 'middleware' => ['permission:lotin-list|lotin-create|lotin-edit|lotin-delete']]);
 
 	Route::get('lotins/create', ['as' => 'lotins.create', 'uses' => 'LotInController@create', 'middleware' => ['permission:lotin-create']]);
 	Route::post('lotins/create', ['as' => 'lotins.store', 'uses' => 'LotInController@store', 'middleware' => ['permission:lotin-create']]);

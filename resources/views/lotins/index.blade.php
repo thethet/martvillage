@@ -27,6 +27,54 @@
 			</div>
 		@endif
 
+		{!! Form::open(array('route' => 'lotins.index','method'=>'POST', 'role' => 'form', 'class' => 'form-horizontal form-groups-bordered validate')) !!}
+
+			<div class="form-group">
+				<label class="col-sm-1 control-label">Lotin Date</label>
+				<div class="col-sm-2">
+					<div class="input-group minimal">
+						<div class="input-group-addon">
+							<i class="entypo-calendar"></i>
+						</div>
+						{!! Form::text('date', $date, ['placeholder' => 'Lotin Date','class' => 'form-control datepicker', 'id' => 'arrival_date', 'data-format' => 'yyyy-mm-dd', 'autocomplete' => 'off']) !!}
+					</div>
+				</div>
+
+				@if (Auth::user()->hasRole('administrator') || Auth::user()->hasRole('owner'))
+				<label class="col-sm-2 control-label">From Location</label>
+
+				<div class="col-sm-2">
+					<div class="input-group minimal">
+						<div class="input-group-addon">
+							<i class="entypo-location"></i>
+						</div>
+						{!! Form::select('from_state', ['' => 'Select From Location'] + $stateList->toArray(), null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
+					</div>
+				</div>
+				@endif
+
+				<label class="col-sm-1 control-label">To Location</label>
+				<div class="col-sm-2">
+					<div class="input-group minimal">
+						<div class="input-group-addon">
+							<i class="entypo-location"></i>
+						</div>
+						{!! Form::select('to_state', ['' => 'Select To Location'] + $stateList->toArray(), null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
+					</div>
+				</div>
+
+				<div class="col-sm-1">
+					<div class="input-group minimal">
+						<button type="submit" class="btn btn-blue btn-icon">
+							Search
+							<i class="entypo-search"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		{!! Form::close() !!}
+		<br />
+
 		<div class="panel panel-primary" data-collapsed="0">
 			<div class="panel-heading">
 				<div class="panel-title">
@@ -60,6 +108,9 @@
 							@if(Auth::user()->hasRole('administrator'))
 							<th>Company Name</th>
 							@endif
+							<th>
+								Staff Name
+							</th>
 							<th width="15%">Action</th>
 						</tr>
 					</thead>
@@ -81,6 +132,9 @@
 									{{ $companyList[$lotin->company_id] }}
 								</td>
 							@endif
+							<td>
+								{{ $userList[$lotin->user_id] }}
+							</td>
 							<td>
 								<a href="{{ url('lotins/'. $lotin->id) }}" class="btn btn-info btn-sm">
 									<i class="entypo-eye"></i>
@@ -123,6 +177,7 @@
 	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2.css') }}">
 
 	<!-- Imported scripts on this page -->
+	<script src="{{ asset('assets/js/bootstrap-datepicker.js') }}"></script>
 	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
 	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>

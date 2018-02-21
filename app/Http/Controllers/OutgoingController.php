@@ -44,8 +44,12 @@ class OutgoingController extends Controller {
 
 			$previousMonth = date('F Y', strtotime('-1 month', strtotime($currentMonthYear)));
 			$nextMonth     = date('F Y', strtotime('+1 month', strtotime($currentMonthYear)));
-		} else {
-			$currentMonthYear = date('F Y');
+		}else {
+			if($request->currentMonthYear) {
+				$currentMonthYear = $request->currentMonthYear;
+			} else {
+				$currentMonthYear = date('F Y');
+			}
 
 			$startDay    = date('w', strtotime($currentMonthYear));
 			$daysInMonth = date('t', strtotime($currentMonthYear));
@@ -66,13 +70,19 @@ class OutgoingController extends Controller {
 		} else {
 			$year  = date('Y', strtotime($currentMonthYear));
 			$month = date('m', strtotime($currentMonthYear));
+			$day   = date('d', strtotime($currentMonthYear));
 		}
 
 		$query = Outgoing::where('deleted', 'N')
 			->whereYear('dept_date', '=', $year)
 			->whereMonth('dept_date', '=', $month);
 
-		if (Session::has('searchYMD')) {
+		if (!$request->currentMonthYear && !Session::has('mode')) {
+			$query = $query->whereDay('dept_date', '=', $day);
+		}
+
+		if(Session::has('theDate')) {
+			$day = Session::get('theDate');
 			$query = $query->whereDay('dept_date', '=', $day);
 		}
 
@@ -120,6 +130,7 @@ class OutgoingController extends Controller {
 		}
 
 		Session::forget('month');
+		Session::forget('mode');
 		Session::forget('searchYMD');
 
 		$companyList = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
@@ -134,6 +145,7 @@ class OutgoingController extends Controller {
 	 */
 	public function indexCalendar(Request $request) {
 		Session::flash('month', $request->calendarDate);
+		Session::flash('mode', 'notDay');
 		$response = array('status' => 'success', 'url' => 'outgoings');
 		return response()->json($response);
 
