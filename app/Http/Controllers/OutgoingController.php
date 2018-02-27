@@ -348,7 +348,7 @@ class OutgoingController extends Controller {
 		$lotinList   = array();
 		$lotinIdList = array();
 
-		if ($outgoing->dept_date > date("Y-m-d")) {
+		if ($outgoing->dept_date >= date("Y-m-d")) {
 			for ($k = 0; $k < 31; $k++) {
 				$startDate = date("Y-m-d", strtotime($start . "+" . $k . " day"));
 				$lotin     = DB::table('lotins as l')
@@ -447,9 +447,10 @@ class OutgoingController extends Controller {
 		$lotins = Lotin::where('total_items', 0)->where('status', 0)
 			->where('company_id', $outgoing->company_id)->where('outgoing_date', '0000-00-00')->get();
 
-		$outgoingDate = date('Y-m-d', strtotime($outgoing->dept_date));
+		$outgoingDate    = date('Y-m-d', strtotime($outgoing->dept_date));
+		$outgoingArrDate = date('Y-m-d', strtotime($outgoing->arrival_date));
 		foreach ($lotins as $lotin) {
-			$updLotin = Lotin::find($lotin->id)->update(['status' => 1, 'outgoing_date' => $outgoingDate]);
+			$updLotin = Lotin::find($lotin->id)->update(['status' => 1, 'outgoing_date' => $outgoingDate, 'outgoing_arr_date' => $outgoingArrDate, 'outgoing_id' => $outgoingId]);
 		}
 
 		return redirect()->route('outgoings.index')

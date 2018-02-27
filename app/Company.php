@@ -37,6 +37,7 @@ class Company extends Model {
 		'return_period',
 		'gst_rate',
 		'service_rate',
+		'rating',
 		'deleted',
 		'created_by',
 		'updated_by',

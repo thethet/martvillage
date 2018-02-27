@@ -2973,7 +2973,8 @@ ul.list_order li span {
 
 .wishlist {
 	position: absolute;
-	top: 10px;
+	/*top: 10px;*/
+	top: 40px;
 	right: 10px;
 	width: 40px;
 	height: 40px;
@@ -2999,11 +3000,13 @@ ul.list_order li span {
 	font-weight: normal;
 	font-family: "icon_set_1";
 	font-size: 40px;
-	content: "\72";
+	/*content: "\72";*/
+	content: "\71";
 	color: #888;
 	position: absolute;
 	left: 0;
-	top: 4px;
+	/*top: 4px;*/
+	top: 0px;
 }
 
 .strip_all_tour_list .wishlist {
@@ -3034,13 +3037,13 @@ ul.list_order li span {
 }
 
 .img_container a:hover img {
-	-webkit-transform: scale(1);
-	transform: scale(1);
+	-webkit-transform: scale(0.8);
+	transform: scale(0.8);
 }
 
 .img_container img {
-	-webkit-transform: scale(1.2);
-	transform: scale(1.2);
+	-webkit-transform: scale(1);
+	transform: scale(1);
 	-webkit-transition: all 0.5s ease;
 	transition: all 0.5s ease;
 	-webkit-backface-visibility: hidden;

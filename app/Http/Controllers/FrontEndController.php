@@ -21,9 +21,10 @@ class FrontEndController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-		$companies   = Company::whereIn('id', [1, 4, 5])->where('deleted', 'N')->get();
+		$companies   = Company::where('deleted', 'N')->orderBy('rating', 'DESC')->take(3)->get();
 		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->get();
-		return view('frontend.index', ['companies' => $companies, 'companyList' => $companyList]);
+		$totalRating = (int) Company::where('deleted', 'N')->sum('rating');
+		return view('frontend.index', ['companies' => $companies, 'companyList' => $companyList, 'totalRating' => $totalRating]);
 	}
 
 	/**
@@ -61,10 +62,21 @@ class FrontEndController extends Controller {
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
+	public function agentRating($id) {
+		Company::find($id)->increment('rating');
+		return redirect()->back();
+	}
+
+	/**
+	 * Show the agent list.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
 	public function agentList() {
-		$companies   = Company::where('deleted', 'N')->paginate(9);
+		$companies   = Company::where('deleted', 'N')->orderBy('rating', 'DESC')->paginate(9);
 		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->get();
-		return view('frontend.agent-list', ['companies' => $companies, 'companyList' => $companyList]);
+		$totalRating = (int) Company::where('deleted', 'N')->sum('rating');
+		return view('frontend.agent-list', ['companies' => $companies, 'companyList' => $companyList, 'totalRating' => $totalRating]);
 	}
 
 	/**

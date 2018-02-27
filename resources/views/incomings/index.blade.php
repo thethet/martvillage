@@ -36,7 +36,7 @@
 						<div class="input-group-addon">
 							<i class="entypo-calendar"></i>
 						</div>
-						{!! Form::text('arrival_date', null, ['placeholder' => 'Arrival Date','class' => 'form-control datepicker', 'id' => 'arrival_date', 'data-format' => 'yyyy-mm-dd', 'autocomplete' => 'off']) !!}
+						{!! Form::text('arrival_date', null, ['placeholder' => 'Arrival Date','class' => 'form-control datepicker', 'id' => 'arrival_date', 'data-format' => 'yyyy-mm-dd', 'data-end-date' => '+1day', 'autocomplete' => 'off']) !!}
 					</div>
 				</div>
 

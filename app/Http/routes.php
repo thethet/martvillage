@@ -26,6 +26,7 @@ Route::group(['middleware' => 'web'], function () {
 	Route::get('/', ['as' => 'frontend.index', 'uses' => 'FrontEndController@index']);
 	Route::post('lot-search', ['as' => 'lot-search', 'uses' => 'FrontEndController@search']);
 
+	Route::get('/agent-rating/{id}', ['as' => 'frontend.agent.rating', 'uses' => 'FrontEndController@agentRating']);
 	Route::get('/agent-list', ['as' => 'frontend.agent.list', 'uses' => 'FrontEndController@agentList']);
 	Route::get('/agent-list/{id}', ['as' => 'frontend.agent.detail', 'uses' => 'FrontEndController@agentDetail']);
 

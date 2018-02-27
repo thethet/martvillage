@@ -30,6 +30,7 @@ class CreateTblCompanies extends Migration {
 			$table->integer('return_period');
 			$table->double('gst_rate', 12, 2);
 			$table->double('service_rate', 12, 2);
+			$table->integer('rating');
 			$table->enum('deleted', ['N', 'Y']);
 			$table->integer('created_by');
 			$table->integer('updated_by');
