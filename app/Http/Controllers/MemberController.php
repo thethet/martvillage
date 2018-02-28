@@ -270,7 +270,7 @@ class MemberController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id) {
-		Member::find($id)->update(['deleted' => 'Y']);
+		Member::find($id)->update(['deleted' => 'Y', 'deleted_by' => Auth::user()->id]);
 		Session::flash('success', 'Member deleted successfully');
 		$response = array('status' => 'success', 'url' => 'members');
 		return response()->json($response);

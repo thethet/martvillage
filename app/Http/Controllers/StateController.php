@@ -237,7 +237,7 @@ class StateController extends Controller {
 
 		if ($state->total_township == 0) {
 			Country::find($state->country_id)->decrement('total_cities');
-			$state->update(['deleted' => 'Y']);
+			$state->update(['deleted' => 'Y', 'deleted_by' => Auth::user()->id]);
 			Session::flash('success', 'State deleted successfully');
 			$response = array('status' => 'success', 'url' => 'states');
 		} else {

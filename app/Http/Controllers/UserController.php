@@ -312,7 +312,7 @@ class UserController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id) {
-		User::find($id)->update(['deleted' => 'Y']);
+		User::find($id)->update(['deleted' => 'Y', 'deleted_by' => Auth::user()->id]);
 		Session::flash('success', 'User deleted successfully');
 		$response = array('status' => 'success', 'url' => 'users');
 		return response()->json($response);

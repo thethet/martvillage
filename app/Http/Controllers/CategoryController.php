@@ -129,7 +129,7 @@ class CategoryController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id) {
-		Category::find($id)->update(['deleted' => 'Y']);
+		Category::find($id)->update(['deleted' => 'Y', 'deleted_by' => Auth::user()->id]);
 		Session::flash('success', 'Category deleted successfully');
 		$response = array('status' => 'success', 'url' => 'categories');
 

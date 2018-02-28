@@ -16,6 +16,7 @@ class CreateTblNationality extends Migration {
 			$table->enum('deleted', ['N', 'Y']);
 			$table->integer('created_by');
 			$table->integer('updated_by');
+			$table->integer('deleted_by');
 			$table->timestamps();
 		});
 	}

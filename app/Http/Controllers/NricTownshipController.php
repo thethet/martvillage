@@ -136,7 +136,7 @@ class NricTownshipController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id) {
-		NricTownship::find($id)->update(['deleted' => 'Y']);
+		NricTownship::find($id)->update(['deleted' => 'Y', 'deleted_by' => Auth::user()->id]);
 		Session::flash('success', 'NRIC Township deleted successfully');
 		$response = array('status' => 'success', 'url' => 'nric-townships');
 

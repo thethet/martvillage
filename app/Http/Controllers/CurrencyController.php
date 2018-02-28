@@ -172,7 +172,7 @@ class CurrencyController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id) {
-		Currency::find($id)->update(['deleted' => 'Y']);
+		Currency::find($id)->update(['deleted' => 'Y', 'deleted_by' => Auth::user()->id]);
 		Session::flash('success', 'Currencydeletedsuccessfully');
 		$response = array('status' => 'success', 'url' => 'currencies');
 

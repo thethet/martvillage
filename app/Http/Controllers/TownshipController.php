@@ -222,7 +222,7 @@ class TownshipController extends Controller {
 		$township = Township::find($id);
 		State::find($township->state_id)->decrement('total_townships');
 
-		$township->update(['deleted' => 'Y']);
+		$township->update(['deleted' => 'Y', 'deleted_by' => Auth::user()->id]);
 
 		Session::flash('success', 'Township deleted successfully');
 		$response = array('status' => 'success', 'url' => 'townships');

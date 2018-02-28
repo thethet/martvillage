@@ -24,6 +24,7 @@ class Country extends Model {
 		'deleted',
 		'created_by',
 		'updated_by',
+		'deleted_by',
 	];
 
 	public function companies() {

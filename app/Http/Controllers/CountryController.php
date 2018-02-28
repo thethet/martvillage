@@ -177,7 +177,7 @@ class CountryController extends Controller {
 		$country = Country::find($id);
 
 		if ($country->total_cities == 0) {
-			$country->update(['deleted' => 'Y']);
+			$country->update(['deleted' => 'Y', 'deleted_by' => Auth::user()->id]);
 			Session::flash('success', 'Country deleted successfully');
 			$response = array('status' => 'success', 'url' => 'countries');
 		} else {

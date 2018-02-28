@@ -283,7 +283,7 @@ class CompanyController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id) {
-		Company::find($id)->update(['deleted' => 'Y']);
+		Company::find($id)->update(['deleted' => 'Y', 'deleted_by' => Auth::user()->id]);
 		Session::flash('success', 'Company deleted successfully');
 		$response = array('status' => 'success', 'url' => 'companies');
 

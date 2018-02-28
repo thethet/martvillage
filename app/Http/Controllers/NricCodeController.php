@@ -116,7 +116,7 @@ class NricCodeController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id) {
-		NricCode::find($id)->update(['deleted' => 'Y']);
+		NricCode::find($id)->update(['deleted' => 'Y', 'deleted_by' => Auth::user()->id]);
 		Session::flash('success', 'NRIC Code deleted successfully');
 		$response = array('status' => 'success', 'url' => 'nric-codes');
 

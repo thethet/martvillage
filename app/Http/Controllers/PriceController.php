@@ -341,12 +341,12 @@ class PriceController extends Controller {
 	 */
 	public function destroy($id) {
 		$price = Price::find($id);
-		$price->update(['deleted' => 'Y']);
+		$price->update(['deleted' => 'Y', 'deleted_by' => Auth::user()->id]);
 
 		$priceTitle = PriceTitle::find($price->title_id);
 
 		if ($priceTitle->total_price == 0) {
-			$priceTitle->update(['deleted' => 'Y']);
+			$priceTitle->update(['deleted' => 'Y', 'deleted_by' => Auth::user()->id]);
 		} else {
 			$priceTitle->decrement('total_price');
 		}

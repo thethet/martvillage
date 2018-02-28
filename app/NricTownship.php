@@ -26,5 +26,6 @@ class NricTownship extends Model {
 		'deleted',
 		'created_by',
 		'updated_by',
+		'deleted_by',
 	];
 }
