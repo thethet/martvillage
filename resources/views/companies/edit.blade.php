@@ -51,6 +51,7 @@
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-suitcase "></i></span>
 										{!! Form::text('company_name', null, ['placeholder' => 'Company Name','class' => 'form-control', 'autocomplete' => 'off']) !!}
+										{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control', 'id' => 'company_id']) !!}
 									</div>
 
 									@if ($errors->has('company_name'))
@@ -344,6 +345,7 @@
 
 			$("#country_id").change(function(event) {
 				// Fetch the preselected item, and add to the control
+				var companyId = $('#company_id').val();
 				var countryId = $('#country_id').val();
 				var stateSelect = $('#state_id');
 				$.ajax({
@@ -353,6 +355,7 @@
 					delay: 250,
 					data: {
 						search: '',
+						companyId: companyId,
 						countryId: countryId
 					}
 					,
@@ -367,6 +370,7 @@
 
 			$("#state_id").change(function(event) {
 				// Fetch the preselected item, and add to the control
+				var companyId = $('#company_id').val();
 				var stateId = $('#state_id').val();
 				var townshipSelect = $('#township_id');
 				$.ajax({
@@ -376,6 +380,7 @@
 					delay: 250,
 					data: {
 						search: '',
+						companyId: companyId,
 						stateId: stateId
 					}
 					,

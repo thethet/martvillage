@@ -34,7 +34,13 @@ class FrontEndController extends Controller {
 	 * @return Response
 	 */
 	public function search(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$lotinData = Lotin::where('lot_no', trim($request->q))->first();
 
@@ -112,7 +118,14 @@ class FrontEndController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function contactMailSending(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
+
 		$data = $request->all();
 
 		$fromName          = $data['first_name'] . ' ' . $data['last_name'];

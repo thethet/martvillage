@@ -30,7 +30,13 @@ class IncomingController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		if ($request->arrival_date) {
 			$arrivalDate = date('Y-m-d', strtotime($request->arrival_date));

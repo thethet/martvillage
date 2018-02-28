@@ -24,7 +24,13 @@ class NricTownshipController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$query = NricTownship::where('deleted', 'N');
 
@@ -61,7 +67,13 @@ class NricTownshipController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$this->validate($request, [
 			'nric_code_id' => 'required',
@@ -111,7 +123,13 @@ class NricTownshipController extends Controller {
 	 * @return Response
 	 */
 	public function update($id, Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$this->validate($request, [
 			'nric_code_id' => 'required',
@@ -149,7 +167,13 @@ class NricTownshipController extends Controller {
 	 * @return Response
 	 */
 	public function searchByNricCode(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$search     = $request->get('search');
 		$nricCodeId = $request->get('nricCodeId');

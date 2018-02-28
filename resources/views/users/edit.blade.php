@@ -446,7 +446,11 @@
 			});
 
 			// Fetch the preselected item, and add to the control
-			var companyId = $('#company_id').val();
+			if({{ Auth::user()->hasRole('administrator') }} == 1) {
+				var companyId = {{ Auth::user()->company_id }};
+			} else {
+				var companyId = $('#company_id').val();
+			}
 			var fromCountryId = $('#country_id').val();
 			$.ajax({
 				type: 'GET',
@@ -549,7 +553,11 @@
 
 			$("#country_id").change(function(event) {
 				// Fetch the preselected item, and add to the control
-				var companyId = $('#company_id').val();
+				if({{ Auth::user()->hasRole('administrator') }} == 1) {
+					var companyId = {{ Auth::user()->company_id }};
+				} else {
+					var companyId = $('#company_id').val();
+				}
 				var countryId = $('#country_id').val();
 				var stateSelect = $('#state_id');
 				$.ajax({
@@ -574,7 +582,11 @@
 
 			$("#state_id").change(function(event) {
 				// Fetch the preselected item, and add to the control
-				var companyId = $('#company_id').val();
+				if({{ Auth::user()->hasRole('administrator') }} == 1) {
+					var companyId = {{ Auth::user()->company_id }};
+				} else {
+					var companyId = $('#company_id').val();
+				}
 				var stateId = $('#state_id').val();
 				var townshipSelect = $('#township_id');
 				$.ajax({

@@ -64,7 +64,7 @@
 						@foreach($users as $key => $user)
 						<tr>
 							<td>{{ ++$i }}</td>
-							<td>{{ strtoupper($user->name) }}</td>
+							<td>{{ $user->name }}</td>
 							<td>{{ $user->contact_no }}</td>
 							<td>{{ $user->roles[0]->display_name }}</td>
 							<td>{{ $user->email }}</td>

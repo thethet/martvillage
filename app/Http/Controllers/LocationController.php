@@ -93,7 +93,13 @@ class LocationController extends Controller {
 	 * @return Response
 	 */
 	public function searchCountryByCompany(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$search    = $request->get('search');
 		$companyId = $request->get('companyId');
@@ -122,7 +128,13 @@ class LocationController extends Controller {
 	 * @return Response
 	 */
 	public function searchByCountry(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$search      = $request->get('search');
 		$countryId   = $request->get('countryId');
@@ -163,7 +175,13 @@ class LocationController extends Controller {
 	 * @return Response
 	 */
 	public function searchByState(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$search    = $request->get('search');
 		$stateId   = $request->get('stateId');

@@ -24,7 +24,13 @@ class MembershipController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$companyList = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 
@@ -59,7 +65,13 @@ class MembershipController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$this->validate($request, [
 			'company_id' => 'required',
@@ -107,7 +119,13 @@ class MembershipController extends Controller {
 	 * @return Response
 	 */
 	public function update($id, Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$this->validate($request, [
 			'company_id' => 'required',

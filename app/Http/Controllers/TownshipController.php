@@ -25,7 +25,13 @@ class TownshipController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$myCompany      = Company::find(Auth::user()->company_id);
 		$stateIdList    = array();
@@ -100,7 +106,13 @@ class TownshipController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$this->validate($request, [
 			'state_id'      => 'required',
@@ -191,7 +203,13 @@ class TownshipController extends Controller {
 	 * @return Response
 	 */
 	public function update($id, Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$this->validate($request, [
 			'state_id'      => 'required',

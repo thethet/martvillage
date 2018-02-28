@@ -37,7 +37,13 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		if ($request->date) {
 			$date = date('Y-m-d', strtotime($request->date));
@@ -168,7 +174,13 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$messages = array(
 			'lots.*.barcode.unique' => 'The barcode has already been taken.',
@@ -448,7 +460,13 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function update($id, Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$messages = array(
 			's_contact_no.required'  => 'The Sender Contact Number  field is required.',
@@ -531,7 +549,13 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function searchAddressBySender(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$search    = $request->get('search');
 		$contactNo = $request->get('contactNo');
@@ -568,7 +592,13 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function searchAddressByMember(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$contactNo = $request->get('contactNo');
 		$memberNo  = $request->get('memberNo');
@@ -626,7 +656,13 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function searchMember(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$memberNo = $request->get('memberNo');
 
@@ -656,7 +692,13 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function searchUnitPrices(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$priceId = $request->get('priceId');
 
@@ -691,7 +733,13 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function searchPriceList(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$search        = $request->get('search');
 		$fromCountryId = $request->get('fromCountryId');
@@ -721,7 +769,13 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function searchReceiverByAddress(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$address = $request->get('address');
 
@@ -754,7 +808,13 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function searchLastReceiverNo(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$companyId = $request->get('companyId');
 

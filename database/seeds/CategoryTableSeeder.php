@@ -38,6 +38,14 @@ class CategoryTableSeeder extends Seeder {
 			[
 				'company_id' => 1,
 				'name'       => 'Document',
+				'unit'       => 'docs',
+				'deleted'    => 'N',
+				'created_by' => 1,
+				'updated_by' => 1,
+			],
+			[
+				'company_id' => 1,
+				'name'       => 'Quantity',
 				'unit'       => 'pcs',
 				'deleted'    => 'N',
 				'created_by' => 1,

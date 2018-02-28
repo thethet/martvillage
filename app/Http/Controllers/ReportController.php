@@ -37,7 +37,13 @@ class ReportController extends Controller {
 	 * @return Response
 	 */
 	public function reportByTrips(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		if ($request->dept_date) {
 			$deptDate = date('Y-m-d', strtotime($request->dept_date));
@@ -139,7 +145,13 @@ class ReportController extends Controller {
 	 * @return Response
 	 */
 	public function salesReport(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		if ($request->date) {
 			$date = date('Y-m-d', strtotime($request->date));

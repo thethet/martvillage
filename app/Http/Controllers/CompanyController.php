@@ -26,7 +26,13 @@ class CompanyController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		if (Auth::user()->hasRole('administrator')) {
 			$companies = Company::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
@@ -108,7 +114,13 @@ class CompanyController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$this->validate($request, [
 			'company_name'  => 'required',
@@ -223,7 +235,13 @@ class CompanyController extends Controller {
 	 * @return Response
 	 */
 	public function update($id, Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$this->validate($request, [
 			'company_name'  => 'required',

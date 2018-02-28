@@ -66,7 +66,7 @@
 						@foreach($companies as $key => $company)
 						<tr>
 							<td>{{ ++$i }}</td>
-							<td>{{ strtoupper($company->company_name) }}</td>
+							<td>{{ $company->company_name }}</td>
 							<td>{{ $company->short_code }}</td>
 							<td>{{ $company->email }}</td>
 							<td>{{ $company->contact_no }}</td>

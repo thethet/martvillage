@@ -36,7 +36,13 @@ class CollectionController extends Controller {
 	 * @return Response
 	 */
 	public function readyToCollect(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$incomingDate = date('Y-m-d');
 		$query        = DB::table('lotins as l')
@@ -115,7 +121,13 @@ class CollectionController extends Controller {
 	 * @return Response
 	 */
 	public function returnLots(Request $request) {
-		$request->merge(array_map('trim', $request->all()));
+		$request->merge(array_map(function ($value) {
+			if (!is_array($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 
 		$myCompany    = Company::find(Auth::user()->company_id);
 		$returnPeriod = $myCompany->return_period;
