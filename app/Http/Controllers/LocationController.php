@@ -93,6 +93,8 @@ class LocationController extends Controller {
 	 * @return Response
 	 */
 	public function searchCountryByCompany(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$search    = $request->get('search');
 		$companyId = $request->get('companyId');
 
@@ -120,6 +122,8 @@ class LocationController extends Controller {
 	 * @return Response
 	 */
 	public function searchByCountry(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$search      = $request->get('search');
 		$countryId   = $request->get('countryId');
 		$fromStateId = $request->get('fromStateId');
@@ -159,6 +163,8 @@ class LocationController extends Controller {
 	 * @return Response
 	 */
 	public function searchByState(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$search    = $request->get('search');
 		$stateId   = $request->get('stateId');
 		$companyId = $request->get('companyId');

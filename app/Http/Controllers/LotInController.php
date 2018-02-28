@@ -37,6 +37,8 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		if ($request->date) {
 			$date = date('Y-m-d', strtotime($request->date));
 		} else {
@@ -166,6 +168,8 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$messages = array(
 			'lots.*.barcode.unique' => 'The barcode has already been taken.',
 		);
@@ -444,6 +448,8 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function update($id, Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$messages = array(
 			's_contact_no.required'  => 'The Sender Contact Number  field is required.',
 			'sender_name.required'   => 'The Sender Name  field is required.',
@@ -525,6 +531,8 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function searchAddressBySender(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$search    = $request->get('search');
 		$contactNo = $request->get('contactNo');
 		$memberNo  = $request->get('memberNo');
@@ -560,6 +568,8 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function searchAddressByMember(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$contactNo = $request->get('contactNo');
 		$memberNo  = $request->get('memberNo');
 
@@ -616,6 +626,8 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function searchMember(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$memberNo = $request->get('memberNo');
 
 		if (Auth::user()->hasRole('administrator')) {
@@ -644,6 +656,8 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function searchUnitPrices(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$priceId = $request->get('priceId');
 
 		if (Auth::user()->hasRole('administrator')) {
@@ -677,6 +691,7 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function searchPriceList(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
 
 		$search        = $request->get('search');
 		$fromCountryId = $request->get('fromCountryId');
@@ -706,6 +721,8 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function searchReceiverByAddress(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$address = $request->get('address');
 
 		if (Auth::user()->hasRole('administrator')) {
@@ -737,6 +754,8 @@ class LotInController extends Controller {
 	 * @return Response
 	 */
 	public function searchLastReceiverNo(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$companyId = $request->get('companyId');
 
 		$receiver = Receiver::where('company_id', $companyId)->get();

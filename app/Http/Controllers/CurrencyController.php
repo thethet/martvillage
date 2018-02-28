@@ -24,6 +24,8 @@ class CurrencyController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$myCompany     = Company::find(Auth::user()->company_id);
 		$countryIdList = array();
 		if (count($myCompany) > 0) {
@@ -76,6 +78,8 @@ class CurrencyController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'company_id'    => 'required',
 			'type'          => 'required',
@@ -144,6 +148,8 @@ class CurrencyController extends Controller {
 	 * @return Response
 	 */
 	public function update($id, Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'type'          => 'required',
 			'from_location' => 'required',
@@ -179,6 +185,8 @@ class CurrencyController extends Controller {
 	 * @return Response
 	 */
 	public function searchByFromCountry(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$search    = $request->get('search');
 		$countryId = $request->get('countryId');
 

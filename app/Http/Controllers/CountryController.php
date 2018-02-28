@@ -25,6 +25,8 @@ class CountryController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$myCompany     = Company::find(Auth::user()->company_id);
 		$countryIdList = array();
 		$stateIdList   = array();
@@ -79,6 +81,8 @@ class CountryController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'country_name' => 'required|unique:countries,country_name',
 			'country_code' => 'required|unique:countries,country_code',
@@ -143,6 +147,8 @@ class CountryController extends Controller {
 	 * @return Response
 	 */
 	public function update($id, Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'country_name' => 'required',
 			'country_code' => 'required',

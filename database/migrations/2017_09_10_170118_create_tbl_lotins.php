@@ -16,7 +16,7 @@ class CreateTblLotins extends Migration {
 			$table->integer('user_id');
 			$table->integer('sender_id');
 			$table->integer('receiver_id');
-			$table->integer('outgoing_id');
+			$table->integer('outgoing_id')->default(0);;
 			$table->string('lot_no');
 			$table->date('date');
 			$table->time('time');

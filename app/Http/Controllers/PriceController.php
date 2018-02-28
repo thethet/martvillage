@@ -31,6 +31,8 @@ class PriceController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		if (Auth::user()->hasRole('administrator')) {
 			$currencyTitle  = Currency::where('deleted', 'N')->get();
 			$pricingLists   = Price::where('deleted', 'N')->get();
@@ -167,6 +169,8 @@ class PriceController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'company_id'   => 'required',
 			'category_id'  => 'required',
@@ -291,6 +295,8 @@ class PriceController extends Controller {
 	 * @return Response
 	 */
 	public function update($id, Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'company_id'   => 'required',
 			'category_id'  => 'required',

@@ -144,7 +144,7 @@ class TrackingController extends Controller {
 	 * @return Response
 	 */
 	public function search(Request $request) {
-		$lotinData = Lotin::where('lot_no', $request->lot_no)->first();
+		$lotinData = Lotin::where('lot_no', trim($request->lot_no))->first();
 
 		if ($lotinData) {
 			$sender   = Sender::find($lotinData->sender_id);

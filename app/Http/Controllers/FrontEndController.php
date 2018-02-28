@@ -34,7 +34,9 @@ class FrontEndController extends Controller {
 	 * @return Response
 	 */
 	public function search(Request $request) {
-		$lotinData = Lotin::where('lot_no', $request->q)->first();
+		$request->merge(array_map('trim', $request->all()));
+
+		$lotinData = Lotin::where('lot_no', trim($request->q))->first();
 
 		if ($lotinData) {
 			$sender   = Sender::find($lotinData->sender_id);
@@ -110,7 +112,7 @@ class FrontEndController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function contactMailSending(Request $request) {
-
+		$request->merge(array_map('trim', $request->all()));
 		$data = $request->all();
 
 		$fromName          = $data['first_name'] . ' ' . $data['last_name'];

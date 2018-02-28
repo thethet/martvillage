@@ -26,6 +26,8 @@ class CompanyController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		if (Auth::user()->hasRole('administrator')) {
 			$companies = Company::where('deleted', 'N')->orderBy('id', 'DESC')->paginate(10);
 		} else {
@@ -106,6 +108,8 @@ class CompanyController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'company_name'  => 'required',
 			'short_code'    => 'required|unique:companies,short_code',
@@ -219,6 +223,8 @@ class CompanyController extends Controller {
 	 * @return Response
 	 */
 	public function update($id, Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'company_name'  => 'required',
 			// 'short_code'   => 'required|unique:companies,short_code',

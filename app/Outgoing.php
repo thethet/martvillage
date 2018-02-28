@@ -20,8 +20,6 @@ class Outgoing extends Model {
 	 */
 	protected $fillable = [
 		'company_id',
-		'lotin_id',
-		'item_id',
 		'passenger_name',
 		'carrier_name',
 		'contact_no',

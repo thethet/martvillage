@@ -29,6 +29,8 @@ class LotBalanceController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$today = date('Y-m-d');
 		$start = date("Y-m-d", strtotime($today . "-30 day"));
 		$end   = date("Y-m-d", strtotime($today));

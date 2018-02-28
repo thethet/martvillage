@@ -35,6 +35,8 @@ class OutgoingController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		if (Session::has('month')) {
 			$currentMonthYear = Session::get('month');
 
@@ -144,6 +146,8 @@ class OutgoingController extends Controller {
 	 * @return Response
 	 */
 	public function indexCalendar(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		Session::flash('month', $request->calendarDate);
 		Session::flash('mode', 'notDay');
 		$response = array('status' => 'success', 'url' => 'outgoings');
@@ -157,6 +161,7 @@ class OutgoingController extends Controller {
 	 * @return Response
 	 */
 	public function searchByDay(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
 
 		$searchYMD = date('Y-m-d', strtotime($request->searchDay));
 		$searchYM  = date('F Y', strtotime($request->searchDay));
@@ -201,6 +206,8 @@ class OutgoingController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'passenger_name' => 'required',
 			'contact_no'     => 'required|numeric',
@@ -296,6 +303,8 @@ class OutgoingController extends Controller {
 	 * @return Response
 	 */
 	public function update($id, Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'passenger_name' => 'required',
 			'contact_no'     => 'required|numeric',
@@ -407,6 +416,8 @@ class OutgoingController extends Controller {
 	 * @return Response
 	 */
 	public function packingListStore(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$data               = $request->all();
 		$data['created_by'] = Auth::user()->id;
 
@@ -520,6 +531,8 @@ class OutgoingController extends Controller {
 	 * @return Response
 	 */
 	public function searchPackingByBarcode(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$lotinIdList = $request->get('lotinIdList');
 		$lotinIdList = substr($lotinIdList, 1, -1);
 		$lotinIdList = explode(",", $lotinIdList);

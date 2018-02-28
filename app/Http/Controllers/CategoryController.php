@@ -24,6 +24,8 @@ class CategoryController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$companyList = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$categories  = Category::where('deleted', 'N')->paginate(10);
 		$total       = $categories->total();
@@ -52,6 +54,8 @@ class CategoryController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'company_id' => 'required',
 			'name'       => 'required',
@@ -100,6 +104,8 @@ class CategoryController extends Controller {
 	 * @return Response
 	 */
 	public function update($id, Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'company_id' => 'required',
 			'name'       => 'required',

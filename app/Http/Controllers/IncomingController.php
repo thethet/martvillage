@@ -30,6 +30,8 @@ class IncomingController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		if ($request->arrival_date) {
 			$arrivalDate = date('Y-m-d', strtotime($request->arrival_date));
 		} else {
@@ -171,6 +173,8 @@ class IncomingController extends Controller {
 	 * @return Response
 	 */
 	public function updateArriveStatus($barcode) {
+		$barcode = trim($barcode);
+
 		Item::where('barcode', $barcode)->update(['status' => 2]);
 
 		$item = Item::where('barcode', $barcode)->first();

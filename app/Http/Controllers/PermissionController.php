@@ -22,6 +22,8 @@ class PermissionController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$permissions = Permission::orderBy('id', 'DESC')->paginate(10);
 
 		$total       = $permissions->total();
@@ -48,6 +50,8 @@ class PermissionController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'name'         => 'required|unique:permissions,name',
 			'display_name' => 'required',
@@ -95,6 +99,8 @@ class PermissionController extends Controller {
 	 * @return Response
 	 */
 	public function update($id, Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'display_name' => 'required',
 			'description'  => 'required',

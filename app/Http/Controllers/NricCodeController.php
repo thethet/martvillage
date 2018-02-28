@@ -23,6 +23,8 @@ class NricCodeController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$codes       = NricCode::where('deleted', 'N')->orderBy('nric_code', 'ASC')->paginate(10);
 		$total       = $codes->total();
 		$perPage     = $codes->perPage();
@@ -48,6 +50,8 @@ class NricCodeController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'nric_code'   => 'required',
 			'description' => 'required',
@@ -90,6 +94,8 @@ class NricCodeController extends Controller {
 	 * @return Response
 	 */
 	public function update($id, Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'description' => 'required',
 		]);

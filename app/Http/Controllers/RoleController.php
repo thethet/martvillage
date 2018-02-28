@@ -25,6 +25,8 @@ class RoleController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$roles = Role::orderBy('id', 'DESC')->paginate(10);
 
 		foreach ($roles as $role) {
@@ -61,6 +63,8 @@ class RoleController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'name'         => 'required|unique:roles,name',
 			'display_name' => 'required',
@@ -130,6 +134,8 @@ class RoleController extends Controller {
 	 * @return Response
 	 */
 	public function update($id, Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'display_name' => 'required',
 			'description'  => 'required',

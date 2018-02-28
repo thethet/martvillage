@@ -30,6 +30,8 @@ class MemberController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$companyList = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 
 		if (Auth::user()->hasRole('administrator')) {
@@ -105,6 +107,8 @@ class MemberController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'company_id'     => 'required',
 			'name'           => 'required',
@@ -184,6 +188,8 @@ class MemberController extends Controller {
 	 * @return Response
 	 */
 	public function edit($id, Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$member = Member::find($id);
 
 		$myCompany      = Company::find(Auth::user()->company_id);
@@ -229,6 +235,8 @@ class MemberController extends Controller {
 	 * @return Response
 	 */
 	public function update($id, Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'name'           => 'required',
 			// 'contact_no'     => 'required|numeric|unique:members,contact_no',
@@ -274,6 +282,8 @@ class MemberController extends Controller {
 	 * @return Response
 	 */
 	public function generateMemberNumber(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$companyId = $request->get('companyId');
 		$company   = Company::find($companyId);
 		$code      = $company->short_code;

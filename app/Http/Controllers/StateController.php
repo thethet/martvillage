@@ -26,6 +26,8 @@ class StateController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$myCompany      = Company::find(Auth::user()->company_id);
 		$countryIdList  = array();
 		$stateIdList    = array();
@@ -114,6 +116,8 @@ class StateController extends Controller {
 	 * @return Response
 	 */
 	public function store(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'country_id'  => 'required',
 			'state_name'  => 'required|unique:states,state_name',
@@ -201,6 +205,8 @@ class StateController extends Controller {
 	 * @return Response
 	 */
 	public function update($id, Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		$this->validate($request, [
 			'country_id'  => 'required',
 			'state_name'  => 'required',

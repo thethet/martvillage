@@ -1,8 +1,6 @@
 <?php namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
 
 class sampleController extends Controller {
@@ -12,8 +10,8 @@ class sampleController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index()
-	{
+	public function index(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
 		//
 	}
 
@@ -22,8 +20,7 @@ class sampleController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function create()
-	{
+	public function create() {
 		//
 	}
 
@@ -32,8 +29,8 @@ class sampleController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
-	{
+	public function store(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
 		//
 	}
 
@@ -43,8 +40,7 @@ class sampleController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
-	{
+	public function show($id) {
 		//
 	}
 
@@ -54,8 +50,7 @@ class sampleController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
-	{
+	public function edit($id) {
 		//
 	}
 
@@ -65,8 +60,8 @@ class sampleController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
-	{
+	public function update($id, Request $request) {
+		$request->merge(array_map('trim', $request->all()));
 		//
 	}
 
@@ -76,8 +71,7 @@ class sampleController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
-	{
+	public function destroy($id) {
 		//
 	}
 

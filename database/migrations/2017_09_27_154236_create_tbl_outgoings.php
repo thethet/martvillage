@@ -14,7 +14,6 @@ class CreateTblOutgoings extends Migration {
 			$table->increments('id');
 			$table->integer('company_id');
 			$table->integer('lotin_id')->default(0);
-			$table->integer('item_id')->default(0);
 			$table->string('passenger_name');
 			$table->string('carrier_name');
 			$table->string('contact_no');

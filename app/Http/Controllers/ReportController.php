@@ -37,6 +37,8 @@ class ReportController extends Controller {
 	 * @return Response
 	 */
 	public function reportByTrips(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		if ($request->dept_date) {
 			$deptDate = date('Y-m-d', strtotime($request->dept_date));
 		} else {
@@ -137,6 +139,8 @@ class ReportController extends Controller {
 	 * @return Response
 	 */
 	public function salesReport(Request $request) {
+		$request->merge(array_map('trim', $request->all()));
+
 		if ($request->date) {
 			$date = date('Y-m-d', strtotime($request->date));
 		} else {
@@ -322,7 +326,7 @@ class ReportController extends Controller {
 	}
 
 	public function printPdfForCashSales($date) {
-		$date = date('Y-m-d', strtotime($date));
+		$date = date('Y-m-d', strtotime(trim($date)));
 
 		$queryByCash = Lotin::where('date', $date)->where('payment', 'Paid');
 		if (Auth::user()->hasRole('administrator')) {
@@ -413,7 +417,7 @@ class ReportController extends Controller {
 	}
 
 	public function printPdfForCreditSales($date) {
-		$date = date('Y-m-d', strtotime($date));
+		$date = date('Y-m-d', strtotime(trim($date)));
 
 		$queryByCredit = Lotin::where('date', $date)->where('payment', 'Credit');
 		if (Auth::user()->hasRole('administrator')) {
@@ -503,7 +507,7 @@ class ReportController extends Controller {
 	}
 
 	public function printPdfForReportByTrips($date) {
-		$deptDate = date("Y-m-d", strtotime($date));
+		$deptDate = date("Y-m-d", strtotime(trim($date)));
 
 		$query     = DB::table('outgoings')->where('packing_list', '!=', 0)->where('dept_date', $deptDate);
 		$myCompany = Company::find(Auth::user()->company_id);
