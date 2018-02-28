@@ -589,4 +589,73 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('reports/cash-sales/{date}/print-pdf', ['as' => 'reports.sales.cash.pdf', 'uses' => 'ReportController@printPdfForCashSales']);
 	Route::get('reports/credit-sales/{date}/print-pdf', ['as' => 'reports.sales.credit.pdf', 'uses' => 'ReportController@printPdfForCreditSales']);
 
+	/*
+	|--------------------------------------------------------------------------
+	| Information Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Slider, Tag and Post Models CRUD
+	|
+	 */
+	Route::get('informations', ['as' => 'informations.index', 'uses' => 'HomeController@information']);
+
+	/*
+	|--------------------------------------------------------------------------
+	| Slider Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Slider Model CRUD
+	|
+	 */
+	Route::get('sliders', ['as' => 'sliders.index', 'uses' => 'SliderController@index']);
+
+	Route::get('sliders/create', ['as' => 'sliders.create', 'uses' => 'SliderController@create']);
+	Route::post('sliders/create', ['as' => 'sliders.store', 'uses' => 'SliderController@store']);
+
+	Route::get('sliders/{id}', ['as' => 'sliders.show', 'uses' => 'SliderController@show']);
+
+	Route::get('sliders/{id}/edit', ['as' => 'sliders.edit', 'uses' => 'SliderController@edit']);
+	Route::patch('sliders/{id}', ['as' => 'sliders.update', 'uses' => 'SliderController@update']);
+
+	Route::delete('sliders/{id}', ['as' => 'sliders.destroy', 'uses' => 'SliderController@destroy']);
+
+	/*
+	|--------------------------------------------------------------------------
+	| Tag Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Tag Model CRUD
+	|
+	 */
+	Route::get('tags', ['as' => 'tags.index', 'uses' => 'TagController@index']);
+
+	Route::get('tags/create', ['as' => 'tags.create', 'uses' => 'TagController@create']);
+	Route::post('tags/create', ['as' => 'tags.store', 'uses' => 'TagController@store']);
+
+	Route::get('tags/{id}', ['as' => 'tags.show', 'uses' => 'TagController@show']);
+
+	Route::get('tags/{id}/edit', ['as' => 'tags.edit', 'uses' => 'TagController@edit']);
+	Route::patch('tags/{id}', ['as' => 'tags.update', 'uses' => 'TagController@update']);
+
+	Route::delete('tags/{id}', ['as' => 'tags.destroy', 'uses' => 'TagController@destroy']);
+
+	/*
+	|--------------------------------------------------------------------------
+	| Post Controller
+	|--------------------------------------------------------------------------
+	|
+	| This is the route for Post Model CRUD
+	|
+	 */
+	Route::get('posts', ['as' => 'posts.index', 'uses' => 'PostController@index']);
+
+	Route::get('posts/create', ['as' => 'posts.create', 'uses' => 'PostController@create']);
+	Route::post('posts/create', ['as' => 'posts.store', 'uses' => 'PostController@store']);
+
+	Route::get('posts/{id}', ['as' => 'posts.show', 'uses' => 'PostController@show']);
+
+	Route::get('posts/{id}/edit', ['as' => 'posts.edit', 'uses' => 'PostController@edit']);
+	Route::patch('posts/{id}', ['as' => 'posts.update', 'uses' => 'PostController@update']);
+
+	Route::delete('posts/{id}', ['as' => 'posts.destroy', 'uses' => 'PostController@destroy']);
 });

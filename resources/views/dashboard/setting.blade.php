@@ -15,8 +15,7 @@
 				<a href="{{ url('admin/dashboard') }}"><i class="fa fa-home"></i>Home</a>
 			</li>
 			<li class="active">
-
-				<strong>Setting</strong>
+				<strong>Settings</strong>
 			</li>
 		</ol>
 
@@ -157,6 +156,23 @@
 					</div>
 				</a>
 			@endpermission
+
+			@if(Auth::user()->hasRole('administrator'))
+				<a href="{{ url('informations') }}">
+					<div class="col-sm-2">
+						<div class="tile-title tile-orange">
+							<div class="icon">
+								<img src="{{ asset('assets/icons/information.png') }}" alt="">
+							</div>
+
+							<div class="title">
+								<h3>&nbsp;<br>FRONTEND INFO</h3>
+								<p>&nbsp;</p>
+							</div>
+						</div>
+					</div>
+				</a>
+			@endif
 		</div>
 
 		<!-- Footer -->

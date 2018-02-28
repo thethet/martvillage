@@ -21,4 +21,13 @@ class HomeController extends Controller {
 		return view('dashboard.dashboard');
 	}
 
+	/**
+	 * Show the application information.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function information() {
+		return view('dashboard.information');
+	}
+
 }

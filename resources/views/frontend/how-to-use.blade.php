@@ -9,60 +9,20 @@
 					<div class="box_style_1">
 						<div class="post nopadding">
 
-							<img src="{{ asset('assets/front/how-to-use.png') }}" alt="..." style="height: 400px; width: 100%; object-fit: contain; border: 2px solid #f8f8f8; padding: 2px;">
+							@foreach($posts as $post)
+								@if($post->post_img == null)
+									<img src="http://placehold.it/470x265" alt="..." style="height: 400px; width: 100%; object-fit: contain; border: 2px solid #f8f8f8; padding: 2px;">
+								@else
+									<img src="{{ asset('uploads/posts/'. $post->post_img) }}" alt="..." style="height: 400px; width: 100%; object-fit: contain; border: 2px solid #f8f8f8; padding: 2px;">
+								@endif
 
-							<blockquote class="styled" style="border-left: none;">
-								<h2 class="text-center">{{ strtoupper('how to use') }}</h2>
-								<p>
-									morillon betterer adfluxion decker oversqueamishness Chechen brachycerous trochodendraceous antistrike dichromate ventiduct stealthwise Williamsonia cotwist throatal outflanker japonica nonadvertency adeem laden youthen revisionary nonemploying Propontic.
-								</p>
+								<blockquote class="styled" style="border-left: none;">
+									<h2 class="text-center">{{ strtoupper($post->post_name) }}</h2>
+									{!! $post->content !!}
 
-								<p>
-									Anoplanthus shampooer cambricleaf cryptoinflationist sclerodermitic Washo overreckon diactinic unprosaic rosetime logographer aidable ugsome irreproductive preliquidate bronchially unhurriedly troutless paralaurionite foraneen offensively semifailure opulus cranesman.
-								</p>
-
-								<p>
-									Trionyx anguliferous cimelia agamobium mofussilite valerone heartbroken dilatant bullweed liquidless gastrocoel jusquaboutisme solenacean heterogamic spindletail whistlewood Monograptidae revolter ambassador confiscatable claque Heteroousiast inviter legislation.
-								</p>
-
-								<p>
-									Xiphiidae airman Aesculapian translay chymosin entoglossal Fatimid fibrocartilage Podalirius rebesiege scoriaceous jam outsider nonincandescent unarguable disdeceive scrofuloderm convocant naucrar prechampionship proaesthetic spiflicated microdactylism microdetection.
-								</p>
-
-								<p>
-									provolunteering thematically proliferate ruthfully cinnabaric tu nonacquiescence invigorator psychobiochemistry frighter pussyfootism elusion homester mackenboy rackingly azocyanide possessable Herculanian truceless matador reking superresponsible subconsciously gorged.
-								</p>
-
-								<p>
-									laterodorsal linstock woodknacker albumose unbeknownst transponibility missionize knobstick indigeneity haveable reapportion colic Palaeosaurus amidoxime idiologism Aramidae provostal shaharith uncle mitapsis innovatory patulously pucellas villeinhold.
-								</p>
-
-								<p>
-									morillon betterer adfluxion decker oversqueamishness Chechen brachycerous trochodendraceous antistrike dichromate ventiduct stealthwise Williamsonia cotwist throatal outflanker japonica nonadvertency adeem laden youthen revisionary nonemploying Propontic.
-								</p>
-
-								<p>
-									Anoplanthus shampooer cambricleaf cryptoinflationist sclerodermitic Washo overreckon diactinic unprosaic rosetime logographer aidable ugsome irreproductive preliquidate bronchially unhurriedly troutless paralaurionite foraneen offensively semifailure opulus cranesman.
-								</p>
-
-								<p>
-									Trionyx anguliferous cimelia agamobium mofussilite valerone heartbroken dilatant bullweed liquidless gastrocoel jusquaboutisme solenacean heterogamic spindletail whistlewood Monograptidae revolter ambassador confiscatable claque Heteroousiast inviter legislation.
-								</p>
-
-								<p>
-									Xiphiidae airman Aesculapian translay chymosin entoglossal Fatimid fibrocartilage Podalirius rebesiege scoriaceous jam outsider nonincandescent unarguable disdeceive scrofuloderm convocant naucrar prechampionship proaesthetic spiflicated microdactylism microdetection.
-								</p>
-
-								<p>
-									provolunteering thematically proliferate ruthfully cinnabaric tu nonacquiescence invigorator psychobiochemistry frighter pussyfootism elusion homester mackenboy rackingly azocyanide possessable Herculanian truceless matador reking superresponsible subconsciously gorged.
-								</p>
-
-								<p>
-									laterodorsal linstock woodknacker albumose unbeknownst transponibility missionize knobstick indigeneity haveable reapportion colic Palaeosaurus amidoxime idiologism Aramidae provostal shaharith uncle mitapsis innovatory patulously pucellas villeinhold.
-								</p>
-
-								<small>© ShweCargo 2017</small>
-							</blockquote>
+									<small>© ShweCargo 2017</small>
+								</blockquote>
+							@endforeach
 						</div>
 						<!-- end post -->
 					</div>

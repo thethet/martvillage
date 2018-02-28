@@ -6,8 +6,10 @@ use App\Country;
 use App\Lotin;
 use App\NricCode;
 use App\NricTownship;
+use App\Post;
 use App\Receiver;
 use App\Sender;
+use App\Slider;
 use App\State;
 use App\Township;
 use Config;
@@ -24,7 +26,8 @@ class FrontEndController extends Controller {
 		$companies   = Company::where('deleted', 'N')->orderBy('rating', 'DESC')->take(3)->get();
 		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->get();
 		$totalRating = (int) Company::where('deleted', 'N')->sum('rating');
-		return view('frontend.index', ['companies' => $companies, 'companyList' => $companyList, 'totalRating' => $totalRating]);
+		$sliders     = Slider::where('deleted', 'N')->get();
+		return view('frontend.index', ['companies' => $companies, 'companyList' => $companyList, 'totalRating' => $totalRating, 'sliders' => $sliders]);
 	}
 
 	/**
@@ -150,7 +153,9 @@ class FrontEndController extends Controller {
 	 */
 	public function showAboutUs() {
 		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->get();
-		return view('frontend.about-us', ['companyList' => $companyList]);
+
+		$posts = Post::where('tags_id', 1)->where('deleted', 'N')->orderBy('id', 'DESC')->take(1)->get();
+		return view('frontend.about-us', ['companyList' => $companyList, 'posts' => $posts]);
 	}
 
 	/**
@@ -160,6 +165,8 @@ class FrontEndController extends Controller {
 	 */
 	public function showHowToUse() {
 		$companyList = Company::where('deleted', 'N')->orderBy('company_name', 'ASC')->get();
-		return view('frontend.how-to-use', ['companyList' => $companyList]);
+		$posts       = Post::where('tags_id', 2)->where('deleted', 'N')->orderBy('id', 'DESC')->take(1)->get();
+
+		return view('frontend.how-to-use', ['companyList' => $companyList, 'posts' => $posts]);
 	}
 }
