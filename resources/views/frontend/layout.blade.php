@@ -8,8 +8,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<meta name="description" content="Citytours - Premium site template for city tours agencies, transfers and tickets.">
-	<meta name="author" content="Ansonika">
+	<meta name="description" content="Shwecargo ကုန္စည္ပို႔ေဆာင္ေရး - ကုန္ပစၥည္းမ်ားကို ေစ်းႏႈန္းသက္သာစြာ ပို႔ေဆာင္ႏိုင္ပါသည္">
+	<meta name="author" content="TTA">
 	<title>Shwe Cargo - Cargo Management System powered by MSCT</title>
 
 	<!-- Favicons-->
@@ -141,7 +141,7 @@
 		<div id="top_line">
 			<div class="container">
 				<div class="row">
-					<div class="col-md-6 col-sm-6 col-xs-6"><i class="icon-phone"></i><strong>+95 9976477180 / +65 94308389</strong></div>
+					<div class="col-md-6 col-sm-6 col-xs-6"><i class="icon-phone"></i><strong>+95 9421136974 / +65 94308389</strong></div>
 
 					<div class="col-md-6 col-sm-6 col-xs-6">
 						{{-- <ul id="top_links">
@@ -248,7 +248,7 @@
 		<span class="search-overlay-close"><i class="icon_set_1_icon-77"></i></span>
 		{!! Form::open(array('route' => 'lot-search','method'=>'POST', 'role' => 'search', 'class' => 'form-horizontal form-groups-bordered validate', 'id' => 'searchform')) !!}
 
-			<input value="" name="q" type="search" placeholder="Please Enter Lot No. (သင္၏ Lot No. ကိုရိုက္ထည့္၍ရွာေဖြပါ" />
+			<input value="" name="q" type="search" placeholder="Please Enter Lot No. (သင္၏ Lot No. ကိုရိုက္ထည့္၍ရွာေဖြပါ)" />
 			<button type="submit"><i class="icon_set_1_icon-78"></i>
 			</button>
 		{!! Form::close() !!}

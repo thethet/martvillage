@@ -5,8 +5,8 @@
 
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<meta name="description" content="Neon Admin Panel" />
-	<meta name="author" content="" />
+	<meta name="description" content="Shwe Cargo Admin Panel" />
+	<meta name="author" content="TTA" />
 
 	<link rel="icon" href="{{ asset('assets/images/favicon.ico') }}">
 

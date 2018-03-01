@@ -343,6 +343,61 @@
 				}
 			});
 
+			// Fetch the preselected item, and add to the control
+			var companyId = $('#company_id').val();
+			var countryId = $('#country_id').val();
+			var stateId = $('#state_id').val();
+			$.ajax({
+				type: 'GET',
+				url: "{{ url('states/search-state-country') }}",
+				dataType: 'json',
+				delay: 250,
+				data: {
+					search: '',
+					companyId: companyId,
+					countryId: countryId,
+				}
+				,
+			}).then(function (data) {
+				var html = '<option value="">Select State/City</option>';
+				for (var i = 0, len = data.items.length; i < len; ++i) {
+					if(stateId == data.items[i]['id']) {
+						html += '<option value="' + data.items[i]['id'] + '" selected>' + data.items[i]['text'] + '</option>';
+					} else {
+						html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+					}
+				}
+				$('#state_id').children().remove().end().append(html) ;
+			});
+
+			// Fetch the preselected item, and add to the control
+			var companyId = $('#company_id').val();
+			var stateId = $('#state_id').val();
+			var townshipId = $('#township_id').val();
+			$.ajax({
+				type: 'GET',
+				url: "{{ url('townships/search-township-state') }}",
+				dataType: 'json',
+				delay: 250,
+				data: {
+					search: '',
+					companyId: companyId,
+					stateId: stateId,
+				}
+				,
+			}).then(function (data) {
+				var html = '<option value="">Select Township</option>';
+				for (var i = 0, len = data.items.length; i < len; ++i) {
+					if(townshipId == data.items[i]['id']) {
+						html += '<option value="' + data.items[i]['id'] + '" selected>' + data.items[i]['text'] + '</option>';
+					} else {
+						html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+					}
+				}
+				$('#township_id').children().remove().end().append(html) ;
+			});
+
+
 			$("#country_id").change(function(event) {
 				// Fetch the preselected item, and add to the control
 				var companyId = $('#company_id').val();
@@ -362,9 +417,13 @@
 				}).then(function (data) {
 					var html = '<option value="">Select State/City</option>';
 					for (var i = 0, len = data.items.length; i < len; ++i) {
-						html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+						if(townshipId == data.items[i]['id']) {
+							html += '<option value="' + data.items[i]['id'] + '" selected>' + data.items[i]['text'] + '</option>';
+						} else {
+							html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+						}
 					}
-					stateSelect.children().remove().end().append(html) ;
+					$('#township_id').children().remove().end().append(html) ;
 				});
 			});
 

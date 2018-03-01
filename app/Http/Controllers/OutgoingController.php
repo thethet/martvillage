@@ -539,8 +539,27 @@ class OutgoingController extends Controller {
 		$categoryList        = Category::where('deleted', 'N')->orderBy('id', 'ASC')->lists('unit', 'id');
 		$categories          = Category::where('deleted', 'N')->orderBy('id', 'ASC')->get();
 
+		// $pdf = PDF::loadView(
+		// 	'outgoings.packing-list-pdf',
+		// 	[
+		// 		'outgoing'            => $outgoing,
+		// 		'itemList'            => $itemList,
+		// 		'countryList'         => $countryList,
+		// 		'stateList'           => $stateList,
+		// 		'townshipList'        => $townshipList,
+		// 		'senderList'          => $senderList,
+		// 		'senderContactList'   => $senderContactList,
+		// 		'receiverList'        => $receiverList,
+		// 		'receiverContactList' => $receiverContactList,
+		// 		'categoryList'        => $categoryList,
+		// 		'categories'          => $categories,
+		// 		'companyList'         => $companyList,
+		// 		'myCompany'           => $myCompany,
+		// 	]
+		// )->setPaper('a6');
+
 		$pdf = PDF::loadView(
-			'outgoings.packing-list-pdf',
+			'outgoings.packing-list-new-pdf',
 			[
 				'outgoing'            => $outgoing,
 				'itemList'            => $itemList,
@@ -556,7 +575,7 @@ class OutgoingController extends Controller {
 				'companyList'         => $companyList,
 				'myCompany'           => $myCompany,
 			]
-		)->setPaper('a6');
+		);
 
 		return $pdf->stream('Pakage List PDF - ' . $id . '.pdf');
 	}

@@ -45,7 +45,7 @@
 				</a>
 			</li>
 
-			<li @if(Request::segment(1) == 'nric-codes' || Request::segment(1) == 'nric-townships' || Request::segment(1) == 'permissions' || Request::segment(1) == 'roles' || Request::segment(1) == 'companies' || Request::segment(1) == 'locations' || Request::segment(1) == 'countries' || Request::segment(1) == 'states' || Request::segment(1) == 'townships' || Request::segment(1) == 'pricing-setup' || Request::segment(1) == 'categories' || Request::segment(1) == 'currencies' || Request::segment(1) == 'prices' || Request::segment(1) == 'memberships') class="opened active has-sub" @else class="has-sub" @endif>
+			<li @if(Request::segment(1) == 'nric-codes' || Request::segment(1) == 'nric-townships' || Request::segment(1) == 'permissions' || Request::segment(1) == 'roles' || Request::segment(1) == 'companies' || Request::segment(1) == 'locations' || Request::segment(1) == 'countries' || Request::segment(1) == 'states' || Request::segment(1) == 'townships' || Request::segment(1) == 'pricing-setup' || Request::segment(1) == 'categories' || Request::segment(1) == 'currencies' || Request::segment(1) == 'prices' || Request::segment(1) == 'memberships' || Request::segment(1) == 'informations' || Request::segment(1) == 'sliders' || Request::segment(1) == 'tags' || Request::segment(1) == 'posts') class="opened active has-sub" @else class="has-sub" @endif>
 				<a href="{{ url('settings') }}">
 					<i class="entypo-cog"></i>
 					<span class="title">Settings</span>
@@ -175,6 +175,37 @@
 							</a>
 						</li>
 					@endpermission
+
+					@if(Auth::user()->hasRole('administrator'))
+						<li @if(Request::segment(1) == 'informations' || Request::segment(1) == 'sliders' || Request::segment(1) == 'tags' || Request::segment(1) == 'posts') class="opened active has-sub" @else class="has-sub" @endif>
+							<a href="{{ url('/locations') }}">
+								<i class="entypo-info"></i>
+								<span class="title">Information</span>
+							</a>
+							<ul>
+								<li @if(Request::segment(1) == 'sliders') class="active" @endif>
+									<a href="{{ url('sliders') }}">
+										<i class="entypo-picture"></i>
+										<span class="title">Slider</span>
+									</a>
+								</li>
+
+								<li @if(Request::segment(1) == 'tags') class="active" @endif>
+									<a href="{{ url('tags') }}">
+										<i class="entypo-tag"></i>
+										<span class="title">Tag</span>
+									</a>
+								</li>
+
+								<li @if(Request::segment(1) == 'posts') class="active" @endif>
+									<a href="{{ url('posts') }}">
+										<i class="entypo-doc-text"></i>
+										<span class="title">Post</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+					@endif
 				</ul>
 			</li>
 

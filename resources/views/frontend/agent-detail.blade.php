@@ -22,19 +22,45 @@
 									<br>
 									<i class="icon-phone"></i> <span>{{ $company->contact_no }}</span>
 									<br>
-									<i class="icon-location"></i>
-									<span>
-										{{ $company->address }}
-										@if($company->township_id > 0 && count($townshipList))
-											{{ $townshipList[$company->township_id] }}
-										@endif
-										@if($company->state_id > 0 && count($stateList))
-											, {{ $stateList[$company->state_id] }}
-										@endif
-										@if($company->country_id > 0 && count($countryList))
-											, {{ $countryList[$company->country_id] }}
-										@endif
-									</span>
+									@if($company->id == 2)
+										<br>
+										<i class="icon-suitcase"></i> <span>{{ 'Singapore Office' }}</span>
+										<br>
+										<i class="icon-location"></i>
+										<span>
+											{{ $company->address }}
+											@if($company->township_id > 0 && count($townshipList))
+												{{ $townshipList[$company->township_id] }}
+											@endif
+											@if($company->state_id > 0 && count($stateList))
+												, {{ $stateList[$company->state_id] }}
+											@endif
+											@if($company->country_id > 0 && count($countryList))
+												, {{ $countryList[$company->country_id] }}
+											@endif
+										</span>
+										<br><br>
+										<i class="icon-suitcase"></i> <span>{{ 'Myanmar Office' }}</span>
+										<br>
+										<i class="icon-location"></i>
+										<span style="font-size: 13.7px; font-weight: bold;">
+											{{ 'တိုက္ ၅၄, အခန္း ၇, ျမန္မာ့ဂုဏ္ရည္လမ္းႏွင့္ အထက္ပန္းဆိုးတန္းလမ္းေထာင့္, စံျပဖဆပလ ရပ္ကြက္, မဂၤလာေတာင္ၫႊန္႔ျမိဳ ႔နယ္' }}
+										</span>
+									@else
+										<i class="icon-location"></i>
+										<span>
+											{{ $company->address }}
+											@if($company->township_id > 0 && count($townshipList))
+												{{ $townshipList[$company->township_id] }}
+											@endif
+											@if($company->state_id > 0 && count($stateList))
+												, {{ $stateList[$company->state_id] }}
+											@endif
+											@if($company->country_id > 0 && count($countryList))
+												, {{ $countryList[$company->country_id] }}
+											@endif
+										</span>
+									@endif
 								</p>
 
 								<small>© ShweCargo 2017</small>
