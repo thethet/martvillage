@@ -359,7 +359,12 @@
 										<?php $j = 0; ?>
 										@for($i = 0; $i < 7; $i++)
 											<tr id="row{{ $j }}">
-												<td>{{ $j+1 }}</td>
+												<td>
+													{{ $j+1 }}
+													<div style="display: none;">
+														{!! Form::checkbox('check[]', $j, null, ['class' => 'item-chks', 'id' => 'item-chk'.$j, 'readonly']) !!}
+													</div>
+												</td>
 												<td>
 													{!! Form::text('lots['.$j.'][item_name]', null, ['placeholder' => 'Item Name', 'class' => 'form-control item_name', 'id' => 'itemname-'.$j, 'autocomplete' => 'off']) !!}
 													@if ($errors->has("lots.$j.item_name"))
@@ -404,7 +409,7 @@
 
 												<td>
 													<div class="col-sm-8" style="padding: 0;">
-														{!! Form::text('lots['.$j.'][unit]', null, ['placeholder' => 'Unit', 'class' => 'form-control unit', 'id' => 'unit-'.$j, 'autocomplete' => 'off', 'readonly']) !!}
+														{!! Form::text('lots['.$j.'][unit]', null, ['placeholder' => 'Unit', 'class' => 'form-control unit', 'id' => 'unit-'.$j, 'autocomplete' => 'off', 'readonly', 'data-min' => 0]) !!}
 														{{-- {!! Form::text('lots['.$j.'][unit_type]', null, ['placeholder' => 'Unit', 'class' => 'form-control unit-type', 'id' => 'unit-type-'.$j, 'autocomplete' => 'off', 'readonly']) !!} --}}
 													</div>
 													<label class="col-sm-1 control-label" style="padding-left: 3px;">
@@ -627,10 +632,68 @@
 
 			calculateTotal();
 
-			$('.price_id').attr('readonly', true);
-			$('#state_id').attr('readonly', true);
-			$('#to_country_id').attr('readonly', true);
-			$('#to_state_id').attr('readonly', true);
+			$( ".item_name" ).focusin(function() {
+				var classes = this.id.split('-');
+				$('#item-chk' + classes[1]).prop("checked", true);
+
+				// Fetch the preselected item, and add to the control
+				var fromCountryId = $('#country_id').val();
+				var fromStateId = $('#state_id').val();
+				var toCountryId = $('#to_country_id').val();
+				var toStateId = $('#to_state_id').val();
+				var priceSelect = $('.price_id');
+				var companyId = $('#company_id').val();
+				$.ajax({
+					type: 'GET',
+					url: "{{ url('lotins/search-price-list') }}",
+					dataType: 'json',
+					delay: 250,
+					data: {
+						search: '',
+						fromCountryId: fromCountryId,
+						fromStateId: fromStateId,
+						toCountryId: toCountryId,
+						toStateId: toStateId,
+						companyId: companyId
+					}
+					,
+				}).then(function (data) {
+					if(data != null) {
+						var html = '<option value="">Select Type</option>';
+						for (var i = 0, len = data.items.length; i < len; ++i) {
+							html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+						}
+						priceSelect.children().remove().end().append(html);
+					}
+				});
+				$('.price_id').attr('readonly', false);
+			});
+
+			if($('#state_id').val() == null || $('#state_id').val() == '') {
+				$('#state_id').attr('readonly', true);
+			}
+
+			if($('#to_country_id').val() == null || $('#to_country_id').val() == '') {
+				$('#to_country_id').attr('readonly', true);
+			}
+
+			if($('#to_state_id').val() == null || $('#to_state_id').val() == '') {
+				$('#to_state_id').attr('readonly', true);
+			}
+
+			$(".price_id").each(function () {
+				if($(this).val() == null || $(this).val() == '') {
+					$(this).attr('readonly', true);
+				}
+			});
+
+			$(".unit").each(function () {
+				if($(this).val() == null || $(this).val() == '') {
+					$(this).attr('readonly', true);
+				} else {
+					$(this).attr('readonly', false);
+				}
+			});
 
 			$("#company_id").change(function(){
 				var companyId = $(this).val();

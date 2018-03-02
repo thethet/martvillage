@@ -182,14 +182,7 @@ class LotInController extends Controller {
 			}
 		}, $request->all()));
 
-		$messages = array(
-			'lots.*.barcode.unique' => 'The barcode has already been taken.',
-		);
-
-		$this->validate($request, [
-			// 'lots.*.item_name'   => 'required',
-
-			// 'lots.*.barcode'     => 'required|unique:items,barcode',
+		$rules = [
 			's_contact_no'       => 'required|numeric',
 			// 'member_no'          => 'required|unique:senders,member_no',
 			'sender_name'        => 'required',
@@ -206,12 +199,32 @@ class LotInController extends Controller {
 
 			'other_discount'     => 'numeric',
 			'other_discount_amt' => 'numeric',
+		];
 
-			'lots.*.barcode'     => 'unique:items,barcode',
+		$count = count($request->check);
 
-		], $messages);
+		for ($key = 0; $key < $count; $key++) {
+			$rules['lots.' . $key . '.item_name']  = 'required';
+			$rules['lots.' . $key . '.barcode']    = 'required|unique:items,barcode';
+			$rules['lots.' . $key . '.price_id']   = 'required';
+			$rules['lots.' . $key . '.unit_price'] = 'required';
+			$rules['lots.' . $key . '.unit']       = 'required';
+			$rules['lots.' . $key . '.quantity']   = 'required';
+		}
 
-		$size = count($request->lots);
+		$messages = array(
+			'lots.*.item_name.required'  => 'The item name field is required.',
+			'lots.*.barcode.required'    => 'The barcode field is required.',
+			'lots.*.barcode.unique'      => 'The barcode has already been taken.',
+			'lots.*.price_id.required'   => 'The type field is required.',
+			'lots.*.unit_price.required' => 'The unit price field is required.',
+			'lots.*.unit.required'       => 'The unit field is required.',
+			'lots.*.quantity.required'   => 'The quantity field is required.',
+		);
+
+		$this->validate($request, $rules, $messages);
+
+		$size = count($request->item_count);
 
 		$user_id    = Auth::user()->id;
 		$company_id = $request->company_id;
@@ -223,7 +236,7 @@ class LotInController extends Controller {
 			}
 
 			if ($request->s_contact_no) {
-				$senderIds = Sender::where('contact_no', $request->s_contact_no)->first();
+				// $senderIds = Sender::where('contact_no', $request->s_contact_no)->first();
 			}
 			if ($senderIds) {
 				$senderId = $senderIds->id;

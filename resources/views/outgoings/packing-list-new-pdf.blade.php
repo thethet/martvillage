@@ -100,6 +100,7 @@
 			<?php
 				$amount = 0;
 				$totalAmount = 0;
+				$totalKg = 0;
 				$sno = 1;
 			?>
 			<table class="table table-bordered responsive zawgyi">
@@ -109,6 +110,7 @@
 						<th width="5%" class="zawgyi">Sender</th>
 						<th width="15%" class="zawgyi">Receiver</th>
 						<th class="zawgyi">Description</th>
+						<th width="5%">Unit</th>
 						<th width="15%" class="zawgyi">Amount</th>
 					</tr>
 				</thead>
@@ -117,6 +119,7 @@
 						<?php
 							$amount = $item->unit * $item->quantity * $item->unit_price;
 							$totalAmount += $amount;
+							$totalKg += $item->unit * $item->quantity;
 							$lotin = App\Lotin::find($item->lotin_id);
 						?>
 						<tr>
@@ -138,9 +141,8 @@
 								{{ $item->description }}
 							</td>
 
-							<td class="text-right">{{ $item->unit }}</td>
-							<td class="text-right">{{ $item->quantity }}</td>
-							<td class="text-right">{{ number_format($item->unit_price, 2) }}</td>
+							<td class="text-right">{{ ($item->unit * $item->quantity) }}</td>
+
 							<td class="text-right">{{ number_format($amount, 2) }}</td>
 						</tr>
 					@endforeach
@@ -150,9 +152,11 @@
 						<td></td>
 						<td></td>
 						<td></td>
+						<td></td>
 					</tr>
 					<tr>
 						<td colspan="4" class="text-right">TOTAL</td>
+						<td class="text-right">{{ number_format($totalKg, 2) }}</td>
 						<td class="text-right">{{ number_format($totalAmount, 2) }}</td>
 					</tr>
 				</tbody>
