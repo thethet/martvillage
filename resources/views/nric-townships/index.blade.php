@@ -59,7 +59,7 @@
 								<div class="input-group-addon">
 									<i class="entypo-search"></i>
 								</div>
-								{!! Form::select('nric_code_id', ['' => 'Select NRIC Code'] + $nricCodeList->toArray(), null, ['class' => 'form-control select2', 'autocomplete' => 'off']) !!}
+								{!! Form::select('nric_code_id', ['' => 'Select NRIC Code'] + $nricCodeList->toArray(), null, ['class' => 'select2', 'autocomplete' => 'off']) !!}
 							</div>
 						</div>
 

@@ -64,14 +64,14 @@
 								<div class="col-sm-2">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-vcard"></i></span>
-										{!! Form::select('nric_code_id', ['' => 'Code'] + $nricCodeList->toArray(), null, ['class' => 'form-control select2', 'id' => 'nric_code', 'data-allow-clear' => 'true']) !!}
+										{!! Form::select('nric_code_id', ['' => 'Code'] + $nricCodeList->toArray(), null, ['class' => 'select2', 'id' => 'nric_code', 'data-allow-clear' => 'true']) !!}
 									</div>
 								</div>
 
 								<div class="col-sm-2">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-vcard"></i></span>
-										{!! Form::select('nric_township_id', ['' => 'Township'] + $nricTownshipList->toArray(), null, ['class' => 'form-control select2', 'autocomplete' => 'off', 'id' => 'nric_township']) !!}
+										{!! Form::select('nric_township_id', ['' => 'Township'] + $nricTownshipList->toArray(), null, ['class' => 'select2', 'autocomplete' => 'off', 'id' => 'nric_township']) !!}
 									</div>
 								</div>
 
@@ -167,7 +167,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="fa fa-venus-mars"></i></span>
-										{!! Form::select('gender', ['' => 'Select Gender'] + Config::get('myVars.Gender'), null, ['class' => 'form-control select2', 'id' => 'gender', 'autocomplete' => 'off']) !!}
+										{!! Form::select('gender', ['' => 'Select Gender'] + Config::get('myVars.Gender'), null, ['class' => 'select2', 'id' => 'gender', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('gender'))
@@ -184,7 +184,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-info"></i></span>
-										{!! Form::select('marital_status', ['' => 'Select Marital Status'] + Config::get('myVars.MaritalStatus'), null, ['class' => 'form-control select2', 'autocomplete' => 'off']) !!}
+										{!! Form::select('marital_status', ['' => 'Select Marital Status'] + Config::get('myVars.MaritalStatus'), null, ['class' => 'select2', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('marital_status'))
@@ -201,7 +201,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-flow-tree"></i></span>
-										{!! Form::select('role', ['' => 'Select Role'] + $roleList->toArray(), null, ['class' => 'form-control select2', 'autocomplete' => 'off']) !!}
+										{!! Form::select('role', ['' => 'Select Role'] + $roleList->toArray(), null, ['class' => 'select2', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('role'))
@@ -281,7 +281,7 @@
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-suitcase"></i></span>
 										@if(Auth::user()->hasRole('administrator'))
-										{!! Form::select('company_id', ['' => 'Select Company'] + $companyList->toArray(), null, ['class' => 'form-control select2', 'id' => 'company_id', 'autocomplete' => 'off']) !!}
+										{!! Form::select('company_id', ['' => 'Select Company'] + $companyList->toArray(), null, ['class' => 'select2', 'id' => 'company_id', 'autocomplete' => 'off']) !!}
 										@else
 											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control', 'id' => 'company_id']) !!}
@@ -327,7 +327,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-globe"></i></span>
-										{!! Form::select('country_id', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'country_id', 'class' => 'form-control select2', 'autocomplete' => 'off']) !!}
+										{!! Form::select('country_id', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'country_id', 'class' => 'select2', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('country_id'))
@@ -344,7 +344,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-location"></i></span>
-										{!! Form::select('state_id', ['' => 'Select State/City'] + $stateList->toArray(), null, ['id'=>'state_id', 'class' => 'form-control select2', 'autocomplete' => 'off']) !!}
+										{!! Form::select('state_id', ['' => 'Select State/City'] + $stateList->toArray(), null, ['id'=>'state_id', 'class' => 'select2', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('state_id'))
@@ -361,7 +361,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-direction"></i></span>
-										{!! Form::select('township_id', ['' => 'Select Township'] + $townshipList->toArray(), null, ['id'=>'township_id', 'class' => 'form-control select2', 'autocomplete' => 'off']) !!}
+										{!! Form::select('township_id', ['' => 'Select Township'] + $townshipList->toArray(), null, ['id'=>'township_id', 'class' => 'select2', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('township_id'))

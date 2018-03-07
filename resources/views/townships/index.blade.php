@@ -71,7 +71,7 @@
 								<div class="input-group-addon">
 									<i class="entypo-search"></i>
 								</div>
-								{!! Form::select('all_state_id', ['' => 'Select State'] + $stateList->toArray(), null, ['id'=>'all_state_id', 'class' => 'form-control select2', 'autocomplete' => 'off']) !!}
+								{!! Form::select('all_state_id', ['' => 'Select State'] + $stateList->toArray(), null, ['id'=>'all_state_id', 'class' => 'select2', 'autocomplete' => 'off']) !!}
 							</div>
 						</div>
 
@@ -166,7 +166,7 @@
 								<div class="input-group-addon">
 									<i class="entypo-search"></i>
 								</div>
-								{!! Form::select('state_id', ['' => 'Select State'] + $stateList->toArray(), null, ['id'=>'state_id', 'class' => 'form-control select2', 'autocomplete' => 'off']) !!}
+								{!! Form::select('state_id', ['' => 'Select State'] + $stateList->toArray(), null, ['id'=>'state_id', 'class' => 'select2', 'autocomplete' => 'off']) !!}
 							</div>
 						</div>
 

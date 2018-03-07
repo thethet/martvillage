@@ -52,7 +52,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-globe"></i></span>
-										{!! Form::select('country_id', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'country_id', 'class' => 'form-control select2', 'autocomplete' => 'off']) !!}
+										{!! Form::select('country_id', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'country_id', 'class' => 'select2', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('country_id'))

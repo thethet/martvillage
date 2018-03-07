@@ -37,7 +37,7 @@
 						<div class="input-group-addon">
 							<i class="entypo-location"></i>
 						</div>
-						{!! Form::select('from_state', ['' => 'Select From Location'] + $stateList->toArray(), null, ['class' => 'form-control select2', 'autocomplete' => 'off']) !!}
+						{!! Form::select('from_state', ['' => 'Select From Location'] + $stateList->toArray(), null, ['class' => 'select2', 'autocomplete' => 'off']) !!}
 					</div>
 				</div>
 
@@ -47,7 +47,7 @@
 						<div class="input-group-addon">
 							<i class="entypo-location"></i>
 						</div>
-						{!! Form::select('to_state', ['' => 'Select To Location'] + $stateList->toArray(), null, ['class' => 'form-control select2', 'autocomplete' => 'off']) !!}
+						{!! Form::select('to_state', ['' => 'Select To Location'] + $stateList->toArray(), null, ['class' => 'select2', 'autocomplete' => 'off']) !!}
 					</div>
 				</div>
 

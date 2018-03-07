@@ -71,7 +71,7 @@
 								<div class="input-group-addon">
 									<i class="entypo-search"></i>
 								</div>
-								{!! Form::select('all_country_id', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'all_country_id', 'class' => 'form-control select2', 'autocomplete' => 'off']) !!}
+								{!! Form::select('all_country_id', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'all_country_id', 'class' => 'select2', 'autocomplete' => 'off']) !!}
 							</div>
 						</div>
 
@@ -171,7 +171,7 @@
 								<div class="input-group-addon">
 									<i class="entypo-search"></i>
 								</div>
-								{!! Form::select('country_id', ['' => 'Select Country'] + $myCountryList->toArray(), null, ['id'=>'country_id', 'class' => 'form-control select2', 'autocomplete' => 'off']) !!}
+								{!! Form::select('country_id', ['' => 'Select Country'] + $myCountryList->toArray(), null, ['id'=>'country_id', 'class' => 'select2', 'autocomplete' => 'off']) !!}
 							</div>
 						</div>
 

@@ -50,7 +50,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-vcard"></i></span>
-										{!! Form::select('nric_code_id', ['' => 'Select NRIC Code'] + $nricCodeList->toArray(), null, ['class' => 'form-control select2', 'autocomplete' => 'off']) !!}
+										{!! Form::select('nric_code_id', ['' => 'Select NRIC Code'] + $nricCodeList->toArray(), null, ['class' => 'select2', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('nric_code_id'))

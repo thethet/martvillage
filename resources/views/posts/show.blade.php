@@ -53,7 +53,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-tag"></i></span>
-										{!! Form::select('tags_id', ['' => 'Select Tag'] + $tagList->toArray(), null, ['class' => 'form-control select2', 'autocomplete' => 'off', 'disabled']) !!}
+										{!! Form::select('tags_id', ['' => 'Select Tag'] + $tagList->toArray(), null, ['class' => 'select2', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
