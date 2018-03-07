@@ -52,7 +52,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-location"></i></span>
-										{!! Form::select('state_id', ['' => 'Select State'] + $stateList->toArray(), null, ['id'=>'state_id', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+										{!! Form::select('state_id', ['' => 'Select State'] + $stateList->toArray(), null, ['id'=>'state_id', 'class' => 'form-control select2', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -120,8 +120,14 @@
 	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2.css') }}">
 
 	<!-- Imported scripts on this page -->
-	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
 	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
+			if (is_string($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
 @stop
 

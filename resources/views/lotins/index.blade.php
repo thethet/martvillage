@@ -48,7 +48,7 @@
 						<div class="input-group-addon">
 							<i class="entypo-location"></i>
 						</div>
-						{!! Form::select('from_state', ['' => 'Select From Location'] + $stateList->toArray(), null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
+						{!! Form::select('from_state', ['' => 'Select From Location'] + $stateList->toArray(), null, ['class' => 'form-control select2', 'autocomplete' => 'off']) !!}
 					</div>
 				</div>
 				@endif
@@ -59,7 +59,7 @@
 						<div class="input-group-addon">
 							<i class="entypo-location"></i>
 						</div>
-						{!! Form::select('to_state', ['' => 'Select To Location'] + $stateList->toArray(), null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
+						{!! Form::select('to_state', ['' => 'Select To Location'] + $stateList->toArray(), null, ['class' => 'form-control select2', 'autocomplete' => 'off']) !!}
 					</div>
 				</div>
 
@@ -178,8 +178,14 @@
 
 	<!-- Imported scripts on this page -->
 	<script src="{{ asset('assets/js/bootstrap-datepicker.js') }}"></script>
-	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
 	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
+			if (is_string($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
 
 	<script>

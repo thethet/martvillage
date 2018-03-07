@@ -59,7 +59,7 @@
 								<div class="input-group-addon">
 									<i class="entypo-search"></i>
 								</div>
-								{!! Form::select('nric_code_id', ['' => 'Select NRIC Code'] + $nricCodeList->toArray(), null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
+								{!! Form::select('nric_code_id', ['' => 'Select NRIC Code'] + $nricCodeList->toArray(), null, ['class' => 'form-control select2', 'autocomplete' => 'off']) !!}
 							</div>
 						</div>
 
@@ -136,8 +136,8 @@
 	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2.css') }}">
 
 	<!-- Imported scripts on this page -->
-	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
 	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
 	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
 
 	<script>

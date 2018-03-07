@@ -181,7 +181,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-globe"></i></span>
-										{!! Form::select('country_id', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'country_id', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+										{!! Form::select('country_id', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'country_id', 'class' => 'form-control select2', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -192,7 +192,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-location"></i></span>
-										{!! Form::select('state_id', ['' => 'Select State/City'] + $stateList->toArray(), null, ['id'=>'state_id', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+										{!! Form::select('state_id', ['' => 'Select State/City'] + $stateList->toArray(), null, ['id'=>'state_id', 'class' => 'form-control select2', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -203,7 +203,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-direction"></i></span>
-										{!! Form::select('township_id', ['' => 'Select Township'] + $townshipList->toArray(), null, ['id'=>'township_id', 'class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+										{!! Form::select('township_id', ['' => 'Select Township'] + $townshipList->toArray(), null, ['id'=>'township_id', 'class' => 'form-control select2', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -238,8 +238,8 @@
 	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2.css') }}">
 
 	<!-- Imported scripts on this page -->
-	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
 	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
 	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
 @stop
 

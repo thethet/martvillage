@@ -54,7 +54,7 @@
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-suitcase"></i></span>
 										@if(Auth::user()->hasRole('administrator'))
-											{!! Form::select('company_id', ['' => 'Select Company'] + $companyList->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off', 'disabled']) !!}
+											{!! Form::select('company_id', ['' => 'Select Company'] + $companyList->toArray(), null, ['class' => 'form-control select2', 'id' => 'company_id', 'autocomplete' => 'off', 'disabled']) !!}
 										@else
 											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
@@ -69,7 +69,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="fa fa-balance-scale"></i></span>
-										{!! Form::select('category_id', ['' => 'Select Category'] + $categoryList->toArray(), null, ['class' => 'form-control', 'id' => 'category_id', 'autocomplete' => 'off', 'disabled']) !!}
+										{!! Form::select('category_id', ['' => 'Select Category'] + $categoryList->toArray(), null, ['class' => 'form-control select2', 'id' => 'category_id', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -80,7 +80,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon">&nbsp;<i class="fa fa-usd"></i>&nbsp;</span>
-										{!! Form::select('currency_id', ['' => 'Select Currency'] + $currencyList->toArray(), null, ['class' => 'form-control', 'id' => 'currency_id', 'autocomplete' => 'off', 'disabled']) !!}
+										{!! Form::select('currency_id', ['' => 'Select Currency'] + $currencyList->toArray(), null, ['class' => 'form-control select2', 'id' => 'currency_id', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -113,14 +113,14 @@
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-globe"></i></span>
-										{!! Form::select('from_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['class' => 'form-control', 'id' => 'from_country', 'autocomplete' => 'off', 'disabled']) !!}
+										{!! Form::select('from_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['class' => 'form-control select2', 'id' => 'from_country', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-location"></i></span>
-										{!! Form::select('from_state', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'form-control', 'id' => 'from_state', 'autocomplete' => 'off', 'disabled']) !!}
+										{!! Form::select('from_state', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'form-control select2', 'id' => 'from_state', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -131,14 +131,14 @@
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-globe"></i></span>
-										{!! Form::select('to_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['class' => 'form-control', 'id' => 'to_country', 'autocomplete' => 'off', 'disabled']) !!}
+										{!! Form::select('to_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['class' => 'form-control select2', 'id' => 'to_country', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-location"></i></span>
-										{!! Form::select('to_state', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'form-control', 'id' => 'to_state', 'autocomplete' => 'off', 'disabled']) !!}
+										{!! Form::select('to_state', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'form-control select2', 'id' => 'to_state', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -173,8 +173,14 @@
 	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2.css') }}">
 
 	<!-- Imported scripts on this page -->
-	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
 	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
+			if (is_string($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
 @stop
 

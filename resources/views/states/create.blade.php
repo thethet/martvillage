@@ -52,7 +52,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-globe"></i></span>
-										{!! Form::select('country_id', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'country_id', 'class' => 'form-control', 'autocomplete' => 'off']) !!}
+										{!! Form::select('country_id', ['' => 'Select Country'] + $countryList->toArray(), null, ['id'=>'country_id', 'class' => 'form-control select2', 'autocomplete' => 'off']) !!}
 									</div>
 
 									@if ($errors->has('country_id'))
@@ -152,8 +152,14 @@
 	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2.css') }}">
 
 	<!-- Imported scripts on this page -->
-	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
 	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
+			if (is_string($value)) {
+				return trim($value);
+			} else {
+				return $value;
+			}
+		}, $request->all()));
 	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
 
 	<script>

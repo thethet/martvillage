@@ -61,6 +61,11 @@ class UserController extends Controller {
 	 * @return Response
 	 */
 	public function create() {
+		if (Auth::user()->hasRole('administrator')) {
+			$myAuth = 1;
+		} else {
+			$myAuth = 0;
+		}
 		$myCompany      = Company::find(Auth::user()->company_id);
 		$countryIdList  = array();
 		$stateIdList    = array();
@@ -98,7 +103,7 @@ class UserController extends Controller {
 		$nricCodeList     = NricCode::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
 		$nricTownshipList = NricTownship::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
 
-		return view('users.create', ['roleList' => $roleList, 'companyList' => $companyList, 'countryList' => $countryList, 'stateList' => $stateList, 'townshipList' => $townshipList, 'nricCodeList' => $nricCodeList, 'nricTownshipList' => $nricTownshipList]);
+		return view('users.create', ['roleList' => $roleList, 'companyList' => $companyList, 'countryList' => $countryList, 'stateList' => $stateList, 'townshipList' => $townshipList, 'nricCodeList' => $nricCodeList, 'nricTownshipList' => $nricTownshipList, 'myAuth' => $myAuth]);
 	}
 
 	/**
@@ -216,8 +221,9 @@ class UserController extends Controller {
 
 		if (Auth::user()->hasRole('administrator')) {
 			$roleList = Role::lists('display_name', 'id');
-
+			$myAuth   = 1;
 		} else {
+			$myAuth = 0;
 			if (Auth::user()->hasRole('owner')) {
 				$roleList = Role::where('id', '!=', 1)->lists('display_name', 'id');
 			} else {
@@ -252,7 +258,7 @@ class UserController extends Controller {
 		$nricCodeList     = NricCode::where('deleted', 'N')->orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
 		$nricTownshipList = NricTownship::where('deleted', 'N')->orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
 
-		return view('users.edit', ['user' => $user, 'userRole' => $userRole, 'roleList' => $roleList, 'companyList' => $companyList, 'countryList' => $countryList, 'stateList' => $stateList, 'townshipList' => $townshipList, 'nricCodeList' => $nricCodeList, 'nricTownshipList' => $nricTownshipList]);
+		return view('users.edit', ['user' => $user, 'userRole' => $userRole, 'roleList' => $roleList, 'companyList' => $companyList, 'countryList' => $countryList, 'stateList' => $stateList, 'townshipList' => $townshipList, 'nricCodeList' => $nricCodeList, 'nricTownshipList' => $nricTownshipList, 'myAuth' => $myAuth]);
 	}
 
 	/**

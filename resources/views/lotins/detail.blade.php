@@ -48,7 +48,7 @@
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-suitcase"></i></span>
 										@if(Auth::user()->hasRole('administrator'))
-											{!! Form::select('company_id', ['' => 'Select Company'] + $companyList->toArray(), null, ['class' => 'form-control', 'id' => 'company_id', 'autocomplete' => 'off', 'disabled']) !!}
+											{!! Form::select('company_id', ['' => 'Select Company'] + $companyList->toArray(), null, ['class' => 'form-control select2', 'id' => 'company_id', 'autocomplete' => 'off', 'disabled']) !!}
 										@else
 											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
 											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control']) !!}
@@ -96,14 +96,14 @@
 								<div class="col-sm-2">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-vcard"></i></span>
-										{!! Form::select('nric_code_id', ['' => 'Code'] + $nricCodeList->toArray(), null, ['class' => 'form-control', 'id' => 'nric_code', 'data-allow-clear' => 'true', 'disabled']) !!}
+										{!! Form::select('nric_code_id', ['' => 'Code'] + $nricCodeList->toArray(), null, ['class' => 'form-control select2', 'id' => 'nric_code', 'data-allow-clear' => 'true', 'disabled']) !!}
 									</div>
 								</div>
 
 								<div class="col-sm-2">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-vcard"></i></span>
-										{!! Form::select('nric_township_id', ['' => 'Township'] + $nricTownshipList->toArray(), null, ['class' => 'form-control', 'autocomplete' => 'off', 'id' => 'nric_township', 'disabled']) !!}
+										{!! Form::select('nric_township_id', ['' => 'Township'] + $nricTownshipList->toArray(), null, ['class' => 'form-control select2', 'autocomplete' => 'off', 'id' => 'nric_township', 'disabled']) !!}
 									</div>
 								</div>
 
@@ -157,14 +157,14 @@
 								<div class="col-sm-2">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-vcard"></i></span>
-										{!! Form::select('r_nric_code_id', ['' => 'Code'] + $nricCodeList->toArray(), null, ['class' => 'form-control', 'id' => 'r_nric_code', 'data-allow-clear' => 'true', 'disabled']) !!}
+										{!! Form::select('r_nric_code_id', ['' => 'Code'] + $nricCodeList->toArray(), null, ['class' => 'form-control select2', 'id' => 'r_nric_code', 'data-allow-clear' => 'true', 'disabled']) !!}
 									</div>
 								</div>
 
 								<div class="col-sm-2">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-vcard"></i></span>
-										{!! Form::select('r_nric_township_id', ['' => 'Township'] + $nricTownshipList->toArray(), null, ['class' => 'form-control', 'autocomplete' => 'off', 'id' => 'r_nric_township', 'disabled']) !!}
+										{!! Form::select('r_nric_township_id', ['' => 'Township'] + $nricTownshipList->toArray(), null, ['class' => 'form-control select2', 'autocomplete' => 'off', 'id' => 'r_nric_township', 'disabled']) !!}
 									</div>
 								</div>
 
@@ -204,14 +204,14 @@
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-globe"></i></span>
-										{!! Form::select('from_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['class' => 'form-control', 'id' => 'country_id', 'autocomplete' => 'off', 'disabled']) !!}
+										{!! Form::select('from_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['class' => 'form-control select2', 'id' => 'country_id', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-location"></i></span>
-										{!! Form::select('from_state', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'form-control', 'id' => 'state_id', 'autocomplete' => 'off', 'disabled']) !!}
+										{!! Form::select('from_state', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'form-control select2', 'id' => 'state_id', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -222,14 +222,14 @@
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-globe"></i></span>
-										{!! Form::select('to_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['class' => 'form-control', 'id' => 'to_country_id', 'autocomplete' => 'off', 'disabled']) !!}
+										{!! Form::select('to_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['class' => 'form-control select2', 'id' => 'to_country_id', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-location"></i></span>
-										{!! Form::select('to_state', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'form-control', 'id' => 'to_state_id', 'autocomplete' => 'off', 'disabled']) !!}
+										{!! Form::select('to_state', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'form-control select2', 'id' => 'to_state_id', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -240,7 +240,7 @@
 								<div class="col-sm-5">
 									<div class="input-group minimal">
 										<span class="input-group-addon">&nbsp;<i class="fa fa-usd"></i>&nbsp;</span>
-										{!! Form::select('payment', ['' => 'Select Payment'] + Config::get('myVars.Payment'), null, ['class' => 'form-control', 'id' => 'payment', 'autocomplete' => 'off', 'disabled']) !!}
+										{!! Form::select('payment', ['' => 'Select Payment'] + Config::get('myVars.Payment'), null, ['class' => 'form-control select2', 'id' => 'payment', 'autocomplete' => 'off', 'disabled']) !!}
 									</div>
 								</div>
 							</div>
@@ -260,7 +260,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<?php $j = 7 - count($itemList); $i = 1; ?>
+										<?php $j = 10 - count($itemList); $i = 1; ?>
 
 										@foreach($itemList as $item)
 											<tr>
