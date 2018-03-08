@@ -236,7 +236,7 @@ class LotInController extends Controller {
 			}
 
 			if ($request->s_contact_no) {
-				// $senderIds = Sender::where('contact_no', $request->s_contact_no)->first();
+				$senderIds = Sender::where('contact_no', $request->s_contact_no)->first();
 			}
 			if ($senderIds) {
 				$senderId = $senderIds->id;
@@ -460,7 +460,7 @@ class LotInController extends Controller {
 		$receiverLastId = $lotinData->address;
 
 		$receiverCount = count($receiver);
-		$receiverCount += 1;
+		// $receiverCount += 1;
 		$receiverLastNo = $receiverLastId . ' of ' . $receiverCount;
 
 		return view('lotins.edit', ['lotinData' => $lotinData, 'countryList' => $countryList, 'stateList' => $stateList, 'nricCodeList' => $nricCodeList, 'nricTownshipList' => $nricTownshipList, 'priceList' => $priceList, 'receiveAddressList' => $receiveAddressList, 'receiverLastNo' => $receiverLastNo, 'receiverLastId' => $receiverLastId, 'myCompany' => $myCompany, 'itemList' => $itemList, 'categoryList' => $categoryList, 'currencyList' => $currencyList, 'companyList' => $companyList]);

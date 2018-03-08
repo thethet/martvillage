@@ -383,11 +383,10 @@
 													@else
 														{!! Form::text('lots['.$j.'][barcode]', null, ['placeholder' => 'Barcode', 'class' => 'form-control barcode', 'id' => 'barcode-'.$j, 'autocomplete' => 'off']) !!}
 													@endif
-													{{-- {{dd($errors)}} --}}
 												</td>
 
 												<td>
-													{!! Form::select('lots['.$j.'][price_id]',  ['' => 'Select Type'] + $priceList->toArray(), null, ['class' => 'form-control price_id select2', 'id' => 'priceid-'.$j, 'autocomplete' => 'off']) !!}
+													{!! Form::select('lots['.$j.'][price_id]',  ['' => 'Select Type'] + $priceList->toArray(), null, ['class' => 'form-control price_id', 'id' => 'priceid-'.$j, 'autocomplete' => 'off']) !!}
 
 													@if ($errors->has("lots.$j.price_id"))
 														<span class="validate-has-error">
@@ -632,6 +631,24 @@
 
 			calculateTotal();
 
+			if($('#state_id').val() == null || $('#state_id').val() == '') {
+				$('#state_id').attr('disabled', true);
+			}
+
+			if($('#to_country_id').val() == null || $('#to_country_id').val() == '') {
+				$('#to_country_id').attr('disabled', true);
+			}
+
+			if($('#to_state_id').val() == null || $('#to_state_id').val() == '') {
+				$('#to_state_id').attr('disabled', true);
+			}
+
+			$(".price_id").each(function () {
+				if($(this).val() == null || $(this).val() == '') {
+					$(this).attr('disabled', true);
+				}
+			});
+
 			$( ".item_name" ).focusin(function() {
 				var classes = this.id.split('-');
 				$('#item-chk' + classes[1]).prop("checked", true);
@@ -666,25 +683,7 @@
 						priceSelect.children().remove().end().append(html);
 					}
 				});
-				$('.price_id').attr('readonly', false);
-			});
-
-			if($('#state_id').val() == null || $('#state_id').val() == '') {
-				$('#state_id').attr('readonly', true);
-			}
-
-			if($('#to_country_id').val() == null || $('#to_country_id').val() == '') {
-				$('#to_country_id').attr('readonly', true);
-			}
-
-			if($('#to_state_id').val() == null || $('#to_state_id').val() == '') {
-				$('#to_state_id').attr('readonly', true);
-			}
-
-			$(".price_id").each(function () {
-				if($(this).val() == null || $(this).val() == '') {
-					$(this).attr('readonly', true);
-				}
+				$('.price_id').attr('disabled', false);
 			});
 
 			$(".unit").each(function () {
@@ -725,7 +724,7 @@
 				$('#r_contact_no').attr('readonly', false);
 
 				$('#to_state_id').val('');
-				$('#to_state_id').attr('readonly', false);
+				$('#to_state_id').attr('disabled', false);
 				// $('#to-add').attr('readonly', false);
 
 				$('#r_name').val('');
@@ -752,7 +751,7 @@
 				$('#r_contact_no').attr('readonly', false);
 
 				$('#to_state_id').val('');
-				$('#to_state_id').attr('readonly', false);
+				$('#to_state_id').attr('disabled', false);
 				// $('#to-add').attr('readonly', false);
 
 				$('#r_name').val('');
@@ -850,11 +849,11 @@
 						stateSelect.children().remove().end().append(html);
 					}
 				});
-				$('#state_id').attr('readonly', false);
+				$('#state_id').attr('disabled', false);
 			});
 
 			$("#state_id").change(function(event) {
-				$('#to_country_id').attr('readonly', false);
+				$('#to_country_id').attr('disabled', false);
 
 				var companyId = $('#company_id').val();
 				var countryId = $('#to_country_id').val();
@@ -911,7 +910,7 @@
 					}
 				});
 
-				$('#to_state_id').attr('readonly', false);
+				$('#to_state_id').attr('disabled', false);
 			});
 
 			$("#to_state_id").change(function(event) {
@@ -946,7 +945,7 @@
 						priceSelect.children().remove().end().append(html);
 					}
 				});
-				$('.price_id').attr('readonly', false);
+				$('.price_id').attr('disabled', false);
 			});
 
 			$("#member_no").focusout(function(){

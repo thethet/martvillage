@@ -146,8 +146,8 @@
 									<div class="col-sm-5">
 										<div class="input-group minimal">
 											<span class="input-group-addon"><i class="entypo-users"></i></span>
-											{!! Form::text('to_state_id_news',  $receiverLastNo, ['placeholder' => 'Address', 'class' => 'form-control', 'id' => 'to-add', 'autocomplete' => 'off', 'disabled']) !!}
-											{!! Form::hidden('to_state_id_new',  $receiverLastId, ['placeholder' => 'Address', 'class' => 'form-control', 'id' => 'to-adds', 'autocomplete' => 'off', 'readonly']) !!}
+											{!! Form::text('to_state_id_news', $receiverLastNo, ['placeholder' => 'Address', 'class' => 'form-control', 'id' => 'to-add', 'autocomplete' => 'off', 'disabled']) !!}
+											{!! Form::hidden('to_state_id_new', $receiverLastId, ['placeholder' => 'Address', 'class' => 'form-control', 'id' => 'to-adds', 'autocomplete' => 'off', 'readonly']) !!}
 										</div>
 									</div>
 

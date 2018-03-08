@@ -30,7 +30,7 @@ class CreateTblLotins extends Migration {
 			$table->integer('to_state');
 			$table->double('member_discount', 5, 2);
 			$table->double('member_discount_amt', 12, 2);
-			$table->string('other_discount_type');
+			$table->string('other_discount_type')->nullable();
 			$table->double('other_discount', 5, 2);
 			$table->double('other_discount_amt', 12, 2);
 			$table->double('gov_tax', 5, 2);
