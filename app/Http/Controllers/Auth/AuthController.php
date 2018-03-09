@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Request;
+use Illuminate\Http\Request;
+use Session;
 use Validator;
 
 class AuthController extends Controller {
@@ -53,6 +54,38 @@ class AuthController extends Controller {
 			'email'    => 'required|email|max:255|unique:users',
 			'password' => 'required|min:6|confirmed',
 		]);
+	}
+
+	/**
+	 * Handle a login request to the application.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
+	 */
+	public function postLogin(Request $request) {
+		// Validate form data
+		$this->validate($request, [
+			'email'    => 'required|email',
+			'password' => 'required',
+		]);
+
+		// Attempt to authenticate user
+		// If successful, redirect to their intended location
+		if (auth()->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
+
+			$user = auth()->user();
+
+			if ($user->deleted == 'N') {
+				return redirect()->intended(route('home'));
+			} else {
+				\Auth::logout();
+				Session::set('error', 'Your Account has not been activated yet!');
+				return redirect()->intended('admin');
+			}
+		} else {
+			Session::set('error', 'Your username and password are wrong.');
+			return back();
+		}
 	}
 
 	/**

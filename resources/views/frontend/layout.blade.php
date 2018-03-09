@@ -200,7 +200,11 @@
 							</li>
 
 							<li>
-								<a href="{{ url('admin') }}">Sign in</a>
+								@if(Auth::user())
+									<a href="{{ url('admin/dashboard') }}">Sign in</a>
+								@else
+									<a href="{{ url('admin') }}">Sign in</a>
+								@endif
 							</li>
 						</ul>
 					</div><!-- End main-menu -->

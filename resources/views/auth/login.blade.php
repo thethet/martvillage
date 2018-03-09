@@ -8,6 +8,9 @@
 					<img src="{{ asset('assets/images/shwe-cargo.png') }}" width="120" alt="" />
 				</span>
 				<p class="description">Dear user, log in to access the admin area!</p>
+				@if ($message = Session::get('error'))
+					<p class="description text-danger"><strong>{{ $message }}</strong></p>
+				@endif
 			</div>
 		</div>
 

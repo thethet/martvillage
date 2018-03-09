@@ -21,8 +21,9 @@ Route::group(['middleware' => 'web'], function () {
 	 */
 	Route::auth();
 	Route::get('admin', 'Auth\AuthController@getLogin');
+	Route::post('login', 'Auth\AuthController@postLogin');
 	Route::post('admin/login', 'Auth\AuthController@postLogin');
-	Route::get('admin/logout', 'Auth\AuthController@getLogout');
+	Route::get('admin/logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@getLogout']);
 	Route::get('/', ['as' => 'frontend.index', 'uses' => 'FrontEndController@index']);
 	Route::post('lot-search', ['as' => 'lot-search', 'uses' => 'FrontEndController@search']);
 
@@ -146,9 +147,9 @@ Route::group(['middleware' => 'web'], function () {
 
 Route::group(['middleware' => ['auth']], function () {
 
-	Route::get('/home', 'HomeController@index');
+	Route::get('/home', ['as' => 'home', 'uses' => 'HomeController@index']);
 
-	Route::get('/admin/dashboard', 'HomeController@index');
+	Route::get('/admin/dashboard', ['as' => 'home', 'uses' => 'HomeController@index']);
 
 	Route::get('settings', function () {
 		return view('dashboard.setting');
