@@ -56,9 +56,14 @@ class LotInController extends Controller {
 		} elseif (Auth::user()->hasRole('owner')) {
 			$query = Lotin::where('company_id', Auth::user()->company_id)
 				->where('date', $date);
+		} elseif (Auth::user()->hasRole('manager')) {
+			$query = Lotin::where('company_id', Auth::user()->company_id)
+				->where('from_state', Auth::user()->state_id)
+				->where('date', $date);
 		} else {
 			$query = Lotin::where('company_id', Auth::user()->company_id)
 				->where('from_state', Auth::user()->state_id)
+				->where('created_by', Auth::user()->id)
 				->where('date', $date);
 		}
 

@@ -270,7 +270,12 @@
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-globe"></i></span>
-										{!! Form::select('from_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['class' => 'select2', 'id' => 'country_id', 'autocomplete' => 'off']) !!}
+										@if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('owner') || Auth::user()->hasRole('manager'))
+											{!! Form::select('from_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['class' => 'select2', 'id' => 'country_id', 'autocomplete' => 'off']) !!}
+										@else
+											{!! Form::text('country_name', $countryList[Auth::user()->country_id], ['class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+											{!! Form::hidden('from_country', Auth::user()->country_id, ['class' => 'form-control', 'id' => 'country_id']) !!}
+										@endif
 									</div>
 
 									@if ($errors->has('from_country'))
@@ -283,7 +288,12 @@
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-location"></i></span>
-										{!! Form::select('from_state', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'select2', 'id' => 'state_id', 'autocomplete' => 'off']) !!}
+										@if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('owner') || Auth::user()->hasRole('manager'))
+											{!! Form::select('from_state', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'select2', 'id' => 'state_id', 'autocomplete' => 'off']) !!}
+										@else
+											{!! Form::text('state_name', $stateList[Auth::user()->state_id], ['class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+											{!! Form::hidden('from_state', Auth::user()->state_id, ['class' => 'form-control', 'id' => 'state_id']) !!}
+										@endif
 									</div>
 
 									@if ($errors->has('from_state'))
@@ -631,16 +641,18 @@
 
 			calculateTotal();
 
-			if($('#state_id').val() == null || $('#state_id').val() == '') {
-				$('#state_id').attr('disabled', true);
-			}
-
 			if($('#to_country_id').val() == null || $('#to_country_id').val() == '') {
 				$('#to_country_id').attr('disabled', true);
 			}
 
 			if($('#to_state_id').val() == null || $('#to_state_id').val() == '') {
 				$('#to_state_id').attr('disabled', true);
+			}
+
+			if($('#state_id').val() == null || $('#state_id').val() == '') {
+				$('#state_id').attr('disabled', true);
+			} else {
+				$('#to_country_id').attr('disabled', false);
 			}
 
 			$(".price_id").each(function () {
