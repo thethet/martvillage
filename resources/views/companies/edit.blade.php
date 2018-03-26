@@ -322,7 +322,6 @@
 
 @section('my-script')
 	<!-- Imported styles on this page -->
-	<link rel="stylesheet" href="{{ asset('assets/js/datatables/datatables.css') }}">
 	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2-bootstrap.css') }}">
 	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2.css') }}">
 

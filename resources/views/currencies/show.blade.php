@@ -128,19 +128,11 @@
 
 @section('my-script')
 	<!-- Imported styles on this page -->
-	<link rel="stylesheet" href="{{ asset('assets/js/datatables/datatables.css') }}">
 	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2-bootstrap.css') }}">
 	<link rel="stylesheet" href="{{ asset('assets/js/select2/select2.css') }}">
 
 	<!-- Imported scripts on this page -->
 	<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
-	<script src="{{ asset('assets/js/datatables/datatables.js') }}"></script>
-			if (is_string($value)) {
-				return trim($value);
-			} else {
-				return $value;
-			}
-		}, $request->all()));
 	<script src="{{ asset('assets/js/neon-chat.js') }}"></script>
 @stop
 
