@@ -232,18 +232,22 @@ class OutgoingController extends Controller {
 			}
 		}, $request->all()));
 
+		$request->merge(['dept_date_time' => date('Y-m-d H:i', strtotime($request->dept_date_time)), 'arrival_date_time' => date('Y-m-d H:i', strtotime($request->arrival_date_time))]);
+
 		$this->validate($request, [
-			'passenger_name' => 'required',
-			'contact_no'     => 'required|numeric',
-			'dept_date'      => 'required|after:' . date('Y-m-d', strtotime("-1 day")) . '|date_format:Y-m-d',
-			'dept_time'      => 'required',
-			'arrival_date'   => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
-			'arrival_time'   => 'required',
-			'from_country'   => 'required',
-			'from_city'      => 'required',
-			'to_country'     => 'required',
-			'to_city'        => 'required',
-			'weight'         => 'required',
+			'passenger_name'    => 'required',
+			'contact_no'        => 'required|numeric',
+			'dept_date'         => 'required|after:' . date('Y-m-d', strtotime("-1 day")) . '|date_format:Y-m-d',
+			'dept_date_time'    => 'required',
+			//'dept_date_time'    => 'required|after:' . date('Y-m-d H:i', strtotime("-1 day")) . '|date_format:Y-m-d H:i',
+			'arrival_date'      => 'required|after_or_equal:' . date('Y-m-d') . '|date_format:Y-m-d',
+			// 'arrival_time'      => 'required',
+			'arrival_date_time' => 'required|after:' . $request->dept_date_time . '|date_format:Y-m-d H:i',
+			'from_country'      => 'required',
+			'from_city'         => 'required',
+			'to_country'        => 'required',
+			'to_city'           => 'required',
+			'weight'            => 'required',
 			// 'other'          => 'required',
 			// 'carrier_name'        => 'required',
 			// 'vessel_no'      => 'required',
@@ -335,16 +339,20 @@ class OutgoingController extends Controller {
 			}
 		}, $request->all()));
 
+		$request->merge(['dept_date_time' => date('Y-m-d H:i', strtotime($request->dept_date_time)), 'arrival_date_time' => date('Y-m-d H:i', strtotime($request->arrival_date_time))]);
+
 		$this->validate($request, [
-			'passenger_name' => 'required',
-			'contact_no'     => 'required|numeric',
-			// 'dept_date'      => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
-			'dept_time'      => 'required',
-			// 'arrival_date'   => 'required|after:' . date('Y-m-d') . '|date_format:Y-m-d',
-			'arrival_time'   => 'required',
-			'from_city'      => 'required',
-			'to_city'        => 'required',
-			'weight'         => 'required',
+			'passenger_name'    => 'required',
+			'contact_no'        => 'required|numeric',
+			'dept_date'         => 'required|after:' . date('Y-m-d', strtotime("-1 day")) . '|date_format:Y-m-d',
+			'dept_date_time'    => 'required',
+			//'dept_date_time'    => 'required|after:' . date('Y-m-d H:i', strtotime("-1 day")) . '|date_format:Y-m-d H:i',
+			'arrival_date'      => 'required|after_or_equal:' . date('Y-m-d') . '|date_format:Y-m-d',
+			// 'arrival_time'      => 'required',
+			'arrival_date_time' => 'required|after:' . $request->dept_date_time . '|date_format:Y-m-d H:i',
+			'from_country'      => 'required',
+			'to_city'           => 'required',
+			'weight'            => 'required',
 			// // 'other'          => 'required',
 			// 'carrier_name'   => 'required',
 			// 'vessel_no'      => 'required',

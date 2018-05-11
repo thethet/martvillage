@@ -328,6 +328,7 @@
 			});
 
 			var currencyId = $('#currency_id').val();
+			var countryId = $('#from_country').val();
 			$.ajax({
 				type: 'GET',
 				url: "{{ url('currencies/search-by-from-country') }}",

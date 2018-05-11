@@ -114,19 +114,20 @@
 								</div>
 							</div>
 
-							<div class="form-group {{ $errors->has('dept_time') ? ' has-error' : '' }}">
+							<div class="form-group {{ $errors->has('dept_date_time') ? ' has-error' : '' }}">
 								<label class="col-sm-3 control-label">Departure Time</label>
 
 								<div class="col-sm-5">
 									<div class="input-group">
 										{!! Form::text('dept_time', null, ['placeholder' => 'Departure Time','class' => 'form-control timepicker', 'id' => 'dept_time', 'data-template' => 'dropdown', 'data-minute-step' => '5', 'autocomplete' => 'off']) !!}
+										{!! Form::hidden('dept_date_time', null, ['class' => 'form-control', 'id' => 'dept_date_time']) !!}
 										<div class="input-group-addon">
 											<a href="#"><i class="entypo-clock"></i></a>
 										</div>
 									</div>
-									@if ($errors->has('dept_time'))
+									@if ($errors->has('dept_date_time'))
 										<span class="validate-has-error">
-											<strong>{{ $errors->first('dept_time') }}</strong>
+											<strong>{{ $errors->first('dept_date_time') }}</strong>
 										</span>
 									@endif
 								</div>
@@ -149,19 +150,20 @@
 								</div>
 							</div>
 
-							<div class="form-group {{ $errors->has('arrival_time') ? ' has-error' : '' }}">
+							<div class="form-group {{ $errors->has('arrival_date_time') ? ' has-error' : '' }}">
 								<label class="col-sm-3 control-label">Arrival Time</label>
 
 								<div class="col-sm-5">
 									<div class="input-group">
 										{!! Form::text('arrival_time', null, ['placeholder' => 'Arrival Time','class' => 'form-control timepicker', 'id' => 'arrival_time', 'data-template' => 'dropdown', 'data-minute-step' => '5', 'autocomplete' => 'off']) !!}
+										{!! Form::hidden('arrival_date_time', null, ['class' => 'form-control', 'id' => 'arrival_date_time']) !!}
 										<div class="input-group-addon">
 											<a href="#"><i class="entypo-clock"></i></a>
 										</div>
 									</div>
-									@if ($errors->has('arrival_time'))
+									@if ($errors->has('arrival_date_time'))
 										<span class="validate-has-error">
-											<strong>{{ $errors->first('arrival_time') }}</strong>
+											<strong>{{ $errors->first('arrival_date_time') }}</strong>
 										</span>
 									@endif
 								</div>
@@ -173,7 +175,12 @@
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-globe"></i></span>
-										{!! Form::select('from_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['class' => 'select2', 'id' => 'from_country', 'autocomplete' => 'off']) !!}
+										@if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('owner') || Auth::user()->hasRole('manager'))
+											{!! Form::select('from_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['class' => 'select2', 'id' => 'from_country', 'autocomplete' => 'off']) !!}
+										@else
+											{!! Form::select('country_name', ['' => 'Select Country'] + $countryList->toArray(), Auth::user()->country_id, ['class' => 'select2', 'autocomplete' => 'off', 'disabled']) !!}
+											{!! Form::hidden('from_country', Auth::user()->country_id, ['class' => 'form-control', 'id' => 'from_country']) !!}
+										@endif
 									</div>
 
 									@if ($errors->has('from_country'))
@@ -186,7 +193,12 @@
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-location"></i></span>
-										{!! Form::select('from_city', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'select2', 'id' => 'from_city', 'autocomplete' => 'off']) !!}
+										@if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('owner') || Auth::user()->hasRole('manager'))
+											{!! Form::select('from_city', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'select2', 'id' => 'from_city', 'autocomplete' => 'off']) !!}
+										@else
+											{!! Form::select('city_name', ['' => 'Select State/City'] + $stateList->toArray(), Auth::user()->state_id, ['class' => 'select2', 'autocomplete' => 'off', 'disabled']) !!}
+											{!! Form::hidden('from_city', Auth::user()->state_id, ['class' => 'form-control', 'id' => 'from_city']) !!}
+										@endif
 									</div>
 
 									@if ($errors->has('from_city'))
@@ -349,11 +361,18 @@
 				}
 			});
 
+			$( "form" ).submit(function( event ) {
+				$('#dept_date_time').val($('#dept_date').val() + ' ' + $('#dept_time').val());
+				$('#arrival_date_time').val($('#arrival_date').val() + ' ' + $('#arrival_time').val());
+			});
+
 			$('#from_city').attr('readonly', true);
 			$('#to_country').attr('readonly', true);
 			$('#to_city').attr('readonly', true);
 
 			$("#from_country").change(function(event) {
+				$('#dept_date_time').val($('#dept_date').val() + ' ' + $('#dept_time').val());
+				$('#arrival_date_time').val($('#arrival_date').val() + ' ' + $('#arrival_time').val());
 				// Fetch the preselected item, and add to the control
 				var companyId = $('#company_id').val();
 				var countryId = $('#from_country').val();

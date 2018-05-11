@@ -9,7 +9,7 @@
 				</span>
 				<p class="description">Dear user, log in to access the admin area!</p>
 				@if ($message = Session::get('error'))
-					<p class="description text-danger"><strong>{{ $message }}</strong></p>
+					<p class="text-danger"><strong>{{ $message }}</strong></p>
 				@endif
 			</div>
 		</div>

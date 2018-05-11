@@ -14,10 +14,10 @@
 
 	<link rel="stylesheet" href="{{ asset('assets/css/font-icons/font-awesome/css/font-awesome.min.css') }}" media="all" />
 </head>
+<body class="zawgyi"">
 <body class="zawgyi" onload="window.print()">
-	<div class="row zawgyi">
-		<div class="col-sm-11">
-			<table class="table zawgyi">
+	{{-- <div class="zawgyi"> --}}
+			<table class="zawgyi mt20-ml10">
 				<tr>
 					<td colspan="2" class="text-center noborder">
 						<h3>{{ $myCompany->company_name }}</h3>
@@ -39,7 +39,7 @@
 				</tr>
 
 				<tr>
-					<td class="noborder"><br>Lotin Date</td>
+					<td class="noborder" width="15%"><br>Lotin Date</td>
 
 					<td class="noborder"><br>{{ $lotinData->date }}</td>
 				</tr>
@@ -151,14 +151,23 @@
 					</td>
 				</tr>
 			</table>
-		</div>
 
 	</div>
 
 	<style>
-		body {
-			margin: -25px -30px;
+		@page {
+			/*size: 500pt 500pt;*/
+			margin: 5px;
+			font-size: 12px;
 		}
+		body {
+			/*margin: -25px -30px;*/
+		}
+
+		/* .mt20-ml10 {
+			margin-top: -20px;
+			margin-left: -10px;
+		} */
 		@font-face {
 			font-family: zawgyi;
 			src: url('{{ asset('assets/fonts/zawgyi.ttf') }}') format('truetype');
@@ -206,3 +215,4 @@
 	</style>
 </body>
 </html>
+{{-- {{die}} --}}

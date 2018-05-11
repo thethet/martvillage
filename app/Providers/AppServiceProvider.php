@@ -28,6 +28,15 @@ class AppServiceProvider extends ServiceProvider {
 			return str_replace(':attribute', $attribute, ':attribute may only contain letters');
 		});
 
+		Validator::extend('after_or_equal', function ($attribute, $value, $parameters, $validator) {
+			return strtotime($value) >= strtotime($parameters[0]);
+		});
+
+		Validator::replacer('after_or_equal', function ($message, $attribute, $rule, $parameters) {
+			$message = str_replace(':attribute', $attribute, 'The :attribute must be a date after or equal to :date.');
+			return str_replace(':date', $parameters[0], 'The arriival date must be a date after or equal to :date.');
+		});
+
 	}
 
 	/**

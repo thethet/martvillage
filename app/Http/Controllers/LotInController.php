@@ -89,8 +89,30 @@ class LotInController extends Controller {
 		$receiverList        = Receiver::lists('name', 'id');
 		$receiverContactList = Receiver::lists('contact_no', 'id');
 
-		$countryList = Country::orderBy('country_code', 'ASC')->lists('country_code', 'id');
-		$stateList   = State::orderBy('state_code', 'ASC')->lists('state_code', 'id');
+		$myCompany      = Company::find(Auth::user()->company_id);
+		$countryIdList  = array();
+		$stateIdList    = array();
+		$townshipIdList = array();
+		if (count($myCompany) > 0) {
+			$countryIds = $myCompany->country;
+			foreach ($countryIds as $country) {
+				$countryIdList[] = $country->id;
+			}
+
+			$stateIds = $myCompany->state;
+			foreach ($stateIds as $stateId) {
+				$stateIdList[] = $stateId->id;
+			}
+
+			$townshipIds = $myCompany->township;
+			foreach ($townshipIds as $townshipId) {
+				$townshipIdList[] = $townshipId->id;
+			}
+
+		}
+
+		$countryList = Country::whereIn('id', $countryIdList)->orderBy('country_code', 'ASC')->lists('country_code', 'id');
+		$stateList   = State::whereIn('id', $stateIdList)->orderBy('state_code', 'ASC')->lists('state_code', 'id');
 
 		$nricCodeList     = NricCode::orderBy('nric_code', 'ASC')->lists('nric_code', 'id');
 		$nricTownshipList = NricTownship::orderBy('id', 'ASC')->orderBy('serial_no', 'ASC')->lists('short_name', 'id');
@@ -581,15 +603,15 @@ class LotInController extends Controller {
 
 		if (Auth::user()->hasRole('administrator')) {
 			if ($contactNo) {
-				$items = DB::table('receivers as r')->leftJoin('senders as s', 's.id', '=', 'r.sender_id')->select(\DB::raw('r.address as id, r.address as text'))->where('s.contact_no', $contactNo)->where('r.address', 'like', "{$search}%")->orderBy('r.address', 'ASC')->where('r.deleted', 'N')->get();
+				$items = DB::table('receivers as r')->leftJoin('senders as s', 's.id', '=', 'r.sender_id')->select(\DB::raw('r.id as id, r.address as text'))->where('s.contact_no', $contactNo)->where('r.address', 'like', "{$search}%")->orderBy('r.address', 'ASC')->where('r.deleted', 'N')->get();
 			} else {
-				$items = DB::table('receivers as r')->leftJoin('senders as s', 's.id', '=', 'r.sender_id')->select(\DB::raw('r.address as id, r.address as text'))->where('s.member_no', $memberNo)->where('r.address', 'like', "{$search}%")->orderBy('r.address', 'ASC')->where('r.deleted', 'N')->get();
+				$items = DB::table('receivers as r')->leftJoin('senders as s', 's.id', '=', 'r.sender_id')->select(\DB::raw('r.id as id, r.address as text'))->where('s.member_no', $memberNo)->where('r.address', 'like', "{$search}%")->orderBy('r.address', 'ASC')->where('r.deleted', 'N')->get();
 			}
 		} else {
 			if ($contactNo) {
-				$items = DB::table('receivers as r')->leftJoin('senders as s', 's.id', '=', 'r.sender_id')->select(\DB::raw('r.address as id, r.address as text'))->where('r.company_id', Auth::user()->company_id)->where('s.contact_no', $contactNo)->where('r.address', 'like', "{$search}%")->orderBy('r.address', 'ASC')->where('r.deleted', 'N')->get();
+				$items = DB::table('receivers as r')->leftJoin('senders as s', 's.id', '=', 'r.sender_id')->select(\DB::raw('r.id as id, r.address as text'))->where('r.company_id', Auth::user()->company_id)->where('s.contact_no', $contactNo)->where('r.address', 'like', "{$search}%")->orderBy('r.address', 'ASC')->where('r.deleted', 'N')->get();
 			} else {
-				$items = DB::table('receivers as r')->leftJoin('senders as s', 's.id', '=', 'r.sender_id')->select(\DB::raw('r.address as id, r.address as text'))->where('r.company_id', Auth::user()->company_id)->where('s.member_no', $memberNo)->where('r.address', 'like', "{$search}%")->orderBy('r.address', 'ASC')->where('r.deleted', 'N')->get();
+				$items = DB::table('receivers as r')->leftJoin('senders as s', 's.id', '=', 'r.sender_id')->select(\DB::raw('r.id as id, r.address as text'))->where('r.company_id', Auth::user()->company_id)->where('s.member_no', $memberNo)->where('r.address', 'like', "{$search}%")->orderBy('r.address', 'ASC')->where('r.deleted', 'N')->get();
 			}
 		}
 
@@ -801,13 +823,13 @@ class LotInController extends Controller {
 			$receiver = DB::table('receivers as r')
 				->leftJoin('nric_townships as rnt', 'rnt.id', '=', 'r.nric_township_id')
 				->select('r.*', 'rnt.short_name as r_township')
-				->where('address', $address)
+				->where('r.id', $address)
 				->where('r.deleted', 'N')->first();
 		} else {
 			$receiver = DB::table('receivers as r')
 				->leftJoin('nric_townships as rnt', 'rnt.id', '=', 'r.nric_township_id')
 				->select('r.*', 'rnt.short_name as r_township')
-				->where('address', $address)
+				->where('r.id', $address)
 				->where('r.company_id', Auth::user()->company_id)
 				->where('r.deleted', 'N')->first();
 		}

@@ -50,7 +50,7 @@
 										@if(Auth::user()->hasRole('administrator'))
 											{!! Form::select('company_id', ['' => 'Select Company'] + $companyList->toArray(), null, ['class' => 'select2', 'id' => 'company_id', 'autocomplete' => 'off']) !!}
 										@else
-											{!! Form::text('company_name', Auth::user()->company->company_name, ['class' => 'form-control', 'autocomplete' => 'off', 'disabled']) !!}
+											{!! Form::select('company_name', ['' => 'Select Company'] + $companyList->toArray(), Auth::user()->company_id, ['class' => 'select2', 'id' => 'company_name', 'autocomplete' => 'off', 'disabled']) !!}
 											{!! Form::hidden('company_id', Auth::user()->company_id, ['class' => 'form-control', 'id' => 'company_id']) !!}
 										@endif
 									</div>
@@ -160,7 +160,7 @@
 									<div class="col-sm-5">
 										<div class="input-group minimal">
 											<span class="input-group-addon"><i class="entypo-user"></i></span>
-											{!! Form::select('to_state_ids', ['' => 'Select Address'] + $receiveAddressList->toArray(), null, ['class' => 'select2', 'id' => 'address', 'autocomplete' => 'off']) !!}
+											{!! Form::select('to_state_ids', ['' => 'Select Receiver'] + $receiveAddressList->toArray(), null, ['class' => 'select2', 'id' => 'address', 'autocomplete' => 'off']) !!}
 										</div>
 									</div>
 
@@ -434,7 +434,7 @@
 												<td>
 													<div class="input-spinner">
 														<button type="button" class="btn btn-default">-</button>
-															{!! Form::text('lots['.$j.'][quantity]', 1, ['placeholder' => 'Quantity', 'class' => 'form-control quantity size-1', 'id' => 'quantity-'.$j, 'autocomplete' => 'off', 'data-min' => 0, 'data-max' => 99]) !!}
+															{!! Form::text('lots['.$j.'][quantity]', 0, ['placeholder' => 'Quantity', 'class' => 'form-control quantity size-1', 'id' => 'quantity-'.$j, 'autocomplete' => 'off', 'data-min' => 0, 'data-max' => 99]) !!}
 														<button type="button" class="btn btn-default">+</button>
 													</div>
 
@@ -669,7 +669,6 @@
 				var fromStateId = $('#state_id').val();
 				var toCountryId = $('#to_country_id').val();
 				var toStateId = $('#to_state_id').val();
-				var priceSelect = $('.price_id');
 				var companyId = $('#company_id').val();
 				$.ajax({
 					type: 'GET',
@@ -687,11 +686,22 @@
 					,
 				}).then(function (data) {
 					if(data != null) {
-						var html = '<option value="">Select Type</option>';
-						for (var i = 0, len = data.items.length; i < len; ++i) {
-							html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
-						}
-						priceSelect.children().remove().end().append(html);
+						$(".price_id").each(function () {
+							var selectedItem = $(this).val();
+							var selectedElement = $(this);
+
+							$('#quantity-'+classes[1]).val(1);
+
+							var html = '<option value="">Select Type</option>';
+							for (var i = 0, len = data.items.length; i < len; ++i) {
+								if(selectedItem == data.items[i]['id']) {
+									html += '<option value="' + data.items[i]['id'] + '" selected>' + data.items[i]['text'] + '</option>';
+								} else {
+									html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+								}
+							}
+							selectedElement.children().remove().end().append(html);
+						});
 					}
 				});
 				$('.price_id').attr('disabled', false);
@@ -786,53 +796,11 @@
 			$('#address-list').hide();
 
 			$("#nric_code").change(function(event) {
-				// Fetch the preselected item, and add to the control
-				var nricCodeId = $('#nric_code').val();
-				var nricTwnSelect = $('#nric_township');
-				$.ajax({
-					type: 'GET',
-					url: "{{ url('nrictownships/nric-township') }}",
-					dataType: 'json',
-					delay: 250,
-					data: {
-						search: '',
-						nricCodeId: nricCodeId
-					}
-					,
-				}).then(function (data) {
-					if(data != null) {
-						var html = '<option value="">Township</option>';
-						for (var i = 0, len = data.items.length; i < len; ++i) {
-							html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
-						}
-						nricTwnSelect.children().remove().end().append(html)
-					}
-				});
+				getNricTownshipByNricCode();
 			});
 
 			$("#r_nric_code").change(function(event) {
-				// Fetch the preselected item, and add to the control
-				var nricCodeId = $('#r_nric_code').val();
-				var nricTwnSelect = $('#r_nric_township');
-				$.ajax({
-					type: 'GET',
-					url: "{{ url('nrictownships/nric-township') }}",
-					dataType: 'json',
-					delay: 250,
-					data: {
-						search: '',
-						nricCodeId: nricCodeId
-					}
-					,
-				}).then(function (data) {
-					if(data != null) {
-						var html = '<option value="">Township</option>';
-						for (var i = 0, len = data.items.length; i < len; ++i) {
-							html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
-						}
-						nricTwnSelect.children().remove().end().append(html);
-					}
-				});
+				getReceiverNricTownshipByNricCode();
 			});
 
 			$("#country_id").change(function(event) {
@@ -982,10 +950,14 @@
 						$('#sender-name').val(data.name);
 						$('#sender-name').attr('readonly', true);
 						if(data.nric_code_id != 0) {
+							$('#select2-chosen-2').text(data.nric_code_id);
 							$('#nric_code').val(data.nric_code_id);
+							getNricTownshipByNricCode();
 						}
 						if(data.nric_township_id != 0) {
+							$('#select2-chosen-3').text(data.r_township);
 							$('#nric_township').val(data.nric_township_id);
+							getNricTownshipByNricCode();
 						}
 						$('#nric_no').val(data.nric_no);
 
@@ -1008,10 +980,14 @@
 								$('#sender-name').attr('readonly', true);
 
 								if(datas.s_nric_code_id != 0) {
+									$('#select2-chosen-2').text(datas.s_nric_code_id);
 									$('#nric_code').val(datas.s_nric_code_id);
+									getNricTownshipByNricCode();
 								}
-								if(datas.s_nric_township_id != 0) {
-									$('#nric_township').val(datas.s_nric_township_id);
+								if(datas.s_nric_tp_id != 0) {
+									$('#select2-chosen-3').text(datas.s_township);
+									$('#nric_township').val(datas.s_nric_tp_id);
+									getNricTownshipByNricCode();
 								}
 								$('#nric_no').val(datas.s_nric_no);
 								$('#nric_no').attr('readonly', true);
@@ -1085,10 +1061,14 @@
 						$('#sender-name').attr('readonly', true);
 
 						if(datas.s_nric_code_id != 0) {
+							$('#select2-chosen-5').text(datas.s_nric_code_id);
 							$('#nric_code').val(datas.s_nric_code_id);
+							getReceiverNricTownshipByNricCode();
 						}
 						if(datas.s_nric_township_id != 0) {
+							$('#select2-chosen-6').text(datas.s_township);
 							$('#nric_township').val(datas.s_nric_township_id);
+							getReceiverNricTownshipByNricCode();
 						}
 						$('#nric_no').val(datas.s_nric_no);
 						$('#nric_no').attr('readonly', true);
@@ -1121,10 +1101,14 @@
 								$('#sender-name').attr('readonly', true);
 
 								if(datas.s_nric_code_id != 0) {
+									$('#select2-chosen-5').text(datas.s_nric_code_id);
 									$('#nric_code').val(datas.s_nric_code_id);
+									getReceiverNricTownshipByNricCode();
 								}
 								if(datas.s_nric_township_id != 0) {
+									$('#select2-chosen-6').text(datas.s_township);
 									$('#nric_township').val(datas.s_nric_township_id);
+									getReceiverNricTownshipByNricCode();
 								}
 								$('#nric_no').val(datas.s_nric_no);
 								$('#nric_no').attr('readonly', true);
@@ -1304,11 +1288,7 @@
 				if(unittype != '%') {
 					var amt = quantity * unit * unitprice;
 				} else {
-					console.log("up: "+unitprice);
-					console.log("q: "+quantity);
-					console.log("u: "+unit);
 					var amt = parseFloat((quantity * unitprice * unit / 100));
-					console.log(amt)
 				}
 				amt = parseFloat(amt).toFixed(2);
 
@@ -1328,16 +1308,11 @@
 				unitprice = parseFloat(unitprice).toFixed(2);
 
 				var unittype = $('#unit-type-' + classes[1]).text();
-				console.log(unitprice);
 
 				if(unittype != '%') {
 					var amt = quantity * unit * unitprice;
 				} else {
-					console.log("up: "+unitprice);
-					console.log("q: "+quantity);
-					console.log("u: "+unit);
 					var amt = parseFloat((quantity * unitprice * unit / 100));
-					console.log(amt)
 				}
 				amt = parseFloat(amt).toFixed(2);
 				if(isNaN(amt)) {
@@ -1365,11 +1340,7 @@
 				if(unittype != '%') {
 					var amt = quantity * unit * unitprice;
 				} else {
-					console.log("up: "+unitprice);
-					console.log("q: "+quantity);
-					console.log("u: "+unit);
 					var amt = parseFloat((quantity * unitprice * unit / 100));
-					console.log(amt)
 				}
 				amt = parseFloat(amt).toFixed(2);
 				if(isNaN(amt)) {
@@ -1448,6 +1419,66 @@
 			netTotal = parseFloat(netTotal).toFixed(2);
 			$('#net_amt').val(netTotal);
 			$('#net-text').text(netTotal);
+		}
+
+		function getNricTownshipByNricCode() {
+			// Fetch the preselected item, and add to the control
+			var nricCodeId = $('#nric_code').val();
+			var selectedItem  = $('#nric_township').val();
+			var selectElement = $('#nric_township');
+			$.ajax({
+				type: 'GET',
+				url: "{{ url('nrictownships/nric-township') }}",
+				dataType: 'json',
+				delay: 250,
+				data: {
+					search: '',
+					nricCodeId: nricCodeId
+				}
+				,
+			}).then(function (data) {
+				if(data != null) {
+					var html = '<option value="">Township</option>';
+					for (var i = 0, len = data.items.length; i < len; ++i) {
+						if(selectedItem == data.items[i]['id']) {
+							html += '<option value="' + data.items[i]['id'] + '" selected>' + data.items[i]['text'] + '</option>';
+						} else {
+							html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+						}
+					}
+					selectElement.children().remove().end().append(html)
+				}
+			});
+		}
+
+		function getReceiverNricTownshipByNricCode() {
+			// Fetch the preselected item, and add to the control
+			var nricCodeId = $('#r_nric_code').val();
+			var selectedItem  = $('#r_nric_township').val();
+			var selectElement = $('#r_nric_township');
+			$.ajax({
+				type: 'GET',
+				url: "{{ url('nrictownships/nric-township') }}",
+				dataType: 'json',
+				delay: 250,
+				data: {
+					search: '',
+					nricCodeId: nricCodeId
+				}
+				,
+			}).then(function (data) {
+				if(data != null) {
+					var html = '<option value="">Township</option>';
+					for (var i = 0, len = data.items.length; i < len; ++i) {
+						if(selectedItem == data.items[i]['id']) {
+							html += '<option value="' + data.items[i]['id'] + '" selected>' + data.items[i]['text'] + '</option>';
+						} else {
+							html += '<option value="' + data.items[i]['id'] + '">' + data.items[i]['text'] + '</option>';
+						}
+					}
+					selectElement.children().remove().end().append(html)
+				}
+			});
 		}
 	</script>
 @stop

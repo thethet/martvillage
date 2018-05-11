@@ -173,7 +173,12 @@
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-globe"></i></span>
-										{!! Form::select('from_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['class' => 'select2', 'id' => 'from_country', 'autocomplete' => 'off']) !!}
+										@if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('owner') || Auth::user()->hasRole('manager'))
+											{!! Form::select('from_country', ['' => 'Select Country'] + $countryList->toArray(), null, ['class' => 'select2', 'id' => 'from_country', 'autocomplete' => 'off']) !!}
+										@else
+											{!! Form::select('country_name', ['' => 'Select Country'] + $countryList->toArray(), Auth::user()->country_id, ['class' => 'select2', 'autocomplete' => 'off', 'disabled']) !!}
+											{!! Form::hidden('from_country', Auth::user()->country_id, ['class' => 'form-control', 'id' => 'from_country']) !!}
+										@endif
 									</div>
 
 									@if ($errors->has('from_country'))
@@ -186,7 +191,12 @@
 								<div class="col-sm-4">
 									<div class="input-group minimal">
 										<span class="input-group-addon"><i class="entypo-location"></i></span>
-										{!! Form::select('from_city', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'select2', 'id' => 'from_city', 'autocomplete' => 'off']) !!}
+										@if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('owner') || Auth::user()->hasRole('manager'))
+											{!! Form::select('from_city', ['' => 'Select State/City'] + $stateList->toArray(), null, ['class' => 'select2', 'id' => 'from_city', 'autocomplete' => 'off']) !!}
+										@else
+											{!! Form::select('city_name', ['' => 'Select State/City'] + $stateList->toArray(), Auth::user()->state_id, ['class' => 'select2', 'autocomplete' => 'off', 'disabled']) !!}
+											{!! Form::hidden('from_city', Auth::user()->state_id, ['class' => 'form-control', 'id' => 'from_city']) !!}
+										@endif
 									</div>
 
 									@if ($errors->has('from_city'))

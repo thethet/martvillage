@@ -206,7 +206,8 @@ class PriceController extends Controller {
 			$titleData['total_price'] = 1;
 			$title                    = PriceTitle::create($titleData);
 		} else {
-			$title->increment('total_cities');
+			$title->update(['deleted', 'N']);
+			$title->increment('total_price');
 		}
 
 		$price = Price::where('company_id', $request->company_id)->where('title_name', $request->title_name)
