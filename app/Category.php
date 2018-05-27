@@ -27,4 +27,20 @@ class Category extends Model {
 		'updated_by',
 		'deleted_by',
 	];
+
+	public function getCompany() {
+		return $this->belongsTo('App\Company', 'company_id');
+	}
+
+	public function getCreatedUser() {
+		return $this->belongsTo('App\User', 'created_by');
+	}
+
+	public function getUpdatedUser() {
+		return $this->belongsTo('App\User', 'updated_by');
+	}
+
+	public function getDeletedUser() {
+		return $this->belongsTo('App\User', 'deleted_by');
+	}
 }

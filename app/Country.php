@@ -30,4 +30,16 @@ class Country extends Model {
 	public function companies() {
 		return $this->belongsToMany('App\Company');
 	}
+
+	public function getCreatedUser() {
+		return $this->belongsTo('App\User', 'created_by');
+	}
+
+	public function getUpdatedUser() {
+		return $this->belongsTo('App\User', 'updated_by');
+	}
+
+	public function getDeletedUser() {
+		return $this->belongsTo('App\User', 'deleted_by');
+	}
 }

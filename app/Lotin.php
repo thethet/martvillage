@@ -56,6 +56,38 @@ class Lotin extends Model {
 		'deleted_by',
 	];
 
+	public function getCreatedUser() {
+		return $this->belongsTo('App\User', 'created_by');
+	}
+
+	public function getUpdatedUser() {
+		return $this->belongsTo('App\User', 'updated_by');
+	}
+
+	public function getDeletedUser() {
+		return $this->belongsTo('App\User', 'deleted_by');
+	}
+
+	public function getCompany() {
+		return $this->belongsTo('App\Company', 'company_id');
+	}
+
+	public function getUser() {
+		return $this->belongsTo('App\User', 'user_id');
+	}
+
+	public function getSender() {
+		return $this->belongsTo('App\Sender', 'sender_id');
+	}
+
+	public function getReceiver() {
+		return $this->belongsTo('App\Receiver', 'receiver_id');
+	}
+
+	public function getOutgoing() {
+		return $this->belongsTo('App\Outgoing', 'outgoing_id');
+	}
+
 	public function fromCountry() {
 		return $this->belongsTo('App\Country', 'from_country');
 	}

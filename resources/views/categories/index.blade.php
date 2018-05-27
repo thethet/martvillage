@@ -72,7 +72,11 @@
 							<td>{{ $category->name }}</td>
 							<td>{{ $category->unit }}</td>
 							@if(Auth::user()->hasRole('administrator'))
-								<td>{{ $companyList[$category->company_id] }}</td>
+								<td>
+									@if($category->getCompany)
+									{{ $category->getCompany->company_name }}
+									@endif
+								</td>
 							@endif
 							<td>
 								<a href="{{ url('categories/'. $category->id) }}" class="btn btn-info btn-sm" title="Detail">

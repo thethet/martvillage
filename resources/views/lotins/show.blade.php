@@ -48,8 +48,8 @@
 							<div class="form-group">
 								<label class="col-sm-4">
 									Contact No:
-									@if($sender->contact_no)
-										{{ $sender->contact_no }}
+									@if($lotinData->getSender)
+										{{ $lotinData->getSender->contact_no }}
 									@else
 										{{ '-' }}
 									@endif
@@ -57,8 +57,8 @@
 
 								<label class="col-sm-4">
 									To:
-									@if($receiver->address)
-										{{ $receiver->address }} of {{ $receiverCount }}
+									@if($lotinData->getReceiver)
+										{{ $lotinData->getReceiver->address }} of {{ $receiverCount }}
 									@else
 										{{ '-' }}
 									@endif
@@ -72,8 +72,8 @@
 							<div class="form-group">
 								<label class="col-sm-4">
 									Member No:
-									@if($sender->member_no)
-										{{ $sender->member_no }}
+									@if($lotinData->getSender)
+										{{ $lotinData->getSender->member_no }}
 									@else
 										{{ '-' }}
 									@endif
@@ -81,8 +81,8 @@
 
 								<label class="col-sm-4">
 									Contact No:
-									@if($receiver->contact_no)
-										{{ $receiver->contact_no }}
+									@if($lotinData->getReceiver)
+										{{ $lotinData->getReceiver->contact_no }}
 									@else
 										{{ '-' }}
 									@endif
@@ -96,8 +96,8 @@
 							<div class="form-group">
 								<label class="col-sm-4">
 									Sender Name:
-									@if($sender->name)
-										{{ $sender->name }}
+									@if($lotinData->getSender)
+										{{ $lotinData->getSender->name }}
 									@else
 										{{ '-' }}
 									@endif
@@ -105,15 +105,25 @@
 
 								<label class="col-sm-4">
 									Receiver Name:
-									@if($receiver->name)
-										{{ $receiver->name }}
+									@if($lotinData->getReceiver)
+										{{ $lotinData->getReceiver->name }}
 									@else
 										{{ '-' }}
 									@endif
 								</label>
 
 								<label class="col-sm-4">
-									From: {{ $stateList[$lotinData->from_state] }}, {{ $countryList[$lotinData->from_country] }}
+									{{ 'From: ' }}
+
+									@if($lotinData->fromCity)
+									{{ $lotinData->fromCity->state_name }}
+									@endif
+
+									{{ ', ' }}
+
+									@if($lotinData->fromCountry)
+									{{ $lotinData->fromCountry->country_name }}
+									@endif
 								</label>
 							</div>
 
@@ -137,7 +147,17 @@
 								</label>
 
 								<label class="col-sm-4">
-									To: {{ $stateList[$lotinData->to_state] }}, {{ $countryList[$lotinData->to_country] }}
+									{{ 'To: ' }}
+
+									@if($lotinData->toCity)
+									{{ $lotinData->toCity->state_name }}
+									@endif
+
+									{{ ', ' }}
+
+									@if($lotinData->toCountry)
+									{{ $lotinData->toCountry->country_name }}
+									@endif
 								</label>
 							</div>
 

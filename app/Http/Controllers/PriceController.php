@@ -57,7 +57,7 @@ class PriceController extends Controller {
 		foreach ($currencyTitle as $key => $value) {
 			$company_name                               = Company::where('id', $value->company_id)->first()->short_code;
 			$currencyTitleList[$i]['type']              = $value->type;
-			$currencyTitleList[$i]['country']           = $value->location->country_code;
+			$currencyTitleList[$i]['country']           = $value->getFromCountry->country_code;
 			$currencyTitleList[$i]['company_name']      = $company_name;
 			$currencyTitleList[$key]['total_sub_title'] = 1;
 			$i++;
@@ -68,20 +68,20 @@ class PriceController extends Controller {
 
 			$j = 0;
 			foreach ($states as $key => $state) {
-				$from_state                                     = State::where('id', $state->from_state)->first()->state_code;
-				$to_state                                       = State::where('id', $state->to_state)->first()->state_code;
-				$stateCode                                      = $from_state . ' - ' . $to_state;
-				$subTitleList[$val->location->country_code][$j] = $stateCode;
+				$from_state                                           = State::where('id', $state->from_state)->first()->state_code;
+				$to_state                                             = State::where('id', $state->to_state)->first()->state_code;
+				$stateCode                                            = $from_state . ' - ' . $to_state;
+				$subTitleList[$val->getFromCountry->country_code][$j] = $stateCode;
 
-				$subTitleList[$val->location->country_code] = array_map("unserialize", array_unique(array_map("serialize", $subTitleList[$val->location->country_code])));
+				$subTitleList[$val->getFromCountry->country_code] = array_map("unserialize", array_unique(array_map("serialize", $subTitleList[$val->getFromCountry->country_code])));
 				$j++;
 
-				$pCount                                      = count($subTitleList[$val->location->country_code]);
+				$pCount                                      = count($subTitleList[$val->getFromCountry->country_code]);
 				$currencyTitleList[$keys]['total_sub_title'] = ($pCount == 0) ? 1 : $pCount;
 				$totalCol += $currencyTitleList[$keys]['total_sub_title'];
 			}
-			if (!array_key_exists($val->location->country_code, $subTitleList)) {
-				$subTitleList[$val->location->country_code][$j] = '';
+			if (!array_key_exists($val->getFromCountry->country_code, $subTitleList)) {
+				$subTitleList[$val->getFromCountry->country_code][$j] = '';
 			}
 		}
 
@@ -96,21 +96,21 @@ class PriceController extends Controller {
 
 					foreach ($pricingLists as $key => $ptl) {
 
-						if (!isset($priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state])) {
-							$priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state]['id']         = 0;
-							$priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state]['unit_price'] = '';
+						if (!isset($priceLists[$title->title_name][$val->getFromCountry->country_code][$from_state . ' - ' . $to_state])) {
+							$priceLists[$title->title_name][$val->getFromCountry->country_code][$from_state . ' - ' . $to_state]['id']         = 0;
+							$priceLists[$title->title_name][$val->getFromCountry->country_code][$from_state . ' - ' . $to_state]['unit_price'] = '';
 						}
 
 						if ($ptl->from_state == $state->from_state && $ptl->to_state == $state->to_state && $title->title_name == $ptl->title_name) {
-							$priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state]['id']         = $ptl->id;
-							$priceLists[$title->title_name][$val->location->country_code][$from_state . ' - ' . $to_state]['unit_price'] = $ptl->unit_price;
+							$priceLists[$title->title_name][$val->getFromCountry->country_code][$from_state . ' - ' . $to_state]['id']         = $ptl->id;
+							$priceLists[$title->title_name][$val->getFromCountry->country_code][$from_state . ' - ' . $to_state]['unit_price'] = $ptl->unit_price;
 						}
 
 					}
 				}
 
-				if (!isset($priceLists[$title->title_name][$val->location->country_code])) {
-					$priceLists[$title->title_name][$val->location->country_code] = array();
+				if (!isset($priceLists[$title->title_name][$val->getFromCountry->country_code])) {
+					$priceLists[$title->title_name][$val->getFromCountry->country_code] = array();
 				}
 				$k++;
 			}

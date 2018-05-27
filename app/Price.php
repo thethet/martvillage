@@ -35,6 +35,30 @@ class Price extends Model {
 		'deleted_by',
 	];
 
+	public function getCreatedUser() {
+		return $this->belongsTo('App\User', 'created_by');
+	}
+
+	public function getUpdatedUser() {
+		return $this->belongsTo('App\User', 'updated_by');
+	}
+
+	public function getDeletedUser() {
+		return $this->belongsTo('App\User', 'deleted_by');
+	}
+
+	public function getCompany() {
+		return $this->belongsTo('App\Company', 'company_id');
+	}
+
+	public function getCategory() {
+		return $this->belongsTo('App\Category', 'category_id');
+	}
+
+	public function getCurrency() {
+		return $this->belongsTo('App\Currency', 'currency_id');
+	}
+
 	public function Title() {
 		return $this->belongsTo('App\PriceTitle', 'title_id');
 	}

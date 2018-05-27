@@ -119,21 +119,55 @@
 						<tr>
 							<td>{{ ++$i }}</td>
 							<td>{{ $lotin->lot_no }}</td>
-							<td>{{ $senderList[$lotin->sender_id] }}</td>
-							<td>{{ $senderContactList[$lotin->sender_id] }}</td>
-							<td>{{ $memberList[$lotin->sender_id] }}</td>
-							<td>{{ $receiverList[$lotin->receiver_id] }}</td>
-							<td>{{ $receiverContactList[$lotin->receiver_id] }}</td>
+
 							<td>
-								{{ $stateList[$lotin->from_state] }} <=> {{ $stateList[$lotin->to_state] }}
+								@if($lotin->getSender)
+								{{ $lotin->getSender->name }}
+								@endif
+							</td>
+
+							<td>
+								@if($lotin->getSender)
+								{{ $lotin->getSender->contact_no }}
+								@endif
+							</td>
+							<td>
+								@if($lotin->getSender)
+								{{ $lotin->getSender->member_no }}
+								@endif
+							</td>
+							<td>
+								@if($lotin->getReceiver)
+								{{ $lotin->getReceiver->name }}
+								@endif
+							</td>
+							<td>
+								@if($lotin->getReceiver)
+								{{ $lotin->getReceiver->contact_no }}
+								@endif
+							</td>
+							<td>
+								@if($lotin->fromCity)
+								{{ $lotin->fromCity->state_code }}
+								@endif
+
+								{{ ' <=> ' }}
+
+								@if($lotin->toCity)
+								{{ $lotin->toCity->state_code }}
+								@endif
 							</td>
 							@if(Auth::user()->hasRole('administrator'))
 								<td>
-									{{ $companyList[$lotin->company_id] }}
+									@if($lotin->getCompany)
+									{{ $lotin->getCompany->company_name }}
+									@endif
 								</td>
 							@endif
 							<td>
-								{{ $userList[$lotin->user_id] }}
+								@if($lotin->getUser)
+								{{ $lotin->getUser->name }}
+								@endif
 							</td>
 							<td>
 								<a href="{{ url('lotins/'. $lotin->id) }}" class="btn btn-info btn-sm">

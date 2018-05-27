@@ -48,15 +48,23 @@ class Company extends Model {
 		return $this->belongsToMany('App\Country', 'companies_countries', 'companies_id', 'countries_id');
 	}
 
-	// public function getCountryList() {
-	// 	return $this->countries->lists('countries_id');
-	// }
-
 	public function state() {
 		return $this->belongsToMany('App\State', 'companies_states', 'companies_id', 'states_id');
 	}
 
 	public function township() {
 		return $this->belongsToMany('App\Township', 'companies_townships', 'companies_id', 'townships_id');
+	}
+
+	public function getCreatedUser() {
+		return $this->belongsTo('App\User', 'created_by');
+	}
+
+	public function getUpdatedUser() {
+		return $this->belongsTo('App\User', 'updated_by');
+	}
+
+	public function getDeletedUser() {
+		return $this->belongsTo('App\User', 'deleted_by');
 	}
 }

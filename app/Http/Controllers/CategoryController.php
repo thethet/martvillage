@@ -32,7 +32,6 @@ class CategoryController extends Controller {
 			}
 		}, $request->all()));
 
-		$companyList = Company::orderBy('company_name', 'ASC')->lists('company_name', 'id');
 		$categories  = Category::where('deleted', 'N')->paginate(10);
 		$total       = $categories->total();
 		$perPage     = $categories->perPage();
@@ -40,7 +39,7 @@ class CategoryController extends Controller {
 		$lastPage    = $categories->lastPage();
 		$lastItem    = $categories->lastItem();
 
-		return view('categories.index', ['categories' => $categories, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem, 'companyList' => $companyList])->with('i', ($request->get('page', 1) - 1) * 10);
+		return view('categories.index', ['categories' => $categories, 'total' => $total, 'perPage' => $perPage, 'currentPage' => $currentPage, 'lastPage' => $lastPage, 'lastItem' => $lastItem])->with('i', ($request->get('page', 1) - 1) * 10);
 	}
 
 	/**

@@ -69,9 +69,17 @@
 						<tr>
 							<td>{{ ++$i }}</td>
 							<td>{{ $currency->type }}</td>
-							<td>{{ $countryList[$currency->from_location] }}</td>
+							<td>
+								@if($currency->getFromCountry)
+								{{ $currency->getFromCountry->country_name }}
+								@endif
+							</td>
 							@if(Auth::user()->hasRole('administrator'))
-								<td>{{ $companyList[$currency->company_id] }}</td>
+								<td>
+									@if($currency->getCompany)
+									{{ $currency->getCompany->company_name }}
+									@endif
+								</td>
 							@endif
 							<td>
 								<a href="{{ url('currencies/'. $currency->id) }}" class="btn btn-info btn-sm" title="Detail">
